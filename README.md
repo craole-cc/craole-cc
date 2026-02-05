@@ -2,7 +2,7 @@
 - 👀 I’m interested in Development and Data
 - 🌱 I’m currently learning Rust, Nix and Data Engineering
 - 💞️ I’m looking to collaborate on data-related projects that include the Rust programming language
-- 📫 How to reach me cc.gh.azult@@aleeas.com
+- 📫 How to reach me cc.craole@gmail.com
 
 <!---
 craole-cc/craole-cc is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
