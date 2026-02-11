@@ -1,59 +1,67 @@
-use leptos::prelude::*;
-use leptos_meta::{provide_meta_context, MetaTags, Stylesheet, Title};
-use leptos_router::{
-    components::{Route, Router, Routes},
+use {
+  leptos::prelude::*,
+  leptos_meta::{
+    MetaTags,
+    Stylesheet,
+    Title,
+    provide_meta_context,
+  },
+  leptos_router::{
     StaticSegment,
+    components::{
+      Route,
+      Router,
+      Routes,
+    },
+  },
 };
 
 pub fn shell(options: LeptosOptions) -> impl IntoView {
-    view! {
-        <!DOCTYPE html>
-        <html lang="en">
-            <head>
-                <meta charset="utf-8"/>
-                <meta name="viewport" content="width=device-width, initial-scale=1"/>
-                <AutoReload options=options.clone()/>
-                <HydrationScripts options/>
-                <MetaTags/>
-            </head>
-            <body>
-                <App/>
-            </body>
-        </html>
-    }
+  view! {
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <AutoReload options=options.clone() />
+        <HydrationScripts options />
+        <MetaTags />
+      </head>
+      <body>
+        <App />
+      </body>
+    </html>
+  }
 }
 
 #[component]
 pub fn App() -> impl IntoView {
-    // Provides context that manages stylesheets, titles, meta tags, etc.
-    provide_meta_context();
+  provide_meta_context();
 
-    view! {
-        <Stylesheet id="leptos" href="/pkg/craole-cc.css"/>
+  view! {
+    <Stylesheet id="leptos" href="/pkg/craole-cc.css" />
+    <Title text="Craole-CC" />
 
-        // sets the document title
-        <Title text="Welcome to Leptos"/>
-
-        // content for this welcome page
-        <Router>
-            <main>
-                <Routes fallback=|| "Page not found.".into_view()>
-                    <Route path=StaticSegment("") view=HomePage/>
-                </Routes>
-            </main>
-        </Router>
-    }
+    // content for this welcome page
+    <Router>
+      <main>
+        <Routes fallback=|| "Page not found.".into_view()>
+          <Route path=StaticSegment("") view=HomePage />
+        </Routes>
+      </main>
+    </Router>
+  }
 }
 
 /// Renders the home page of your application.
 #[component]
 fn HomePage() -> impl IntoView {
-    // Creates a reactive value to update the button
-    let count = RwSignal::new(0);
-    let on_click = move |_| *count.write() += 1;
+  // Creates a reactive value to update the button
+  let count = RwSignal::new(0);
+  let on_click = move |_| *count.write() += 1;
 
-    view! {
-        <h1>"Welcome to Leptos!"</h1>
-        <button on:click=on_click>"Click Me: " {count}</button>
-    }
+  view! {
+    <h1>"Welcome to Craole.CC!"</h1>
+    <button on:click=on_click>"Click Me: " {count}</button>
+  }
 }

@@ -1,13 +1,16 @@
-export const content = {
-  files: ["*.html", "./app/src/**/*.rs"],
-};
+/** @type {import('tailwindcss').Config} */
+export const content = [
+  "./src/**/*.rs",
+  "./index.html",
+];
 export const theme = {
   extend: {
     colors: {
-      primary: '#2563eb', // blue-600
-      secondary: '#7c3aed', // violet-600
-      accent: '#059669', // emerald-600
-    },
+      'bg-primary': '#0f172a',
+      'bg-secondary': '#1e293b',
+      'text-primary': '#f1f5f9',
+      'text-secondary': '#94a3b8',
+    }
   },
 };
 export const plugins = [];
