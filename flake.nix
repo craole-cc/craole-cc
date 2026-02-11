@@ -1,6 +1,5 @@
-
 {
-  description = "Leptos CSR Portfolio";
+  description = "Craole.CC";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -11,29 +10,37 @@
     };
   };
 
-  outputs = { self, nixpkgs, flake-utils, rust-overlay }:
-    flake-utils.lib.eachDefaultSystem (system:
-      let
-        overlays = [ (import rust-overlay) ];
+  outputs = {
+    self,
+    nixpkgs,
+    flake-utils,
+    rust-overlay,
+  }:
+    flake-utils.lib.eachDefaultSystem (
+      system: let
+        overlays = [(import rust-overlay)];
         pkgs = import nixpkgs {
           inherit system overlays;
         };
-
         rustToolchain = pkgs.rust-bin.stable.latest.default.override {
-          extensions = [ "rust-src" "rust-analyzer" ];
-          targets = [ "wasm32-unknown-unknown" ];
+          extensions = ["rust-src" "rust-analyzer"];
+          targets = ["wasm32-unknown-unknown"];
         };
-      in
-      {
+      in {
         devShells.default = pkgs.mkShell {
           buildInputs = with pkgs; [
+            cargo-edit
+            cargo-generate
+            cargo-leptos
+            cargo-seek
+            cargo-sweep
+            cargo-bloat
+            cargo-watch
+            cargo-wipe
+            leptosfmt
             rustToolchain
             trunk
             wasm-bindgen-cli
-
-            # Optional but useful
-            cargo-watch
-            cargo-edit
           ];
 
           shellHook = ''
@@ -46,7 +53,7 @@
           name = "portfolio";
           src = ./.;
 
-          buildInputs = [ rustToolchain pkgs.trunk ];
+          buildInputs = [rustToolchain pkgs.trunk];
 
           buildPhase = ''
             export HOME=$TMPDIR
