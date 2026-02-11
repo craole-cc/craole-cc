@@ -39,15 +39,15 @@ Music remains part of my voice, but **code has expanded my range**. Every system
 - Declarative NixOS configurations for reproducible environments
 - Infrastructure-as-code and automation
 - Self-hosted solutions
+
 ## 🧰 Tech Stack
 
 ### Languages & Core
 
 ![Rust](https://img.shields.io/badge/Rust-000000?style=for-the-badge&logo=rust&logoColor=white)
-![Shell](https://img.shields.io/badge/Shell-89e051?style=for-the-badge&logo=gnu-bash&logoColor=black)
+![Shell](https://img.shields.io/badge/Shellscript-4EAA25?style=for-the-badge&logo=gnubash&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![Zig](https://img.shields.io/badge/Zig-F7A41D?style=for-the-badge&logo=zig&logoColor=white)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
 
 ### Web
 
@@ -62,15 +62,16 @@ Music remains part of my voice, but **code has expanded my range**. Every system
 ![Apache Spark](https://img.shields.io/badge/Apache_Spark-E25A1C?style=for-the-badge&logo=apachespark&logoColor=white)
 ![Databricks](https://img.shields.io/badge/Databricks-FF3621?style=for-the-badge&logo=databricks&logoColor=white)
 ![Neo4j](https://img.shields.io/badge/Neo4j-008CC1?style=for-the-badge&logo=neo4j&logoColor=white)
-![Power BI](https://img.shields.io/badge/Power_BI-F2C811?style=for-the-badge&logo=powerbi&logoColor=black)
-![Tableau](https://img.shields.io/badge/Tableau-E97627?style=for-the-badge&logo=tableau&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
+<!-- ![Power BI](https://img.shields.io/badge/Power_BI-F2C811?style=for-the-badge&logo=powerbi&logoColor=black) -->
+<!-- ![Tableau](https://img.shields.io/badge/Tableau-E97627?style=for-the-badge&logo=tableau&logoColor=white) -->
 
 ### DevOps & Systems
 
 ![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
-![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
 ![NixOS](https://img.shields.io/badge/NixOS-5277C3?style=for-the-badge&logo=nixos&logoColor=white)
 ![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=dask&logoColor=white)
+<!-- ![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black) -->
 <!-- ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white) -->
 
 ### Editors
@@ -84,8 +85,9 @@ Music remains part of my voice, but **code has expanded my range**. Every system
 ### Terminal
 
 ![Bash](https://img.shields.io/badge/Bash-4EAA25?style=for-the-badge&logo=gnubash&logoColor=white)
-![PowerShell](https://img.shields.io/badge/PowerShell-5391FE?style=for-the-badge&logo=educative&logoColor=white)
+![PowerShell](https://img.shields.io/badge/PowerShell-1c56a1?style=for-the-badge&logo=educative&logoColor=white)
 ![Starship](https://img.shields.io/badge/Starship-DD0B78?style=for-the-badge&logo=starship&logoColor=white)
+![OhMyPosh](https://img.shields.io/badge/OhMyPosh-173448?style=for-the-badge&logo=gnometerminal&logoColor=white)
 
 ## 🎯 Philosophy
 
@@ -101,8 +103,6 @@ Looking for **Rust-centric projects** across the full spectrum:
 - 📊 **Data engineering** pipelines and infrastructure
 - ⚙️ **Developer tools** and systems utilities
 - 🎨 **Creative technical** experiments
-
-If you're building something ambitious with Rust, let's connect.
 
 ## 📫 Let's Connect
 
