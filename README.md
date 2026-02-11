@@ -9,9 +9,9 @@
 
 I build **full-stack applications, data infrastructure, and systems utilities**, usually with **Rust** at the core. From frontend interfaces to backend pipelines to command-line tools, I'm exploring the entire spectrum of what's possible with modern systems programming.
 
-With roots in **music production** (bassist, singer, producer) and 8+ years in **Learning & Development** (including TEFL tutoring for professionals), I've always been driven by **expression**. The alias **"Craole"** embodies this—a fusion of my Caribbean heritage and creative identity, reminding me that ***I have something to say***.
+With roots in **music production** (bassist, singer, producer) and 8+ years in **Learning & Development** (including TEFL tutoring for professionals), I've always been driven by **expression**. The alias **"Craole"** embodies this — a fusion of my Caribbean heritage and creative identity, reminding me that ***I have something to say***.
 
-Music remains part of my voice, but **code has expanded my range**. Every system I build, every pipeline I design, every utility I craft—it's all **expression through structure**, blending the precision and creativity I honed as a musician with the power of modern systems programming.
+Music remains part of my voice, but **code has expanded my range**. Every system I build, every pipeline I design, every utility I craft — it's all **expression through structure**, blending the precision and creativity I honed as a musician with the power of modern systems programming.
 
 > **Code is another instrument of expression through structure** 🎵⚙️
 
@@ -101,12 +101,12 @@ If you're building something ambitious with Rust, let's connect.
 ## 📫 Let's Connect
 
 [![Email](https://img.shields.io/badge/Email-craig.craole.cole@gmail.com-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:craig.craole.cole@gmail.com)
-[![Twitter](https://img.shields.io/badge/Twitter-@craolecc-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/craole)
+[![Twitter](https://img.shields.io/badge/Twitter-@craole-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/craole)
 [![Portfolio](https://img.shields.io/badge/Portfolio-www.Craole.cc-blueviolet?style=for-the-badge&logo=firefox&logoColor=white)](https://craole.cc)
 
 ---
 
-**Let's build something that expresses** 🎵⚙️💻
+**Let's build something impactful together** — solving real problems through elegant, expressive code 🚀
 
 <!---
 craole-cc/craole-cc is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
