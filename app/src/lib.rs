@@ -12,7 +12,7 @@ pub fn shell(options: LeptosOptions) -> impl IntoView {
             <head>
                 <meta charset="utf-8"/>
                 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-                <AutoReload options=options.clone() />
+                <AutoReload options=options.clone()/>
                 <HydrationScripts options/>
                 <MetaTags/>
             </head>
@@ -29,8 +29,6 @@ pub fn App() -> impl IntoView {
     provide_meta_context();
 
     view! {
-        // injects a stylesheet into the document <head>
-        // id=leptos means cargo-leptos will hot-reload this stylesheet
         <Stylesheet id="leptos" href="/pkg/craole-cc.css"/>
 
         // sets the document title

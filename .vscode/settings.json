@@ -1,0 +1,6 @@
+{
+  "fileinator.ignoredFolders": [
+    "target",
+    ".git"
+  ]
+}

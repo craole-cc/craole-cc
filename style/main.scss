@@ -1,4 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// Custom global styles
 body {
-	font-family: sans-serif;
-	text-align: center;
+  @apply bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100;
+  font-family: sans-serif;
+  text-align: center;
 }
