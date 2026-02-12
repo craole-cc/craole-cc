@@ -1,26 +1,37 @@
-mod test;
-// mod about;
-// mod contact;
-// mod experience;
-// mod footer;
-// mod header;
-// mod hero;
-// mod projects;
-
-// use leptos::{
-//   mount::mount_to_body,
-//   prelude::*,
-// };
-pub use {
-  // about::*,
-  // contact::*,
-  // experience::*,
-  // footer::*,
-  test::*,
-  // header::*,
-  // hero::*,
-  // projects::*,
+use {
+  crate::prelude::*,
+  leptos::prelude::*,
+  leptos_meta::{
+    Stylesheet,
+    Title,
+    provide_meta_context,
+  },
+  leptos_router::{
+    StaticSegment,
+    components::{
+      Route,
+      Router,
+      Routes,
+    },
+  },
 };
+
+#[component]
+pub fn App() -> impl IntoView {
+  provide_meta_context();
+
+  view! {
+    <Stylesheet id="leptos" href="/pkg/craole-cc.css" />
+    <Title text="Craole-CC" />
+    <Router>
+      <main>
+        <Routes fallback=|| "Page not found.".into_view()>
+          <Route path=StaticSegment("") view=Home />
+        </Routes>
+      </main>
+    </Router>
+  }
+}
 
 // pub fn mount() {
 //   mount_to_body(view);

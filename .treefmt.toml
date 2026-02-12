@@ -17,12 +17,12 @@ excludes = [
 #╔════════════════════════════════╗
 #║ Documentation                  ║
 #╚════════════════════════════════╝
-[formatter.markdown]
-command = "markdownlint-cli2"
-includes = ["*.md", "README"]
-options = ["--fix"]
-# options = ["--fix", "--config", ".markdownlint.yaml"]
-priority = 1
+# [formatter.markdown]
+# command = "markdownlint-cli2"
+# includes = ["*.md", "README"]
+# options = ["--fix"]
+# # options = ["--fix", "--config", ".markdownlint.yaml"]
+# priority = 1
 
 # [formatter.mdsh]
 # command = "mdsh"
@@ -40,10 +40,10 @@ priority = 1
 # priority = 2
 # command = "nixfmt"
 
-[formatter.alejandra]
-includes = ["*.nix"]
-priority = 1
-command = "alejandra"
+# [formatter.alejandra]
+# includes = ["*.nix"]
+# priority = 1
+# command = "alejandra"
 
 #╔════════════════════════════════╗
 #║ Rust                           ║
@@ -121,27 +121,27 @@ options = ["format"]
 #║ Web                            ║
 #╚════════════════════════════════╝
 
-[formatter.deno]
-command = "deno"
-excludes = []
-includes = [
-  "*.css",
-  "*.html",
-  "*.js",
-  "*.json",
-  "*.jsonc",
-  "*.jsx",
-  "*.less",
-  # "*.markdown",
-  # "*.md",
-  "*.sass",
-  "*.scss",
-  "*.ts",
-  "*.tsx",
-  "*.yaml",
-  "*.yml",
-]
-options = ["fmt"]
+# [formatter.deno]
+# command = "deno"
+# excludes = []
+# includes = [
+#   "*.css",
+#   "*.html",
+#   "*.js",
+#   "*.json",
+#   "*.jsonc",
+#   "*.jsx",
+#   "*.less",
+#   # "*.markdown",
+#   # "*.md",
+#   "*.sass",
+#   "*.scss",
+#   "*.ts",
+#   "*.tsx",
+#   "*.yaml",
+#   "*.yml",
+# ]
+# options = ["fmt"]
 
 #╔════════════════════════════════╗
 #║ Yaml                           ║

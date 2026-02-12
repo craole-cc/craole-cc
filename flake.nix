@@ -29,23 +29,24 @@
       in {
         devShells.default = pkgs.mkShell {
           buildInputs = with pkgs; [
-            treefmt
+            actionlint
+            binaryen
+            cargo-bloat
             cargo-edit
             cargo-generate
             cargo-leptos
             cargo-seek
             cargo-sweep
-            dart-sass
-            cargo-bloat
             cargo-watch
             cargo-wipe
-            leptosfmt
+            dart-sass
             deno
+            leptosfmt
+            pnpm
             rustToolchain
+            treefmt
             trunk
             wasm-bindgen-cli
-            binaryen
-            actionlint
           ];
 
           shellHook = ''

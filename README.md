@@ -5,13 +5,23 @@
 ![Full Stack](https://img.shields.io/badge/Full_Stack-blueviolet?style=for-the-badge&logo=stackexchange&logoColor=white)
 ![Systems](https://img.shields.io/badge/Systems-green?style=for-the-badge&logo=linux&logoColor=white)
 
-## 💫 About Me
+## 👤 About Me
 
-I build **full-stack applications, data infrastructure, and systems utilities**, usually with **Rust** at the core. From frontend interfaces to backend pipelines to command-line tools, I'm exploring the entire spectrum of what's possible with modern systems programming.
+I build **full-stack applications, data infrastructure, and systems utilities**,
+usually with **Rust** at the core. From frontend interfaces to backend pipelines
+to command-line tools, I'm exploring the entire spectrum of what's possible with
+modern systems programming.
 
-With roots in **music production** (bassist, singer, producer) and 8+ years in **Learning & Development** (including TEFL tutoring for professionals), I've always been driven by **expression**. The alias **"Craole"** embodies this — a fusion of my Caribbean heritage and creative identity, reminding me that ***I have something to say***.
+With roots in **music production** (bassist, singer, producer) and 8+ years in
+**Learning & Development** (including TEFL tutoring for professionals), I've
+always been driven by **expression**. The alias **"Craole"** embodies this — a
+fusion of my Caribbean heritage and creative identity, reminding me that _**I
+have something to say**_.
 
-Music remains part of my voice, but **code has expanded my range**. Every system I build, every pipeline I design, every utility I craft — it's all **expression through structure**, blending the precision and creativity I honed as a musician with the power of modern systems programming.
+Music remains part of my voice, but **code has expanded my range**. Every system
+I build, every pipeline I design, every utility I craft — it's all **expression
+through structure**, blending the precision and creativity I honed as a musician
+with the power of modern systems programming.
 
 > **Code is another instrument of expression through structure** 🎵⚙️
 
@@ -19,7 +29,8 @@ Music remains part of my voice, but **code has expanded my range**. Every system
 
 ### 🌐 Full-Stack Development
 
-- Web applications with Rust backends (Axum, Actix) + modern frontends (HTMX, SPA frameworks)
+- Web applications with Rust backends (Axum, Actix) + modern frontends (HTMX,
+  SPA frameworks)
 - End-to-end solutions from database to UI
 
 ### 📊 Data Engineering
@@ -55,6 +66,7 @@ Music remains part of my voice, but **code has expanded my range**. Every system
 ![HTMX](https://img.shields.io/badge/HTMX-3366CC?style=for-the-badge&logo=htmx&logoColor=white)
 ![Leptos](https://img.shields.io/badge/Leptos-EF3939?style=for-the-badge&logo=leptos&logoColor=white)
 ![Tailwind](https://img.shields.io/badge/tailwind-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
+
 <!-- ![Actix](https://img.shields.io/badge/Actix-000000?style=for-the-badge&logo=actix&logoColor=white) -->
 
 ### Data Engineering
@@ -63,6 +75,7 @@ Music remains part of my voice, but **code has expanded my range**. Every system
 ![Databricks](https://img.shields.io/badge/Databricks-FF3621?style=for-the-badge&logo=databricks&logoColor=white)
 ![Neo4j](https://img.shields.io/badge/Neo4j-008CC1?style=for-the-badge&logo=neo4j&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
+
 <!-- ![Power BI](https://img.shields.io/badge/Power_BI-F2C811?style=for-the-badge&logo=powerbi&logoColor=black) -->
 <!-- ![Tableau](https://img.shields.io/badge/Tableau-E97627?style=for-the-badge&logo=tableau&logoColor=white) -->
 
@@ -71,6 +84,7 @@ Music remains part of my voice, but **code has expanded my range**. Every system
 ![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
 ![NixOS](https://img.shields.io/badge/NixOS-5277C3?style=for-the-badge&logo=nixos&logoColor=white)
 ![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=dask&logoColor=white)
+
 <!-- ![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black) -->
 <!-- ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white) -->
 
@@ -80,6 +94,7 @@ Music remains part of my voice, but **code has expanded my range**. Every system
 ![Typst](https://img.shields.io/badge/Typst-239DAD?style=for-the-badge&logo=typst&logoColor=white)
 ![VS Code](https://img.shields.io/badge/VSCodium-2F80ED?style=for-the-badge&logo=vscodium&logoColor=white)
 ![Zed  Editor](https://img.shields.io/badge/Zed-084CCF?style=for-the-badge&logo=zedindustries&logoColor=white)
+
 <!-- ![Neovim](https://img.shields.io/badge/Neovim-57A143?style=for-the-badge&logo=neovim&logoColor=white) -->
 
 ### Terminal
@@ -91,9 +106,13 @@ Music remains part of my voice, but **code has expanded my range**. Every system
 
 ## 🎯 Philosophy
 
-Code is expression. Just like music, it requires **precision, creativity, and purpose**. Whether I'm building a web app, designing a data pipeline, or crafting a CLI tool, it's about solving problems in ways that feel **structured yet innovative**.
+Code is expression. Just like music, it requires **precision, creativity, and
+purpose**. Whether I'm building a web app, designing a data pipeline, or
+crafting a CLI tool, it's about solving problems in ways that feel **structured
+yet innovative**.
 
-From my musical background to teaching to building systems—it's all connected through the desire to **create and communicate**.
+From my musical background to teaching to building systems—it's all connected
+through the desire to **create and communicate**.
 
 ## 🚀 Open to Collaboration
 
@@ -112,7 +131,8 @@ Looking for **Rust-centric projects** across the full spectrum:
 
 ---
 
-**Let's build something impactful together** — solving real problems through elegant, expressive code 🚀
+**Let's build something impactful together** — solving real problems through
+elegant, expressive code 🚀
 
 <!---
 craole-cc/craole-cc is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
