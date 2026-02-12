@@ -1,0 +1,159 @@
+[global]
+excludes = [
+  "LICENSE",
+  "**/node_modules/**",
+  "**/target/**",
+  "**/.git/**",
+  "**/dist/**",
+  "**/build/**",
+  "**/review/**",
+  "**/archive/**",
+  "*.lock",
+  "Assets/**",
+  "*.diff",
+  "*.patch",
+]
+
+#╔════════════════════════════════╗
+#║ Documentation                  ║
+#╚════════════════════════════════╝
+[formatter.markdown]
+command = "markdownlint-cli2"
+includes = ["*.md", "README"]
+options = ["--fix"]
+# options = ["--fix", "--config", ".markdownlint.yaml"]
+priority = 1
+
+# [formatter.mdsh]
+# command = "mdsh"
+# excludes = []
+# includes = ["README.md"]
+# options = ["--inputs"]
+# priority = 2
+
+#╔════════════════════════════════╗
+#║ Nix                            ║
+#╚════════════════════════════════╝
+
+# [formatter.nixfmt]
+# includes = ["*.nix"]
+# priority = 2
+# command = "nixfmt"
+
+[formatter.alejandra]
+includes = ["*.nix"]
+priority = 1
+command = "alejandra"
+
+#╔════════════════════════════════╗
+#║ Rust                           ║
+#╚════════════════════════════════╝
+
+[formatter.leptosfmt]
+command = "leptosfmt"
+includes = ["*.rs"]
+priority = 1
+
+[formatter.rust]
+command = "rustfmt"
+includes = ["*.rs"]
+priority = 2
+
+#╔════════════════════════════════╗
+#║ Shellscript                    ║
+#╚════════════════════════════════╝
+
+[formatter.shellcheck]
+includes = [
+  "*.sh",
+  ".env*",
+  ".shellcheckrc",
+  "*.bash",
+  ".bash*",
+  "Bin/shellscript/**",
+]
+excludes = ["*.md", "*.ps1", "*.psm1", "*.txt", "*.log"]
+command = "shellcheck"
+options = ["--rcfile", ".shellcheckrc"]
+priority = 1
+
+[formatter.shfmt]
+includes = [
+  "*.bash*",
+  "*.env*",
+  "*.gitignore",
+  "*.ignore",
+  "*.sh",
+  "*.shellcheckrc",
+]
+excludes = ["*.md", "*.ps1", "*.psm1", "*.txt", "*.log", "*.rs"]
+command = "shfmt"
+options = [
+  "--apply-ignore",
+  "--binary-next-line",
+  "--space-redirects",
+  "--case-indent",
+  "--indent",
+  "2",
+  "--posix",
+  "--write",
+]
+priority = 2
+
+#╔════════════════════════════════╗
+#║ Toml                           ║
+#╚════════════════════════════════╝
+
+[formatter.toml]
+includes = ["*.toml", "rust-analyzer.toml", "rustfmt.toml"]
+command = "taplo"
+options = ["format"]
+
+#╔════════════════════════════════╗
+#║ Lua                            ║
+#╚════════════════════════════════╝
+
+# [formatter.stylua]
+# command = "stylua"
+# includes = ["*.lua"]
+
+#╔════════════════════════════════╗
+#║ Web                            ║
+#╚════════════════════════════════╝
+
+[formatter.deno]
+command = "deno"
+excludes = []
+includes = [
+  "*.css",
+  "*.html",
+  "*.js",
+  "*.json",
+  "*.jsonc",
+  "*.jsx",
+  "*.less",
+  # "*.markdown",
+  # "*.md",
+  "*.sass",
+  "*.scss",
+  "*.ts",
+  "*.tsx",
+  "*.yaml",
+  "*.yml",
+]
+options = ["fmt"]
+
+#╔════════════════════════════════╗
+#║ Yaml                           ║
+#╚════════════════════════════════╝
+
+[formatter.actionlint]
+command = "actionlint"
+excludes = []
+includes = [".github/workflows/*.yml", ".github/workflows/*.yaml"]
+options = []
+
+# [formatter.yamlfmt]
+# includes = ["*.yaml", "*.yml"]
+# command = "yamlfmt"
+# options = ["-formatter", "retain_line_breaks=true"]

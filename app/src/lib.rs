@@ -2,20 +2,12 @@ mod views;
 
 use {
   leptos::prelude::*,
-  leptos_meta::{
-    MetaTags,
-    Stylesheet,
-    Title,
-    provide_meta_context,
-  },
+  leptos_meta::{MetaTags, Stylesheet, Title, provide_meta_context},
   leptos_router::{
     StaticSegment,
-    components::{
-      Route,
-      Router,
-      Routes,
-    },
+    components::{Route, Router, Routes},
   },
+  views::*,
 };
 
 pub fn shell(options: LeptosOptions) -> impl IntoView {
@@ -46,7 +38,7 @@ pub fn App() -> impl IntoView {
     <Router>
       <main>
         <Routes fallback=|| "Page not found.".into_view()>
-          <Route path=StaticSegment("") view=App />
+          <Route path=StaticSegment("") view=HomePage />
         </Routes>
       </main>
     </Router>
@@ -54,8 +46,9 @@ pub fn App() -> impl IntoView {
 }
 
 #[component]
-fn App() -> impl IntoView {
+fn HomePage() -> impl IntoView {
   view! {
     <h1>"Welcome to Craole.CC!"</h1>
+    <Test />
   }
 }

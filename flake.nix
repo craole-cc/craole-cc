@@ -29,6 +29,7 @@
       in {
         devShells.default = pkgs.mkShell {
           buildInputs = with pkgs; [
+            treefmt
             cargo-edit
             cargo-generate
             cargo-leptos
@@ -39,15 +40,17 @@
             cargo-watch
             cargo-wipe
             leptosfmt
+            deno
             rustToolchain
             trunk
             wasm-bindgen-cli
             binaryen
+            actionlint
           ];
 
           shellHook = ''
-            echo "🦀 Leptos dev environment loaded"
-            echo "Run: trunk serve --open"
+            # echo "🦀 Leptos dev environment loaded"
+            # echo "Run: trunk serve --open"
           '';
         };
 
