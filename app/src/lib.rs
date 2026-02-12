@@ -1,3 +1,5 @@
+mod views;
+
 use {
   leptos::prelude::*,
   leptos_meta::{
@@ -41,27 +43,19 @@ pub fn App() -> impl IntoView {
   view! {
     <Stylesheet id="leptos" href="/pkg/craole-cc.css" />
     <Title text="Craole-CC" />
-
-    // content for this welcome page
     <Router>
       <main>
         <Routes fallback=|| "Page not found.".into_view()>
-          <Route path=StaticSegment("") view=HomePage />
+          <Route path=StaticSegment("") view=App />
         </Routes>
       </main>
     </Router>
   }
 }
 
-/// Renders the home page of your application.
 #[component]
-fn HomePage() -> impl IntoView {
-  // Creates a reactive value to update the button
-  let count = RwSignal::new(0);
-  let on_click = move |_| *count.write() += 1;
-
+fn App() -> impl IntoView {
   view! {
     <h1>"Welcome to Craole.CC!"</h1>
-    <button on:click=on_click>"Click Me: " {count}</button>
   }
 }

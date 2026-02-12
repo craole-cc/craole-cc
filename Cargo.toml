@@ -8,6 +8,7 @@ lto = true
 opt-level = 'z'
 
 [workspace.dependencies]
+cargo-run-bin = { version = "1.7.4", default-features = false }
 leptos = { version = "0.8.2", features = ["nightly"] }
 leptos_meta = { version = "0.8.2" }
 leptos_router = { version = "0.8.2", features = ["nightly"] }
@@ -57,10 +58,10 @@ style-file = "style/main.scss"
 assets-dir = "public"
 
 # The IP and port (ex: 127.0.0.1:3000) where the server serves the content. Use it in your server setup.
-site-addr = "127.0.0.1:8080"
+site-addr = "127.0.0.1:3000"
 
 # The port to use for automatic reload monitoring
-reload-port = 8081
+reload-port = 3001
 
 # [Optional] Command to use when running end2end tests. It will run in the end2end dir.
 #   [Windows] for non-WSL use "npx.cmd playwright test"

@@ -34,6 +34,7 @@
             cargo-leptos
             cargo-seek
             cargo-sweep
+            dart-sass
             cargo-bloat
             cargo-watch
             cargo-wipe
@@ -41,6 +42,7 @@
             rustToolchain
             trunk
             wasm-bindgen-cli
+            binaryen
           ];
 
           shellHook = ''
