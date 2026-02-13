@@ -27,22 +27,22 @@ pub fn Stacks() -> impl IntoView {
       technologies: vec![
         Tech {
           name: "Rust",
-          logo: "icons/tech/rusty.svg",
+          logo: "icons/logos/rusty.svg",
           link: "https://www.rust-lang.org/",
         },
         Tech {
           name: "Shell",
-          logo: "icons/tech/bash.svg",
+          logo: "icons/logos/bash.svg",
           link: "https://pubs.opengroup.org/onlinepubs/9799919799/",
         },
         Tech {
           name: "Python",
-          logo: "icons/tech/python.svg",
+          logo: "icons/logos/python.svg",
           link: "https://www.python.org/",
         },
         Tech {
           name: "Zig",
-          logo: "icons/tech/zig.svg",
+          logo: "icons/logos/zig.svg",
           link: "https://ziglang.org/",
         },
       ],
@@ -52,27 +52,27 @@ pub fn Stacks() -> impl IntoView {
       technologies: vec![
         Tech {
           name: "Actix",
-          logo: "icons/tech/actix.svg",
+          logo: "icons/logos/actix.svg",
           link: "https://actix.rs/",
         },
         Tech {
           name: "Axum",
-          logo: "icons/tech/tokio.svg",
+          logo: "icons/logos/tokio.svg",
           link: "https://github.com/tokio-rs/axum",
         },
         Tech {
           name: "HTMX",
-          logo: "icons/tech/htmx.png",
+          logo: "icons/logos/htmx.png",
           link: "https://htmx.org/",
         },
         Tech {
           name: "Leptos",
-          logo: "icons/tech/leptos.ico",
+          logo: "icons/logos/leptos.ico",
           link: "https://leptos.dev/",
         },
         Tech {
           name: "Tailwind",
-          logo: "icons/tech/tailwind-blue.svg",
+          logo: "icons/logos/tailwind-blue.svg",
           link: "https://tailwindcss.com/",
         },
       ],
@@ -80,39 +80,39 @@ pub fn Stacks() -> impl IntoView {
     Stack {
       title: "Data Engineering",
       technologies: vec![
-        Tech {
-          name: "Apache Spark",
-          logo: "icons/tech/spark.svg",
-          link: "https://spark.apache.org/",
-        },
+        // Tech {
+        //   name: "Apache Spark",
+        //   logo: "icons/logos/spark.svg",
+        //   link: "https://spark.apache.org/",
+        // },
         // Tech {
         //   name: "Databricks",
-        //   logo: "https://cdn.simpleicons.org/databricks/FF3621",
+        // logo: "icons/logos/deltalake.svg",
         //   link: "https://www.databricks.com/",
         // },
         Tech {
           name: "DeltaLake",
-          logo: "icons/tech/deltalake.svg",
+          logo: "icons/logos/deltalake.svg",
           link: "https://delta.io/",
         },
         Tech {
           name: "SurrealDB",
-          logo: "icons/tech/surrealdb.png",
+          logo: "icons/logos/surrealdb.png",
           link: "https://delta.io/",
         },
         Tech {
           name: "Neo4j",
-          logo: "icons/tech/neo4j-flat.svg",
+          logo: "icons/logos/neo4j-flat.svg",
           link: "https://neo4j.com/",
         },
         Tech {
           name: "PostgreSQL",
-          logo: "icons/tech/postgresql.svg",
+          logo: "icons/logos/postgresql.svg",
           link: "https://www.postgresql.org/",
         },
         Tech {
           name: "SQLite",
-          logo: "icons/tech/SQLite.svg",
+          logo: "icons/logos/SQLite.svg",
           link: "https://www.sqlite.org/",
         },
       ],
@@ -122,27 +122,27 @@ pub fn Stacks() -> impl IntoView {
       technologies: vec![
         Tech {
           name: "Git",
-          logo: "icons/tech/git.svg",
+          logo: "icons/logos/git.svg",
           link: "https://git-scm.com/",
         },
         Tech {
           name: "GitHub",
-          logo: "icons/tech/github.svg",
+          logo: "icons/logos/github.svg",
           link: "https://github.com/",
         },
         Tech {
           name: "NixOS",
-          logo: "icons/tech/nix.svg",
+          logo: "icons/logos/nix.svg",
           link: "https://nixos.org/",
         },
         Tech {
           name: "Raspberry Pi",
-          logo: "icons/tech/raspberry.svg",
+          logo: "icons/logos/raspberry.svg",
           link: "https://www.raspberrypi.com/",
         },
         Tech {
           name: "Windows",
-          logo: "icons/tech/windows.svg",
+          logo: "icons/logos/windows.svg",
           link: "https://www.microsoft.com/windows",
         },
       ],
@@ -152,22 +152,22 @@ pub fn Stacks() -> impl IntoView {
       technologies: vec![
         Tech {
           name: "Helix",
-          logo: "icons/tech/helix.svg",
+          logo: "icons/logos/helix.svg",
           link: "https://helix-editor.com/",
         },
         Tech {
           name: "Typst",
-          logo: "icons/tech/typst.svg",
+          logo: "icons/logos/typst.svg",
           link: "https://typst.app/",
         },
         Tech {
           name: "VS Code",
-          logo: "icons/tech/vscode.svg",
+          logo: "icons/logos/vscode.svg",
           link: "https://code.visualstudio.com/",
         },
         Tech {
           name: "Zed",
-          logo: "icons/tech/zed.webp",
+          logo: "icons/logos/zed.webp",
           link: "https://zed.dev/",
         },
       ],
@@ -177,22 +177,22 @@ pub fn Stacks() -> impl IntoView {
       technologies: vec![
         Tech {
           name: "Bash",
-          logo: "icons/tech/bash.svg",
+          logo: "icons/logos/bash.svg",
           link: "https://www.gnu.org/software/bash/",
         },
         Tech {
           name: "PowerShell",
-          logo: "icons/tech/powershell.svg",
+          logo: "icons/logos/powershell.svg",
           link: "https://github.com/PowerShell/PowerShell",
         },
         Tech {
           name: "Starship",
-          logo: "icons/tech/starship.svg",
+          logo: "icons/logos/starship.svg",
           link: "https://starship.rs/",
         },
         Tech {
           name: "Oh My Posh",
-          logo: "icons/tech/ohmyposh.svg",
+          logo: "icons/logos/ohmyposh.svg",
           link: "https://ohmyposh.dev/",
         },
       ],
@@ -212,7 +212,7 @@ pub fn Stacks() -> impl IntoView {
 #[component]
 fn Stack(category: Stack) -> impl IntoView {
   view! {
-    <div class="p-5 rounded-lg border bg-slate-50 border-slate-200 dark:bg-slate-800/30 dark:border-slate-700/50">
+    <div class="p-5 border rounded-lg bg-slate-50 border-slate-200 dark:bg-slate-800/30 dark:border-slate-700/50">
       <h3 class="mb-4 text-lg font-semibold text-slate-800 dark:text-slate-200">
         {category.title}
       </h3>
@@ -234,7 +234,7 @@ fn Badge(tech: Tech) -> impl IntoView {
       href=tech.link
       target="_blank"
       rel="noopener noreferrer"
-      class="flex gap-2 items-center py-2 px-3 bg-white rounded-lg border transition-all hover:border-blue-400 hover:shadow-md hover:scale-105 group border-slate-300 dark:bg-slate-800 dark:border-slate-600 dark:hover:border-blue-500"
+      class="flex items-center gap-2 px-3 py-2 transition-all bg-white border rounded-lg hover:border-blue-400 hover:shadow-md hover:scale-105 group border-slate-300 dark:bg-slate-800 dark:border-slate-600 dark:hover:border-blue-500"
     >
       <img
         src=tech.logo
@@ -303,7 +303,7 @@ pub fn Areas() -> impl IntoView {
 #[component]
 fn Area(area: Area) -> impl IntoView {
   view! {
-    <div class="p-6 rounded-xl border transition-all duration-300 hover:shadow-lg bg-white/80 border-slate-200 dark:bg-slate-800/50 dark:border-slate-700/50">
+    <div class="p-6 transition-all duration-300 border rounded-xl hover:shadow-lg bg-white/80 border-slate-200 dark:bg-slate-800/50 dark:border-slate-700/50">
       <h3 class="mb-4 text-2xl font-semibold text-slate-800 dark:text-slate-100">
         <span class="mr-2">{area.icon}</span>
         {area.title}

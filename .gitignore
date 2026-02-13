@@ -31,8 +31,8 @@ package-lock.json
 *.png
 *.webp
 *.jpg
-/assets/
-/public/
+# /assets/
+# /public/
 
 # Environment
 /.direnv/
