@@ -24,8 +24,8 @@ fi
 #║ Directories                                               ║
 #╚═══════════════════════════════════════════════════════════╝
 icons="${PWD}/public/icons"
-logos="${icons}/tech"
-common="${icons}/social"
+common="${icons}/common"
+logos="${icons}/logos"
 mkdir -p "${logos}" "${common}"
 
 #╔═══════════════════════════════════════════════════════════╗
