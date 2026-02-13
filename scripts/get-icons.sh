@@ -1,131 +1,233 @@
 #!/bin/sh
+# shellcheck enable=all
 
-# Create directories
-mkdir -p public/icons/tech
-mkdir -p public/icons/social
-mkdir -p public/icons/ui
+#╔═══════════════════════════════════════════════════════════╗
+#║ Color Output                                              ║
+#╚═══════════════════════════════════════════════════════════╝
+if [ -t 1 ]; then
+	GREEN=$(tput setaf 2)
+	RED=$(tput setaf 1)
+	CYAN=$(tput setaf 6)
+	# YELLOW=$(tput setaf 3)
+	BOLD=$(tput bold)
+	NC=$(tput sgr0)
+else
+	GREEN=""
+	RED=""
+	CYAN=""
+	# YELLOW=""
+	BOLD=""
+	NC=""
+fi
 
-# Colors for output
-GREEN='\033[0;32m'
-RED='\033[0;31m'
-CYAN='\033[0;36m'
-NC='\033[0m' # No Color
+#╔═══════════════════════════════════════════════════════════╗
+#║ Directories                                               ║
+#╚═══════════════════════════════════════════════════════════╝
+icons="${PWD}/public/icons"
+tech="${icons}/tech"
+social="${icons}/social"
+ui="${icons}/ui"
+mkdir -p "${tech}" "${social}" "${ui}"
 
-# Download function
+#╔═══════════════════════════════════════════════════════════╗
+#║ Function                                                  ║
+#╚═══════════════════════════════════════════════════════════╝
 download_icon() {
 	url="$1"
 	output="$2"
-	printf "Downloading %s...\n" "$output"
-	if curl -fsSL "$url" -o "$output"; then
-		printf "${GREEN}✓ %s downloaded${NC}\n" "$output"
+	filename=$(basename "${output}")
+
+	printf 'Fetching %-30s ... ' "${filename}"
+
+	#? Some "Real" sources like Wikimedia/GitHub block empty User-Agents
+	if curl -fsSL -A "Mozilla/5.0" "${url}" -o "${output}" 2>/dev/null; then
+		printf '%sOK%s\n' "${GREEN}" "${NC}"
 	else
-		printf "${RED}✗ Failed to download %s${NC}\n" "$output"
+		printf '%sFAILED%s\n' "${RED}" "${NC}"
+		rm -f "${output}" 2>/dev/null
 	fi
 }
 
-printf "${CYAN}=== Downloading Technology Icons ===${NC}\n"
+#╔═══════════════════════════════════════════════════════════╗
+#║ Icons: Technology                                         ║
+#╚═══════════════════════════════════════════════════════════╝
+printf '\n%s%s=== Downloading Technology Icons ===%s\n' \
+	"${BOLD}" "${CYAN}" "${NC}"
 
-# Languages & Core
-download_icon "https://cdn.simpleicons.org/rust/000000" "public/icons/tech/rust.svg"
-download_icon "https://cdn.simpleicons.org/gnubash/4EAA25" "public/icons/tech/bash.svg"
-download_icon "https://cdn.simpleicons.org/python/3776AB" "public/icons/tech/python.svg"
-download_icon "https://cdn.simpleicons.org/zig/F7A41D" "public/icons/tech/zig.svg"
-download_icon "https://cdn.simpleicons.org/go/00ADD8" "public/icons/tech/go.svg"
-download_icon "https://cdn.simpleicons.org/javascript/F7DF1E" "public/icons/tech/javascript.svg"
-download_icon "https://cdn.simpleicons.org/typescript/3178C6" "public/icons/tech/typescript.svg"
+# -- Languages --
+download_icon \
+	"https://cdn.worldvectorlogo.com/logos/rust.svg" \
+	"${tech}/rust.svg"
+download_icon \
+	"https://cdn.worldvectorlogo.com/logos/python-5.svg" \
+	"${tech}/python.svg"
+download_icon \
+	"https://raw.githubusercontent.com/ziglang/logo/4f97e7a9ebce12fa48511c0b6502b6190005bc0e/zig-mark.svg" \
+	"${tech}/zig.svg"
+download_icon \
+	"https://cdn.worldvectorlogo.com/logos/go-8.svg" \
+	"${tech}/go.svg"
+download_icon \
+	"https://cdn.worldvectorlogo.com/logos/bash-2.svg" \
+	"${tech}/bash.svg"
+download_icon \
+	"https://cdn.worldvectorlogo.com/logos/powershell.svg" \
+	"${tech}/powershell.svg"
 
-# Web Frameworks
-download_icon "https://cdn.simpleicons.org/tokio/000000" "public/icons/tech/tokio.svg"
-download_icon "https://cdn.simpleicons.org/htmx/3366CC" "public/icons/tech/htmx.svg"
-download_icon "https://cdn.simpleicons.org/actix/000000" "public/icons/tech/actix.svg"
-download_icon "https://cdn.simpleicons.org/tailwindcss/06B6D4" "public/icons/tech/tailwind.svg"
-download_icon "https://cdn.simpleicons.org/react/61DAFB" "public/icons/tech/react.svg"
-download_icon "https://cdn.simpleicons.org/svelte/FF3E00" "public/icons/tech/svelte.svg"
+# -- Rust Ecosystem --
+download_icon \
+	"https://raw.githubusercontent.com/tokio-rs/website/master/public/img/icons/tokio.svg" \
+	"${tech}/tokio.svg"
+download_icon \
+	"https://raw.githubusercontent.com/leptos-rs/leptos/6e83f712d2d64014e000302c9cd265d4a9a61311/logos/Simple_Icon.svg" \
+	"${tech}/leptos.png"
+download_icon \
+	"https://cdn.worldvectorlogo.com/logos/tauri-1.svg" \
+	"${tech}/tauri.svg"
+download_icon \
+	"https://usw2-zeet-misc.s3.us-west-2.amazonaws.com/images/SurrealDB.png" \
+	"${tech}/surrealdb.png"
+download_icon \
+	"https://raw.githubusercontent.com/surrealdb/surrealdb/main/img/logo.svg" \
+	"${tech}/surrealdb.svg"
 
-# Get Leptos logo from GitHub (converting to SVG if needed)
-download_icon "https://raw.githubusercontent.com/leptos-rs/leptos/main/docs/logos/logo.svg" "public/icons/tech/leptos.svg"
+# -- Data --
+download_icon \
+	"https://upload.wikimedia.org/wikipedia/commons/f/f3/Apache_Spark_logo.svg" \
+	"${tech}/spark.svg"
+download_icon \
+	"https://cdn.worldvectorlogo.com/logos/scala-4.svg" \
+	"${tech}/scala.svg"
+download_icon \
+	"https://cdn.prod.website-files.com/68c803b3497f18f5503b830d/68da505ee9382ac2316b3e67_66192bf45f99cf9cd103c8b3_delta.svg" \
+	"${tech}/deltalake.svg"
+download_icon \
+	"https://cdn.worldvectorlogo.com/logos/kafka.svg" \
+	"${tech}/kafka.svg"
+download_icon \
+	"https://upload.wikimedia.org/wikipedia/commons/2/29/Postgresql_elephant.svg" \
+	"${tech}/postgresql.svg"
+download_icon \
+	"https://cdn.worldvectorlogo.com/logos/mysql-logo-pure.svg" \
+	"${tech}/mysql.svg"
+download_icon \
+	"https://cdn.worldvectorlogo.com/logos/duckdb-logo.svg" \
+	"${tech}/duckdb.svg"
 
-# Data Engineering
-download_icon "https://cdn.simpleicons.org/apachespark/E25A1C" "public/icons/tech/spark.svg"
-download_icon "https://cdn.simpleicons.org/databricks/FF3621" "public/icons/tech/databricks.svg"
-download_icon "https://cdn.simpleicons.org/neo4j/008CC1" "public/icons/tech/neo4j.svg"
-download_icon "https://cdn.simpleicons.org/postgresql/4169E1" "public/icons/tech/postgresql.svg"
-download_icon "https://cdn.simpleicons.org/mysql/4479A1" "public/icons/tech/mysql.svg"
-download_icon "https://cdn.simpleicons.org/mongodb/47A248" "public/icons/tech/mongodb.svg"
-download_icon "https://cdn.simpleicons.org/redis/DC382D" "public/icons/tech/redis.svg"
-download_icon "https://cdn.simpleicons.org/sqlite/003B57" "public/icons/tech/sqlite.svg"
+# -- Web --
+download_icon \
+	"https://cdn.worldvectorlogo.com/logos/typescript.svg" \
+	"${tech}/typescript.svg"
+download_icon \
+	"https://cdn.worldvectorlogo.com/logos/javascript-1.svg" \
+	"${tech}/javascript.svg"
+download_icon \
+	"https://cdn.worldvectorlogo.com/logos/html-1.svg" \
+	"${tech}/html.svg"
+download_icon \
+	"https://cdn.worldvectorlogo.com/logos/css-3.svg" \
+	"${tech}/css.svg"
+download_icon \
+	"https://cdn.worldvectorlogo.com/logos/sass-1.svg" \
+	"${tech}/sass.svg"
+download_icon \
+	"https://cdn.worldvectorlogo.com/logos/tailwind-css-2.svg" \
+	"${tech}/tailwind.svg"
+download_icon \
+	"https://cdn.worldvectorlogo.com/logos/svelte-1.svg" \
+	"${tech}/svelte.svg"
+download_icon \
+	"https://raw.githubusercontent.com/vitejs/vite/main/docs/public/logo.svg" \
+	"${tech}/vite.svg"
+download_icon \
+	"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuW9lcdXGNSXkg7EsdpXy0wNhPz8YcGXFwRA&s" \
+	"${tech}/htmx.png"
+download_icon \
+	"https://logo.svgcdn.com/logos/htmx-icon.png" \
+	"${tech}/htmx.png"
 
-# DevOps & Systems
-download_icon "https://cdn.simpleicons.org/git/F05032" "public/icons/tech/git.svg"
-download_icon "https://cdn.simpleicons.org/github/181717" "public/icons/tech/github.svg"
-download_icon "https://cdn.simpleicons.org/gitlab/FC6D26" "public/icons/tech/gitlab.svg"
-download_icon "https://cdn.simpleicons.org/nixos/5277C3" "public/icons/tech/nixos.svg"
-download_icon "https://cdn.simpleicons.org/linux/FCC624" "public/icons/tech/linux.svg"
-download_icon "https://cdn.simpleicons.org/windows/0078D4" "public/icons/tech/windows.svg"
-download_icon "https://cdn.simpleicons.org/apple/000000" "public/icons/tech/apple.svg"
-download_icon "https://cdn.simpleicons.org/docker/2496ED" "public/icons/tech/docker.svg"
-download_icon "https://cdn.simpleicons.org/kubernetes/326CE5" "public/icons/tech/kubernetes.svg"
+# -- DevOps --
+download_icon \
+	"https://cdn.worldvectorlogo.com/logos/windows-3.svg" \
+	"${tech}/windows.svg"
+download_icon \
+	"https://code.visualstudio.com/assets/branding/code-stable.png" \
+	"${tech}/vscode.svg"
+download_icon \
+	"https://cdn.worldvectorlogo.com/logos/docker.svg" \
+	"${tech}/docker-full.svg"
+download_icon \
+	"https://raw.githubusercontent.com/kubernetes/kubernetes/master/logo/logo.svg" \
+	"${tech}/kubernetes.svg"
+download_icon \
+	"https://raw.githubusercontent.com/NixOS/nixos-artwork/master/logo/nixos-white.svg" \
+	"${tech}/nixos.svg"
+download_icon \
+	"https://cdn.worldvectorlogo.com/logos/linux-tux.svg" \
+	"${tech}/linux-tux.svg"
+download_icon \
+	"https://upload.wikimedia.org/wikipedia/commons/1/13/Arch_Linux_%22Crystal%22_icon.svg" \
+	"${tech}/arch.svg"
+download_icon \
+	"https://cdn.worldvectorlogo.com/logos/arch-linux-logo.svg" \
+	"${tech}/archlinux.svg"
+download_icon \
+	"https://www.vectorlogo.zone/logos/git-scm/git-scm-icon.svg" \
+	"${tech}/git.svg"
+download_icon \
+	"https://raw.githubusercontent.com/helix-editor/helix/master/logo_dark.svg" \
+	"${tech}/helix.svg"
+download_icon \
+	"https://upload.wikimedia.org/wikipedia/commons/3/3a/Neovim-mark.svg" \
+	"${tech}/neovim.svg"
+download_icon \
+	"https://cdn.worldvectorlogo.com/logos/vim.svg" \
+	"${tech}/vim.svg"
 
-# Editors
-download_icon "https://cdn.simpleicons.org/helix/281733" "public/icons/tech/helix.svg"
-download_icon "https://cdn.simpleicons.org/neovim/57A143" "public/icons/tech/neovim.svg"
-download_icon "https://cdn.simpleicons.org/visualstudiocode/007ACC" "public/icons/tech/vscode.svg"
-download_icon "https://cdn.simpleicons.org/vscodium/2F80ED" "public/icons/tech/vscodium.svg"
-download_icon "https://cdn.simpleicons.org/zedindustries/084CCF" "public/icons/tech/zed.svg"
-download_icon "https://cdn.simpleicons.org/typst/239DAD" "public/icons/tech/typst.svg"
+#╔═══════════════════════════════════════════════════════════╗
+#║ Icons: Social                                             ║
+#╚═══════════════════════════════════════════════════════════╝
+printf '\n%s%s=== Downloading Social Icons ===%s\n' "${BOLD}" "${CYAN}" "${NC}"
+download_icon \
+	"https://cdn.worldvectorlogo.com/logos/slack-new-logo.svg" \
+	"${social}/slack.svg"
+download_icon \
+	"https://cdn.worldvectorlogo.com/logos/github-icon.svg" \
+	"${social}/github.svg"
+download_icon \
+	"https://cdn.worldvectorlogo.com/logos/linkedin-icon-2.svg" \
+	"${social}/linkedin.svg"
+download_icon \
+	"https://cdn.worldvectorlogo.com/logos/x-twitter.svg" \
+	"${social}/x.svg"
+download_icon \
+	"https://cdn.worldvectorlogo.com/logos/facebook-modern-design-.svg" \
+	"${social}/fb.svg"
+download_icon \
+	"https://cdn.worldvectorlogo.com/logos/meta-3.svg" \
+	"${social}/meta.svg"
+download_icon \
+	"https://cdn.worldvectorlogo.com/logos/instagram-2016-5.svg" \
+	"${social}/instagram.svg"
+download_icon \
+	"https://cdn.worldvectorlogo.com/logos/whatsapp-8.svg" \
+	"${social}/whatsapp.svg"
+download_icon \
+	"https://cdn.worldvectorlogo.com/logos/bluesky-1.svg" \
+	"${social}/bluesky.svg"
 
-# Terminal
-download_icon "https://cdn.simpleicons.org/powershell/5391FE" "public/icons/tech/powershell.svg"
-download_icon "https://cdn.simpleicons.org/starship/DD0B78" "public/icons/tech/starship.svg"
-download_icon "https://cdn.simpleicons.org/alacritty/F46D01" "public/icons/tech/alacritty.svg"
-download_icon "https://cdn.simpleicons.org/wezterm/4E49EE" "public/icons/tech/wezterm.svg"
+#╔═══════════════════════════════════════════════════════════╗
+#║ Icons: UI                                                 ║
+#╚═══════════════════════════════════════════════════════════╝
+printf '\n%s%s=== Downloading UI Icons ===%s\n' "${BOLD}" "${CYAN}" "${NC}"
+HERO_SRC="https://raw.githubusercontent.com/tailwindlabs/heroicons/master/src/24/outline"
+download_icon "${HERO_SRC}/home.svg" "${ui}/home.svg"
+download_icon "${HERO_SRC}/bars-3.svg" "${ui}/menu.svg"
+download_icon "${HERO_SRC}/x-mark.svg" "${ui}/close.svg"
+download_icon "${HERO_SRC}/magnifying-glass.svg" "${ui}/search.svg"
+download_icon "${HERO_SRC}/circle-stack.svg" "${ui}/database.svg"
+download_icon "${HERO_SRC}/cpu-chip.svg" "${ui}/cpu.svg"
+download_icon "${HERO_SRC}/cloud.svg" "${ui}/cloud.svg"
+download_icon "${HERO_SRC}/bolt.svg" "${ui}/bolt.svg"
 
-# Cloud & Services
-download_icon "https://cdn.simpleicons.org/amazonaws/FF9900" "public/icons/tech/aws.svg"
-download_icon "https://cdn.simpleicons.org/googlecloud/4285F4" "public/icons/tech/gcp.svg"
-download_icon "https://cdn.simpleicons.org/microsoftazure/0078D4" "public/icons/tech/azure.svg"
-download_icon "https://cdn.simpleicons.org/vercel/000000" "public/icons/tech/vercel.svg"
-download_icon "https://cdn.simpleicons.org/netlify/00C7B7" "public/icons/tech/netlify.svg"
-
-printf "\n${CYAN}=== Downloading Social Icons ===${NC}\n"
-
-# Social Media
-download_icon "https://cdn.simpleicons.org/github/181717" "public/icons/social/github.svg"
-download_icon "https://cdn.simpleicons.org/x/000000" "public/icons/social/twitter.svg"
-download_icon "https://cdn.simpleicons.org/linkedin/0A66C2" "public/icons/social/linkedin.svg"
-download_icon "https://cdn.simpleicons.org/gmail/EA4335" "public/icons/social/email.svg"
-download_icon "https://cdn.simpleicons.org/stackoverflow/F58025" "public/icons/social/stackoverflow.svg"
-download_icon "https://cdn.simpleicons.org/discord/5865F2" "public/icons/social/discord.svg"
-download_icon "https://cdn.simpleicons.org/mastodon/6364FF" "public/icons/social/mastodon.svg"
-download_icon "https://cdn.simpleicons.org/dev.to/0A0A0A" "public/icons/social/devto.svg"
-download_icon "https://cdn.simpleicons.org/medium/000000" "public/icons/social/medium.svg"
-download_icon "https://cdn.simpleicons.org/hashnode/2962FF" "public/icons/social/hashnode.svg"
-
-printf "\n${CYAN}=== Downloading UI Icons ===${NC}\n"
-
-# UI Icons from Heroicons (via CDN)
-download_icon "https://cdn.jsdelivr.net/npm/heroicons@2.0.18/24/outline/arrow-right.svg" "public/icons/ui/arrow-right.svg"
-download_icon "https://cdn.jsdelivr.net/npm/heroicons@2.0.18/24/outline/arrow-up-right.svg" "public/icons/ui/external-link.svg"
-download_icon "https://cdn.jsdelivr.net/npm/heroicons@2.0.18/24/outline/bars-3.svg" "public/icons/ui/menu.svg"
-download_icon "https://cdn.jsdelivr.net/npm/heroicons@2.0.18/24/outline/x-mark.svg" "public/icons/ui/close.svg"
-download_icon "https://cdn.jsdelivr.net/npm/heroicons@2.0.18/24/outline/sun.svg" "public/icons/ui/sun.svg"
-download_icon "https://cdn.jsdelivr.net/npm/heroicons@2.0.18/24/outline/moon.svg" "public/icons/ui/moon.svg"
-download_icon "https://cdn.jsdelivr.net/npm/heroicons@2.0.18/24/outline/check.svg" "public/icons/ui/check.svg"
-download_icon "https://cdn.jsdelivr.net/npm/heroicons@2.0.18/24/outline/chevron-down.svg" "public/icons/ui/chevron-down.svg"
-download_icon "https://cdn.jsdelivr.net/npm/heroicons@2.0.18/24/outline/chevron-up.svg" "public/icons/ui/chevron-up.svg"
-download_icon "https://cdn.jsdelivr.net/npm/heroicons@2.0.18/24/outline/envelope.svg" "public/icons/ui/envelope.svg"
-download_icon "https://cdn.jsdelivr.net/npm/heroicons@2.0.18/24/outline/link.svg" "public/icons/ui/link.svg"
-download_icon "https://cdn.jsdelivr.net/npm/heroicons@2.0.18/24/outline/arrow-down-tray.svg" "public/icons/ui/download.svg"
-download_icon "https://cdn.jsdelivr.net/npm/heroicons@2.0.18/24/outline/document-text.svg" "public/icons/ui/document.svg"
-download_icon "https://cdn.jsdelivr.net/npm/heroicons@2.0.18/24/outline/code-bracket.svg" "public/icons/ui/code.svg"
-download_icon "https://cdn.jsdelivr.net/npm/heroicons@2.0.18/24/outline/command-line.svg" "public/icons/ui/terminal.svg"
-download_icon "https://cdn.jsdelivr.net/npm/heroicons@2.0.18/24/outline/rocket-launch.svg" "public/icons/ui/rocket.svg"
-download_icon "https://cdn.jsdelivr.net/npm/heroicons@2.0.18/24/outline/sparkles.svg" "public/icons/ui/sparkles.svg"
-download_icon "https://cdn.jsdelivr.net/npm/heroicons@2.0.18/24/outline/home.svg" "public/icons/ui/home.svg"
-download_icon "https://cdn.jsdelivr.net/npm/heroicons@2.0.18/24/outline/user.svg" "public/icons/ui/user.svg"
-download_icon "https://cdn.jsdelivr.net/npm/heroicons@2.0.18/24/outline/briefcase.svg" "public/icons/ui/briefcase.svg"
-download_icon "https://cdn.jsdelivr.net/npm/heroicons@2.0.18/24/outline/academic-cap.svg" "public/icons/ui/academic.svg"
-download_icon "https://cdn.jsdelivr.net/npm/heroicons@2.0.18/24/outline/chat-bubble-left-right.svg" "public/icons/ui/chat.svg"
-
-printf "\n${GREEN}=== All icons downloaded! ===${NC}\n"
-printf "Total: %s\n" "$(find public/icons -type f | wc -l)"
+printf '\n%s%s=== Complete ===%s\n' "${BOLD}" "${GREEN}" "${NC}"
