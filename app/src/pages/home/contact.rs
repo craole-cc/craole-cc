@@ -26,10 +26,11 @@ pub fn Contact() -> impl IntoView {
         </a>
         <a
           href="https://github.com/craole-cc"
-          class="py-4 px-8 font-semibold text-blue-600 bg-white rounded-lg border-2 border-blue-500 transition-all duration-300 dark:text-blue-400 dark:border-blue-500 hover:text-white hover:bg-blue-600 hover:border-blue-600 dark:bg-slate-800 dark:hover:bg-blue-500"
+          class="py-4 px-8 font-semibold text-blue-600 bg-white rounded-lg border-2 border-blue-500 transition-all duration-300 dark:text-blue-400 dark:border-blue-500 hover:text-white hover:bg-blue-600 hover:border-blue-600 group dark:bg-slate-800 dark:hover:bg-blue-500"
           target="_blank"
         >
-          "GitHub"
+          <span class="group-hover:hidden">"GitHub"</span>
+          <img src="icons/tech/github.svg" alt="GitHub" class="hidden w-6 h-6 group-hover:inline" />
         </a>
         <a
           href="https://twitter.com/craole"

@@ -7,15 +7,8 @@ mod hero;
 mod projects;
 
 use {
-  crate::Layout,
-  about::*,
-  contact::*,
-  dev::*,
-  experience::*,
-  footer::*,
-  hero::*,
-  leptos::prelude::*,
-  projects::*,
+  crate::Layout, about::*, contact::*, dev::*, experience::*, footer::*, hero::*,
+  leptos::prelude::*, projects::*,
 };
 
 #[component]

@@ -197,7 +197,7 @@ pub fn Stacks() -> impl IntoView {
 #[component]
 fn Stack(category: Stack) -> impl IntoView {
   view! {
-    <div class="p-5 border rounded-lg bg-slate-50 border-slate-200 dark:bg-slate-800/30 dark:border-slate-700/50">
+    <div class="p-5 rounded-lg border bg-slate-50 border-slate-200 dark:bg-slate-800/30 dark:border-slate-700/50">
       <h3 class="mb-4 text-lg font-semibold text-slate-800 dark:text-slate-200">
         {category.title}
       </h3>
@@ -219,7 +219,7 @@ fn Badge(tech: Tech) -> impl IntoView {
       href=tech.link
       target="_blank"
       rel="noopener noreferrer"
-      class="flex items-center gap-2 px-3 py-2 transition-all bg-white border rounded-lg hover:border-blue-400 hover:shadow-md hover:scale-105 group border-slate-300 dark:bg-slate-800 dark:border-slate-600 dark:hover:border-blue-500"
+      class="flex gap-2 items-center py-2 px-3 bg-white rounded-lg border transition-all hover:border-blue-400 hover:shadow-md hover:scale-105 group border-slate-300 dark:bg-slate-800 dark:border-slate-600 dark:hover:border-blue-500"
     >
       <img
         src=tech.logo
@@ -288,7 +288,7 @@ pub fn Areas() -> impl IntoView {
 #[component]
 fn Area(area: Area) -> impl IntoView {
   view! {
-    <div class="p-6 transition-all duration-300 border rounded-xl hover:shadow-lg bg-white/80 border-slate-200 dark:bg-slate-800/50 dark:border-slate-700/50">
+    <div class="p-6 rounded-xl border transition-all duration-300 hover:shadow-lg bg-white/80 border-slate-200 dark:bg-slate-800/50 dark:border-slate-700/50">
       <h3 class="mb-4 text-2xl font-semibold text-slate-800 dark:text-slate-100">
         <span class="mr-2">{area.icon}</span>
         {area.title}

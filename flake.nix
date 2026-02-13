@@ -41,9 +41,11 @@
             cargo-wipe
             dart-sass
             deno
+            tailwindcss_4
             leptosfmt
             pnpm
             rustToolchain
+            taplo
             treefmt
             trunk
             wasm-bindgen-cli

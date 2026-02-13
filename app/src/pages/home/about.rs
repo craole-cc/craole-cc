@@ -39,7 +39,7 @@ pub fn Philosophy() -> impl IntoView {
   view! {
     <section id="philosophy" class="mb-20">
       <h2 class="mb-8 text-4xl font-bold dark:text-blue-400 text-slate-900">"🎯 Philosophy"</h2>
-      <div class="p-8 border-l-4 border-blue-500 from-blue-50 to-transparent rounded-r-xl dark:border-blue-400 bg-linear-to-r dark:from-blue-900/20">
+      <div class="p-8 from-blue-50 to-transparent rounded-r-xl border-l-4 border-blue-500 dark:border-blue-400 bg-linear-to-r dark:from-blue-900/20">
         <p class="mb-4 text-xl leading-relaxed text-slate-700 dark:text-slate-300">
           "Code is expression. Just like music, it requires "
           <strong>"precision, creativity, and purpose."</strong>
