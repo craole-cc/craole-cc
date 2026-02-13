@@ -7,6 +7,17 @@ codegen-units = 1
 lto = true
 opt-level = 'z'
 
+
+[workspace.package]
+rust-version = "1.95.0"
+description = "Building systems, capturing moments, expressing ideas—a portfolio at the intersection of engineering and art"
+edition = "2024"
+version = "0.1.0"
+authors = ["Craig 'Craole' Cole <craig.craole.cole@gmail.com>"]
+license = "MIT"
+homepage = "https://craole.cc"
+repository = "https://github.com/craole-cc/craole-cc"
+
 [workspace.dependencies]
 cargo-run-bin = { version = "1.7.4", default-features = false }
 leptos = { version = "0.8.2", features = ["nightly"] }
