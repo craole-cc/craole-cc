@@ -6,12 +6,16 @@ use {
 #[component]
 pub fn Footer() -> impl IntoView {
   view! {
-    <footer class="relative mt-2 border-t border-slate-200 dark:border-slate-700/50">
+    <footer>
+    // <hr class="relative mt-2 border-t border-slate-200 dark:border-slate-700/50" />
+
+      // For a custom styled divider
+      // <hr class="w-full h-px from-transparent to-transparent bg-linear-to-r via-slate-300 dark:via-slate-700"></div>
 
       // Subtle gradient fade at the top edge
-      <div class="absolute inset-x-0 -top-px h-px from-transparent to-transparent bg-linear-to-r via-orange-400/40" />
+      <hr class="absolute inset-x-0 h-px -top-px from-transparent to-transparent bg-linear-to-r via-orange-400/40" />
 
-      <div class="py-10 px-6 mx-auto max-w-4xl">
+      <div class="max-w-4xl px-6 py-10 mx-auto">
 
         // Identity line
         <p class="mb-4 text-lg font-semibold tracking-tight text-center text-slate-700 dark:text-slate-300">
@@ -22,7 +26,7 @@ pub fn Footer() -> impl IntoView {
         </p>
 
         // Facets — what lives here
-        <div class="flex gap-4 justify-center items-center mb-6 text-sm uppercase text-slate-400 dark:text-slate-500">
+        <div class="flex items-center justify-center gap-4 mb-6 text-sm uppercase text-slate-400 dark:text-slate-500">
           {FACETS
             .iter()
             .enumerate()
@@ -46,7 +50,7 @@ pub fn Footer() -> impl IntoView {
         </div>
 
         // Divider
-        <div class="flex gap-3 justify-center items-center mb-6">
+        <div class="flex items-center justify-center gap-3 mb-6">
           <div class="h-px grow bg-slate-200 dark:bg-slate-700/60" />
           <div class="w-1.5 h-1.5 rounded-full bg-purple-400/60" />
           <div class="h-px grow bg-slate-200 dark:bg-slate-700/60" />
