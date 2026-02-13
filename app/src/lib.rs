@@ -5,7 +5,7 @@ pub use base::*;
 pub mod prelude {
   pub use crate::{
     base::*,
-    // components::*,
+    components::*,
     pages::*,
   };
 }

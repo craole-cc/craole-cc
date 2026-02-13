@@ -255,6 +255,9 @@ download_icon \
 	"https://cdn.worldvectorlogo.com/logos/instagram-2016-5.svg" \
 	"${logos}/instagram.svg"
 download_icon \
+	"https://cdn.simpleicons.org/instagram" \
+	"${logos}/instagram-simple.svg"
+download_icon \
 	"https://cdn.worldvectorlogo.com/logos/whatsapp-8.svg" \
 	"${logos}/whatsapp.svg"
 download_icon \
