@@ -237,6 +237,9 @@ download_icon \
 download_icon \
   "https://cdn.worldvectorlogo.com/logos/bluesky-1.svg" \
   "${social}/bluesky.svg"
+download_icon \
+  "https://cdn.worldvectorlogo.com/logos/official-gmail-icon-2020-.svg" \
+  "${social}/gmail.svg"
 
 #╔═══════════════════════════════════════════════════════════╗
 #║ Icons: UI                                                 ║
