@@ -205,16 +205,19 @@ impl Default for Divider {
 }
 
 impl Divider {
-  /// Creates a divider with the default purple dot accent and centered layout.
+  /// Creates a divider with the default teal dot accent and centered layout.
   ///
   /// The divider is centered horizontally with a moderate width constraint,
   /// creating a balanced visual separation that's narrower than full-width
-  /// content but still prominent.
+  /// content but still prominent. Features comfortable 16px spacing on each
+  /// side of the dot.
   ///
   /// Equivalent to:
   /// ```rust
   /// Divider::default()
-  ///   .with_dot("bg-purple-400/70")
+  ///   .with_dot("bg-teal-400/70")
+  ///   .with_dot_pos(4, 4)
+  ///   .with_padding("py-4")
   ///   .with_margin("mx-auto max-w-xl")
   /// ```
   ///
@@ -224,19 +227,26 @@ impl Divider {
   /// // Use default centered dot divider
   /// <Divider config=Divider::default_with_dot() />
   ///
-  /// // Narrower variant
+  /// // Tighter spacing around dot
   /// <Divider config=Divider::default_with_dot()
-  ///   .with_margin("mx-auto max-w-lg")
+  ///   .with_dot_pos(3, 3)
   /// />
   ///
-  /// // Wider variant
+  /// // Wider container
   /// <Divider config=Divider::default_with_dot()
   ///   .with_margin("mx-auto max-w-2xl")
+  /// />
+  ///
+  /// // Different color
+  /// <Divider config=Divider::default_with_dot()
+  ///   .with_dot("bg-purple-400/70")
   /// />
   /// ```
   pub fn default_with_dot() -> Self {
     Self::default()
-      .with_dot("bg-purple-400/70")
+      .with_dot(PRIMARY_ACCENT)
+      .with_dot_pos(4, 4)
+      .with_padding("py-4")
       .with_margin("mx-auto max-w-xl")
   }
 
