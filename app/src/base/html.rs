@@ -1,4 +1,4 @@
-use {crate::App, leptos::prelude::*, leptos_meta::MetaTags};
+use {crate::prelude::*, leptos_meta::MetaTags};
 
 pub fn shell(options: LeptosOptions) -> impl IntoView {
   view! {

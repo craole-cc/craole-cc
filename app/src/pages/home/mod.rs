@@ -1,22 +1,22 @@
-mod about;
-mod contact;
-mod dev;
-mod experience;
-mod footer;
-mod hero;
-mod projects;
+pub mod about;
+use about::*;
+pub mod contact;
+use contact::*;
+pub mod dev;
+use dev::*;
+pub mod experience;
+use experience::*;
+pub mod footer;
+use footer::*;
+pub mod hero;
+use hero::*;
+pub mod projects;
+use projects::*;
 
-use {
-  crate::Layout,
-  about::*,
-  contact::*,
-  dev::*,
-  experience::*,
-  footer::*,
-  hero::*,
-  leptos::prelude::*,
-  projects::*,
-};
+mod prelude {
+  pub use {crate::Layout, leptos::prelude::*};
+}
+use prelude::*;
 
 #[component]
 pub fn Home() -> impl IntoView {

@@ -1,2 +1,4 @@
-mod icon;
-pub use icon::*;
+mod icons;
+pub use icons::*;
+mod dividers;
+pub use dividers::*;

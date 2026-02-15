@@ -1,4 +1,4 @@
-use leptos::prelude::*;
+use crate::prelude::*;
 
 #[component]
 pub fn About() -> impl IntoView {

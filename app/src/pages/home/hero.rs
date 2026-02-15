@@ -1,10 +1,10 @@
-use leptos::prelude::*;
+use crate::prelude::*;
 
 #[component]
 pub fn Hero() -> impl IntoView {
   view! {
     <section class="py-20 mb-16 text-center border-b border-slate-200 dark:border-slate-700/50">
-      // Avatar - removed, cleaner look
+      // Avatar
 
       <div class="mb-8">
         <h1 class="mb-6 text-6xl font-bold leading-tight text-transparent bg-clip-text from-blue-600 via-purple-600 to-blue-600 md:text-7xl dark:from-blue-400 dark:via-purple-400 dark:to-blue-400 bg-linear-to-r">

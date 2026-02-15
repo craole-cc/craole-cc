@@ -3,7 +3,7 @@
 pub struct Facet {
   pub label: &'static str,
   pub description: &'static str,
-  pub slug: &'static str, // For routing: /code, /data, etc.
+  pub slug: &'static str,
 }
 
 pub const FACETS: [Facet; 4] = [
@@ -30,6 +30,7 @@ pub const FACETS: [Facet; 4] = [
 ];
 
 /// Site identity
-pub const AUTHOR_NAME: &str = "Craig Cole";
-pub const AUTHOR_NICKNAME: &str = "Craole";
+pub const AUTHOR_FIRSTNAME: &str = "Craig";
+pub const AUTHOR_SURNAME: &str = "Cole";
+pub const AUTHOR_ALIAS: &str = "Craole";
 pub const COPYRIGHT_YEAR: &str = "2026";

@@ -1,4 +1,5 @@
-use leptos::prelude::*;
+use crate::prelude::*;
+
 #[derive(Clone)]
 struct Area {
   icon: &'static str,

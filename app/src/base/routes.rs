@@ -19,6 +19,7 @@ pub fn App() -> impl IntoView {
       <main>
         <Routes fallback=|| "Page not found.".into_view()>
           <Route path=StaticSegment("") view=Home />
+        // <Route path=path!("/post/:id") view=BlogPost1 ssr=SsrMode::PartiallyBlocked />
         </Routes>
       </main>
     </Router>

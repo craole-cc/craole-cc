@@ -1,4 +1,4 @@
-use leptos::prelude::*;
+use crate::prelude::*;
 
 #[derive(Clone)]
 struct Experience {
