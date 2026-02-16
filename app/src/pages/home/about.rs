@@ -4,13 +4,20 @@ use crate::prelude::*;
 pub fn About() -> impl IntoView {
   view! {
     <section id="about" class="mb-20">
-      <h2 class="mb-8 text-4xl font-bold dark:text-blue-400 text-slate-900">"👤 About Me"</h2>
+      <h2 class=format!("mb-8 text-4xl font-bold {}", NEUTRAL_TEXT_800)>"👤 About Me"</h2>
       <div class="space-y-6 text-lg">
-        <p class="leading-relaxed text-slate-700 dark:text-slate-300">
-          "From frontend interfaces to backend pipelines to command-line tools, I'm exploring the entire spectrum of what's possible with modern systems programming."
+        <p class=format!(
+          "leading-relaxed {}",
+          NEUTRAL_TEXT_700,
+        )>
+          "From frontend interfaces to backend pipelines to command-line tools, I'm exploring
+          the entire spectrum of what's possible with modern systems programming."
         </p>
 
-        <p class="leading-relaxed text-slate-700 dark:text-slate-300">
+        <p class=format!(
+          "leading-relaxed {}",
+          NEUTRAL_TEXT_700,
+        )>
           "With roots in " <strong>"music production"</strong>
           " (bassist, singer, producer) and 8+ years in " <strong>"Learning & Development"</strong>
           " (including TEFL tutoring for professionals), I've always been driven by "
@@ -19,16 +26,22 @@ pub fn About() -> impl IntoView {
           <em>"I have something to say"</em> "."
         </p>
 
-        <p class="leading-relaxed text-slate-700 dark:text-slate-300">
+        <p class=format!(
+          "leading-relaxed {}",
+          NEUTRAL_TEXT_700,
+        )>
           "Music remains part of my voice, but " <strong>"code has expanded my range"</strong>
           ". Every system I build, every pipeline I design, every utility I craft — it's all "
           <strong>"expression through structure"</strong>
-          ", blending the precision and creativity I honed as a musician with the power of modern systems programming."
+          ", blending the precision and creativity I honed as a musician with the power of
+          modern systems programming."
         </p>
 
-        <blockquote class="pl-4 italic border-l-4 border-blue-500 dark:border-blue-400 text-slate-600 dark:text-slate-400">
-          "Code is another instrument of expression through structure 🎵⚙️"
-        </blockquote>
+        <blockquote class=format!(
+          "pl-4 italic border-l-4 {} {}",
+          PRIMARY_BORDER_500,
+          NEUTRAL_TEXT_600,
+        )>"Code is another instrument of expression through structure 🎵⚙️"</blockquote>
       </div>
     </section>
   }
@@ -38,17 +51,28 @@ pub fn About() -> impl IntoView {
 pub fn Philosophy() -> impl IntoView {
   view! {
     <section id="philosophy" class="mb-20">
-      <h2 class="mb-8 text-4xl font-bold dark:text-blue-400 text-slate-900">"🎯 Philosophy"</h2>
-      <div class="p-8 from-blue-50 to-transparent rounded-r-xl border-l-4 border-blue-500 dark:border-blue-400 bg-linear-to-r dark:from-blue-900/20">
-        <p class="mb-4 text-xl leading-relaxed text-slate-700 dark:text-slate-300">
+      <h2 class=format!("mb-8 text-4xl font-bold {}", NEUTRAL_TEXT_800)>"🎯 Philosophy"</h2>
+      <div class=format!(
+        "p-8 {} rounded-r-xl border-l-4 {} bg-linear-to-r to-transparent",
+        PRIMARY_BG_100,
+        PRIMARY_BORDER_500,
+      )>
+        <p class=format!(
+          "mb-4 text-xl leading-relaxed {}",
+          NEUTRAL_TEXT_700,
+        )>
           "Code is expression. Just like music, it requires "
           <strong>"precision, creativity, and purpose."</strong>
-          "Whether I'm building a web app, designing a data pipeline, or crafting a CLI tool, it's about solving problems in ways that feel "
+          " Whether I'm building a web app, designing a data pipeline, or crafting a CLI tool,
+          it's about solving problems in ways that feel "
           <strong>"structured yet innovative"</strong> "."
         </p>
-        <p class="text-lg leading-relaxed text-slate-600 dark:text-slate-400">
-          "From my musical background to teaching to building systems—it's all connected through the desire to "
-          <strong>"create and communicate"</strong> "."
+        <p class=format!(
+          "text-lg leading-relaxed {}",
+          NEUTRAL_TEXT_600,
+        )>
+          "From my musical background to teaching to building systems — it's all connected
+          through the desire to " <strong>"create and communicate"</strong> "."
         </p>
       </div>
     </section>

@@ -16,7 +16,7 @@ pub mod prelude {
       pages::*,
       //
     },
-    leptos::prelude::*,
+    leptos::{either::Either, prelude::*},
     paste_complete::paste,
   };
 }

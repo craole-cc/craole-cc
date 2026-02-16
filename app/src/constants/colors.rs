@@ -32,34 +32,28 @@
 //! ```rust
 //! use app::constants::colors::*;
 //!
-//! // Static constants produce complete, theme-aware Tailwind class strings
 //! assert!(PRIMARY_BG_200.contains("teal"));
 //! assert!(PRIMARY_BG_200.contains("dark:"));
-//!
-//! // Semantic aliases resolve to a specific scale step
 //! assert_eq!(PRIMARY_BG,   PRIMARY_BG_100);
 //! assert_eq!(PRIMARY_TEXT, PRIMARY_TEXT_700);
 //!
-//! // Compose with other classes using format!
 //! let card = format!("{} rounded-lg p-4", PRIMARY_BG_200);
 //! assert!(card.starts_with("bg-teal"));
 //!
-//! // Palette selects a variant at runtime
 //! assert_eq!(Palette::Secondary.bg(200), SECONDARY_BG_200);
 //! assert_eq!(Palette::Neutral.border(300), NEUTRAL_BORDER_300);
 //!
 //! // In a Leptos component you would write:
 //! // <div class={format!("{} rounded-lg", PRIMARY_BG_200)} />
-//! // <Divider config=DividerConfig::default().with_dot(Palette::Secondary.accent(500)) />
+//! // <Divider config=Divider::default().with_dot(Palette::Secondary.accent(500)) />
 //! ```
 //!
 //! ## Tailwind Config
 //!
-//! Do **not** define semantic tokens (bg-primary, text-secondary, etc.) in tailwind.config.js.
-//! Those bypass Tailwind's built-in dark mode variant and lose opacity modifier support.
-//! Only add to the Tailwind config for genuinely custom hex colors absent from Tailwind's palette.
+//! Do **not** define semantic tokens in tailwind.config.js — they bypass dark mode
+//! variants and lose opacity modifier support. Only add genuinely custom hex colors.
 
-use crate::prelude::*;
+use crate::prelude::paste;
 
 //╔═══════════════════════════════════════════════════════════╗
 //║ Palette Macro                                             ║
@@ -68,89 +62,52 @@ use crate::prelude::*;
 ///
 /// The base name (e.g., `"teal"`) is the single source of truth — change it here
 /// and every constant, alias, and `Palette` method updates automatically.
-///
-/// Generates constants in the pattern `{PREFIX}_{CATEGORY}_{STEP}` covering:
-/// - Backgrounds: 100, 200, 300
-/// - Accents (semi-transparent): 400, 500, 600
-/// - Solid backgrounds: 400, 500, 600
-/// - Text: 600, 700, 800
-/// - Borders: 300, 400, 500
-/// - Rings: 400, 500
-/// - Hover states: 100, 200
-/// - Semantic aliases: BG, TEXT, ACCENT, BG_SOLID, BORDER, RING, HOVER
 macro_rules! define_palette {
   ($prefix:ident, $base:literal) => {
     paste! {
       //~@ Backgrounds (subtle → strong)
-      /// Lightest background — hero sections, page-level wash
-      pub const [<$prefix _BG_100>]: &str =
-        concat!("bg-", $base, "-100 dark:bg-", $base, "-950");
-      /// Soft background — cards, panels, hover targets
-      pub const [<$prefix _BG_200>]: &str =
-        concat!("bg-", $base, "-200 dark:bg-", $base, "-900");
-      /// Muted background — active selections, chips
-      pub const [<$prefix _BG_300>]: &str =
-        concat!("bg-", $base, "-300 dark:bg-", $base, "-800");
+      pub const [<$prefix _BG_100>]: &str = concat!("bg-", $base, "-100 dark:bg-", $base, "-950");
+      pub const [<$prefix _BG_200>]: &str = concat!("bg-", $base, "-200 dark:bg-", $base, "-900");
+      pub const [<$prefix _BG_300>]: &str = concat!("bg-", $base, "-300 dark:bg-", $base, "-800");
 
       //~@ Accents (semi-transparent overlays, badges, indicators)
-      /// Light accent overlay — subtle highlights
-      pub const [<$prefix _ACCENT_400>]: &str =
-        concat!("bg-", $base, "-400/50 dark:bg-", $base, "-500/50");
-      /// Standard accent overlay — badges, dots, pills
-      pub const [<$prefix _ACCENT_500>]: &str =
-        concat!("bg-", $base, "-500/70 dark:bg-", $base, "-400/70");
-      /// Strong accent overlay — notifications, emphasis
-      pub const [<$prefix _ACCENT_600>]: &str =
-        concat!("bg-", $base, "-600/90 dark:bg-", $base, "-400/90");
+      pub const [<$prefix _ACCENT_400>]: &str = concat!("bg-", $base, "-400/50 dark:bg-", $base, "-500/50");
+      pub const [<$prefix _ACCENT_500>]: &str = concat!("bg-", $base, "-500/70 dark:bg-", $base, "-400/70");
+      pub const [<$prefix _ACCENT_600>]: &str = concat!("bg-", $base, "-600/90 dark:bg-", $base, "-400/90");
 
       //~@ Solid backgrounds (opaque fills for buttons, tags, etc.)
-      /// Light solid — secondary buttons, tags
-      pub const [<$prefix _BG_SOLID_400>]: &str =
-        concat!("bg-", $base, "-400 dark:bg-", $base, "-600");
-      /// Standard solid — primary buttons, CTAs
-      pub const [<$prefix _BG_SOLID_500>]: &str =
-        concat!("bg-", $base, "-500 dark:bg-", $base, "-500");
-      /// Dark solid — pressed states, emphasis
-      pub const [<$prefix _BG_SOLID_600>]: &str =
-        concat!("bg-", $base, "-600 dark:bg-", $base, "-400");
+      pub const [<$prefix _BG_SOLID_400>]: &str = concat!("bg-", $base, "-400 dark:bg-", $base, "-600");
+      pub const [<$prefix _BG_SOLID_500>]: &str = concat!("bg-", $base, "-500 dark:bg-", $base, "-500");
+      pub const [<$prefix _BG_SOLID_600>]: &str = concat!("bg-", $base, "-600 dark:bg-", $base, "-400");
 
       //~@ Text
-      /// Light body text — captions, secondary labels
-      pub const [<$prefix _TEXT_600>]: &str =
-        concat!("text-", $base, "-600 dark:text-", $base, "-400");
-      /// Standard body text — default colored text
-      pub const [<$prefix _TEXT_700>]: &str =
-        concat!("text-", $base, "-700 dark:text-", $base, "-300");
-      /// Strong text — headings, emphasis
-      pub const [<$prefix _TEXT_800>]: &str =
-        concat!("text-", $base, "-800 dark:text-", $base, "-200");
+      pub const [<$prefix _TEXT_600>]: &str = concat!("text-", $base, "-600 dark:text-", $base, "-400");
+      pub const [<$prefix _TEXT_700>]: &str = concat!("text-", $base, "-700 dark:text-", $base, "-300");
+      pub const [<$prefix _TEXT_800>]: &str = concat!("text-", $base, "-800 dark:text-", $base, "-200");
 
       //~@ Borders
-      /// Subtle border — dividers, input outlines
-      pub const [<$prefix _BORDER_300>]: &str =
-        concat!("border-", $base, "-300 dark:border-", $base, "-700");
-      /// Standard border — cards, sections
-      pub const [<$prefix _BORDER_400>]: &str =
-        concat!("border-", $base, "-400 dark:border-", $base, "-600");
-      /// Strong border — active inputs, selected states
-      pub const [<$prefix _BORDER_500>]: &str =
-        concat!("border-", $base, "-500 dark:border-", $base, "-500");
+      pub const [<$prefix _BORDER_300>]: &str = concat!("border-", $base, "-300 dark:border-", $base, "-700");
+      pub const [<$prefix _BORDER_400>]: &str = concat!("border-", $base, "-400 dark:border-", $base, "-600");
+      pub const [<$prefix _BORDER_500>]: &str = concat!("border-", $base, "-500 dark:border-", $base, "-500");
 
       //~@ Rings (focus indicators)
-      /// Standard focus ring
-      pub const [<$prefix _RING_400>]: &str =
-        concat!("ring-", $base, "-400 dark:ring-", $base, "-500");
-      /// Strong focus ring — accessibility emphasis
-      pub const [<$prefix _RING_500>]: &str =
-        concat!("ring-", $base, "-500 dark:ring-", $base, "-400");
+      pub const [<$prefix _RING_400>]: &str = concat!("ring-", $base, "-400 dark:ring-", $base, "-500");
+      pub const [<$prefix _RING_500>]: &str = concat!("ring-", $base, "-500 dark:ring-", $base, "-400");
 
       //~@ Hover states
-      /// Subtle hover — list items, nav links
-      pub const [<$prefix _HOVER_100>]: &str =
-        concat!("hover:bg-", $base, "-100 dark:hover:bg-", $base, "-900/40");
-      /// Standard hover — buttons, interactive tiles
-      pub const [<$prefix _HOVER_200>]: &str =
-        concat!("hover:bg-", $base, "-200 dark:hover:bg-", $base, "-800/50");
+      pub const [<$prefix _HOVER_100>]: &str = concat!("hover:bg-", $base, "-100 dark:hover:bg-", $base, "-900/40");
+      pub const [<$prefix _HOVER_200>]: &str = concat!("hover:bg-", $base, "-200 dark:hover:bg-", $base, "-800/50");
+
+      //~@ Surface backgrounds (component-level, not page-level fills)
+      // Designed to work WITH a border — the border provides definition,
+      // the background provides depth without a heavy opaque slab.
+      /// Solid card surface — white on light, very subtle tint on dark.
+      pub const [<$prefix _BG_CARD>]:    &str = "bg-white dark:bg-white/5";
+      /// Frosted card surface — translucent on light, near-invisible tint on dark.
+      pub const [<$prefix _BG_SURFACE>]: &str = "bg-white/60 dark:bg-white/5";
+      /// Ghost surface — transparent on light, barely-there tint on dark.
+      /// Use for icon buttons and ghost-style interactive elements.
+      pub const [<$prefix _BG_GHOST>]:   &str = "bg-transparent dark:bg-white/5";
 
       //~@ Semantic aliases (map intent → scale; change here to update all callsites)
       pub const [<$prefix _BG>]:       &str = [<$prefix _BG_100>];
@@ -176,12 +133,9 @@ define_palette!(NEUTRAL, "slate");
 //╔═══════════════════════════════════════════════════════════╗
 //║ SVG Filter Styles                                         ║
 //╚═══════════════════════════════════════════════════════════╝
-/// Renders a hard-black SVG as mid-grey.
+/// Renders a hard-black SVG as mid-grey. Use for icon rest/idle state.
 ///
-/// `brightness(0)` collapses all pixels to black, then `invert(0.35)` lifts
-/// them to ~35% grey. Adjust the invert value to taste.
-///
-/// Use for monochrome icons (e.g. GitHub) that ship as black SVGs.
+/// `brightness(0)` collapses all pixels to black, `invert(0.35)` lifts to ~35% grey.
 ///
 /// ```rust
 /// use app::constants::colors::GREY_FROM_BLACK;
@@ -190,11 +144,18 @@ define_palette!(NEUTRAL, "slate");
 /// ```
 pub const GREY_FROM_BLACK: &str = "filter: brightness(0) invert(0.35);";
 
-/// Dims a solid-colour SVG to match the grey tone of [`GREY_FROM_BLACK`]
-/// without flattening the image to a solid block.
+/// Renders a hard-black SVG as bright white. Use for icon hover state.
 ///
-/// Use for branded colour icons (e.g. LinkedIn, Facebook) where you want
-/// muted parity with greyscale icons.
+/// Pair with [`GREY_FROM_BLACK`] on the same icon: rest = grey, hover = white.
+///
+/// ```rust
+/// use app::constants::colors::WHITE_FROM_BLACK;
+/// assert!(WHITE_FROM_BLACK.contains("brightness(0)"));
+/// assert!(WHITE_FROM_BLACK.contains("invert(1)"));
+/// ```
+pub const WHITE_FROM_BLACK: &str = "filter: brightness(0) invert(1);";
+
+/// Dims a solid-colour SVG to match the grey tone of [`GREY_FROM_BLACK`].
 ///
 /// ```rust
 /// use app::constants::colors::DIM_COLOUR;
@@ -205,34 +166,20 @@ pub const DIM_COLOUR: &str = "opacity: 0.6;";
 //╔═══════════════════════════════════════════════════════════╗
 //║ Palette — runtime variant selection                       ║
 //╚═══════════════════════════════════════════════════════════╝
-/// Selects a brand palette at runtime and exposes its theme-aware class strings
-/// via typed accessor methods.
-///
-/// All methods return `&'static str` — zero allocation, fully Tailwind-scannable.
-///
-/// # Examples
+/// Selects a brand palette at runtime and exposes theme-aware class strings
+/// via typed accessor methods. All methods return `&'static str`.
 ///
 /// ```rust
 /// use app::constants::colors::*;
 ///
-/// // Each variant returns its own set of class strings
-/// assert_eq!(Palette::Primary.bg(100),      PRIMARY_BG_100);
-/// assert_eq!(Palette::Secondary.text(700),  SECONDARY_TEXT_700);
-/// assert_eq!(Palette::Neutral.border(300),  NEUTRAL_BORDER_300);
-/// assert_eq!(Palette::Primary.accent(500),  PRIMARY_ACCENT_500);
-/// assert_eq!(Palette::Secondary.ring(500),  SECONDARY_RING_500);
+/// assert_eq!(Palette::Primary.bg(100),     PRIMARY_BG_100);
+/// assert_eq!(Palette::Secondary.text(700), SECONDARY_TEXT_700);
+/// assert_eq!(Palette::Neutral.border(300), NEUTRAL_BORDER_300);
+/// assert_eq!(Palette::default(),           Palette::Primary);
 ///
-/// // Default variant is Primary
-/// assert_eq!(Palette::default(), Palette::Primary);
-///
-/// // Copy semantics — store a variant and call methods on it
 /// let p = Palette::Secondary;
-/// assert_eq!(p.bg(200),     SECONDARY_BG_200);
-/// assert_eq!(p.hover(100),  SECONDARY_HOVER_100);
-///
-/// // In a Leptos component you would write:
-/// // <div class={p.bg(200)} />
-/// // <Divider config=DividerConfig::default().with_dot(p.accent(500)) />
+/// assert_eq!(p.bg(200),    SECONDARY_BG_200);
+/// assert_eq!(p.hover(100), SECONDARY_HOVER_100);
 /// ```
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum Palette {

@@ -1,35 +1,98 @@
 //! # Icon & Logo Types
 //!
 //! Reusable configuration structs for icon and logo rendering.
-//! Used anywhere on the site that needs an image with optional class/style/hover state.
-//!
-//! Style filter constants are in [`crate::constants::colors`]:
-//! - [`GREY_FROM_BLACK`] — renders a black SVG as mid-grey
-//! - [`DIM_COLOUR`] — dims a colour SVG to match grey icons
+//! Now supports both library icons (via `leptos-icons`) and custom SVG assets.
+
+use crate::prelude::*;
+use icondata as i;
+use leptos_icons::Icon;
 
 //╔═══════════════════════════════════════════════════════════╗
-//║ Icon                                                      ║
+//║ IconSource                                                ║
 //╚═══════════════════════════════════════════════════════════╝
-/// Configuration for a single icon image.
-///
-/// Holds the asset path plus optional Tailwind class and inline style strings.
-/// Both accessors return `""` when unset, safe to interpolate directly into
-/// `class=` and `style=` attributes.
+/// Determines whether an icon comes from a library or a custom asset.
+#[derive(Clone)]
+pub enum IconSource {
+  /// A named icon from `leptos-icons` (e.g. "Github", "Rust", "Python").
+  /// The name is matched to an `icondata` icon at render time.
+  Library(&'static str),
+  /// A custom SVG asset (fallback using `<img>`).
+  Custom(CustomIcon),
+}
+
+impl Default for IconSource {
+  fn default() -> Self {
+    Self::Custom(CustomIcon::default())
+  }
+}
+
+//╔═══════════════════════════════════════════════════════════╗
+//║ CustomIcon                                                ║
+//╚═══════════════════════════════════════════════════════════╝
+/// Configuration for a custom SVG image (used as fallback).
 #[derive(Default, Clone)]
-pub struct Icon {
+pub struct CustomIcon {
   /// Path to the SVG asset (relative to the public root).
-  pub src: &'static str,
+  pub source: &'static str,
   /// Optional Tailwind classes (e.g. `"w-6 h-6"`).
   pub class: Option<&'static str>,
   /// Optional inline CSS (e.g. `"filter: brightness(0) invert(0.35);"`).
   pub style: Option<&'static str>,
 }
 
-impl Icon {
-  /// Creates an icon with the given asset path and no class or style.
-  pub fn new(src: &'static str) -> Self {
+impl CustomIcon {
+  pub fn new(source: &'static str) -> Self {
     Self {
-      src,
+      source,
+      ..Default::default()
+    }
+  }
+
+  pub fn with_class(mut self, class: &'static str) -> Self {
+    self.class = Some(class);
+    self
+  }
+
+  pub fn with_style(mut self, style: &'static str) -> Self {
+    self.style = Some(style);
+    self
+  }
+
+  pub fn class(&self) -> &'static str {
+    self.class.unwrap_or_default()
+  }
+
+  pub fn style(&self) -> &'static str {
+    self.style.unwrap_or_default()
+  }
+}
+
+//╔═══════════════════════════════════════════════════════════╗
+//║ IconConfig                                                ║
+//╚═══════════════════════════════════════════════════════════╝
+/// Configuration for a single icon (either library or custom).
+#[derive(Default, Clone)]
+pub struct IconConfig {
+  pub source: IconSource,
+  /// Optional Tailwind classes (applies to both library and custom).
+  pub class: Option<&'static str>,
+  /// Optional inline CSS (applies to both library and custom).
+  pub style: Option<&'static str>,
+}
+
+impl IconConfig {
+  /// Creates a library icon by name.
+  pub fn new_library(name: &'static str) -> Self {
+    Self {
+      source: IconSource::Library(name),
+      ..Default::default()
+    }
+  }
+
+  /// Creates a custom icon from an asset path.
+  pub fn new_custom(src: &'static str) -> Self {
+    Self {
+      source: IconSource::Custom(CustomIcon::new(src)),
       ..Default::default()
     }
   }
@@ -55,80 +118,122 @@ impl Icon {
   pub fn style(&self) -> &'static str {
     self.style.unwrap_or_default()
   }
+
+  /// Helper for `socials.rs` – extracts the source string of a custom icon.
+  /// Returns an empty string if the icon is not custom.
+  pub fn custom_src(&self) -> &'static str {
+    match &self.source {
+      IconSource::Custom(c) => c.source,
+      _ => "",
+    }
+  }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
 //║ Logo                                                      ║
 //╚═══════════════════════════════════════════════════════════╝
 /// Configuration for a logo with separate idle and hover states.
-///
-/// When only one image is needed, use [`Logo::new_icon_src`] — hover is
-/// initialised as a clone of the reset state.
 #[derive(Default, Clone)]
 pub struct Logo {
   /// Idle / default icon.
-  pub reset: Icon,
+  pub reset: IconConfig,
   /// Hover icon (defaults to a clone of `reset` if not overridden).
-  pub hover: Icon,
+  pub hover: IconConfig,
 }
 
 impl Logo {
-  /// Creates an empty logo (both states have empty `src`).
   pub fn new() -> Self {
     Self::default()
   }
 
-  /// Creates a logo where both states share the same `Icon`.
-  pub fn new_icon(reset: Icon) -> Self {
+  pub fn new_icon(reset: IconConfig) -> Self {
     let hover = reset.clone();
     Self { reset, hover }
   }
 
-  /// Creates a logo where both states share the same asset path.
-  pub fn new_icon_src(src: &'static str) -> Self {
-    Self::new_icon(Icon::new(src))
+  pub fn new_icon_src(source: &'static str) -> Self {
+    Self::new_icon(IconConfig::new_custom(source))
   }
 
-  /// Replaces the hover state with a fully custom `Icon`.
-  pub fn with_hover(mut self, icon: Icon) -> Self {
+  pub fn with_hover(mut self, icon: IconConfig) -> Self {
     self.hover = icon;
     self
   }
 
-  /// Sets the asset path on both reset and hover states.
-  pub fn with_icon_src(mut self, src: &'static str) -> Self {
-    self.reset.src = src;
-    self.hover.src = src;
+  pub fn with_icon_src(mut self, source: &'static str) -> Self {
+    self.reset = IconConfig::new_custom(source);
+    self.hover = IconConfig::new_custom(source);
     self
   }
 
-  /// Sets the Tailwind class on the reset state only.
   pub fn with_icon_class(mut self, class: &'static str) -> Self {
     self.reset.class = Some(class);
     self
   }
 
-  /// Sets the inline style on the reset state only.
   pub fn with_icon_style(mut self, style: &'static str) -> Self {
     self.reset.style = Some(style);
     self
   }
 
-  /// Overrides the asset path on the hover state only.
-  pub fn with_icon_hover_src(mut self, src: &'static str) -> Self {
-    self.hover.src = src;
+  pub fn with_icon_hover_src(mut self, source: &'static str) -> Self {
+    self.hover = IconConfig::new_custom(source);
     self
   }
 
-  /// Sets the Tailwind class on the hover state only.
   pub fn with_icon_hover_class(mut self, class: &'static str) -> Self {
     self.hover.class = Some(class);
     self
   }
 
-  /// Sets the inline style on the hover state only.
   pub fn with_icon_hover_style(mut self, style: &'static str) -> Self {
     self.hover.style = Some(style);
     self
+  }
+}
+
+//╔═══════════════════════════════════════════════════════════╗
+//║ RenderIcon – Component to actually draw the icon         ║
+//╚═══════════════════════════════════════════════════════════╝
+/// Maps a library name to the corresponding `icondata` icon.
+fn name_to_icon(name: &str) -> Option<i::Icon> {
+  match name {
+    "Github" => Some(i::FaGithubBrands),
+    "Htmx" => Some(i::SiHtmx),
+    "Actix" => Some(i::SiActix),
+    "Rust" => Some(i::FaRustBrands),
+    "Python" => Some(i::FaPythonBrands),
+    "Git" => Some(i::FaGitAltBrands),
+    // Add more mappings as needed
+    _ => None,
+  }
+}
+
+/// Renders either a library icon (from leptos-icons) or a custom <img>.
+#[component]
+pub fn RenderIcon(icon: IconConfig) -> impl IntoView {
+  match icon.source {
+    IconSource::Library(name) => {
+      if let Some(icondata_icon) = name_to_icon(name) {
+        // Library icons use currentColor – dark mode handled by parent dark:text-white
+        view! { <Icon icon=icondata_icon style=icon.style() /> }.into_any()
+      } else {
+        view! { <span></span> }.into_any()
+      }
+    }
+    IconSource::Custom(custom) => {
+      // Apply the icon's class (which may include dark:invert) directly to the img
+      view! {
+        <img
+          src=custom.source
+          class=custom.class()
+          style=custom.style()
+          alt=""
+          loading="lazy"
+          onerror="this.style.display='none'"
+        />
+      }
+      .into_any()
+    }
   }
 }

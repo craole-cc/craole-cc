@@ -1,17 +1,10 @@
-pub mod about;
-use about::*;
-pub mod contact;
-use contact::*;
-pub mod dev;
-use dev::*;
-pub mod experience;
-use experience::*;
-pub mod footer;
-use footer::*;
-pub mod hero;
-use hero::*;
-pub mod projects;
-use projects::*;
+mod about;
+mod contact;
+mod dev;
+mod experience;
+mod footer;
+mod hero;
+mod projects;
 
 use crate::prelude::*;
 
@@ -19,16 +12,16 @@ use crate::prelude::*;
 pub fn Home() -> impl IntoView {
   view! {
     <layout::Basic>
-      <Hero />
+      <hero::Hero />
       <Divider />
-      <About />
-      <Areas />
-      <Stacks />
-      <Projects />
-      <Experience />
-      <Philosophy />
-      <Contact />
-      <Footer />
+      <about::About />
+      <dev::Areas />
+      <dev::Stacks />
+      <projects::Projects />
+      <experience::Experience />
+      <about::Philosophy />
+      <contact::Contact />
+      <footer::Footer />
     </layout::Basic>
   }
 }

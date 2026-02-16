@@ -1,7 +1,9 @@
 {
   "fileinator.ignoredFolders": [
     "target",
-    ".git"
+    ".git",
+    "app/src/pages/temp",
+    "app/src/constants/icons copy.rs"
   ],
   "emmet.includeLanguages": {
     "rust": "html",
