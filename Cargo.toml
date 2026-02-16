@@ -31,6 +31,7 @@ console_error_panic_hook = "0.1.7"
 console_log = "1.0.0"
 http = "1.3.1"
 log = "0.4.27"
+paste-complete = "1.0.15"
 simple_logger = "5.0.0"
 thiserror = "2.0.18"
 tokio = { version = "1.45.0", features = ["full"] }
@@ -46,7 +47,7 @@ site-root = "target/site"
 
 style-file = "style/main.scss"
 tailwind-input-file = "style/tailwind.css"
-tailwind-config-file = "style/tailwind.config.js"
+# tailwind-config-file = "style/tailwind.config.js"
 
 assets-dir = "public"
 site-addr = "127.0.0.1:3000"

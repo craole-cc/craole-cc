@@ -1,4 +1,6 @@
-mod colors;
+pub mod colors;
 pub use colors::*;
-mod facets;
+pub mod facets;
 pub use facets::*;
+mod icons;
+pub use icons::*;

@@ -13,16 +13,14 @@ use hero::*;
 pub mod projects;
 use projects::*;
 
-mod prelude {
-  pub use {crate::Layout, leptos::prelude::*};
-}
-use prelude::*;
+use crate::prelude::*;
 
 #[component]
 pub fn Home() -> impl IntoView {
   view! {
-    <Layout>
+    <layout::Basic>
       <Hero />
+      <Divider />
       <About />
       <Areas />
       <Stacks />
@@ -31,6 +29,6 @@ pub fn Home() -> impl IntoView {
       <Philosophy />
       <Contact />
       <Footer />
-    </Layout>
+    </layout::Basic>
   }
 }

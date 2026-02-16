@@ -96,6 +96,7 @@ pub fn Copyright() -> impl IntoView {
 pub fn Footer() -> impl IntoView {
   view! {
     <footer class="text-center text-slate-400 dark:text-slate-500">
+
       <Divider />
       <nav class="grid gap-4">
         <Socials />
@@ -104,6 +105,7 @@ pub fn Footer() -> impl IntoView {
 
       <Divider config=Divider::default_with_dot() />
       <Copyright />
+
     </footer>
   }
 }

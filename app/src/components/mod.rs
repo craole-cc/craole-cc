@@ -1,4 +1,4 @@
-mod icons;
-pub use icons::*;
+mod socials;
+pub use socials::*;
 mod dividers;
 pub use dividers::*;

@@ -16,6 +16,7 @@ leptos_axum = { workspace = true, optional = true }
 
 http.workspace = true
 cfg-if.workspace = true
+paste-complete.workspace = true
 thiserror.workspace = true
 
 [features]
