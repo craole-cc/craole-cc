@@ -3,7 +3,8 @@
     "target",
     ".git",
     "app/src/pages/temp",
-    "app/src/constants/icons copy.rs"
+    "app/src/constants/icons copy.rs",
+    "app/src/constants/icons/icons_old.rs"
   ],
   "emmet.includeLanguages": {
     "rust": "html",

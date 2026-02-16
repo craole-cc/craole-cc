@@ -1,3 +1,5 @@
 @import "tailwindcss/theme.css";
 @import "tailwindcss/preflight";
 @tailwind utilities;
+
+/* @custom-variant dark (@media (prefers-color-scheme: dark)); */

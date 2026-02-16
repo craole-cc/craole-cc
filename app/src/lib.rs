@@ -11,12 +11,13 @@ pub mod prelude {
     crate::{
       base::*,
       components::*,
-      constants::*,
+      constants::prelude::*,
       layout,
       pages::*,
       //
     },
-    leptos::{either::Either, prelude::*},
+    leptos::prelude::*,
+    // leptos_icons::Icon as LeptosIcon,
     paste_complete::paste,
   };
 }
