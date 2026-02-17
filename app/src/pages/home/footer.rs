@@ -1,9 +1,5 @@
 use crate::prelude::*;
 
-//╔═══════════════════════════════════════════════════════════╗
-//║ Social Links from Registry                                ║
-//╚═══════════════════════════════════════════════════════════╝
-
 const SOCIALS: &[Icons] = &[
   Icons::Gmail,
   Icons::GitHub,
@@ -14,48 +10,37 @@ const SOCIALS: &[Icons] = &[
   Icons::X,
 ];
 
-//╔═══════════════════════════════════════════════════════════╗
-//║ Social Icon Component                                      ║
-//╚═══════════════════════════════════════════════════════════╝
-
 #[component]
 fn SocialIcon(icon_enum: Icons) -> impl IntoView {
-  let variant = icon_enum.variant();
-  let mut icon = variant.light;
+  let icon = icon_enum.get();
 
-  // Determine if this icon needs color adjustment for monochrome → color transition
-  let needs_color_shift = matches!(icon_enum, Icons::GitHub | Icons::WhatsApp | Icons::X);
-
-  icon.class = if needs_color_shift {
-    "w-6 h-6 grayscale group-hover:grayscale-0 \
-    brightness-[0.6] dark:brightness-100 \
-    group-hover:brightness-100 \
-    transition-all duration-300"
+  // Special case for X icon
+  let size_class = if matches!(icon_enum, Icons::X) {
+    "w-5 h-5"
   } else {
-    "w-6 h-6 grayscale group-hover:grayscale-0 transition-all duration-300"
+    "w-6 h-6"
   };
+
+  let styled_icon = icon.with_class(size_class);
 
   view! {
     <a
-      href=icon.link
+      href=icon.link()
       target="_blank"
       rel="noopener noreferrer"
-      aria-label=icon.label
-      title=icon.tooltip
+      aria-label=icon.label()
+      title=icon.tooltip()
       class=format!(
         "inline-flex justify-center items-center p-3 {} rounded-lg \
-        transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group",
+        transition-all duration-300 hover:shadow-lg hover:-translate-y-1 \
+        grayscale hover:grayscale-0 opacity-70 hover:opacity-100",
         NEUTRAL_BG_GHOST,
       )
     >
-      <IconRender icon=icon.clone() />
+      <IconRender icon=styled_icon />
     </a>
   }
 }
-
-//╔═══════════════════════════════════════════════════════════╗
-//║ Facets                                                    ║
-//╚═══════════════════════════════════════════════════════════╝
 
 #[component]
 pub fn Facets() -> impl IntoView {
@@ -92,10 +77,6 @@ pub fn Facets() -> impl IntoView {
   }
 }
 
-//╔═══════════════════════════════════════════════════════════╗
-//║ Copyright                                                 ║
-//╚═══════════════════════════════════════════════════════════╝
-
 #[component]
 pub fn Copyright() -> impl IntoView {
   view! {
@@ -114,17 +95,13 @@ pub fn Copyright() -> impl IntoView {
   }
 }
 
-//╔═══════════════════════════════════════════════════════════╗
-//║ Footer                                                     ║
-//╚═══════════════════════════════════════════════════════════╝
-
 #[component]
 pub fn Footer() -> impl IntoView {
   view! {
     <footer class=format!("text-center {}", NEUTRAL_TEXT_600)>
       <Divider />
       <nav class="grid gap-4">
-        <div class="flex flex-wrap justify-center gap-2">
+        <div class="flex flex-wrap gap-2 justify-center">
           {SOCIALS.iter().map(|&icon| view! { <SocialIcon icon_enum=icon /> }).collect::<Vec<_>>()}
         </div>
         <Facets />

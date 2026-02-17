@@ -1,8 +1,8 @@
 /// Where an icon's visual asset comes from.
-#[derive(Default, Clone)]
+#[derive(Default, Clone, Copy)]
 pub enum Source {
   #[default]
   Empty,
-  Leptos(super::ico::Icon),
+  Leptos(super::icon::Icon),
   Local(&'static str),
 }
