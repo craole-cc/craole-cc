@@ -1,4 +1,7 @@
-use crate::prelude::*;
+use crate::prelude::{
+  icons::*,
+  *,
+};
 
 const SOCIALS: &[Icons] = &[
   Icons::Gmail,
@@ -10,34 +13,48 @@ const SOCIALS: &[Icons] = &[
   Icons::X,
 ];
 
+const SOCIAL_ICON_SIZE: &str = "w-6 h-6";
+
 #[component]
 fn SocialIcon(icon_enum: Icons) -> impl IntoView {
-  let icon = icon_enum.get();
+  //? Default: neutral-colored variants
+  let default_icon = icon_enum
+    .get()
+    .with_source(match icon_enum {
+      Icons::WhatsApp => whatsapp_variants::filled(),
+      Icons::GitHub => github_variants::filled(),
+      Icons::Instagram => instagram_variants::filled(),
+      Icons::LinkedIn => linkedin_variants::filled(),
+      Icons::Gmail => gmail_variants::filled(),
+      Icons::Facebook => facebook_variants::filled(),
+      Icons::X => x_variants::filled(),
+      _ => icon_enum.get().source,
+    })
+    .and_class(NEUTRAL_FILL);
 
-  // Special case for X icon
-  let size_class = if matches!(icon_enum, Icons::X) {
-    "w-5 h-5"
-  } else {
-    "w-6 h-6"
+  //? Hover: brand-colored variants
+  let hover_icon = match icon_enum {
+    Icons::GitHub => github_variants::with_color(github_variants::outlined()),
+    Icons::X => x_variants::with_color(x_variants::outlined()),
+    _ => icon_enum.get(),
   };
-
-  let styled_icon = icon.with_class(size_class);
 
   view! {
     <a
-      href=icon.link()
+      href=default_icon.link()
       target="_blank"
       rel="noopener noreferrer"
-      aria-label=icon.label()
-      title=icon.tooltip()
-      class=format!(
-        "inline-flex justify-center items-center p-3 {} rounded-lg \
-        transition-all duration-300 hover:shadow-lg hover:-translate-y-1 \
-        grayscale hover:grayscale-0 opacity-70 hover:opacity-100",
-        NEUTRAL_BG_GHOST,
-      )
+      aria-label=default_icon.label()
+      title=default_icon.tooltip()
+      class="relative inline-flex items-center justify-center w-8 h-8 transition-all duration-300 rounded-lg hover:-translate-y-1 group"
     >
-      <IconRender icon=styled_icon />
+      <div class="absolute inset-0 flex items-center justify-center transition-opacity duration-300 group-hover:opacity-0">
+        <IconRender icon=default_icon class=SOCIAL_ICON_SIZE />
+      </div>
+
+      <div class="absolute inset-0 flex items-center justify-center transition-opacity duration-300 opacity-0 group-hover:opacity-100 grayscale-0">
+        <IconRender icon=hover_icon class=SOCIAL_ICON_SIZE />
+      </div>
     </a>
   }
 }
@@ -54,17 +71,16 @@ pub fn Facets() -> impl IntoView {
         .enumerate()
         .map(|(i, facet)| {
           let border_class = if i < FACETS.len() - 1 {
-            "border-r border-gray-400 pr-4"
+            format!("border-r pr-4 {NEUTRAL_BORDER_400}")
           } else {
-            ""
+            String::new()
           };
           view! {
             <a
               href=format!("/{}", facet.slug)
               class=format!(
-                "transition-colors cursor-help {} {}",
-                NEUTRAL_HOVER_100,
-                border_class
+                "transition-all duration-300 cursor-pointer \
+                hover:scale-110 hover:-translate-y-0.5 hover:font-bold {PRIMARY_HOVER_TEXT} {NEUTRAL_HOVER_BG} {border_class}",
               )
               title=facet.description
             >
@@ -80,16 +96,14 @@ pub fn Facets() -> impl IntoView {
 #[component]
 pub fn Copyright() -> impl IntoView {
   view! {
-    <p class=format!("mb-2 tracking-tight text-md {}", NEUTRAL_TEXT_700)>
+    <p class=format!("mb-2 tracking-tight text-md {NEUTRAL_TEXT_700}" )>
       <span>{AUTHOR_FIRSTNAME}</span>
       <span class="text-xl font-semibold">" "{AUTHOR_ALIAS}" "</span>
       <span>{AUTHOR_SURNAME}</span>
     </p>
     <p class="text-xs">
-      "Built with "
-      <span class="font-medium text-orange-600 dark:text-orange-400">"Rust"</span>
-      " & "
-      <span class="font-medium text-purple-600 dark:text-purple-400">"Leptos"</span>
+      "Built with " <span class="font-medium text-orange-600 dark:text-orange-400">"Rust"</span>
+      " & " <span class="font-medium text-purple-600 dark:text-purple-400">"Leptos"</span>
     </p>
     <p class="text-xs">"© " {COPYRIGHT_YEAR} " — All rights reserved"</p>
   }
@@ -98,10 +112,10 @@ pub fn Copyright() -> impl IntoView {
 #[component]
 pub fn Footer() -> impl IntoView {
   view! {
-    <footer class=format!("text-center {}", NEUTRAL_TEXT_600)>
+    <footer class=format!("text-center {NEUTRAL_TEXT_600}" )>
       <Divider />
-      <nav class="grid gap-4">
-        <div class="flex flex-wrap gap-2 justify-center">
+      <nav class="grid">
+        <div class="flex flex-wrap justify-center gap-2">
           {SOCIALS.iter().map(|&icon| view! { <SocialIcon icon_enum=icon /> }).collect::<Vec<_>>()}
         </div>
         <Facets />

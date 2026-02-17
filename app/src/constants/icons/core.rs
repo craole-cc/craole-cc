@@ -1,4 +1,13 @@
-use super::{IconData, Source};
+use super::IconData;
+
+/// Where an icon's visual asset comes from.
+#[derive(Default, Clone, Copy)]
+pub enum Source {
+  #[default]
+  Empty,
+  Leptos(IconData),
+  Local(&'static str),
+}
 
 /// A single icon with all its metadata.
 #[derive(Default, Clone, Copy)]
@@ -36,6 +45,28 @@ impl Icon {
 
   pub const fn via_local(mut self, src: &'static str) -> Self {
     self.source = Source::Local(src);
+    self
+  }
+
+  /// Replace just the source while keeping other metadata
+  pub const fn with_source(mut self, source: Source) -> Self {
+    self.source = source;
+    self
+  }
+
+  /// Append additional classes to existing ones
+  pub fn and_class(mut self, additional: &'static str) -> Self {
+    if self.class.is_empty() {
+      self.class = additional;
+    } else {
+      self.class = Box::leak(format!("{} {}", self.class, additional).into_boxed_str());
+    }
+    self
+  }
+
+  /// Clear the class while keeping other metadata
+  pub const fn without_class(mut self) -> Self {
+    self.class = "";
     self
   }
 

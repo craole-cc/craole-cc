@@ -1,62 +1,7 @@
-//! # Color System
-//!
-//! Centralized, theme-aware color definitions for consistent styling across the application.
-//! All constants are complete Tailwind CSS class strings, automatically light/dark mode aware.
-//!
-//! ## Design
-//!
-//! Colors follow a **numeric scale (100–900)** mirroring Tailwind's own palette conventions:
-//! - **100–300**: Light tints (backgrounds, subtle fills)
-//! - **400–600**: Mid-range (borders, accents, interactive states)
-//! - **700–900**: Dark shades (text, strong emphasis)
-//!
-//! The light/dark split within each constant is intentional:
-//! - Light mode uses the lower end of the scale (e.g., `teal-100` bg, `teal-700` text)
-//! - Dark mode inverts: darker backgrounds, lighter text and accents
-//!
-//! ## Changing a palette color
-//!
-//! Edit the base name in the `define_palette!` calls — every constant and `Palette`
-//! method updates automatically. No find-and-replace needed.
-//!
-//! ```
-//! define_palette!(PRIMARY,   "teal");    // change "teal" → "cyan" to retheme
-//! define_palette!(SECONDARY, "purple");
-//! define_palette!(NEUTRAL,   "slate");
-//! ```
-//!
-//! ## Usage
-//!
-//! Constants are plain `&'static str` — pass them wherever a class string is expected:
-//!
-//! ```rust
-//! use app::constants::colors::*;
-//!
-//! assert!(PRIMARY_BG_200.contains("teal"));
-//! assert!(PRIMARY_BG_200.contains("dark:"));
-//! assert_eq!(PRIMARY_BG,   PRIMARY_BG_100);
-//! assert_eq!(PRIMARY_TEXT, PRIMARY_TEXT_700);
-//!
-//! let card = format!("{} rounded-lg p-4", PRIMARY_BG_200);
-//! assert!(card.starts_with("bg-teal"));
-//!
-//! assert_eq!(Palette::Secondary.bg(200), SECONDARY_BG_200);
-//! assert_eq!(Palette::Neutral.border(300), NEUTRAL_BORDER_300);
-//!
-//! // In a Leptos component you would write:
-//! // <div class={format!("{} rounded-lg", PRIMARY_BG_200)} />
-//! // <Divider config=Divider::default().with_dot(Palette::Secondary.accent(500)) />
-//! ```
-//!
-//! ## Tailwind Config
-//!
-//! Do **not** define semantic tokens in tailwind.config.js — they bypass dark mode
-//! variants and lose opacity modifier support. Only add genuinely custom hex colors.
-
 use crate::prelude::paste;
 
 //╔═══════════════════════════════════════════════════════════╗
-//║ Palette Macro                                             ║
+//║ Macros                                                    ║
 //╚═══════════════════════════════════════════════════════════╝
 /// Generates all theme-aware constants for a named palette from a single Tailwind color base.
 ///
@@ -85,6 +30,11 @@ macro_rules! define_palette {
       pub const [<$prefix _TEXT_700>]: &str = concat!("text-", $base, "-700 dark:text-", $base, "-300");
       pub const [<$prefix _TEXT_800>]: &str = concat!("text-", $base, "-800 dark:text-", $base, "-200");
 
+      //~@ Fill (for SVG icons)
+      pub const [<$prefix _FILL_600>]: &str = concat!("fill-", $base, "-600 dark:fill-", $base, "-400");
+      pub const [<$prefix _FILL_700>]: &str = concat!("fill-", $base, "-700 dark:fill-", $base, "-300");
+      pub const [<$prefix _FILL_800>]: &str = concat!("fill-", $base, "-800 dark:fill-", $base, "-200");
+
       //~@ Borders
       pub const [<$prefix _BORDER_300>]: &str = concat!("border-", $base, "-300 dark:border-", $base, "-700");
       pub const [<$prefix _BORDER_400>]: &str = concat!("border-", $base, "-400 dark:border-", $base, "-600");
@@ -94,29 +44,33 @@ macro_rules! define_palette {
       pub const [<$prefix _RING_400>]: &str = concat!("ring-", $base, "-400 dark:ring-", $base, "-500");
       pub const [<$prefix _RING_500>]: &str = concat!("ring-", $base, "-500 dark:ring-", $base, "-400");
 
-      //~@ Hover states
-      pub const [<$prefix _HOVER_100>]: &str = concat!("hover:bg-", $base, "-100 dark:hover:bg-", $base, "-900/40");
-      pub const [<$prefix _HOVER_200>]: &str = concat!("hover:bg-", $base, "-200 dark:hover:bg-", $base, "-800/50");
+      //~@ Hover states (backgrounds)
+      pub const [<$prefix _HOVER_BG_100>]: &str = concat!("hover:bg-", $base, "-100 dark:hover:bg-", $base, "-900/40");
+      pub const [<$prefix _HOVER_BG_200>]: &str = concat!("hover:bg-", $base, "-200 dark:hover:bg-", $base, "-800/50");
+
+      //~@ Hover states (text colors)
+      pub const [<$prefix _HOVER_TEXT_600>]: &str = concat!("hover:text-", $base, "-600 dark:hover:text-", $base, "-400");
+      pub const [<$prefix _HOVER_TEXT_700>]: &str = concat!("hover:text-", $base, "-700 dark:hover:text-", $base, "-300");
+      pub const [<$prefix _HOVER_TEXT_800>]: &str = concat!("hover:text-", $base, "-800 dark:hover:text-", $base, "-200");
 
       //~@ Surface backgrounds (component-level, not page-level fills)
-      // Designed to work WITH a border — the border provides definition,
-      // the background provides depth without a heavy opaque slab.
       /// Solid card surface — white on light, very subtle tint on dark.
       pub const [<$prefix _BG_CARD>]:    &str = "bg-white dark:bg-white/5";
       /// Frosted card surface — translucent on light, near-invisible tint on dark.
       pub const [<$prefix _BG_SURFACE>]: &str = "bg-white/60 dark:bg-white/5";
       /// Ghost surface — transparent on light, barely-there tint on dark.
-      /// Use for icon buttons and ghost-style interactive elements.
       pub const [<$prefix _BG_GHOST>]:   &str = "bg-transparent dark:bg-white/5";
 
       //~@ Semantic aliases (map intent → scale; change here to update all callsites)
-      pub const [<$prefix _BG>]:       &str = [<$prefix _BG_100>];
-      pub const [<$prefix _TEXT>]:     &str = [<$prefix _TEXT_700>];
-      pub const [<$prefix _ACCENT>]:   &str = [<$prefix _ACCENT_500>];
-      pub const [<$prefix _BG_SOLID>]: &str = [<$prefix _BG_SOLID_500>];
-      pub const [<$prefix _BORDER>]:   &str = [<$prefix _BORDER_400>];
-      pub const [<$prefix _RING>]:     &str = [<$prefix _RING_500>];
-      pub const [<$prefix _HOVER>]:    &str = [<$prefix _HOVER_100>];
+      pub const [<$prefix _BG>]:         &str = [<$prefix _BG_100>];
+      pub const [<$prefix _TEXT>]:       &str = [<$prefix _TEXT_700>];
+      pub const [<$prefix _FILL>]:       &str = [<$prefix _FILL_800>];
+      pub const [<$prefix _ACCENT>]:     &str = [<$prefix _ACCENT_500>];
+      pub const [<$prefix _BG_SOLID>]:   &str = [<$prefix _BG_SOLID_500>];
+      pub const [<$prefix _BORDER>]:     &str = [<$prefix _BORDER_400>];
+      pub const [<$prefix _RING>]:       &str = [<$prefix _RING_500>];
+      pub const [<$prefix _HOVER_BG>]:   &str = [<$prefix _HOVER_BG_100>];
+      pub const [<$prefix _HOVER_TEXT>]: &str = [<$prefix _HOVER_TEXT_600>];
     }
   };
 }
@@ -131,56 +85,10 @@ define_palette!(SECONDARY, "purple");
 define_palette!(NEUTRAL, "slate");
 
 //╔═══════════════════════════════════════════════════════════╗
-//║ SVG Filter Styles                                         ║
-//╚═══════════════════════════════════════════════════════════╝
-/// Renders a hard-black SVG as mid-grey. Use for icon rest/idle state.
-///
-/// `brightness(0)` collapses all pixels to black, `invert(0.35)` lifts to ~35% grey.
-///
-/// ```rust
-/// use app::constants::colors::GREY_FROM_BLACK;
-/// assert!(GREY_FROM_BLACK.contains("brightness(0)"));
-/// assert!(GREY_FROM_BLACK.contains("invert(0.35)"));
-/// ```
-pub const GREY_FROM_BLACK: &str = "filter: brightness(0) invert(0.35);";
-
-/// Renders a hard-black SVG as bright white. Use for icon hover state.
-///
-/// Pair with [`GREY_FROM_BLACK`] on the same icon: rest = grey, hover = white.
-///
-/// ```rust
-/// use app::constants::colors::WHITE_FROM_BLACK;
-/// assert!(WHITE_FROM_BLACK.contains("brightness(0)"));
-/// assert!(WHITE_FROM_BLACK.contains("invert(1)"));
-/// ```
-pub const WHITE_FROM_BLACK: &str = "filter: brightness(0) invert(1);";
-
-/// Dims a solid-colour SVG to match the grey tone of [`GREY_FROM_BLACK`].
-///
-/// ```rust
-/// use app::constants::colors::DIM_COLOUR;
-/// assert!(DIM_COLOUR.contains("opacity"));
-/// ```
-pub const DIM_COLOUR: &str = "opacity: 0.6;";
-
-//╔═══════════════════════════════════════════════════════════╗
-//║ Palette — runtime variant selection                       ║
+//║ Palette — Runtime Variant Selection                       ║
 //╚═══════════════════════════════════════════════════════════╝
 /// Selects a brand palette at runtime and exposes theme-aware class strings
 /// via typed accessor methods. All methods return `&'static str`.
-///
-/// ```rust
-/// use app::constants::colors::*;
-///
-/// assert_eq!(Palette::Primary.bg(100),     PRIMARY_BG_100);
-/// assert_eq!(Palette::Secondary.text(700), SECONDARY_TEXT_700);
-/// assert_eq!(Palette::Neutral.border(300), NEUTRAL_BORDER_300);
-/// assert_eq!(Palette::default(),           Palette::Primary);
-///
-/// let p = Palette::Secondary;
-/// assert_eq!(p.bg(200),    SECONDARY_BG_200);
-/// assert_eq!(p.hover(100), SECONDARY_HOVER_100);
-/// ```
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum Palette {
   #[default]
@@ -254,6 +162,22 @@ impl Palette {
     }
   }
 
+  /// Fill color (for SVG icons) — step: 600, 700, 800
+  pub fn fill(self, step: u16) -> &'static str {
+    match (self, step) {
+      (Self::Primary, 600) => PRIMARY_FILL_600,
+      (Self::Primary, 700) => PRIMARY_FILL_700,
+      (Self::Primary, 800) => PRIMARY_FILL_800,
+      (Self::Secondary, 600) => SECONDARY_FILL_600,
+      (Self::Secondary, 700) => SECONDARY_FILL_700,
+      (Self::Secondary, 800) => SECONDARY_FILL_800,
+      (Self::Neutral, 600) => NEUTRAL_FILL_600,
+      (Self::Neutral, 700) => NEUTRAL_FILL_700,
+      (Self::Neutral, 800) => NEUTRAL_FILL_800,
+      _ => panic!("fill() step must be 600, 700, or 800"),
+    }
+  }
+
   /// Border color — step: 300, 400, 500
   pub fn border(self, step: u16) -> &'static str {
     match (self, step) {
@@ -284,15 +208,31 @@ impl Palette {
   }
 
   /// Hover background — step: 100, 200
-  pub fn hover(self, step: u16) -> &'static str {
+  pub fn hover_bg(self, step: u16) -> &'static str {
     match (self, step) {
-      (Self::Primary, 100) => PRIMARY_HOVER_100,
-      (Self::Primary, 200) => PRIMARY_HOVER_200,
-      (Self::Secondary, 100) => SECONDARY_HOVER_100,
-      (Self::Secondary, 200) => SECONDARY_HOVER_200,
-      (Self::Neutral, 100) => NEUTRAL_HOVER_100,
-      (Self::Neutral, 200) => NEUTRAL_HOVER_200,
-      _ => panic!("hover() step must be 100 or 200"),
+      (Self::Primary, 100) => PRIMARY_HOVER_BG_100,
+      (Self::Primary, 200) => PRIMARY_HOVER_BG_200,
+      (Self::Secondary, 100) => SECONDARY_HOVER_BG_100,
+      (Self::Secondary, 200) => SECONDARY_HOVER_BG_200,
+      (Self::Neutral, 100) => NEUTRAL_HOVER_BG_100,
+      (Self::Neutral, 200) => NEUTRAL_HOVER_BG_200,
+      _ => panic!("hover_bg() step must be 100 or 200"),
+    }
+  }
+
+  /// Hover text color — step: 600, 700, 800
+  pub fn hover_text(self, step: u16) -> &'static str {
+    match (self, step) {
+      (Self::Primary, 600) => PRIMARY_HOVER_TEXT_600,
+      (Self::Primary, 700) => PRIMARY_HOVER_TEXT_700,
+      (Self::Primary, 800) => PRIMARY_HOVER_TEXT_800,
+      (Self::Secondary, 600) => SECONDARY_HOVER_TEXT_600,
+      (Self::Secondary, 700) => SECONDARY_HOVER_TEXT_700,
+      (Self::Secondary, 800) => SECONDARY_HOVER_TEXT_800,
+      (Self::Neutral, 600) => NEUTRAL_HOVER_TEXT_600,
+      (Self::Neutral, 700) => NEUTRAL_HOVER_TEXT_700,
+      (Self::Neutral, 800) => NEUTRAL_HOVER_TEXT_800,
+      _ => panic!("hover_text() step must be 600, 700, or 800"),
     }
   }
 }
@@ -311,6 +251,8 @@ mod tests {
     assert_eq!(PRIMARY_ACCENT, PRIMARY_ACCENT_500);
     assert_eq!(PRIMARY_BORDER, PRIMARY_BORDER_400);
     assert_eq!(PRIMARY_RING, PRIMARY_RING_500);
+    assert_eq!(PRIMARY_HOVER_BG, PRIMARY_HOVER_BG_100);
+    assert_eq!(PRIMARY_HOVER_TEXT, PRIMARY_HOVER_TEXT_600);
     assert_eq!(NEUTRAL_BG, NEUTRAL_BG_100);
     assert_eq!(NEUTRAL_BORDER, NEUTRAL_BORDER_400);
   }
@@ -322,6 +264,8 @@ mod tests {
     assert_eq!(Palette::Primary.accent(500), PRIMARY_ACCENT_500);
     assert_eq!(Palette::Primary.border(400), PRIMARY_BORDER_400);
     assert_eq!(Palette::Primary.ring(500), PRIMARY_RING_500);
+    assert_eq!(Palette::Primary.hover_bg(100), PRIMARY_HOVER_BG_100);
+    assert_eq!(Palette::Primary.hover_text(600), PRIMARY_HOVER_TEXT_600);
     assert_eq!(Palette::Secondary.bg(200), SECONDARY_BG_200);
     assert_eq!(Palette::Secondary.text(600), SECONDARY_TEXT_600);
     assert_eq!(Palette::Secondary.accent(400), SECONDARY_ACCENT_400);
@@ -333,14 +277,10 @@ mod tests {
   fn all_constants_contain_dark_variant() {
     for class in [
       PRIMARY_BG_100,
-      PRIMARY_BG_200,
-      PRIMARY_BG_300,
       PRIMARY_TEXT_600,
-      PRIMARY_TEXT_700,
-      PRIMARY_TEXT_800,
       PRIMARY_BORDER_300,
-      PRIMARY_BORDER_400,
-      PRIMARY_BORDER_500,
+      PRIMARY_HOVER_BG_100,
+      PRIMARY_HOVER_TEXT_600,
       SECONDARY_BG_100,
       SECONDARY_TEXT_700,
       NEUTRAL_BG_100,

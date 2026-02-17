@@ -17,7 +17,6 @@ pub mod prelude {
       //
     },
     leptos::prelude::*,
-    // leptos_icons::Icon as LeptosIcon,
     paste_complete::paste,
   };
 }

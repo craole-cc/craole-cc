@@ -1,6 +1,9 @@
 //! Central icon registry — one source of truth for every icon in the project.
 
-use super::{Icon, icon};
+use super::{
+  Icon,
+  icon,
+};
 
 const DARK_INVERT: &str = "dark:invert dark:hue-rotate-180";
 
@@ -61,14 +64,15 @@ impl Icons {
       // ── Tech Stack ──────────────────────────────────────────────────────
       Self::Rust => Icon::new_leptos(icon::FaRustBrands)
         .with_class("fill-[#D34516] dark:fill-[#F4A07C]")
-        .with_label("Rust")
-        .with_tooltip("Rust programming language"),
+        .with_link("https://github.com/craole-cc")
+        .with_tooltip("Rust programming language")
+        .with_label("Rust"),
 
       Self::GitHub => Icon::new_leptos(icon::FaGithubBrands)
-        .with_class("fill-current dark:fill-white")
-        .with_label("GitHub")
+        // .with_class("fill-current dark:fill-white")
         .with_link("https://github.com/craole-cc")
-        .with_tooltip("View my GitHub profile"),
+        .with_tooltip("View my GitHub profile")
+        .with_label("GitHub"),
 
       Self::Actix => Icon::new_leptos(icon::SiActix)
         .with_class(DARK_INVERT)
@@ -168,25 +172,31 @@ impl Icons {
         .with_link("https://linkedin.com/in/craole")
         .with_tooltip("Connect on LinkedIn"),
 
-      Self::WhatsApp => Icon::new_local("icons/logos/whatsapp.svg")
-        .with_label("WhatsApp")
+      // Self::WhatsApp => Icon::new_local("icons/logos/whatsapp.svg")
+      Self::WhatsApp => Icon::new_leptos(icon::RiWhatsappLogosFill)
+        .with_class("fill-[#25d366]")
         .with_link("https://wa.me/18768130049")
-        .with_tooltip("Message me on WhatsApp"),
+        .with_tooltip("Message me on WhatsApp")
+        .with_label("WhatsApp"),
 
       Self::Instagram => Icon::new_local("icons/logos/instagram.svg")
         .with_label("Instagram")
         .with_link("https://instagram.com/craole")
         .with_tooltip("Follow me on Instagram"),
 
-      Self::Facebook => Icon::new_local("icons/logos/facebook.svg")
-        .with_label("Facebook")
+      // Self::Facebook => Icon::new_local("icons/logos/facebook.svg")
+      // Self::Facebook => Icon::new_local("icons/logos/facebook.svg")
+      Self::Facebook => Icon::new_leptos(icon::FaFacebookBrands)
         .with_link("https://facebook.com/craole")
-        .with_tooltip("Connect on Facebook"),
+        .with_tooltip("Connect on Facebook")
+        .with_label("Facebook"),
 
-      Self::X => Icon::new_leptos(icon::AiXFilled)
-        .with_label("X")
+      Self::X => Icon::new_leptos(icon::AiXOutlined)
+        // Self::X => Icon::new_local("icons/logos/x.svg")
+        .with_class("fill-current dark:fill-white")
         .with_link("https://x.com/craole")
-        .with_tooltip("Follow me on X"),
+        .with_tooltip("Follow me on X")
+        .with_label("X"),
     }
   }
 }

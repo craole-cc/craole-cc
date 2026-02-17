@@ -7,9 +7,16 @@ pub mod icons;
 // pub use stacks::*;
 
 pub mod prelude {
-  pub use super::{
-    colors::*,
-    facets::*,
-    icons::prelude::*,
+  pub use {
+    super::{
+      colors,
+      colors::*,
+      facets::*,
+      icons::{
+        self,
+        prelude::*,
+      },
+    },
+    crate::prelude::*,
   };
 }
