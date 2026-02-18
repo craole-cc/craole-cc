@@ -18,7 +18,6 @@ leptos_icons.workspace = true
 leptos_meta.workspace = true
 leptos_router.workspace = true
 paste-complete.workspace = true
-singlestage.workspace = true
 thiserror.workspace = true
 
 [features]

@@ -18,6 +18,5 @@ pub mod prelude {
     },
     leptos::prelude::*,
     paste_complete::paste,
-    singlestage::*,
   };
 }

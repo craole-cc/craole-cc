@@ -1,4 +1,8 @@
-use crate::prelude::*;
+use {
+  leptos::prelude::*,
+  // crate::prelude::*,
+  singlestage::*,
+};
 
 #[component]
 pub fn ThemeModeSwitcher() -> impl IntoView {
@@ -6,7 +10,6 @@ pub fn ThemeModeSwitcher() -> impl IntoView {
   let theme_mode = RwSignal::new("auto".to_string(),);
 
   Effect::new(move || theme_context.set(theme_mode.get().into(),),);
-
   view! {
     <RadioGroup value=theme_mode>
       <legend>"Theme Mode"</legend>

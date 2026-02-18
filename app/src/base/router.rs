@@ -23,7 +23,6 @@ pub fn App() -> impl IntoView {
   view! {
     <Stylesheet id="leptos" href="/pkg/craole-cc.css" />
     <Title text="Craole-CC" />
-    // <ThemeProvider mode="auto" theme=Theme::Default>
       <Router>
         <main>
           <Routes fallback=|| "Page not found.".into_view()>
@@ -32,6 +31,5 @@ pub fn App() -> impl IntoView {
           </Routes>
         </main>
       </Router>
-    // </ThemeProvider>
   }
 }

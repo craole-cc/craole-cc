@@ -87,7 +87,7 @@
         #? openssl.dev provides the headers; openssl provides the runtime.
         nativeTools = with pkgs; [
           pkg-config
-          openssl.dev
+          # openssl.dev
         ];
 
         #? General dev utilities
@@ -123,7 +123,7 @@
           #? `self` rather than `./.` proves the output is fully self-contained
           src = self;
 
-          buildInputs = [rustToolchain pkgs.trunk pkgs.openssl.dev];
+          buildInputs = [rustToolchain pkgs.trunk];
           nativeBuildInputs = [pkgs.pkg-config];
 
           buildPhase = ''
