@@ -38,3 +38,4 @@ package-lock.json
 /.direnv/
 .env
 .env.local
+tmp.*
