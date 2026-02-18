@@ -82,14 +82,6 @@
           treefmt
         ];
 
-        #? System libraries — needed for crates like openssl-sys
-        #? pkg-config lets cargo build scripts locate native libraries;
-        #? openssl.dev provides the headers; openssl provides the runtime.
-        nativeTools = with pkgs; [
-          pkg-config
-          openssl.dev
-        ];
-
         #? General dev utilities
         devTools = with pkgs; [
           lsd
@@ -100,10 +92,7 @@
         #╚═══════════════════════════════════════════════════════════╝
 
         devShells.default = pkgs.mkShell {
-          buildInputs = rustTools ++ frontendTools ++ formatTools ++ nativeTools ++ devTools;
-
-          #? Ensure openssl-sys and similar build scripts can find the library
-          PKG_CONFIG_PATH = "${pkgs.openssl.dev}/lib/pkgconfig";
+          buildInputs = rustTools ++ frontendTools ++ formatTools ++ devTools;
         };
 
         #╔═══════════════════════════════════════════════════════════╗
@@ -123,8 +112,7 @@
           #? `self` rather than `./.` proves the output is fully self-contained
           src = self;
 
-          buildInputs = [rustToolchain pkgs.trunk pkgs.openssl.dev];
-          nativeBuildInputs = [pkgs.pkg-config];
+          buildInputs = [rustToolchain pkgs.trunk];
 
           buildPhase = ''
             export HOME=$TMPDIR
