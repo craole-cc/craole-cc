@@ -19,14 +19,24 @@
     flake-utils.lib.eachDefaultSystem (
       system: let
         overlays = [(import rust-overlay)];
-        pkgs = import nixpkgs {
-          inherit system overlays;
-        };
-        rustToolchain = pkgs.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml;
-        # rustToolchain = pkgs.rust-bin.stable.latest.default.override {
-        #   extensions = ["rust-src" "rust-analyzer"];
-        #   targets = ["wasm32-unknown-unknown"];
-        # };
+        pkgs = import nixpkgs {inherit system overlays;};
+
+        # Prefer rust-toolchain.toml if present, otherwise latest nightly
+        rustToolchain =
+          if builtins.pathExists ./rust-toolchain.toml
+          then pkgs.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml
+          else
+            pkgs.rust-bin.selectLatestNightlyWith (
+              toolchain:
+                toolchain.default.override {
+                  extensions = [
+                    "rust-src"
+                    "rust-analyzer"
+                    "clippy"
+                  ];
+                  targets = ["wasm32-unknown-unknown"];
+                }
+            );
       in {
         devShells.default = pkgs.mkShell {
           buildInputs = with pkgs; [
@@ -51,16 +61,12 @@
             trunk
             wasm-bindgen-cli
           ];
-
-          shellHook = ''
-            # echo "🦀 Leptos dev environment loaded"
-            # echo "Run: trunk serve --open"
-          '';
         };
 
+        # Use `self` to expose the built site as the default package
         packages.default = pkgs.stdenv.mkDerivation {
           name = "portfolio";
-          src = ./.;
+          src = self; # or `./.`; using `self` proves the output is self-contained
 
           buildInputs = [rustToolchain pkgs.trunk];
 
