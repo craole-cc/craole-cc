@@ -9,16 +9,16 @@ homepage.workspace = true
 repository.workspace = true
 
 [dependencies]
+cfg-if.workspace = true
+http.workspace = true
+icondata.workspace = true
 leptos.workspace = true
+leptos_axum = { workspace = true, optional = true }
+leptos_icons.workspace = true
 leptos_meta.workspace = true
 leptos_router.workspace = true
-leptos_icons.workspace = true
-icondata.workspace = true
-leptos_axum = { workspace = true, optional = true }
-
-http.workspace = true
-cfg-if.workspace = true
 paste-complete.workspace = true
+singlestage.workspace = true
 thiserror.workspace = true
 
 [features]
