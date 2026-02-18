@@ -69,10 +69,10 @@ impl Icons {
         .with_label("Rust",),
 
       | Self::GitHub => Icon::new_leptos(icon::FaGithubBrands)
-        // .with_class("fill-current dark:fill-white")
-        .with_link("https://github.com/craole-cc")
-        .with_tooltip("View my GitHub profile")
-        .with_label("GitHub"),
+                // .with_class("fill-current dark:fill-white")
+                .with_link("https://github.com/craole-cc")
+                .with_tooltip("View my GitHub profile")
+                .with_label("GitHub"),
 
       | Self::Actix => Icon::new_leptos(icon::SiActix,)
         .with_class(DARK_INVERT,)
@@ -196,11 +196,11 @@ impl Icons {
         .with_label("Facebook",),
 
       | Self::X => Icon::new_leptos(icon::AiXOutlined)
-        // Self::X => Icon::new_local("icons/logos/x.svg")
-        .with_class("fill-current dark:fill-white")
-        .with_link("https://x.com/craole")
-        .with_tooltip("Follow me on X")
-        .with_label("X"),
+                // Self::X => Icon::new_local("icons/logos/x.svg")
+                .with_class("fill-current dark:fill-white")
+                .with_link("https://x.com/craole")
+                .with_tooltip("Follow me on X")
+                .with_label("X"),
     }
   }
 }
