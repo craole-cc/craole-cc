@@ -1,6 +1,10 @@
-use leptos::html::{Meta, Title};
-
-use crate::prelude::*;
+use {
+  crate::prelude::*,
+  leptos::html::{
+    Meta,
+    Title,
+  },
+};
 
 #[component]
 pub fn BlogPost1() -> impl IntoView {

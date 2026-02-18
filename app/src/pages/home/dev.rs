@@ -1,5 +1,9 @@
 use crate::{
-  constants::stacks::{Tech, areas, stacks},
+  constants::stacks::{
+    Tech,
+    areas,
+    stacks,
+  },
   prelude::*,
 }; // Note: Tech is from stacks.rs
 
@@ -16,7 +20,7 @@ pub fn Stacks() -> impl IntoView {
 }
 
 #[component]
-fn StackCard(category: Stack) -> impl IntoView {
+fn StackCard(category : Stack,) -> impl IntoView {
   view! {
     <div class=format!("p-5 rounded-lg border {} {}", NEUTRAL_BG_100, NEUTRAL_BORDER_300)>
       <h3 class=format!("mb-4 text-lg font-semibold {}", NEUTRAL_TEXT_800)>{category.title}</h3>
@@ -32,7 +36,7 @@ fn StackCard(category: Stack) -> impl IntoView {
 }
 
 #[component]
-fn TechBadge(tech: Tech) -> impl IntoView {
+fn TechBadge(tech : Tech,) -> impl IntoView {
   let icon_set = tech.icon.to_icon_set(); // Icons enum -> Set
   view! {
     <a
@@ -76,7 +80,7 @@ pub fn Areas() -> impl IntoView {
 }
 
 #[component]
-fn AreaCard(area: Area) -> impl IntoView {
+fn AreaCard(area : Area,) -> impl IntoView {
   view! {
     <div class=format!(
       "p-6 rounded-xl border transition-all duration-300 \

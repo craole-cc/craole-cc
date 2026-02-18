@@ -1,10 +1,18 @@
 use {
   crate::prelude::*,
   leptos::prelude::*,
-  leptos_meta::{Stylesheet, Title, provide_meta_context},
+  leptos_meta::{
+    Stylesheet,
+    Title,
+    provide_meta_context,
+  },
   leptos_router::{
     StaticSegment,
-    components::{Route, Router, Routes},
+    components::{
+      Route,
+      Router,
+      Routes,
+    },
   },
 };
 

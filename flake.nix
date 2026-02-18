@@ -30,9 +30,10 @@
               toolchain:
                 toolchain.default.override {
                   extensions = [
-                    "rust-src"
-                    "rust-analyzer"
                     "clippy"
+                    "rust-analyzer"
+                    "rust-src"
+                    "rustfmt"
                   ];
                   targets = ["wasm32-unknown-unknown"];
                 }

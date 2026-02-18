@@ -10,11 +10,11 @@ use crate::prelude::*;
 //║ Social                                                    ║
 //╚═══════════════════════════════════════════════════════════╝
 /// View-model for a single social media entry.
-#[derive(Default, Clone)]
+#[derive(Default, Clone,)]
 pub struct Social {
-  pub link: &'static str,
-  pub name: &'static str,
-  pub logo: Logo,
+  pub link : &'static str,
+  pub name : &'static str,
+  pub logo : Logo,
 }
 
 /// Returns the social links in display order.
@@ -23,65 +23,65 @@ pub struct Social {
 /// [`WHITE_FROM_BLACK`] on hover — grey → white progression in dark mode.
 /// Colour SVGs (Gmail, LinkedIn, Instagram, Facebook) rely on the `grayscale`
 /// Tailwind class applied by [`SocialIcon`] at rest, and reveal full colour on hover.
-pub fn socials() -> Vec<Social> {
+pub fn socials() -> Vec<Social,> {
   vec![
     Social {
-      link: "mailto:craig.craole.cole@gmail.com",
-      name: "Gmail",
+      link : "mailto:craig.craole.cole@gmail.com",
+      name : "Gmail",
       // Colour SVG — grayscale class handles dimming at rest
-      logo: Logo::new().with_icon_src("icons/logos/gmail.svg"),
+      logo : Logo::new().with_icon_src("icons/logos/gmail.svg",),
     },
     Social {
-      link: "https://github.com/craole-cc",
-      name: "GitHub",
+      link : "https://github.com/craole-cc",
+      name : "GitHub",
       // Black SVG — rest: grey, hover: white
-      logo: Logo::new()
-        .with_icon_src("icons/logos/github.svg")
-        .with_icon_style(GREY_FROM_BLACK)
-        .with_icon_hover_style(WHITE_FROM_BLACK),
+      logo : Logo::new()
+        .with_icon_src("icons/logos/github.svg",)
+        .with_icon_style(GREY_FROM_BLACK,)
+        .with_icon_hover_style(WHITE_FROM_BLACK,),
     },
     Social {
-      link: "https://linkedin.com/in/craole",
-      name: "LinkedIn",
+      link : "https://linkedin.com/in/craole",
+      name : "LinkedIn",
       // Colour SVG — grayscale class handles dimming at rest
-      logo: Logo::new().with_icon_src("icons/logos/linkedin.svg"),
+      logo : Logo::new().with_icon_src("icons/logos/linkedin.svg",),
     },
     Social {
-      link: "https://wa.me/18768130049",
-      name: "WhatsApp",
+      link : "https://wa.me/18768130049",
+      name : "WhatsApp",
       // Black SVG — needs brightness lift; hover shows full-colour version
-      logo: Logo::new()
-        .with_icon_src("icons/logos/whatsapp-simple.svg")
-        .with_icon_hover_src("icons/logos/whatsapp.svg")
-        .with_icon_style(GREY_FROM_BLACK),
+      logo : Logo::new()
+        .with_icon_src("icons/logos/whatsapp-simple.svg",)
+        .with_icon_hover_src("icons/logos/whatsapp.svg",)
+        .with_icon_style(GREY_FROM_BLACK,),
     },
     Social {
-      link: "https://instagram.com/craole",
-      name: "Instagram",
+      link : "https://instagram.com/craole",
+      name : "Instagram",
       // Colour SVG — grayscale class handles dimming at rest
-      logo: Logo::new()
-        .with_icon_src("icons/logos/instagram.svg")
-        .with_icon_hover_src("icons/logos/instagram.svg"),
+      logo : Logo::new()
+        .with_icon_src("icons/logos/instagram.svg",)
+        .with_icon_hover_src("icons/logos/instagram.svg",),
     },
     Social {
-      link: "https://facebook.com/craole",
-      name: "Facebook",
+      link : "https://facebook.com/craole",
+      name : "Facebook",
       // Colour SVG — grayscale class handles dimming at rest
-      logo: Logo::new().with_icon_src("icons/logos/facebook.svg"),
+      logo : Logo::new().with_icon_src("icons/logos/facebook.svg",),
     },
     Social {
-      link: "https://x.com/craole",
-      name: "X",
+      link : "https://x.com/craole",
+      name : "X",
       // Black SVG — rest: grey + scaled, hover: white + scaled
-      logo: Logo::new()
-        .with_icon_src("icons/logos/x-simple.svg")
-        .with_icon_hover_src("icons/logos/x.svg")
+      logo : Logo::new()
+        .with_icon_src("icons/logos/x-simple.svg",)
+        .with_icon_hover_src("icons/logos/x.svg",)
         .with_icon_style(Box::leak(
           format!("{GREY_FROM_BLACK} transform: scale(0.75);").into_boxed_str(),
-        ))
+        ),)
         .with_icon_hover_style(Box::leak(
           format!("{WHITE_FROM_BLACK} transform: scale(0.75);").into_boxed_str(),
-        )),
+        ),),
     },
   ]
 }
@@ -107,7 +107,7 @@ pub fn Socials() -> impl IntoView {
 /// Reset state: greyscale + dimmed (via Tailwind `grayscale` + the icon's style).
 /// Hover state: full colour, no filter.
 #[component]
-fn SocialIcon(social: Social) -> impl IntoView {
+fn SocialIcon(social : Social,) -> impl IntoView {
   let base = "absolute inset-0 w-6 h-6 transition-opacity duration-300";
 
   view! {

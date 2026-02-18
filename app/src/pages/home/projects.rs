@@ -1,43 +1,43 @@
 use crate::prelude::*;
 
 // Project data is page-local — not reused elsewhere.
-#[derive(Clone)]
+#[derive(Clone,)]
 struct Project {
-  title: &'static str,
-  description: &'static str,
-  tags: Vec<&'static str>,
-  status: &'static str,
+  title :       &'static str,
+  description : &'static str,
+  tags :        Vec<&'static str,>,
+  status :      &'static str,
 }
 
 #[component]
 pub fn Projects() -> impl IntoView {
   let projects = vec![
     Project {
-      title: "Full-Stack Portfolio",
-      description: "Rust-powered portfolio site with Leptos + Axum, showcasing modern \
-                    full-stack development with HTMX and Tailwind",
-      tags: vec!["Rust", "Leptos", "Axum", "HTMX", "Tailwind"],
-      status: "🚀 Active",
+      title :       "Full-Stack Portfolio",
+      description : "Rust-powered portfolio site with Leptos + Axum, showcasing modern full-stack \
+                     development with HTMX and Tailwind",
+      tags :        vec!["Rust", "Leptos", "Axum", "HTMX", "Tailwind"],
+      status :      "🚀 Active",
     },
     Project {
-      title: "Data Pipeline System",
-      description: "High-performance data pipeline using Rust and Delta Lake for efficient \
-                    data ingestion and transformation",
-      tags: vec!["Rust", "Delta Lake", "Apache Spark"],
-      status: "🔨 Building",
+      title :       "Data Pipeline System",
+      description : "High-performance data pipeline using Rust and Delta Lake for efficient data \
+                     ingestion and transformation",
+      tags :        vec!["Rust", "Delta Lake", "Apache Spark"],
+      status :      "🔨 Building",
     },
     Project {
-      title: "Graph Analytics Platform",
-      description: "Analytics platform using Neo4j to model complex relationships in \
-                    business data",
-      tags: vec!["Neo4j", "Cypher", "Rust"],
-      status: "🔨 Building",
+      title :       "Graph Analytics Platform",
+      description : "Analytics platform using Neo4j to model complex relationships in business \
+                     data",
+      tags :        vec!["Neo4j", "Cypher", "Rust"],
+      status :      "🔨 Building",
     },
     Project {
-      title: "CLI Utilities Suite",
-      description: "Cross-platform developer productivity tools and system utilities",
-      tags: vec!["Rust", "CLI", "Cross-platform"],
-      status: "💡 Planning",
+      title :       "CLI Utilities Suite",
+      description : "Cross-platform developer productivity tools and system utilities",
+      tags :        vec!["Rust", "CLI", "Cross-platform"],
+      status :      "💡 Planning",
     },
   ];
 
@@ -55,7 +55,7 @@ pub fn Projects() -> impl IntoView {
 }
 
 #[component]
-fn ProjectCard(project: Project) -> impl IntoView {
+fn ProjectCard(project : Project,) -> impl IntoView {
   view! {
     <div class=format!(
       "p-6 rounded-xl border shadow-sm transition-all duration-300 \

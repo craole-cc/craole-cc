@@ -10,7 +10,7 @@
 /// assert!(GREY_FROM_BLACK.contains("brightness(0)"));
 /// assert!(GREY_FROM_BLACK.contains("invert(0.35)"));
 /// ```
-pub const GREY_FROM_BLACK: &str = "filter: brightness(0) invert(0.35);";
+pub const GREY_FROM_BLACK : &str = "filter: brightness(0) invert(0.35);";
 
 /// Renders a hard-black SVG as bright white. Use for icon hover state.
 ///
@@ -21,7 +21,7 @@ pub const GREY_FROM_BLACK: &str = "filter: brightness(0) invert(0.35);";
 /// assert!(WHITE_FROM_BLACK.contains("brightness(0)"));
 /// assert!(WHITE_FROM_BLACK.contains("invert(1)"));
 /// ```
-pub const WHITE_FROM_BLACK: &str = "filter: brightness(0) invert(1);";
+pub const WHITE_FROM_BLACK : &str = "filter: brightness(0) invert(1);";
 
 /// Dims a solid-colour SVG to match the grey tone of [`GREY_FROM_BLACK`].
 ///
@@ -29,6 +29,6 @@ pub const WHITE_FROM_BLACK: &str = "filter: brightness(0) invert(1);";
 /// use app::constants::colors::DIM_COLOUR;
 /// assert!(DIM_COLOUR.contains("opacity"));
 /// ```
-pub const DIM_COLOUR: &str = "opacity: 0.6;";
+pub const DIM_COLOUR : &str = "opacity: 0.6;";
 
-pub const DARK_INVERT: &str = "dark:invert dark:hue-rotate-180";
+pub const DARK_INVERT : &str = "dark:invert dark:hue-rotate-180";

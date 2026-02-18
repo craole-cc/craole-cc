@@ -135,18 +135,20 @@ use crate::prelude::*;
 /// Generates a left-side gradient class string: transparent → color at center.
 ///
 /// `base` should be a plain Tailwind color name, e.g., `"slate"`.
-fn line_gradient_left(base: &str) -> String {
+fn line_gradient_left(base : &str,) -> String {
   format!(
-    "bg-[linear-gradient(to_right,transparent_0%,var(--color-{base}-300)_50%)] dark:bg-[linear-gradient(to_right,transparent_0%,var(--color-{base}-700)_50%)]"
+    "bg-[linear-gradient(to_right,transparent_0%,var(--color-{base}-300)_50%)] \
+     dark:bg-[linear-gradient(to_right,transparent_0%,var(--color-{base}-700)_50%)]"
   )
 }
 
 /// Generates a right-side gradient class string: color at center → transparent.
 ///
 /// `base` should be a plain Tailwind color name, e.g., `"slate"`.
-fn line_gradient_right(base: &str) -> String {
+fn line_gradient_right(base : &str,) -> String {
   format!(
-    "bg-[linear-gradient(to_right,var(--color-{base}-300)_50%,transparent_100%)] dark:bg-[linear-gradient(to_right,var(--color-{base}-700)_50%,transparent_100%)]"
+    "bg-[linear-gradient(to_right,var(--color-{base}-300)_50%,transparent_100%)] \
+     dark:bg-[linear-gradient(to_right,var(--color-{base}-700)_50%,transparent_100%)]"
   )
 }
 
@@ -178,34 +180,34 @@ fn line_gradient_right(base: &str) -> String {
 ///   .with_dot_pos(4, 8)
 ///   .with_margin("mx-auto max-w-4xl")
 /// ```
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy,)]
 pub struct Divider {
   /// Base Tailwind color name for the line gradient (e.g., `"slate"`).
   /// Used to construct `var(--color-{line_base}-300)` / `var(--color-{line_base}-700)`.
-  pub line_base: &'static str,
+  pub line_base : &'static str,
 
   /// Complete Tailwind class string for the dot (e.g., `"bg-teal-500/70 dark:bg-teal-400/70"`).
   /// Use constants from `colors.rs` — they are already theme-aware.
-  pub dot_class: Option<&'static str>,
+  pub dot_class : Option<&'static str,>,
 
   /// Gap spacing (left, right) in Tailwind units (1 unit = 4px).
-  pub dot_pos: Option<(u8, u8)>,
+  pub dot_pos : Option<(u8, u8,),>,
 
   /// Vertical padding class (e.g., `"py-4"`).
-  pub padding: &'static str,
+  pub padding : &'static str,
 
   /// Horizontal margin / width constraint (e.g., `"mx-auto max-w-xl"`).
-  pub margin: &'static str,
+  pub margin : &'static str,
 }
 
 impl Default for Divider {
   fn default() -> Self {
     Self {
-      line_base: "slate",
-      dot_class: None,
-      dot_pos: None,
-      padding: "py-2 md:py-6",
-      margin: "",
+      line_base : "slate",
+      dot_class : None,
+      dot_pos :   None,
+      padding :   "py-2 md:py-6",
+      margin :    "",
     }
   }
 }
@@ -220,15 +222,15 @@ impl Divider {
   ///   constants::colors::PRIMARY_ACCENT,
   /// };
   /// Divider::default()
-  ///   .with_dot(PRIMARY_ACCENT)
-  ///   .with_dot_pos(4, 4)
-  ///   .with_margin("mx-auto max-w-xl");
+  ///   .with_dot(PRIMARY_ACCENT,)
+  ///   .with_dot_pos(4, 4,)
+  ///   .with_margin("mx-auto max-w-xl",);
   /// ```
   pub fn default_with_dot() -> Self {
     Self::default()
-      .with_dot(PRIMARY_ACCENT)
-      .with_dot_pos(4, 4)
-      .with_margin("mx-auto max-w-xl")
+      .with_dot(PRIMARY_ACCENT,)
+      .with_dot_pos(4, 4,)
+      .with_margin("mx-auto max-w-xl",)
   }
 
   /// Adds a centered dot with the given Tailwind background class.
@@ -236,10 +238,10 @@ impl Divider {
   /// Pass a theme-aware constant from `colors.rs` (e.g., `PRIMARY_ACCENT`, `SECONDARY_ACCENT`),
   /// or any raw Tailwind class string. Automatically sets symmetric 6-unit gaps if
   /// `with_dot_pos` has not already been called.
-  pub fn with_dot(mut self, class: &'static str) -> Self {
-    self.dot_class = Some(class);
+  pub fn with_dot(mut self, class : &'static str,) -> Self {
+    self.dot_class = Some(class,);
     if self.dot_pos.is_none() {
-      self.dot_pos = Some((6, 6));
+      self.dot_pos = Some((6, 6,),);
     }
     self
   }
@@ -247,13 +249,13 @@ impl Divider {
   /// Sets the gap on each side of the dot in Tailwind spacing units (1 unit = 4px).
   ///
   /// Common values: 2 = 8px, 4 = 16px, 6 = 24px (default), 8 = 32px.
-  pub fn with_dot_pos(mut self, left: u8, right: u8) -> Self {
-    self.dot_pos = Some((left, right));
+  pub fn with_dot_pos(mut self, left : u8, right : u8,) -> Self {
+    self.dot_pos = Some((left, right,),);
     self
   }
 
   /// Overrides the vertical padding class (default: `"py-4"`).
-  pub fn with_padding(mut self, padding: &'static str) -> Self {
+  pub fn with_padding(mut self, padding : &'static str,) -> Self {
     self.padding = padding;
     self
   }
@@ -261,7 +263,7 @@ impl Divider {
   /// Sets the horizontal margin and/or max-width constraint.
   ///
   /// Examples: `"mx-auto max-w-2xl"`, `"mx-24"`, `"w-full"`.
-  pub fn with_margin(mut self, margin: &'static str) -> Self {
+  pub fn with_margin(mut self, margin : &'static str,) -> Self {
     self.margin = margin;
     self
   }
@@ -269,7 +271,7 @@ impl Divider {
   /// Overrides the line base color (default: `"slate"`).
   ///
   /// Must be a plain Tailwind color name (e.g., `"teal"`, `"zinc"`).
-  pub fn with_line_color(mut self, base: &'static str) -> Self {
+  pub fn with_line_color(mut self, base : &'static str,) -> Self {
     self.line_base = base;
     self
   }
@@ -307,12 +309,12 @@ impl Divider {
 pub fn Divider(
   /// Divider configuration (optional — uses [`Divider::default`] if omitted)
   #[prop(default = Divider::default())]
-  config: Divider,
+  config : Divider,
 ) -> impl IntoView {
-  let left_gradient = line_gradient_left(config.line_base);
-  let right_gradient = line_gradient_right(config.line_base);
+  let left_gradient = line_gradient_left(config.line_base,);
+  let right_gradient = line_gradient_right(config.line_base,);
 
-  let (left_gap, right_gap) = config.dot_pos.unwrap_or((0, 0));
+  let (left_gap, right_gap,) = config.dot_pos.unwrap_or((0, 0,),);
 
   view! {
     <div class=format!("flex items-center {} {}", config.padding, config.margin)>
@@ -353,9 +355,9 @@ pub fn DividerHr() -> impl IntoView {
 pub fn DividerHrDot(
   /// Optional Tailwind background class for the dot (e.g., `"bg-blue-500/80"`).
   /// Defaults to the primary accent if `None`.
-  dot_color: Option<&'static str>,
+  dot_color : Option<&'static str,>,
 ) -> impl IntoView {
-  let dot_color = dot_color.unwrap_or(PRIMARY_ACCENT);
+  let dot_color = dot_color.unwrap_or(PRIMARY_ACCENT,);
 
   view! {
     <div class="flex gap-6 items-center py-3 mx-36 max-w-4xl">

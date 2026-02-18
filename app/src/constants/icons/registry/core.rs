@@ -1,9 +1,12 @@
 use {
-  super::{devops, social},
+  super::{
+    devops,
+    social,
+  },
   crate::prelude::Icon,
 };
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash,)]
 pub enum Icons {
   // Languages & Core
   Rust,
@@ -54,7 +57,7 @@ pub enum Icons {
 }
 
 impl Icons {
-  pub fn get(self) -> Icon {
+  pub fn get(self,) -> Icon {
     use Icons::*;
     match self {
       // Rust => languages::rust(),

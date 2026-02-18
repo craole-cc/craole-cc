@@ -1,6 +1,9 @@
-use crate::prelude::{icons::*, *};
+use crate::prelude::{
+  icons::*,
+  *,
+};
 
-const SOCIALS: &[Icons] = &[
+const SOCIALS : &[Icons] = &[
   Icons::Gmail,
   Icons::GitHub,
   Icons::LinkedIn,
@@ -10,10 +13,10 @@ const SOCIALS: &[Icons] = &[
   Icons::X,
 ];
 
-const SOCIAL_ICON_SIZE: &str = "w-6 h-6";
+const SOCIAL_ICON_SIZE : &str = "w-6 h-6";
 
 #[component]
-fn SocialIcon(icon_enum: Icons) -> impl IntoView {
+fn SocialIcon(icon_enum : Icons,) -> impl IntoView {
   //? Default: neutral-colored variants
   let default_icon = icon_enum
     .get()
@@ -26,13 +29,13 @@ fn SocialIcon(icon_enum: Icons) -> impl IntoView {
       | Icons::Facebook => facebook_variants::filled(),
       | Icons::X => x_variants::filled(),
       | _ => icon_enum.get().source,
-    })
-    .and_class(NEUTRAL_FILL);
+    },)
+    .and_class(NEUTRAL_FILL,);
 
   //? Hover: brand-colored variants
   let hover_icon = match icon_enum {
-    | Icons::GitHub => github_variants::with_color(github_variants::outlined()),
-    | Icons::X => x_variants::with_color(x_variants::outlined()),
+    | Icons::GitHub => github_variants::with_color(github_variants::outlined(),),
+    | Icons::X => x_variants::with_color(x_variants::outlined(),),
     | _ => icon_enum.get(),
   };
 
@@ -43,13 +46,13 @@ fn SocialIcon(icon_enum: Icons) -> impl IntoView {
       rel="noopener noreferrer"
       aria-label=default_icon.label()
       title=default_icon.tooltip()
-      class="relative inline-flex items-center justify-center w-8 h-8 transition-all duration-300 rounded-lg hover:-translate-y-1 group"
+      class="inline-flex relative justify-center items-center w-8 h-8 rounded-lg transition-all duration-300 hover:-translate-y-1 group"
     >
-      <div class="absolute inset-0 flex items-center justify-center transition-opacity duration-300 group-hover:opacity-0">
+      <div class="flex absolute inset-0 justify-center items-center transition-opacity duration-300 group-hover:opacity-0">
         <IconRender icon=default_icon class=SOCIAL_ICON_SIZE />
       </div>
 
-      <div class="absolute inset-0 flex items-center justify-center transition-opacity duration-300 opacity-0 group-hover:opacity-100 grayscale-0">
+      <div class="flex absolute inset-0 justify-center items-center opacity-0 transition-opacity duration-300 group-hover:opacity-100 grayscale-0">
         <IconRender icon=hover_icon class=SOCIAL_ICON_SIZE />
       </div>
     </a>
@@ -93,7 +96,7 @@ pub fn Facets() -> impl IntoView {
 #[component]
 pub fn Copyright() -> impl IntoView {
   view! {
-    <p class=format!("mb-2 tracking-tight text-md {NEUTRAL_TEXT_700}" )>
+    <p class=format!("mb-2 tracking-tight text-md {NEUTRAL_TEXT_700}")>
       <span>{AUTHOR_FIRSTNAME}</span>
       <span class="text-xl font-semibold">" "{AUTHOR_ALIAS}" "</span>
       <span>{AUTHOR_SURNAME}</span>
@@ -109,10 +112,10 @@ pub fn Copyright() -> impl IntoView {
 #[component]
 pub fn Footer() -> impl IntoView {
   view! {
-    <footer class=format!("text-center {NEUTRAL_TEXT_600}" )>
+    <footer class=format!("text-center {NEUTRAL_TEXT_600}")>
       <Divider />
       <nav class="grid">
-        <div class="flex flex-wrap justify-center gap-2">
+        <div class="flex flex-wrap gap-2 justify-center">
           {SOCIALS.iter().map(|&icon| view! { <SocialIcon icon_enum=icon /> }).collect::<Vec<_>>()}
         </div>
         <Facets />
