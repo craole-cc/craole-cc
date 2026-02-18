@@ -49,15 +49,18 @@ excludes = [
 #║ Rust                           ║
 #╚════════════════════════════════╝
 
-[formatter.leptosfmt]
-command = "leptosfmt"
-includes = ["*.rs"]
-priority = 1
-
 [formatter.rust]
-command = "rustfmt"
+command = "scripts/fmt-rust.sh"
 includes = ["*.rs"]
-priority = 2
+# [formatter.leptosfmt]
+# command = "leptosfmt"
+# includes = ["*.rs"]
+# priority = 1
+
+# [formatter.rust]
+# command = "rustfmt"
+# includes = ["*.rs"]
+# priority = 2
 
 #╔════════════════════════════════╗
 #║ Shellscript                    ║

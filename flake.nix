@@ -21,7 +21,11 @@
         overlays = [(import rust-overlay)];
         pkgs = import nixpkgs {inherit system overlays;};
 
-        # Prefer rust-toolchain.toml if present, otherwise latest nightly
+        #╔═══════════════════════════════════════════════════════════╗
+        #║ Rust Toolchain                                            ║
+        #╚═══════════════════════════════════════════════════════════╝
+
+        #? Prefer rust-toolchain.toml if present, otherwise latest nightly
         rustToolchain =
           if builtins.pathExists ./rust-toolchain.toml
           then pkgs.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml
@@ -38,36 +42,75 @@
                   targets = ["wasm32-unknown-unknown"];
                 }
             );
+
+        #╔═══════════════════════════════════════════════════════════╗
+        #║ Tool Groups                                               ║
+        #╚═══════════════════════════════════════════════════════════╝
+
+        #? Rust / Leptos build chain
+        rustTools = with pkgs; [
+          rustToolchain
+          binaryen
+          cargo-bloat
+          cargo-edit
+          cargo-generate
+          cargo-leptos
+          cargo-seek
+          cargo-sweep
+          cargo-watch
+          cargo-wipe
+          leptosfmt
+          trunk
+          wasm-bindgen-cli
+        ];
+
+        #? Frontend assets
+        frontendTools = with pkgs; [
+          dart-sass
+          deno
+          pnpm
+          tailwindcss_4
+        ];
+
+        #? Formatting and linting — must stay in sync with .treefmt.toml
+        formatTools = with pkgs; [
+          actionlint
+          fd
+          shellcheck
+          shfmt
+          taplo
+          treefmt
+        ];
+
+        #? General dev utilities
+        devTools = with pkgs; [
+          lsd
+        ];
       in {
+        #╔═══════════════════════════════════════════════════════════╗
+        #║ Dev Shell                                                 ║
+        #╚═══════════════════════════════════════════════════════════╝
+
         devShells.default = pkgs.mkShell {
-          buildInputs = with pkgs; [
-            actionlint
-            binaryen
-            cargo-bloat
-            cargo-edit
-            cargo-generate
-            cargo-leptos
-            cargo-seek
-            cargo-sweep
-            cargo-watch
-            cargo-wipe
-            dart-sass
-            deno
-            tailwindcss_4
-            leptosfmt
-            pnpm
-            rustToolchain
-            taplo
-            treefmt
-            trunk
-            wasm-bindgen-cli
-          ];
+          buildInputs = rustTools ++ frontendTools ++ formatTools ++ devTools;
         };
 
-        # Use `self` to expose the built site as the default package
+        #╔═══════════════════════════════════════════════════════════╗
+        #║ Formatter                                                 ║
+        #╚═══════════════════════════════════════════════════════════╝
+
+        #? Exposes treefmt as the nix formatter so `nix fmt` works
+        formatter = pkgs.treefmt;
+
+        #╔═══════════════════════════════════════════════════════════╗
+        #║ Packages                                                  ║
+        #╚═══════════════════════════════════════════════════════════╝
+
         packages.default = pkgs.stdenv.mkDerivation {
           name = "portfolio";
-          src = self; # or `./.`; using `self` proves the output is self-contained
+
+          #? `self` rather than `./.` proves the output is fully self-contained
+          src = self;
 
           buildInputs = [rustToolchain pkgs.trunk];
 
