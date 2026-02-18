@@ -20,9 +20,7 @@ pub fn Hero() -> impl IntoView {
           "🦀 Rust-Powered"
         </span>
         <span class=format!(
-          "py-2 px-4 text-sm font-semibold rounded-full border {} {}",
-          PRIMARY_TEXT_700,
-          PRIMARY_BG_100,
+          "py-2 px-4 text-sm font-semibold rounded-full border {PRIMARY_TEXT_700} {PRIMARY_BG_100}",
         )>"📊 Data Engineer"</span>
         <span class="py-2 px-4 text-sm font-semibold text-purple-700 bg-purple-100 rounded-full border border-purple-300 dark:text-purple-300 dark:border-purple-700 dark:bg-purple-900/30">
           "🌐 Full Stack"
@@ -34,8 +32,7 @@ pub fn Hero() -> impl IntoView {
 
       // ~@ Tagline
       <p class=format!(
-        "px-4 mx-auto mb-6 max-w-4xl text-xl leading-relaxed md:text-2xl {}",
-        NEUTRAL_TEXT_700,
+        "px-4 mx-auto mb-6 max-w-4xl text-xl leading-relaxed md:text-2xl {NEUTRAL_TEXT_700}",
       )>
         "I build "
         <strong>"full-stack applications, data infrastructure, and systems utilities"</strong>
@@ -44,8 +41,7 @@ pub fn Hero() -> impl IntoView {
 
       // ~@ Quote
       <p class=format!(
-        "px-4 mx-auto max-w-3xl text-lg italic {}",
-        NEUTRAL_TEXT_600,
+        "px-4 mx-auto max-w-3xl text-lg italic {NEUTRAL_TEXT_600}",
       )>"\"Code is another instrument of expression through structure\" 🎵⚙️"</p>
 
     </section>

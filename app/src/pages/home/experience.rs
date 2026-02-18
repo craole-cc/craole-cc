@@ -40,7 +40,7 @@ pub fn Experience() -> impl IntoView {
 
   view! {
     <section id="experience" class="mb-20">
-      <h2 class=format!("mb-8 text-4xl font-bold {}", NEUTRAL_TEXT_800)>"Experience"</h2>
+      <h2 class=format!("mb-8 text-4xl font-bold {NEUTRAL_TEXT_800}")>"Experience"</h2>
       <div class="space-y-8">
         {experiences
           .into_iter()
@@ -54,17 +54,17 @@ pub fn Experience() -> impl IntoView {
 #[component]
 fn ExperienceCard(experience : Experience,) -> impl IntoView {
   view! {
-    <div class=format!("py-2 pl-6 border-l-4 {}", PRIMARY_BORDER_500)>
-      <h3 class=format!("mb-2 text-2xl font-semibold {}", NEUTRAL_TEXT_800)>{experience.title}</h3>
-      <div class=format!("mb-4 text-sm font-medium {}", PRIMARY_TEXT_600)>{experience.period}</div>
+    <div class=format!("py-2 pl-6 border-l-4 {PRIMARY_BORDER_500}")>
+      <h3 class=format!("mb-2 text-2xl font-semibold {NEUTRAL_TEXT_800}")>{experience.title}</h3>
+      <div class=format!("mb-4 text-sm font-medium {PRIMARY_TEXT_600}")>{experience.period}</div>
       <ul class="space-y-2">
         {experience
           .points
           .into_iter()
           .map(|point| {
             view! {
-              <li class=format!("flex items-start {}", NEUTRAL_TEXT_700)>
-                <span class=format!("mr-3 {}", PRIMARY_TEXT_600)>"▹"</span>
+              <li class=format!("flex items-start {NEUTRAL_TEXT_700}")>
+                <span class=format!("mr-3 {PRIMARY_TEXT_600}")>"▹"</span>
                 <span>{point}</span>
               </li>
             }

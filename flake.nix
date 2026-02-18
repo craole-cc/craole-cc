@@ -107,7 +107,7 @@
         #╚═══════════════════════════════════════════════════════════╝
 
         packages.default = pkgs.stdenv.mkDerivation {
-          name = "portfolio";
+          name = "craole-cc";
 
           #? `self` rather than `./.` proves the output is fully self-contained
           src = self;
