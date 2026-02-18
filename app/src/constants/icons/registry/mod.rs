@@ -7,8 +7,4 @@ mod social;
 // mod terminal;
 // mod web;
 
-pub use {
-  core::*,
-  devops::*,
-  social::*,
-};
+pub use {core::*, devops::*, social::*};

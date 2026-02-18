@@ -1,7 +1,4 @@
-use crate::prelude::{
-  icons::*,
-  *,
-};
+use crate::prelude::{icons::*, *};
 
 //╔═══════════════════════════════════════════════════════════╗
 //║ Facebook                                                  ║

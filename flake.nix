@@ -22,10 +22,11 @@
         pkgs = import nixpkgs {
           inherit system overlays;
         };
-        rustToolchain = pkgs.rust-bin.stable.latest.default.override {
-          extensions = ["rust-src" "rust-analyzer"];
-          targets = ["wasm32-unknown-unknown"];
-        };
+        rustToolchain = pkgs.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml;
+        # rustToolchain = pkgs.rust-bin.stable.latest.default.override {
+        #   extensions = ["rust-src" "rust-analyzer"];
+        #   targets = ["wasm32-unknown-unknown"];
+        # };
       in {
         devShells.default = pkgs.mkShell {
           buildInputs = with pkgs; [

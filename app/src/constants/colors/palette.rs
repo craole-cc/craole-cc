@@ -101,138 +101,138 @@ impl Palette {
   /// Background fill — step: 100, 200, 300
   pub fn bg(self, step: u16) -> &'static str {
     match (self, step) {
-      (Self::Primary, 100) => PRIMARY_BG_100,
-      (Self::Primary, 200) => PRIMARY_BG_200,
-      (Self::Primary, 300) => PRIMARY_BG_300,
-      (Self::Secondary, 100) => SECONDARY_BG_100,
-      (Self::Secondary, 200) => SECONDARY_BG_200,
-      (Self::Secondary, 300) => SECONDARY_BG_300,
-      (Self::Neutral, 100) => NEUTRAL_BG_100,
-      (Self::Neutral, 200) => NEUTRAL_BG_200,
-      (Self::Neutral, 300) => NEUTRAL_BG_300,
-      _ => panic!("bg() step must be 100, 200, or 300"),
+      | (Self::Primary, 100) => PRIMARY_BG_100,
+      | (Self::Primary, 200) => PRIMARY_BG_200,
+      | (Self::Primary, 300) => PRIMARY_BG_300,
+      | (Self::Secondary, 100) => SECONDARY_BG_100,
+      | (Self::Secondary, 200) => SECONDARY_BG_200,
+      | (Self::Secondary, 300) => SECONDARY_BG_300,
+      | (Self::Neutral, 100) => NEUTRAL_BG_100,
+      | (Self::Neutral, 200) => NEUTRAL_BG_200,
+      | (Self::Neutral, 300) => NEUTRAL_BG_300,
+      | _ => panic!("bg() step must be 100, 200, or 300"),
     }
   }
 
   /// Solid (opaque) background — step: 400, 500, 600
   pub fn bg_solid(self, step: u16) -> &'static str {
     match (self, step) {
-      (Self::Primary, 400) => PRIMARY_BG_SOLID_400,
-      (Self::Primary, 500) => PRIMARY_BG_SOLID_500,
-      (Self::Primary, 600) => PRIMARY_BG_SOLID_600,
-      (Self::Secondary, 400) => SECONDARY_BG_SOLID_400,
-      (Self::Secondary, 500) => SECONDARY_BG_SOLID_500,
-      (Self::Secondary, 600) => SECONDARY_BG_SOLID_600,
-      (Self::Neutral, 400) => NEUTRAL_BG_SOLID_400,
-      (Self::Neutral, 500) => NEUTRAL_BG_SOLID_500,
-      (Self::Neutral, 600) => NEUTRAL_BG_SOLID_600,
-      _ => panic!("bg_solid() step must be 400, 500, or 600"),
+      | (Self::Primary, 400) => PRIMARY_BG_SOLID_400,
+      | (Self::Primary, 500) => PRIMARY_BG_SOLID_500,
+      | (Self::Primary, 600) => PRIMARY_BG_SOLID_600,
+      | (Self::Secondary, 400) => SECONDARY_BG_SOLID_400,
+      | (Self::Secondary, 500) => SECONDARY_BG_SOLID_500,
+      | (Self::Secondary, 600) => SECONDARY_BG_SOLID_600,
+      | (Self::Neutral, 400) => NEUTRAL_BG_SOLID_400,
+      | (Self::Neutral, 500) => NEUTRAL_BG_SOLID_500,
+      | (Self::Neutral, 600) => NEUTRAL_BG_SOLID_600,
+      | _ => panic!("bg_solid() step must be 400, 500, or 600"),
     }
   }
 
   /// Semi-transparent accent overlay — step: 400, 500, 600
   pub fn accent(self, step: u16) -> &'static str {
     match (self, step) {
-      (Self::Primary, 400) => PRIMARY_ACCENT_400,
-      (Self::Primary, 500) => PRIMARY_ACCENT_500,
-      (Self::Primary, 600) => PRIMARY_ACCENT_600,
-      (Self::Secondary, 400) => SECONDARY_ACCENT_400,
-      (Self::Secondary, 500) => SECONDARY_ACCENT_500,
-      (Self::Secondary, 600) => SECONDARY_ACCENT_600,
-      (Self::Neutral, 400) => NEUTRAL_ACCENT_400,
-      (Self::Neutral, 500) => NEUTRAL_ACCENT_500,
-      (Self::Neutral, 600) => NEUTRAL_ACCENT_600,
-      _ => panic!("accent() step must be 400, 500, or 600"),
+      | (Self::Primary, 400) => PRIMARY_ACCENT_400,
+      | (Self::Primary, 500) => PRIMARY_ACCENT_500,
+      | (Self::Primary, 600) => PRIMARY_ACCENT_600,
+      | (Self::Secondary, 400) => SECONDARY_ACCENT_400,
+      | (Self::Secondary, 500) => SECONDARY_ACCENT_500,
+      | (Self::Secondary, 600) => SECONDARY_ACCENT_600,
+      | (Self::Neutral, 400) => NEUTRAL_ACCENT_400,
+      | (Self::Neutral, 500) => NEUTRAL_ACCENT_500,
+      | (Self::Neutral, 600) => NEUTRAL_ACCENT_600,
+      | _ => panic!("accent() step must be 400, 500, or 600"),
     }
   }
 
   /// Text color — step: 600, 700, 800
   pub fn text(self, step: u16) -> &'static str {
     match (self, step) {
-      (Self::Primary, 600) => PRIMARY_TEXT_600,
-      (Self::Primary, 700) => PRIMARY_TEXT_700,
-      (Self::Primary, 800) => PRIMARY_TEXT_800,
-      (Self::Secondary, 600) => SECONDARY_TEXT_600,
-      (Self::Secondary, 700) => SECONDARY_TEXT_700,
-      (Self::Secondary, 800) => SECONDARY_TEXT_800,
-      (Self::Neutral, 600) => NEUTRAL_TEXT_600,
-      (Self::Neutral, 700) => NEUTRAL_TEXT_700,
-      (Self::Neutral, 800) => NEUTRAL_TEXT_800,
-      _ => panic!("text() step must be 600, 700, or 800"),
+      | (Self::Primary, 600) => PRIMARY_TEXT_600,
+      | (Self::Primary, 700) => PRIMARY_TEXT_700,
+      | (Self::Primary, 800) => PRIMARY_TEXT_800,
+      | (Self::Secondary, 600) => SECONDARY_TEXT_600,
+      | (Self::Secondary, 700) => SECONDARY_TEXT_700,
+      | (Self::Secondary, 800) => SECONDARY_TEXT_800,
+      | (Self::Neutral, 600) => NEUTRAL_TEXT_600,
+      | (Self::Neutral, 700) => NEUTRAL_TEXT_700,
+      | (Self::Neutral, 800) => NEUTRAL_TEXT_800,
+      | _ => panic!("text() step must be 600, 700, or 800"),
     }
   }
 
   /// Fill color (for SVG icons) — step: 600, 700, 800
   pub fn fill(self, step: u16) -> &'static str {
     match (self, step) {
-      (Self::Primary, 600) => PRIMARY_FILL_600,
-      (Self::Primary, 700) => PRIMARY_FILL_700,
-      (Self::Primary, 800) => PRIMARY_FILL_800,
-      (Self::Secondary, 600) => SECONDARY_FILL_600,
-      (Self::Secondary, 700) => SECONDARY_FILL_700,
-      (Self::Secondary, 800) => SECONDARY_FILL_800,
-      (Self::Neutral, 600) => NEUTRAL_FILL_600,
-      (Self::Neutral, 700) => NEUTRAL_FILL_700,
-      (Self::Neutral, 800) => NEUTRAL_FILL_800,
-      _ => panic!("fill() step must be 600, 700, or 800"),
+      | (Self::Primary, 600) => PRIMARY_FILL_600,
+      | (Self::Primary, 700) => PRIMARY_FILL_700,
+      | (Self::Primary, 800) => PRIMARY_FILL_800,
+      | (Self::Secondary, 600) => SECONDARY_FILL_600,
+      | (Self::Secondary, 700) => SECONDARY_FILL_700,
+      | (Self::Secondary, 800) => SECONDARY_FILL_800,
+      | (Self::Neutral, 600) => NEUTRAL_FILL_600,
+      | (Self::Neutral, 700) => NEUTRAL_FILL_700,
+      | (Self::Neutral, 800) => NEUTRAL_FILL_800,
+      | _ => panic!("fill() step must be 600, 700, or 800"),
     }
   }
 
   /// Border color — step: 300, 400, 500
   pub fn border(self, step: u16) -> &'static str {
     match (self, step) {
-      (Self::Primary, 300) => PRIMARY_BORDER_300,
-      (Self::Primary, 400) => PRIMARY_BORDER_400,
-      (Self::Primary, 500) => PRIMARY_BORDER_500,
-      (Self::Secondary, 300) => SECONDARY_BORDER_300,
-      (Self::Secondary, 400) => SECONDARY_BORDER_400,
-      (Self::Secondary, 500) => SECONDARY_BORDER_500,
-      (Self::Neutral, 300) => NEUTRAL_BORDER_300,
-      (Self::Neutral, 400) => NEUTRAL_BORDER_400,
-      (Self::Neutral, 500) => NEUTRAL_BORDER_500,
-      _ => panic!("border() step must be 300, 400, or 500"),
+      | (Self::Primary, 300) => PRIMARY_BORDER_300,
+      | (Self::Primary, 400) => PRIMARY_BORDER_400,
+      | (Self::Primary, 500) => PRIMARY_BORDER_500,
+      | (Self::Secondary, 300) => SECONDARY_BORDER_300,
+      | (Self::Secondary, 400) => SECONDARY_BORDER_400,
+      | (Self::Secondary, 500) => SECONDARY_BORDER_500,
+      | (Self::Neutral, 300) => NEUTRAL_BORDER_300,
+      | (Self::Neutral, 400) => NEUTRAL_BORDER_400,
+      | (Self::Neutral, 500) => NEUTRAL_BORDER_500,
+      | _ => panic!("border() step must be 300, 400, or 500"),
     }
   }
 
   /// Ring (focus indicator) — step: 400, 500
   pub fn ring(self, step: u16) -> &'static str {
     match (self, step) {
-      (Self::Primary, 400) => PRIMARY_RING_400,
-      (Self::Primary, 500) => PRIMARY_RING_500,
-      (Self::Secondary, 400) => SECONDARY_RING_400,
-      (Self::Secondary, 500) => SECONDARY_RING_500,
-      (Self::Neutral, 400) => NEUTRAL_RING_400,
-      (Self::Neutral, 500) => NEUTRAL_RING_500,
-      _ => panic!("ring() step must be 400 or 500"),
+      | (Self::Primary, 400) => PRIMARY_RING_400,
+      | (Self::Primary, 500) => PRIMARY_RING_500,
+      | (Self::Secondary, 400) => SECONDARY_RING_400,
+      | (Self::Secondary, 500) => SECONDARY_RING_500,
+      | (Self::Neutral, 400) => NEUTRAL_RING_400,
+      | (Self::Neutral, 500) => NEUTRAL_RING_500,
+      | _ => panic!("ring() step must be 400 or 500"),
     }
   }
 
   /// Hover background — step: 100, 200
   pub fn hover_bg(self, step: u16) -> &'static str {
     match (self, step) {
-      (Self::Primary, 100) => PRIMARY_HOVER_BG_100,
-      (Self::Primary, 200) => PRIMARY_HOVER_BG_200,
-      (Self::Secondary, 100) => SECONDARY_HOVER_BG_100,
-      (Self::Secondary, 200) => SECONDARY_HOVER_BG_200,
-      (Self::Neutral, 100) => NEUTRAL_HOVER_BG_100,
-      (Self::Neutral, 200) => NEUTRAL_HOVER_BG_200,
-      _ => panic!("hover_bg() step must be 100 or 200"),
+      | (Self::Primary, 100) => PRIMARY_HOVER_BG_100,
+      | (Self::Primary, 200) => PRIMARY_HOVER_BG_200,
+      | (Self::Secondary, 100) => SECONDARY_HOVER_BG_100,
+      | (Self::Secondary, 200) => SECONDARY_HOVER_BG_200,
+      | (Self::Neutral, 100) => NEUTRAL_HOVER_BG_100,
+      | (Self::Neutral, 200) => NEUTRAL_HOVER_BG_200,
+      | _ => panic!("hover_bg() step must be 100 or 200"),
     }
   }
 
   /// Hover text color — step: 600, 700, 800
   pub fn hover_text(self, step: u16) -> &'static str {
     match (self, step) {
-      (Self::Primary, 600) => PRIMARY_HOVER_TEXT_600,
-      (Self::Primary, 700) => PRIMARY_HOVER_TEXT_700,
-      (Self::Primary, 800) => PRIMARY_HOVER_TEXT_800,
-      (Self::Secondary, 600) => SECONDARY_HOVER_TEXT_600,
-      (Self::Secondary, 700) => SECONDARY_HOVER_TEXT_700,
-      (Self::Secondary, 800) => SECONDARY_HOVER_TEXT_800,
-      (Self::Neutral, 600) => NEUTRAL_HOVER_TEXT_600,
-      (Self::Neutral, 700) => NEUTRAL_HOVER_TEXT_700,
-      (Self::Neutral, 800) => NEUTRAL_HOVER_TEXT_800,
-      _ => panic!("hover_text() step must be 600, 700, or 800"),
+      | (Self::Primary, 600) => PRIMARY_HOVER_TEXT_600,
+      | (Self::Primary, 700) => PRIMARY_HOVER_TEXT_700,
+      | (Self::Primary, 800) => PRIMARY_HOVER_TEXT_800,
+      | (Self::Secondary, 600) => SECONDARY_HOVER_TEXT_600,
+      | (Self::Secondary, 700) => SECONDARY_HOVER_TEXT_700,
+      | (Self::Secondary, 800) => SECONDARY_HOVER_TEXT_800,
+      | (Self::Neutral, 600) => NEUTRAL_HOVER_TEXT_600,
+      | (Self::Neutral, 700) => NEUTRAL_HOVER_TEXT_700,
+      | (Self::Neutral, 800) => NEUTRAL_HOVER_TEXT_800,
+      | _ => panic!("hover_text() step must be 600, 700, or 800"),
     }
   }
 }

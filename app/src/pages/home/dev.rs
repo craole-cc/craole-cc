@@ -1,9 +1,5 @@
 use crate::{
-  constants::stacks::{
-    Tech,
-    areas,
-    stacks,
-  },
+  constants::stacks::{Tech, areas, stacks},
   prelude::*,
 }; // Note: Tech is from stacks.rs
 

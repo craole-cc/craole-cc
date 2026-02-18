@@ -1,8 +1,5 @@
 use {
-  super::{
-    devops,
-    social,
-  },
+  super::{devops, social},
   crate::prelude::Icon,
 };
 
@@ -79,7 +76,7 @@ impl Icons {
       // Sqlite => data::sqlite(),
 
       // Git => devops::git(),
-      GitHub => devops::github(),
+      | GitHub => devops::github(),
       // NixOs => devops::nixos(),
       // RaspberryPi => devops::raspberry_pi(),
       // Windows => devops::windows(),
@@ -92,15 +89,15 @@ impl Icons {
       // PowerShell => terminal::powershell(),
       // Starship => terminal::starship(),
       // OhMyPosh => terminal::ohmyposh(),
-      Gmail => social::gmail(),
-      LinkedIn => social::linkedin(),
-      WhatsApp => social::whatsapp(),
-      Instagram => social::instagram(),
-      Facebook => social::facebook(),
-      X => social::x(),
+      | Gmail => social::gmail(),
+      | LinkedIn => social::linkedin(),
+      | WhatsApp => social::whatsapp(),
+      | Instagram => social::instagram(),
+      | Facebook => social::facebook(),
+      | X => social::x(),
 
       // Temporary stub for disabled categories
-      _ => Icon::new(),
+      | _ => Icon::new(),
     }
   }
 }

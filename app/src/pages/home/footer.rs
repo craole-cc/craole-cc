@@ -1,7 +1,4 @@
-use crate::prelude::{
-  icons::*,
-  *,
-};
+use crate::prelude::{icons::*, *};
 
 const SOCIALS: &[Icons] = &[
   Icons::Gmail,
@@ -21,22 +18,22 @@ fn SocialIcon(icon_enum: Icons) -> impl IntoView {
   let default_icon = icon_enum
     .get()
     .with_source(match icon_enum {
-      Icons::WhatsApp => whatsapp_variants::filled(),
-      Icons::GitHub => github_variants::filled(),
-      Icons::Instagram => instagram_variants::filled(),
-      Icons::LinkedIn => linkedin_variants::filled(),
-      Icons::Gmail => gmail_variants::filled(),
-      Icons::Facebook => facebook_variants::filled(),
-      Icons::X => x_variants::filled(),
-      _ => icon_enum.get().source,
+      | Icons::WhatsApp => whatsapp_variants::filled(),
+      | Icons::GitHub => github_variants::filled(),
+      | Icons::Instagram => instagram_variants::filled(),
+      | Icons::LinkedIn => linkedin_variants::filled(),
+      | Icons::Gmail => gmail_variants::filled(),
+      | Icons::Facebook => facebook_variants::filled(),
+      | Icons::X => x_variants::filled(),
+      | _ => icon_enum.get().source,
     })
     .and_class(NEUTRAL_FILL);
 
   //? Hover: brand-colored variants
   let hover_icon = match icon_enum {
-    Icons::GitHub => github_variants::with_color(github_variants::outlined()),
-    Icons::X => x_variants::with_color(x_variants::outlined()),
-    _ => icon_enum.get(),
+    | Icons::GitHub => github_variants::with_color(github_variants::outlined()),
+    | Icons::X => x_variants::with_color(x_variants::outlined()),
+    | _ => icon_enum.get(),
   };
 
   view! {

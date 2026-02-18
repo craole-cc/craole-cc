@@ -1,7 +1,4 @@
-use crate::constants::icons::{
-  Icon,
-  icon,
-};
+use crate::constants::icons::{Icon, icon};
 
 const DARK_INVERT: &str = "dark:invert dark:hue-rotate-180";
 
