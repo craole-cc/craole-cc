@@ -4,7 +4,8 @@
     ".git",
     "app/src/pages/temp",
     "app/src/constants/icons copy.rs",
-    "app/src/constants/icons/icons_old.rs"
+    "app/src/constants/icons/icons_old.rs",
+    "style/tailwind.config.js"
   ],
   "emmet.includeLanguages": {
     "rust": "html",

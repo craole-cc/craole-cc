@@ -23,13 +23,17 @@ pub fn App() -> impl IntoView {
   view! {
     <Stylesheet id="leptos" href="/pkg/craole-cc.css" />
     <Title text="Craole-CC" />
+    <ThemeProvider>
       <Router>
-        <main>
-          <Routes fallback=|| "Page not found.".into_view()>
-            <Route path=StaticSegment("") view=Home />
-          // <Route path=path!("/post/:id") view=BlogPost1 ssr=SsrMode::PartiallyBlocked />
-          </Routes>
-        </main>
+      <crate::prelude::layout::Nav/>
+      <main>
+      <Routes fallback=|| "Page not found.".into_view()>
+      <Route path=StaticSegment("") view=Home />
+      // <Route path=path!("/post/:id") view=BlogPost1 ssr=SsrMode::PartiallyBlocked />
+      </Routes>
+      </main>
+      <crate::prelude::layout::Footer/>
       </Router>
+    </ThemeProvider>
   }
 }

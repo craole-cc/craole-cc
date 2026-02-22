@@ -1,0 +1,757 @@
+// ╔═══════════════════════════════════════════════════════════╗
+// ║ Full-bleed reset                                          ║
+// ╚═══════════════════════════════════════════════════════════╝
+//
+// Prevent the html/body chain from adding horizontal overflow
+// or inherited margins that would push the hero inward.
+
+html,
+body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+// ╔═══════════════════════════════════════════════════════════╗
+// ║ @property — animatable custom properties                  ║
+// ╚═══════════════════════════════════════════════════════════╝
+//
+// Registering --hue as <number> lets the browser interpolate it,
+// so the whole OKLCH palette transitions smoothly when
+// extract_and_apply_hue() writes a new value from the slide.
+
+@property --hue {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 164;
+}
+
+@property --chroma {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0.2;
+}
+
+// Hue shift eases in over 1.5 s — roughly matching the slide crossfade
+:root {
+  transition:
+    --hue 1.5s ease,
+    --chroma 1.5s ease;
+}
+
+// ╔═══════════════════════════════════════════════════════════╗
+// ║ Site Nav                                                  ║
+// ╚═══════════════════════════════════════════════════════════╝
+//
+// Mobile-first: base styles target the smallest screen.
+// Progressive enhancement via min-width breakpoints.
+//
+// Transparency strategy:
+//   - Fully transparent at the top of the hero.
+//   - JS can add .site-nav--scrolled to solidify background
+//     once the user scrolls past the hero fold.
+//   - All nav text is white by default (sits over dark-scrimmed photo).
+
+.site-nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 50;
+  height: 4rem;
+  padding: 0 1rem;
+
+  // Fully transparent at the top — no border, no background
+  background: transparent;
+  border-bottom: none;
+  transition:
+    background-color 300ms ease,
+    border-bottom 300ms ease,
+    backdrop-filter 300ms ease;
+  animation: nav-appear 0.5s ease both;
+
+  // ── Scrolled: solidify with blur + border ─────────────────
+  &--scrolled {
+    background: var(--color-bg-overlay);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 72rem;
+    height: 100%;
+    margin: 0 auto;
+  }
+
+  // ── Logo ─────────────────────────────────────────────────
+
+  &__logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    // White over hero; inherits theme colour after scroll
+    color: #fff;
+    transition:
+      opacity 150ms,
+      color 300ms;
+    flex-shrink: 0;
+
+    .site-nav--scrolled & {
+      color: var(--color-text);
+    }
+    &:hover {
+      opacity: 0.75;
+    }
+  }
+
+  &__logo-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0.375rem;
+    background: var(--color-primary);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+
+  &__logo-name {
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+
+    // Hidden on small phones; reveal once there's room
+    display: none;
+    @media (min-width: 480px) {
+      display: inline;
+    }
+  }
+
+  // ── Primary links ─────────────────────────────────────────
+  // Mobile (base): full-width dropdown below the nav bar,
+  //   collapsed to zero height; --open modifier expands it.
+  // ≥ 640 px: horizontal inline row, dropdown hidden.
+
+  &__links {
+    // Mobile: off-canvas dropdown
+    position: fixed;
+    inset: 4rem 0 auto 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+    // Collapsed by default
+    display: flex;
+    max-height: 0;
+    overflow: hidden;
+    transition:
+      max-height 300ms cubic-bezier(0.4, 0, 0.2, 1),
+      padding 300ms ease;
+
+    &--open {
+      max-height: 24rem;
+      padding: 0.5rem 1rem 1rem;
+    }
+
+    // Desktop: inline row, forget the dropdown mechanics
+    @media (min-width: 640px) {
+      position: static;
+      flex-direction: row;
+      align-items: center;
+      gap: 0.125rem;
+      padding: 0;
+      max-height: none;
+      overflow: visible;
+      background: transparent;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      border-bottom: none;
+    }
+  }
+
+  &__link {
+    // Mobile base
+    display: block;
+    padding: 0.75rem 0.5rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.8);
+    border-radius: 0.25rem;
+    transition:
+      color 150ms,
+      background-color 150ms;
+    white-space: nowrap;
+
+    &:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    // Desktop enhancements
+    @media (min-width: 640px) {
+      position: relative;
+      padding: 0.375rem 0.625rem;
+      font-size: 0.6875rem;
+      letter-spacing: 0.1em;
+      border-radius: 0.375rem;
+
+      // Keep white while over hero; theme colour once scrolled
+      .site-nav--scrolled & {
+        color: var(--color-text-muted);
+      }
+
+      &::after {
+        content: "";
+        position: absolute;
+        bottom: 0.125rem;
+        left: 0.625rem;
+        right: 0.625rem;
+        height: 1px;
+        background: var(--color-primary);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.08);
+        .site-nav--scrolled & {
+          background: var(--color-neutral-hover);
+        }
+        &::after {
+          transform: scaleX(1);
+        }
+      }
+    }
+  }
+
+  // ── Controls ──────────────────────────────────────────────
+
+  &__controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
+
+  // ── Hamburger button ─────────────────────────────────────
+  // Visible on mobile; hidden on desktop.
+
+  &__menu-btn {
+    // Mobile base: visible
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    padding: 0.375rem;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 0.5rem;
+    cursor: pointer;
+    color: #fff;
+    transition:
+      color 150ms,
+      background-color 150ms,
+      border-color 150ms;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    // Desktop: hidden — links are always visible inline
+    @media (min-width: 640px) {
+      display: none;
+    }
+  }
+
+  // Three-bar → × glyph via a single <span> + pseudo-elements
+  &__bar {
+    display: block;
+    position: relative;
+    width: 1.1rem;
+    height: 2px;
+    background: currentColor;
+    border-radius: 2px;
+    transition: background 200ms;
+
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: currentColor;
+      border-radius: 2px;
+      transition:
+        top 200ms 200ms,
+        bottom 200ms 200ms,
+        transform 200ms 0ms;
+    }
+    &::before {
+      top: -5px;
+    }
+    &::after {
+      bottom: -5px;
+    }
+
+    &--open {
+      background: transparent;
+
+      &::before {
+        top: 0;
+        transform: rotate(45deg);
+        transition:
+          top 200ms 0ms,
+          transform 200ms 200ms;
+      }
+      &::after {
+        bottom: 0;
+        transform: rotate(-45deg);
+        transition:
+          bottom 200ms 0ms,
+          transform 200ms 200ms;
+      }
+    }
+  }
+}
+
+@keyframes nav-appear {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ╔═══════════════════════════════════════════════════════════╗
+// ║ Hero                                                      ║
+// ╚═══════════════════════════════════════════════════════════╝
+
+// Photography slideshow duration per slide (seconds).
+// Keep in sync with the animation-delay logic in components.rs.
+$slide-duration: 5s;
+// Total cycle = slides × duration. Adjust if you add/remove photos.
+$slide-count: 4;
+$cycle: calc(#{$slide-count} * #{$slide-duration});
+
+.hero {
+  position: relative;
+  // Full-bleed regardless of any parent max-width or padding.
+  // The negative-margin + 100vw technique breaks out of any
+  // constrained wrapper without needing to change the parent.
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  min-height: 100svh;
+  // Fallback colour while photos are absent/loading — matches the
+  // dark scrim so there is no contrast flash or visible side margins.
+  background-color: #0d1117;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 4rem; // nav height offset
+  overflow: hidden;
+
+  // ── Backdrop / slideshow ──────────────────────────────────
+
+  &__backdrop {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  // Each slide is a full-cover background layer.
+  // They crossfade via the `slide-in` keyframe sequence;
+  // animation-delay staggers each slide in the CSS-managed cycle.
+  &__slide {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    animation: slide-in $cycle ease-in-out infinite;
+    will-change: opacity;
+
+    // Ken-Burns drift — subtle zoom-pan for cinematic feel
+    &::after {
+      content: "";
+      position: absolute;
+      inset: -5%; // slightly oversized to allow drift without edges showing
+      background: inherit;
+      background-size: cover;
+      background-position: center;
+      animation: ken-burns $cycle ease-in-out infinite;
+      will-change: transform;
+    }
+  }
+
+  // Translucent scrim — always darkens the photo so white text stays legible.
+  // Light mode uses a slightly less heavy overlay to keep some brightness,
+  // but still dark enough for white text to pass WCAG AA at any hue.
+  &__scrim {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+
+    // Dark mode: deep cinematic overlay
+    background: linear-gradient(
+      160deg,
+      oklch(0.08 0.02 var(--hue) / 0.8) 0%,
+      oklch(0.08 0.02 var(--hue) / 0.6) 50%,
+      oklch(0.05 0.01 var(--hue) / 0.85) 100%
+    );
+
+    // Light mode: still a dark overlay — just slightly lighter so the
+    // photo reads as "bright" while white text stays fully legible.
+    [data-theme="light"] & {
+      background: linear-gradient(
+        160deg,
+        oklch(0.12 0.02 var(--hue) / 0.65) 0%,
+        oklch(0.1 0.02 var(--hue) / 0.45) 50%,
+        oklch(0.08 0.01 var(--hue) / 0.7) 100%
+      );
+    }
+  }
+
+  &__noise {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 200px;
+    pointer-events: none;
+  }
+
+  // ── Content ───────────────────────────────────────────────
+
+  &__content {
+    position: relative;
+    z-index: 3;
+    max-width: 48rem;
+    padding: 2rem 1.5rem;
+    width: 100%;
+
+    // Always white — the scrim guarantees contrast in both modes
+    color: #fff;
+
+    > * {
+      animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    @for $i from 1 through 5 {
+      > *:nth-child(#{$i}) {
+        animation-delay: #{0.05 + $i * 0.1}s;
+      }
+    }
+  }
+
+  // ── Badge ─────────────────────────────────────────────────
+
+  &__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.325rem 0.875rem;
+    border-radius: 9999px;
+    // Slightly translucent so the photo bleeds through
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    margin: 0 0 1.75rem;
+    backdrop-filter: blur(8px);
+  }
+
+  &__badge-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    animation: pulse 2s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+
+  // ── Headline ──────────────────────────────────────────────
+
+  &__headline {
+    font-size: clamp(2.5rem, 7vw, 5.25rem);
+    font-weight: 800;
+    line-height: 1.06;
+    letter-spacing: -0.03em;
+    color: #fff;
+    margin: 0 0 1.25rem;
+    // Crisp shadow lifts text off any bright patch in the photo
+    text-shadow: 0 2px 12px oklch(0 0 0 / 0.4);
+
+    em {
+      font-style: italic;
+      font-weight: 300;
+      color: rgba(255, 255, 255, 0.65);
+    }
+  }
+
+  // ── Sub ────────────────────────────────────────────────────
+
+  &__sub {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.7;
+    max-width: 36rem;
+    margin: 0 0 2.25rem;
+    text-shadow: 0 1px 6px oklch(0 0 0 / 0.35);
+  }
+
+  // ── CTAs ───────────────────────────────────────────────────
+
+  &__ctas {
+    display: flex;
+    gap: 0.875rem;
+    flex-wrap: wrap;
+    margin: 0 0 3.5rem;
+  }
+
+  &__cta-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    background: var(--color-primary);
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition:
+      background-color 150ms,
+      transform 150ms,
+      box-shadow 150ms;
+
+    svg {
+      width: 1rem;
+      height: 1rem;
+      transition: transform 200ms;
+    }
+
+    &:hover {
+      background: var(--color-primary-text);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.4);
+      svg {
+        transform: translateX(4px);
+      }
+    }
+  }
+
+  &__cta-ghost {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition:
+      border-color 150ms,
+      color 150ms,
+      transform 150ms,
+      background 150ms;
+
+    &:hover {
+      border-color: rgba(255, 255, 255, 0.65);
+      color: #fff;
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+    }
+  }
+
+  // ── Scroll hint ────────────────────────────────────────────
+
+  &__scroll {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.4);
+
+    small {
+      font-size: 0.6875rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+  }
+
+  &__scroll-line {
+    display: block;
+    width: 2rem;
+    height: 1px;
+    background: currentColor;
+    transform-origin: left;
+    animation: scroll-pulse 2.2s ease-in-out infinite;
+  }
+
+  // ── Stats ──────────────────────────────────────────────────
+
+  &__stats {
+    position: absolute;
+    right: clamp(1.5rem, 6vw, 5rem);
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 3;
+    animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.6s both;
+
+    @media (max-width: 900px) {
+      display: none;
+    }
+
+    dl {
+      display: flex;
+      flex-direction: column;
+      gap: 0.875rem;
+      margin: 0;
+    }
+  }
+
+  &__stat {
+    display: flex;
+    flex-direction: column-reverse; // dd above dt visually
+    align-items: center;
+    padding: 1rem 1.25rem;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(12px);
+    min-width: 5.5rem;
+    transition:
+      transform 200ms,
+      border-color 200ms;
+    cursor: default;
+
+    &:hover {
+      transform: translateY(-3px);
+      border-color: var(--color-primary-border);
+    }
+
+    dd {
+      font-size: 1.75rem;
+      font-weight: 800;
+      line-height: 1;
+      color: var(--color-primary);
+      letter-spacing: -0.02em;
+      margin: 0;
+    }
+
+    dt {
+      font-size: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.5);
+      margin-top: 0.375rem;
+      text-align: center;
+    }
+  }
+}
+
+// ╔═══════════════════════════════════════════════════════════╗
+// ║ Keyframes                                                 ║
+// ╚═══════════════════════════════════════════════════════════╝
+
+// Crossfade slideshow.
+// Each slide stays fully visible for ~60% of the cycle then fades out.
+@keyframes slide-in {
+  // fade in
+  0% {
+    opacity: 0;
+  }
+  // briefly invisible before this slide's turn (handled by delay offset)
+  #{100% / $slide-count * 0.15} {
+    opacity: 1;
+  }
+  // hold
+  #{100% / $slide-count * 0.85} {
+    opacity: 1;
+  }
+  // fade out
+  #{100% / $slide-count} {
+    opacity: 0;
+  }
+  // remain invisible for the rest of the cycle
+  100% {
+    opacity: 0;
+  }
+}
+
+// Ken-Burns: a gentle zoom-and-drift
+@keyframes ken-burns {
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+  50% {
+    transform: scale(1.06) translate(-1%, 0.5%);
+  }
+  100% {
+    transform: scale(1) translate(0, 0);
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(0.75);
+  }
+}
+
+@keyframes scroll-pulse {
+  0%,
+  100% {
+    transform: scaleX(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scaleX(0.35);
+    opacity: 0.2;
+  }
+}

@@ -1,12 +1,4 @@
-// mod containers;
-mod footer;
-mod navigation;
-use crate::prelude::*;
-pub use {
-  // containers::*,
-  footer::*,
-  navigation::*,
-};
+use leptos::prelude::*;
 
 /// Full-page shell — applies the theme background and text colour.
 /// Does NOT constrain width; individual sections handle their own
@@ -14,9 +6,8 @@ pub use {
 #[component]
 pub fn Page(children : Children,) -> impl IntoView {
   view! {
-    <navigation::Nav/>
-    <main>{children()}</main>
-    <footer::Footer/>
+
+    <div class="min-h-screen bg-(--color-bg) text-(--color-text)">{children()}</div>
   }
 }
 
@@ -24,7 +15,6 @@ pub fn Page(children : Children,) -> impl IntoView {
 /// Use this inside About, Projects, Experience, etc.
 /// The hero skips this entirely.
 #[component]
-pub fn Content(children : Children,) -> impl IntoView {
-  view! { <div class="readable">{children()}</div> }
-  // view! { <div class="py-8 px-6 mx-auto w-full max-w-6xl">{children()}</div> }
+pub fn Section(children : Children,) -> impl IntoView {
+  view! { <div class="py-8 px-6 mx-auto w-full max-w-6xl">{children()}</div> }
 }

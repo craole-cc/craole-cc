@@ -55,6 +55,7 @@ name = "app"
 version = "0.1.0"
 dependencies = [
  "cfg-if",
+ "futures",
  "http",
  "icondata",
  "leptos",
@@ -64,6 +65,9 @@ dependencies = [
  "leptos_router",
  "paste-complete",
  "thiserror 2.0.18",
+ "wasm-bindgen",
+ "wasm-bindgen-futures",
+ "web-sys",
 ]
 
 [[package]]

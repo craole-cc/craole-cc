@@ -1,0 +1,350 @@
+// ╔═══════════════════════════════════════════════════════════╗
+// ║ Design Tokens — OKLCH Color System                        ║
+// ╚═══════════════════════════════════════════════════════════╝
+//
+// HOW TO RETHEME:
+//   Change --hue (0–360) on :root. Everything else is derived.
+//   Optionally nudge --chroma (0–0.4) for more/less saturation.
+//
+//   Common hues:
+//     164  → teal (default)
+//     220  → blue
+//     270  → purple
+//     25   → orange
+//     340  → rose
+//
+// OKLCH(lightness chroma hue)
+//   lightness : 0 (black) → 1 (white)
+//   chroma    : 0 (grey)  → ~0.37 (vivid)
+//   hue       : 0–360 degrees
+//
+// The secondary hue is offset by +60° (analogous) — change
+// --hue-secondary-offset to taste (e.g. 180 for complementary).
+
+// ╔═══════════════════════════════════════════════════════════╗
+// ║ Master Controls — edit only these                         ║
+// ╚═══════════════════════════════════════════════════════════╝
+
+:root {
+  // ── The ONE value to change for a full retheme ────────────
+  --hue: 164; // teal
+
+  // ── Secondary accent (offset from primary) ────────────────
+  --hue-secondary-offset: 60; // +60° → analogous (yellow-green)
+  // swap to 180 for complementary, 120 for triadic
+
+  // ── Chroma (saturation) — shared base ────────────────────
+  --chroma: 0.2; // primary chroma
+  --chroma-muted: 0.08; // muted/surface chroma
+
+  // ── Computed secondary hue (do not edit) ──────────────────
+  --hue-2: calc(var(--hue) + var(--hue-secondary-offset));
+}
+
+// ╔═══════════════════════════════════════════════════════════╗
+// ║ Light Theme                                               ║
+// ╚═══════════════════════════════════════════════════════════╝
+
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+
+  // ── Page surfaces ─────────────────────────────────────────
+  --color-bg: oklch(0.98 0.005 var(--hue));
+  --color-bg-alt: oklch(0.95 0.008 var(--hue));
+  --color-bg-surface: oklch(1 0 0);
+  --color-bg-overlay: oklch(1 0 0 / 0.65);
+
+  // ── Text ──────────────────────────────────────────────────
+  --color-text: oklch(0.15 0.02 var(--hue));
+  --color-text-muted: oklch(0.42 0.02 var(--hue));
+  --color-text-faint: oklch(0.65 0.015 var(--hue));
+
+  // ── Primary ───────────────────────────────────────────────
+  --color-primary: oklch(0.54 var(--chroma) var(--hue));
+  --color-primary-text: oklch(0.46 var(--chroma) var(--hue));
+  --color-primary-muted: oklch(0.88 var(--chroma-muted) var(--hue));
+  --color-primary-hover: oklch(0.93 var(--chroma-muted) var(--hue));
+  --color-primary-border: oklch(0.75 var(--chroma) var(--hue));
+
+  // ── Secondary ─────────────────────────────────────────────
+  --color-secondary: oklch(0.54 var(--chroma) var(--hue-2));
+  --color-secondary-text: oklch(0.44 var(--chroma) var(--hue-2));
+  --color-secondary-muted: oklch(0.88 var(--chroma-muted) var(--hue-2));
+  --color-secondary-hover: oklch(0.93 var(--chroma-muted) var(--hue-2));
+  --color-secondary-border: oklch(0.75 var(--chroma) var(--hue-2));
+
+  // ── Neutral (no hue influence) ────────────────────────────
+  --color-neutral: oklch(0.52 0.01 var(--hue));
+  --color-neutral-text: oklch(0.35 0.01 var(--hue));
+  --color-neutral-muted: oklch(0.9 0.005 var(--hue));
+  --color-neutral-hover: oklch(0.94 0.005 var(--hue));
+  --color-neutral-border: oklch(0.82 0.01 var(--hue));
+
+  // ── UI chrome ─────────────────────────────────────────────
+  --color-border: oklch(0.9 0.008 var(--hue));
+  --color-ring: oklch(0.54 var(--chroma) var(--hue));
+  --color-divider: oklch(0.84 0.01 var(--hue));
+  --color-dot: oklch(0.6 var(--chroma) var(--hue));
+}
+
+// ╔═══════════════════════════════════════════════════════════╗
+// ║ Dark Theme                                                ║
+// ╚═══════════════════════════════════════════════════════════╝
+
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  // ── Page surfaces ─────────────────────────────────────────
+  --color-bg: oklch(0.14 0.02 var(--hue));
+  --color-bg-alt: oklch(0.19 0.02 var(--hue));
+  --color-bg-surface: oklch(0.19 0.02 var(--hue));
+  --color-bg-overlay: oklch(0.14 0.02 var(--hue) / 0.65);
+
+  // ── Text ──────────────────────────────────────────────────
+  --color-text: oklch(0.94 0.008 var(--hue));
+  --color-text-muted: oklch(0.65 0.015 var(--hue));
+  --color-text-faint: oklch(0.42 0.01 var(--hue));
+
+  // ── Primary (brighter in dark mode for contrast) ──────────
+  --color-primary: oklch(0.72 var(--chroma) var(--hue));
+  --color-primary-text: oklch(0.82 var(--chroma) var(--hue));
+  --color-primary-muted: oklch(0.72 var(--chroma) var(--hue) / 0.15);
+  --color-primary-hover: oklch(0.72 var(--chroma) var(--hue) / 0.1);
+  --color-primary-border: oklch(0.54 var(--chroma) var(--hue));
+
+  // ── Secondary ─────────────────────────────────────────────
+  --color-secondary: oklch(0.72 var(--chroma) var(--hue-2));
+  --color-secondary-text: oklch(0.82 var(--chroma) var(--hue-2));
+  --color-secondary-muted: oklch(0.72 var(--chroma) var(--hue-2) / 0.15);
+  --color-secondary-hover: oklch(0.72 var(--chroma) var(--hue-2) / 0.1);
+  --color-secondary-border: oklch(0.54 var(--chroma) var(--hue-2));
+
+  // ── Neutral ───────────────────────────────────────────────
+  --color-neutral: oklch(0.65 0.01 var(--hue));
+  --color-neutral-text: oklch(0.8 0.008 var(--hue));
+  --color-neutral-muted: oklch(0.65 0.01 var(--hue) / 0.15);
+  --color-neutral-hover: oklch(0.65 0.01 var(--hue) / 0.1);
+  --color-neutral-border: oklch(0.28 0.015 var(--hue));
+
+  // ── UI chrome ─────────────────────────────────────────────
+  --color-border: oklch(0.22 0.02 var(--hue));
+  --color-ring: oklch(0.72 var(--chroma) var(--hue));
+  --color-divider: oklch(0.28 0.015 var(--hue));
+  --color-dot: oklch(0.6 var(--chroma) var(--hue));
+}
+
+// ╔═══════════════════════════════════════════════════════════╗
+// ║ Base Styles                                               ║
+// ╚═══════════════════════════════════════════════════════════╝
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  transition:
+    background-color 200ms,
+    color 200ms;
+}
+
+main {
+  min-height: 100svh;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+// Centres content and constrains it to a readable column width.
+// Use on any <div> that wraps non-full-bleed page content.
+// Named after its purpose: keeping content within a readable measure.
+.readable {
+  width: 100%;
+  max-width: 72rem; // ~1152px — wide enough for complex layouts
+  margin-inline: auto; // centres horizontally
+  padding-inline: 1.5rem; // gutters on small screens
+  padding-block: 2rem; // vertical rhythm
+
+  @media (min-width: 640px) {
+    padding-inline: 2rem;
+  }
+}
+
+// ╔═══════════════════════════════════════════════════════════╗
+// ║ Semantic Utility Classes                                  ║
+// ╚═══════════════════════════════════════════════════════════╝
+
+// ── Text ──────────────────────────────────────────────────
+
+.text-base {
+  color: var(--color-text);
+}
+.text-muted {
+  color: var(--color-text-muted);
+}
+.text-faint {
+  color: var(--color-text-faint);
+}
+.text-primary {
+  color: var(--color-primary-text);
+}
+.text-secondary {
+  color: var(--color-secondary-text);
+}
+.text-neutral {
+  color: var(--color-neutral-text);
+}
+
+// ── Backgrounds ───────────────────────────────────────────
+
+.bg-base {
+  background-color: var(--color-bg);
+}
+.bg-alt {
+  background-color: var(--color-bg-alt);
+}
+.bg-surface {
+  background-color: var(--color-bg-surface);
+}
+.bg-overlay {
+  background-color: var(--color-bg-overlay);
+}
+.bg-primary {
+  background-color: var(--color-primary-muted);
+}
+.bg-secondary {
+  background-color: var(--color-secondary-muted);
+}
+.bg-neutral {
+  background-color: var(--color-neutral-muted);
+}
+
+// ── Borders ───────────────────────────────────────────────
+
+.border-base {
+  border-color: var(--color-border);
+}
+.border-primary {
+  border-color: var(--color-primary-border);
+}
+.border-secondary {
+  border-color: var(--color-secondary-border);
+}
+.border-neutral {
+  border-color: var(--color-neutral-border);
+}
+
+// ── Interactive links ─────────────────────────────────────
+
+.link-primary {
+  color: var(--color-text-muted);
+  transition: color 150ms;
+  &:hover {
+    color: var(--color-primary);
+  }
+}
+
+.link-secondary {
+  color: var(--color-text-muted);
+  transition: color 150ms;
+  &:hover {
+    color: var(--color-secondary);
+  }
+}
+
+.link-neutral {
+  color: var(--color-text-muted);
+  transition: color 150ms;
+  &:hover {
+    color: var(--color-neutral);
+  }
+}
+
+// ── Dividers ──────────────────────────────────────────────
+
+.divider {
+  border-color: var(--color-divider);
+}
+.divider-dot {
+  color: var(--color-dot);
+  fill: var(--color-dot);
+}
+
+// ── SVG fill ──────────────────────────────────────────────
+
+.fill-primary {
+  fill: var(--color-primary-text);
+}
+.fill-secondary {
+  fill: var(--color-secondary-text);
+}
+.fill-neutral {
+  fill: var(--color-neutral-text);
+}
+.fill-muted {
+  fill: var(--color-text-muted);
+}
+
+// ╔═══════════════════════════════════════════════════════════╗
+// ║ Component: Theme Button (single cycling icon)             ║
+// ╚═══════════════════════════════════════════════════════════╝
+
+.theme-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0.375rem;
+  border: 1px solid transparent;
+  border-radius: 0.5rem;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  transition:
+    color 150ms,
+    background-color 150ms,
+    border-color 150ms;
+
+  // Inside a scrolled nav → use theme colours
+  .site-nav--scrolled & {
+    color: var(--color-text-muted);
+  }
+
+  // Outside the nav (footer, settings, etc.) → always theme colours
+  :not(.site-nav) > & {
+    color: var(--color-text-muted);
+  }
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+    color: #fff;
+
+    .site-nav--scrolled &,
+    :not(.site-nav) > & {
+      color: var(--color-text);
+      background-color: var(--color-bg-alt);
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+  }
+
+  // The SVG is a direct child — no wrapper span anymore
+  svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    display: block;
+    animation: theme-spin 280ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+}
+
+@keyframes theme-spin {
+  from {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.6);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+  }
+}
