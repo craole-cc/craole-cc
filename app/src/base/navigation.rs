@@ -37,28 +37,34 @@ pub fn Nav() -> impl IntoView {
       <div class="site-nav__inner">
 
         <a href="/" class="site-nav__logo" aria-label="Craole.CC — Home">
-          <span class="site-nav__logo-mark" aria-hidden="true">"CC"</span>
+          <span class="site-nav__logo-mark" aria-hidden="true">
+            "CC"
+          </span>
           <span class="site-nav__logo-name">"Craole.CC"</span>
         </a>
 
         <nav
           id="primary-nav"
           class=move || {
-            if open.get() { "site-nav__links site-nav__links--open" }
-            else          { "site-nav__links" }
+            if open.get() { "site-nav__links site-nav__links--open" } else { "site-nav__links" }
           }
           aria-label="Primary"
         >
-          {FACETS.iter().map(|facet| view! {
-            <a
-              href=format!("/{}", facet.slug)
-              class="site-nav__link"
-              title=facet.description
-              on:click=move |_| set_open.set(false)
-            >
-              {facet.label}
-            </a>
-          }).collect::<Vec<_>>()}
+          {FACETS
+            .iter()
+            .map(|facet| {
+              view! {
+                <a
+                  href=format!("/{}", facet.slug)
+                  class="site-nav__link"
+                  title=facet.description
+                  on:click=move |_| set_open.set(false)
+                >
+                  {facet.label}
+                </a>
+              }
+            })
+            .collect::<Vec<_>>()}
         </nav>
 
         <div class="site-nav__controls">
@@ -71,8 +77,7 @@ pub fn Nav() -> impl IntoView {
             on:click=move |_| set_open.update(|v| *v = !*v)
           >
             <span class=move || {
-              if open.get() { "site-nav__bar site-nav__bar--open" }
-              else          { "site-nav__bar" }
+              if open.get() { "site-nav__bar site-nav__bar--open" } else { "site-nav__bar" }
             } />
           </button>
         </div>

@@ -121,7 +121,6 @@ pub fn Footer() -> impl IntoView {
       </nav>
       <Divider config=Divider::default_with_dot() />
       <Copyright />
-    // <ThemeSwitcher class="justify-self-center mt-6" />
     </footer>
   }
 }

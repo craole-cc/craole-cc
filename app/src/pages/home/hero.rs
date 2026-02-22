@@ -52,15 +52,22 @@ pub fn Hero() -> impl IntoView {
     <section class="hero">
 
       <figure class="hero__backdrop" aria-hidden="true">
-        {SLIDES.iter().enumerate().map(|(i, src)| view! {
-          <span
-            class="hero__slide"
-            style=format!(
-              "background-image:url('{}');animation-delay:{}s",
-              src, i as f64 * SLIDE_SECS
-            )
-          />
-        }).collect::<Vec<_>>()}
+        {SLIDES
+          .iter()
+          .enumerate()
+          .map(|(i, src)| {
+            view! {
+              <span
+                class="hero__slide"
+                style=format!(
+                  "background-image:url('{}');animation-delay:{}s",
+                  src,
+                  i as f64 * SLIDE_SECS,
+                )
+              />
+            }
+          })
+          .collect::<Vec<_>>()}
         <span class="hero__scrim" />
         <span class="hero__noise" />
       </figure>
@@ -73,25 +80,33 @@ pub fn Hero() -> impl IntoView {
         </p>
 
         <h1 class="hero__headline">
-          "Building "   <em>"systems,"</em>   <br />
-          "capturing "  <em>"moments,"</em>   <br />
+          "Building " <em>"systems,"</em> <br /> "capturing " <em>"moments,"</em> <br />
           "expressing " <em>"ideas."</em>
         </h1>
 
-        <p class="hero__sub">
-          "Software Engineer · Data Specialist · TEFL Educator · Artist"
-        </p>
+        <p class="hero__sub">"Software Engineer · Data Specialist · TEFL Educator · Artist"</p>
 
         <nav class="hero__ctas" aria-label="Call to action">
           <a href="/code" class="hero__cta-primary">
             "View my work"
-            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-              fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
+            <svg
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
+              />
             </svg>
           </a>
-          <a href="/life" class="hero__cta-ghost">"Explore life"</a>
+          <a href="/life" class="hero__cta-ghost">
+            "Explore life"
+          </a>
         </nav>
 
         <p class="hero__scroll" aria-hidden="true">
@@ -103,9 +118,18 @@ pub fn Hero() -> impl IntoView {
 
       <aside class="hero__stats" aria-label="Quick facts">
         <dl>
-          <div class="hero__stat"><dt>"Years coding"</dt><dd>"10+"</dd></div>
-          <div class="hero__stat"><dt>"Disciplines"</dt><dd>"4"</dd></div>
-          <div class="hero__stat"><dt>"Curiosity"</dt><dd>"∞"</dd></div>
+          <div class="hero__stat">
+            <dt>"Years coding"</dt>
+            <dd>"10+"</dd>
+          </div>
+          <div class="hero__stat">
+            <dt>"Disciplines"</dt>
+            <dd>"4"</dd>
+          </div>
+          <div class="hero__stat">
+            <dt>"Curiosity"</dt>
+            <dd>"∞"</dd>
+          </div>
         </dl>
       </aside>
 
