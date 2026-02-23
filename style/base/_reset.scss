@@ -1,0 +1,15 @@
+/*
+  Minimal global reset.
+*/
+
+html,
+body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}

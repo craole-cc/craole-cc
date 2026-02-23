@@ -1,50 +1,42 @@
-use {
-  crate::prelude::*,
-  wasm_bindgen::{
-    JsCast,
-    closure::Closure,
-  },
-};
-
-//╔═══════════════════════════════════════════════════════════╗
-//║ Slideshow                                                 ║
-//╚═══════════════════════════════════════════════════════════╝
+use crate::prelude::*;
 
 const SLIDES : &[&str] = &[
-  "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1920&q=80",
-  "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1920&q=80",
-  "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&w=1920&q=80",
+  // Bridges
   "https://images.unsplash.com/photo-1433086966358-54859d0ed716?auto=format&fit=crop&w=1920&q=80",
+  "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&w=1920&q=80",
+  // Beaches
+  "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80",
+  "https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=1920&q=80",
+  "https://images.unsplash.com/photo-1559128010-7c1ad6e1b6a5?auto=format&fit=crop&w=1920&q=80",
+  "https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?auto=format&fit=crop&w=1920&q=80",
+  // Rivers & Waterfalls
+  "https://images.unsplash.com/photo-1546587348-d12660c30c50?auto=format&fit=crop&w=1920&q=80",
+  "https://images.unsplash.com/photo-1586348943529-beaae6c28db9?auto=format&fit=crop&w=1920&q=80",
+  // Mountains
+  "https://images.unsplash.com/photo-1501854140801-50d01698950b?auto=format&fit=crop&w=1920&q=80",
+  "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1920&q=80",
+  "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1920&q=80",
+  "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1920&q=80",
+  "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1920&q=80",
+  // Ruins & Temples
+  "https://images.unsplash.com/photo-1555400038-63f5ba517a47?auto=format&fit=crop&w=1920&q=80",
 ];
 
 const SLIDE_SECS : f64 = 5.0;
 
-//╔═══════════════════════════════════════════════════════════╗
-//║ Component                                                 ║
-//╚═══════════════════════════════════════════════════════════╝
-
 #[component]
 pub fn Hero() -> impl IntoView {
-  // Pull set_hue out of the global ThemeContext
   let ThemeContext { set_hue, .. } = expect_context::<ThemeContext,>();
 
-  // On mount: schedule hue extraction for each slide, staggered to
-  // fire in sync with the CSS crossfade animation-delay.
   Effect::new(move |_| {
     for (i, &url,) in SLIDES.iter().enumerate() {
       let delay_ms = (i as f64 * SLIDE_SECS * 1000.0) as i32;
-
-      let handle = Closure::once(Box::new(move || {
-        extract_hue_from_url(url, move |hue| set_hue.set(hue,),);
-      },) as Box<dyn FnOnce(),>,);
-
-      if let Some(win,) = web_sys::window() {
-        let _ = win.set_timeout_with_callback_and_timeout_and_arguments_0(
-          handle.as_ref().unchecked_ref(),
-          delay_ms,
+      extract_hue_from_url(url, move |hue| {
+        set_timeout(
+          move || set_hue.set(hue,),
+          std::time::Duration::from_millis(delay_ms as u64,),
         );
-      }
-      handle.forget();
+      },);
     }
   },);
 
@@ -73,7 +65,6 @@ pub fn Hero() -> impl IntoView {
       </figure>
 
       <article class="hero__content">
-
         <p class="hero__badge" role="note">
           <span class="hero__badge-dot" aria-hidden="true" />
           "Available for freelance work"
@@ -113,7 +104,6 @@ pub fn Hero() -> impl IntoView {
           <span class="hero__scroll-line" />
           <small>"scroll"</small>
         </p>
-
       </article>
 
       <aside class="hero__stats" aria-label="Quick facts">

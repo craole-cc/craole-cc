@@ -1,0 +1,164 @@
+/*
+  Footer component.
+*/
+
+.footer {
+  text-align: center;
+  color: var(--color-text-muted);
+  margin-bottom: 0.5rem;
+
+  // ── Inner nav ─────────────────────────────────────────────
+
+  &__inner {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  // ── Socials ───────────────────────────────────────────────
+
+  &__socials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+  }
+
+  &__social-link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.5rem;
+    transition: transform 300ms ease;
+
+    &:hover {
+      transform: translateY(-4px);
+    }
+  }
+
+  &__social-icon {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 300ms ease;
+
+    &--default {
+      opacity: 1;
+
+      .group:hover & {
+        opacity: 0;
+      }
+    }
+
+    &--hover {
+      opacity: 0;
+
+      .group:hover & {
+        opacity: 1;
+      }
+    }
+  }
+
+  &__social-svg {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  // ── Facet nav ─────────────────────────────────────────────
+
+  &__facets {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  &__facet {
+    color: var(--color-text-muted);
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 300ms, transform 300ms, font-weight 300ms;
+
+    &:hover {
+      color: var(--color-primary);
+      transform: translateY(-2px);
+    }
+
+    &--divided {
+      padding-right: 1rem;
+      border-right: 1px solid var(--color-neutral-border);
+    }
+  }
+
+  // ── Bottom row ────────────────────────────────────────────
+
+  &__bottom {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    position: relative;
+  }
+
+  // ── Copyright ─────────────────────────────────────────────
+
+  &__copyright {
+    text-align: center;
+  }
+
+  &__name {
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+    font-size: 1rem;
+  }
+
+  &__alias {
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+
+  &__meta {
+    font-size: 0.75rem;
+    color: var(--color-text-faint);
+
+    p + p {
+      margin-top: 0.125rem;
+    }
+  }
+
+  // ── Tech Credits ──────────────────────────────────────────
+
+  &__tech {
+    font-weight: 500;
+    text-decoration: none;
+    transition: opacity 150ms;
+
+    &:hover {
+      opacity: 0.75;
+      text-decoration: underline;
+    }
+
+    &--rust {
+      color: oklch(0.6 0.15 35);
+
+      [data-theme="dark"] & {
+        color: oklch(0.75 0.12 35);
+      }
+    }
+
+    &--leptos {
+      color: oklch(0.5 0.18 15);
+
+      [data-theme="dark"] & {
+        color: oklch(0.7 0.15 15);
+      }
+    }
+  }
+}

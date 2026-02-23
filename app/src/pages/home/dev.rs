@@ -1,11 +1,13 @@
 use crate::{
   constants::stacks::{
+    Area,
+    Stack,
     Tech,
     areas,
     stacks,
   },
   prelude::*,
-}; // Note: Tech is from stacks.rs
+};
 
 #[component]
 pub fn Stacks() -> impl IntoView {
@@ -37,7 +39,6 @@ fn StackCard(category : Stack,) -> impl IntoView {
 
 #[component]
 fn TechBadge(tech : Tech,) -> impl IntoView {
-  let icon_set = tech.icon.to_icon_set(); // Icons enum -> Set
   view! {
     <a
       href=tech.link
@@ -45,22 +46,15 @@ fn TechBadge(tech : Tech,) -> impl IntoView {
       rel="noopener noreferrer"
       class=format!(
         "flex gap-2 items-center py-2 px-3 rounded-lg border \
-              transition-all hover:shadow-md hover:scale-105 group \
-              {} {} hover:{}",
+         transition-all hover:shadow-md hover:scale-105 group \
+         {} {} hover:{}",
         NEUTRAL_BG_CARD,
         NEUTRAL_BORDER_300,
         PRIMARY_BORDER_400,
       )
     >
       <span class="flex justify-center items-center w-5 h-5">
-        // Light icon: visible in light mode, hidden in dark mode
-        <span class="block dark:hidden">
-          <RenderIcon icon=icon_set.light />
-        </span>
-        // Dark icon: hidden in light mode, visible in dark mode
-        <span class="hidden dark:block">
-          <RenderIcon icon=icon_set.dark />
-        </span>
+        <IconRender icon=tech.logo class="w-5 h-5" />
       </span>
       <span class=format!("text-sm font-medium {}", NEUTRAL_TEXT_700)>{tech.name}</span>
     </a>
@@ -83,8 +77,7 @@ pub fn Areas() -> impl IntoView {
 fn AreaCard(area : Area,) -> impl IntoView {
   view! {
     <div class=format!(
-      "p-6 rounded-xl border transition-all duration-300 \
-          hover:shadow-lg {} {}",
+      "p-6 rounded-xl border transition-all duration-300 hover:shadow-lg {} {}",
       NEUTRAL_BG_SURFACE,
       NEUTRAL_BORDER_300,
     )>

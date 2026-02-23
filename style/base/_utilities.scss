@@ -1,0 +1,117 @@
+/*
+  Semantic "design system" utilities
+*/
+
+// ── Text ──────────────────────────────────────────────────
+
+.text-base {
+  color: var(--color-text);
+}
+.text-muted {
+  color: var(--color-text-muted);
+}
+.text-faint {
+  color: var(--color-text-faint);
+}
+.text-primary {
+  color: var(--color-primary-text);
+}
+.text-secondary {
+  color: var(--color-secondary-text);
+}
+.text-neutral {
+  color: var(--color-neutral-text);
+}
+
+// ── Backgrounds ───────────────────────────────────────────
+
+.bg-base {
+  background-color: var(--color-bg);
+}
+.bg-alt {
+  background-color: var(--color-bg-alt);
+}
+.bg-surface {
+  background-color: var(--color-bg-surface);
+}
+.bg-overlay {
+  background-color: var(--color-bg-overlay);
+}
+.bg-primary {
+  background-color: var(--color-primary-muted);
+}
+.bg-secondary {
+  background-color: var(--color-secondary-muted);
+}
+.bg-neutral {
+  background-color: var(--color-neutral-muted);
+}
+
+// ── Borders ───────────────────────────────────────────────
+
+.border-base {
+  border-color: var(--color-border);
+}
+.border-primary {
+  border-color: var(--color-primary-border);
+}
+.border-secondary {
+  border-color: var(--color-secondary-border);
+}
+.border-neutral {
+  border-color: var(--color-neutral-border);
+}
+
+// ── Interactive links ─────────────────────────────────────
+
+.link-primary {
+  color: var(--color-text-muted);
+  transition: color 150ms;
+
+  &:hover {
+    color: var(--color-primary);
+  }
+}
+
+.link-secondary {
+  color: var(--color-text-muted);
+  transition: color 150ms;
+
+  &:hover {
+    color: var(--color-secondary);
+  }
+}
+
+.link-neutral {
+  color: var(--color-text-muted);
+  transition: color 150ms;
+
+  &:hover {
+    color: var(--color-neutral);
+  }
+}
+
+// ── Dividers ──────────────────────────────────────────────
+
+.divider {
+  border-color: var(--color-divider);
+}
+.divider-dot {
+  color: var(--color-dot);
+  fill: var(--color-dot);
+}
+
+// ── SVG fill ──────────────────────────────────────────────
+
+.fill-primary {
+  fill: var(--color-primary-text);
+}
+.fill-secondary {
+  fill: var(--color-secondary-text);
+}
+.fill-neutral {
+  fill: var(--color-neutral-text);
+}
+.fill-muted {
+  fill: var(--color-text-muted);
+}

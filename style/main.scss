@@ -1,2 +1,17 @@
-@use "theme";
-@use "hero";
+/*
+  Sass entrypoint.
+  Load order: theme → base → components.
+*/
+
+@use "theme/main";
+@use "theme/runtime";
+@use "theme/switch";
+
+@use "base/reset";
+@use "base/globals";
+@use "base/utilities";
+@use "base/animations";
+
+@use "components/header";
+@use "components/hero";
+@use "components/footer";

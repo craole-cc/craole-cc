@@ -4,7 +4,17 @@ use {
     Source,
   },
   crate::prelude::*,
+  std::{
+    collections::HashMap,
+    sync::{
+      LazyLock,
+      Mutex,
+    },
+  },
 };
+
+static FILL_CLASS_CACHE : LazyLock<Mutex<HashMap<(&'static str, &'static str,), &'static str,>,>,> =
+  LazyLock::new(|| Mutex::new(HashMap::new(),),);
 
 #[component]
 pub fn Render(icon : Icon, #[prop(optional, into)] class : Option<String,>,) -> impl IntoView {
@@ -30,6 +40,12 @@ pub fn Render(icon : Icon, #[prop(optional, into)] class : Option<String,>,) -> 
 }
 
 /// Helper to create fill class with color
-pub fn fill_class(light : &str, dark : &str,) -> &'static str {
-  Box::leak(format!("fill-[{light}] dark:fill-[{dark}]").into_boxed_str(),)
+pub fn fill_class(light : &'static str, dark : &'static str,) -> &'static str {
+  let mut cache = FILL_CLASS_CACHE.lock().unwrap();
+  if let Some(&cached,) = cache.get(&(light, dark,),) {
+    return cached;
+  }
+  let s = Box::leak(format!("fill-[{light}] dark:fill-[{dark}]").into_boxed_str(),);
+  cache.insert((light, dark,), s,);
+  s
 }

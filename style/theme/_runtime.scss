@@ -1,0 +1,21 @@
+/*
+  Theme “mechanics”: animatable custom properties + transitions.
+*/
+
+@property --hue {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 164;
+}
+
+@property --chroma {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0.2;
+}
+
+:root {
+  transition:
+    --hue 1.5s ease,
+    --chroma 1.5s ease;
+}

@@ -309,22 +309,86 @@ fn IconDark() -> impl IntoView {
 #[component]
 pub fn ThemeSwitcher(#[prop(default = "")] class : &'static str,) -> impl IntoView {
   let ThemeContext { theme, .. } = expect_context::<ThemeContext,>();
+  let (open, set_open,) = signal(false,);
 
-  let icon = move || match theme.get() {
-    | Theme::System => view! { <IconSystem /> }.into_any(),
-    | Theme::Light => view! { <IconLight /> }.into_any(),
-    | Theme::Dark => view! { <IconDark /> }.into_any(),
-  };
+  // Close on outside click
+  Effect::new(move |_| {
+    if !open.get() {
+      return;
+    }
+    let Some(doc,) = web_sys::window().and_then(|w| w.document(),) else {
+      return;
+    };
+    let handler =
+      wasm_bindgen::closure::Closure::<dyn Fn(web_sys::MouseEvent,),>::wrap(Box::new(move |_| {
+        set_open.set(false,)
+      },),);
+    let _ = doc.add_event_listener_with_callback("click", handler.as_ref().unchecked_ref(),);
+    handler.forget();
+  },);
+
+  let options = [
+    (Theme::System, "System", view! { <IconSystem /> }.into_any(),),
+    (Theme::Light, "Light", view! { <IconLight /> }.into_any(),),
+    (Theme::Dark, "Dark", view! { <IconDark /> }.into_any(),),
+  ];
 
   view! {
-    <button
-      type="button"
-      class=format!("theme-btn {class}")
-      aria-label=move || theme.get().label()
-      title=move || theme.get().next_label()
-      on:click=move |_| theme.update(|t| *t = t.next())
-    >
-      {icon}
-    </button>
+    <div class=format!("theme-dropdown {class}") on:click=move |e| e.stop_propagation()>
+      <button
+        type="button"
+        class="theme-btn"
+        aria-label=move || theme.get().label()
+        title="Change theme"
+        on:click=move |_| set_open.update(|v| *v = !*v)
+      >
+        {move || match theme.get() {
+          Theme::System => view! { <IconSystem /> }.into_any(),
+          Theme::Light => view! { <IconLight /> }.into_any(),
+          Theme::Dark => view! { <IconDark /> }.into_any(),
+        }}
+      </button>
+
+      {move || {
+        open
+          .get()
+          .then(|| {
+            view! {
+              <div class="theme-dropdown__menu">
+                {options
+                  .iter()
+                  .map(|(t, label, _)| {
+                    let t = *t;
+                    let active = move || theme.get() == t;
+                    view! {
+                      <button
+                        type="button"
+                        class=move || {
+                          if active() {
+                            "theme-dropdown__option theme-dropdown__option--active"
+                          } else {
+                            "theme-dropdown__option"
+                          }
+                        }
+                        on:click=move |_| {
+                          theme.set(t);
+                          set_open.set(false);
+                        }
+                      >
+                        {match t {
+                          Theme::System => view! { <IconSystem /> }.into_any(),
+                          Theme::Light => view! { <IconLight /> }.into_any(),
+                          Theme::Dark => view! { <IconDark /> }.into_any(),
+                        }}
+                        {*label}
+                      </button>
+                    }
+                  })
+                  .collect::<Vec<_>>()}
+              </div>
+            }
+          })
+      }}
+    </div>
   }
 }

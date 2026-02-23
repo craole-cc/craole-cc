@@ -25,7 +25,7 @@ pub fn App() -> impl IntoView {
     <Title text="Craole-CC" />
     <ThemeProvider>
       <Router>
-        <Nav />
+        <Header />
         <main>
           <Routes fallback=|| "Page not found.".into_view()>
             <Route path=StaticSegment("") view=Home />

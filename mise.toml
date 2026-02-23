@@ -1,0 +1,6 @@
+[env]
+PRJ_ROOT = "{{config_root}}"
+
+[tasks.fmt]
+run = "treefmt"
+description = "Format all files"

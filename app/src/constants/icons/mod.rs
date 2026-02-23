@@ -8,6 +8,7 @@ pub mod prelude {
     Icons,
     Render as IconRender,
     Source as IconSource,
+    icon,
   };
 }
 

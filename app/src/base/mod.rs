@@ -1,12 +1,12 @@
 mod footer;
+mod header;
 mod index;
-mod navigation;
 mod router;
 mod theme;
 pub use {
   footer::*,
+  header::*,
   index::*,
-  navigation::*,
   router::*,
   theme::*,
 };
