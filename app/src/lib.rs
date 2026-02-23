@@ -1,3 +1,4 @@
+#![recursion_limit = "256"]
 mod base;
 pub use base::*;
 
