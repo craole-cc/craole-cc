@@ -17,4 +17,18 @@ pub mod prelude {
     leptos::prelude::*,
     paste_complete::paste,
   };
+  // #[cfg(feature = "hydrate")]
+  pub use {
+    wasm_bindgen::{
+      JsCast,
+      closure::Closure,
+    },
+    wasm_bindgen_futures::spawn_local,
+    web_sys::{
+      HtmlCanvasElement,
+      HtmlImageElement,
+      js_sys,
+      window,
+    },
+  };
 }

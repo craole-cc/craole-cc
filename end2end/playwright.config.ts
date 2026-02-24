@@ -1,4 +1,4 @@
-import { devices, defineConfig } from "@playwright/test";
+import { defineConfig, devices } from "@playwright/test";
 
 /**
  * Read environment variables from file.
@@ -63,7 +63,6 @@ export default defineConfig({
         ...devices["Desktop Safari"],
       },
     },
-
     /* Test against mobile viewports. */
     // {
     //   name: 'Mobile Chrome',
@@ -92,7 +91,6 @@ export default defineConfig({
     //   },
     // },
   ],
-
   /* Folder for test artifacts such as screenshots, videos, traces, etc. */
   // outputDir: 'test-results/',
 

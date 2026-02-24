@@ -7,21 +7,18 @@
 
 ## 👤 About Me
 
-I build **full-stack applications, data infrastructure, and systems utilities**,
-usually with **Rust** at the core. From frontend interfaces to backend pipelines
-to command-line tools, I'm exploring the entire spectrum of what's possible with
-modern systems programming.
+I build **full-stack applications, data infrastructure, and systems utilities**, usually with
+**Rust** at the core. From frontend interfaces to backend pipelines to command-line tools, I'm
+exploring the entire spectrum of what's possible with modern systems programming.
 
-With roots in **music production** (bassist, singer, producer) and 8+ years in
-**Learning & Development** (including TEFL tutoring for professionals), I've
-always been driven by **expression**. The alias **"Craole"** embodies this — a
-fusion of my Caribbean heritage and creative identity, reminding me that _**I
-have something to say**_.
+With roots in **music production** (bassist, singer, producer) and 8+ years in **Learning &
+Development** (including TEFL tutoring for professionals), I've always been driven by
+**expression**. The alias **"Craole"** embodies this — a fusion of my Caribbean heritage and
+creative identity, reminding me that _**I have something to say**_.
 
-Music remains part of my voice, but **code has expanded my range**. Every system
-I build, every pipeline I design, every utility I craft — it's all **expression
-through structure**, blending the precision and creativity I honed as a musician
-with the power of modern systems programming.
+Music remains part of my voice, but **code has expanded my range**. Every system I build, every
+pipeline I design, every utility I craft — it's all **expression through structure**, blending the
+precision and creativity I honed as a musician with the power of modern systems programming.
 
 > **Code is another instrument of expression through structure** 🎵⚙️
 
@@ -29,8 +26,7 @@ with the power of modern systems programming.
 
 ### 🌐 Full-Stack Development
 
-- Web applications with Rust backends (Axum, Actix) + modern frontends (HTMX,
-  SPA frameworks)
+- Web applications with Rust backends (Axum, Actix) + modern frontends (HTMX, SPA frameworks)
 - End-to-end solutions from database to UI
 
 ### 📊 Data Engineering
@@ -106,13 +102,12 @@ with the power of modern systems programming.
 
 ## 🎯 Philosophy
 
-Code is expression. Just like music, it requires **precision, creativity, and
-purpose**. Whether I'm building a web app, designing a data pipeline, or
-crafting a CLI tool, it's about solving problems in ways that feel **structured
-yet innovative**.
+Code is expression. Just like music, it requires **precision, creativity, and purpose**. Whether I'm
+building a web app, designing a data pipeline, or crafting a CLI tool, it's about solving problems
+in ways that feel **structured yet innovative**.
 
-From my musical background to teaching to building systems—it's all connected
-through the desire to **create and communicate**.
+From my musical background to teaching to building systems—it's all connected through the desire to
+**create and communicate**.
 
 ## 🚀 Open to Collaboration
 
@@ -131,8 +126,8 @@ Looking for **Rust-centric projects** across the full spectrum:
 
 ---
 
-**Let's build something impactful together** — solving real problems through
-elegant, expressive code 🚀
+**Let's build something impactful together** — solving real problems through elegant, expressive
+code 🚀
 
 <!---
 craole-cc/craole-cc is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.

@@ -134,7 +134,6 @@ pub fn Footer() -> impl IntoView {
       <Divider config=Divider::default_with_dot() />
       <div class="footer__bottom">
         <Copyright />
-        <ThemeSwitcher />
       </div>
     </footer>
   }

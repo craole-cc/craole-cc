@@ -26,8 +26,10 @@ const SLIDE_SECS : f64 = 5.0;
 
 #[component]
 pub fn Hero() -> impl IntoView {
+  #[cfg_attr(not(feature = "hydrate"), allow(unused_variables))]
   let ThemeContext { set_hue, .. } = expect_context::<ThemeContext,>();
 
+  #[cfg(feature = "hydrate")]
   Effect::new(move |_| {
     for (i, &url,) in SLIDES.iter().enumerate() {
       let delay_ms = (i as f64 * SLIDE_SECS * 1000.0) as i32;
@@ -42,7 +44,6 @@ pub fn Hero() -> impl IntoView {
 
   view! {
     <section class="hero">
-
       <figure class="hero__backdrop" aria-hidden="true">
         {SLIDES
           .iter()

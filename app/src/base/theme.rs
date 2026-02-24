@@ -1,15 +1,4 @@
-use {
-  leptos::prelude::*,
-  wasm_bindgen::{
-    JsCast,
-    closure::Closure,
-  },
-  wasm_bindgen_futures::spawn_local,
-  web_sys::{
-    HtmlCanvasElement,
-    HtmlImageElement,
-  },
-};
+use crate::prelude::*;
 
 //╔═══════════════════════════════════════════════════════════╗
 //║ Configuration                                             ║
@@ -26,36 +15,36 @@ pub enum Theme {
 impl Theme {
   pub fn next(self,) -> Self {
     match self {
-      | Theme::System => Theme::Light,
-      | Theme::Light => Theme::Dark,
-      | Theme::Dark => Theme::System,
+      | Self::System => Self::Light,
+      | Self::Light => Self::Dark,
+      | Self::Dark => Self::System,
     }
   }
 
   pub fn label(self,) -> &'static str {
     match self {
-      | Theme::System => "System theme",
-      | Theme::Light => "Light theme",
-      | Theme::Dark => "Dark theme",
+      | Self::System => "System theme",
+      | Self::Light => "Light theme",
+      | Self::Dark => "Dark theme",
     }
   }
 
   pub fn next_label(self,) -> &'static str {
     match self {
-      | Theme::System => "Switch to light theme",
-      | Theme::Light => "Switch to dark theme",
-      | Theme::Dark => "Switch to system theme",
+      | Self::System => "Switch to light theme",
+      | Self::Light => "Switch to dark theme",
+      | Self::Dark => "Switch to system theme",
     }
   }
 
   pub fn resolve(self,) -> &'static str {
     match self {
-      | Theme::Light => "light",
-      | Theme::Dark => "dark",
-      | Theme::System => {
+      | Self::Light => "light",
+      | Self::Dark => "dark",
+      | Self::System => {
         #[cfg(feature = "hydrate")]
         {
-          let prefers_dark = web_sys::window()
+          let prefers_dark = window()
             .and_then(|w| {
               w.match_media("(prefers-color-scheme: dark)",)
                 .ok()
@@ -112,6 +101,7 @@ pub fn rgb_to_hue(r : f64, g : f64, b : f64,) -> Option<f64,> {
 
 /// Load a URL into an off-screen canvas, average the pixels,
 /// derive a hue and pass it to `on_hue`. Safe to call repeatedly.
+#[cfg(feature = "hydrate")]
 pub fn extract_hue_from_url(url : &'static str, on_hue : impl Fn(f64,)+'static,) {
   spawn_local(async move {
     let Some(window,) = web_sys::window() else {
@@ -195,6 +185,7 @@ pub fn extract_hue_from_url(url : &'static str, on_hue : impl Fn(f64,)+'static,)
 
 /// Write --hue to the <html> element's inline style.
 /// @property in CSS makes this animatable — no JS loop needed.
+#[cfg(feature = "hydrate")]
 pub fn apply_hue_to_root(hue : f64,) {
   if let Some(el,) = web_sys::window()
     .and_then(|w| w.document(),)
@@ -212,11 +203,13 @@ pub fn apply_hue_to_root(hue : f64,) {
 #[component]
 pub fn ThemeProvider(children : Children,) -> impl IntoView {
   let theme = RwSignal::new(Theme::default(),);
+
+  #[allow(unused_variables)]
   let (hue, set_hue,) = signal(164.0_f64,); // default teal — matches @property initial-value
 
   provide_context(ThemeContext { theme, set_hue, },);
 
-  // data-theme → <html> on every mode change
+  #[cfg(feature = "hydrate")]
   Effect::new(move |_| {
     let resolved = theme.get().resolve();
     if let Some(el,) = web_sys::window()
@@ -229,6 +222,7 @@ pub fn ThemeProvider(children : Children,) -> impl IntoView {
 
   // --hue → <html> inline style on every hue signal change.
   // CSS @property + transition: --hue 1.5s ease handles the animation.
+  #[cfg(feature = "hydrate")]
   Effect::new(move |_| apply_hue_to_root(hue.get(),),);
 
   view! { {children()} }

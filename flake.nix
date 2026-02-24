@@ -50,18 +50,18 @@
         #? Rust / Leptos build chain
         rustTools = with pkgs; [
           rustToolchain
-          binaryen
-          cargo-bloat
-          cargo-edit
+          # binaryen
+          # cargo-bloat
+          # cargo-edit
           cargo-generate
           cargo-leptos
-          cargo-seek
-          cargo-sweep
-          cargo-watch
-          cargo-wipe
+          # cargo-seek
+          # cargo-sweep
+          # cargo-watch
+          # cargo-wipe
           leptosfmt
-          trunk
-          wasm-bindgen-cli
+          # trunk
+          wasm-bindgen-cli_0_2_108
         ];
 
         #? Frontend assets

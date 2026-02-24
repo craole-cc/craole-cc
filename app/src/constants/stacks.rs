@@ -1,7 +1,4 @@
-use crate::prelude::{
-  Icon,
-  icon,
-};
+use crate::prelude::*;
 
 //╔═══════════════════════════════════════════════════════════╗
 //║ Types                                                     ║
@@ -101,7 +98,7 @@ pub fn stacks() -> Vec<Stack,> {
         },
         Tech {
           name : "SurrealDB",
-          logo : Icon::new_local("icons/logos/surrealdb.png",),
+          logo : Icons::SurrealDb.get(),
           link : "https://surrealdb.com/",
         },
         Tech {

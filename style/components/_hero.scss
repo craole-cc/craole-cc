@@ -15,13 +15,21 @@
   padding-top: 4rem;
   overflow: hidden;
 
-// ── Nav button overrides when over hero ───────────────────
-
-// &__controls,
-// & ~ * .theme-dropdown,
-// & + header .theme-dropdown {
-//   // can't reach up to header from hero in CSS
-// }
+  // Fade the bottom of the hero into the page background seamlessly
+  &::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 30%;
+    z-index: 4; // above scrim (1), noise (2), but below content (3)...
+    // actually raise content to z-index 5 (see below)
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      var(--color-bg) 100%
+    );
+    pointer-events: none;
+  }
 
   // ── Backdrop ─────────────────────────────────────────────
 
@@ -33,23 +41,33 @@
     overflow: hidden;
   }
 
-&__slide {
-  position: absolute;
-  inset: 0;
-  background-size: cover;
-  background-position: center;
-  opacity: 0;
-  animation: hero-fade 75s linear infinite;
-  will-change: opacity;
-}
+  &__slide {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    animation: hero-fade 75s linear infinite;
+    will-change: opacity;
+  }
 
-@keyframes hero-fade {
-  0%              { opacity: 0; }
-  2%              { opacity: 1; }   // fade in quickly
-  6%              { opacity: 1; }   // hold
-  8.667%          { opacity: 0; }   // fade out, overlapping into next slide's fade-in
-  100%            { opacity: 0; }
-}
+  @keyframes hero-fade {
+    0% {
+      opacity: 0;
+    }
+    2% {
+      opacity: 1;
+    } // fade in quickly
+    6% {
+      opacity: 1;
+    } // hold
+    8.667% {
+      opacity: 0;
+    } // fade out, overlapping into next slide's fade-in
+    100% {
+      opacity: 0;
+    }
+  }
 
   // ── Scrim ─────────────────────────────────────────────────
 
@@ -88,7 +106,7 @@
 
   &__content {
     position: relative;
-    z-index: 3;
+    z-index: 5;
     max-width: 48rem;
     padding: 2rem 1.5rem;
     width: 100%;
@@ -137,6 +155,7 @@
 
   &__headline {
     font-size: clamp(2.5rem, 7vw, 5.25rem);
+    // font-size: clamp(2.25rem, 5.5vw, 4rem);
     font-weight: 800;
     line-height: 1.06;
     letter-spacing: -0.03em;
@@ -260,7 +279,7 @@
     right: clamp(1.5rem, 6vw, 5rem);
     top: 50%;
     transform: translateY(-50%);
-    z-index: 3;
+    z-index: 5;
     animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.6s both;
 
     @media (max-width: 900px) {

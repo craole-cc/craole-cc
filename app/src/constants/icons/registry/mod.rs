@@ -1,4 +1,4 @@
-// mod data;
+mod data;
 mod devops;
 // mod editors;
 // mod languages;
@@ -9,6 +9,7 @@ mod social;
 
 pub use {
   core::*,
+  data::*,
   devops::*,
   social::*,
 };

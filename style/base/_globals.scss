@@ -5,9 +5,7 @@
 body {
   background-color: var(--color-bg);
   color: var(--color-text);
-  transition:
-    background-color 200ms,
-    color 200ms;
+  transition: background-color 200ms, color 200ms;
 }
 
 main {

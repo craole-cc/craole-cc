@@ -1,20 +1,11 @@
-use {
-  crate::prelude::*,
-  wasm_bindgen::{
-    JsCast,
-    closure::Closure,
-  },
-  web_sys::js_sys,
-};
-
-//╔═══════════════════════════════════════════════════════════╗
-//║ Navigation                                                ║
-//╚═══════════════════════════════════════════════════════════╝
+use crate::prelude::*;
 
 #[component]
 pub fn Header() -> impl IntoView {
+  #[allow(unused_variables)]
   let (scrolled, set_scrolled,) = signal(false,);
 
+  #[cfg(feature = "hydrate")]
   Effect::new(move |_| {
     let Some(win,) = web_sys::window() else {
       return;
@@ -29,9 +20,6 @@ pub fn Header() -> impl IntoView {
 
     let cb = handler.as_ref().unchecked_ref::<js_sys::Function>().clone();
     let _ = win.add_event_listener_with_callback("scroll", &cb,);
-
-    // Keep closure alive for the lifetime of this effect run.
-    // Header never unmounts in a SPA, so this is sufficient.
     handler.forget();
   },);
 

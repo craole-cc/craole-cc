@@ -39,9 +39,9 @@ thiserror = "2.0.18"
 tokio = { version = "1.45.0", features = ["full"] }
 tower = { version = "0.5.2", features = ["full"] }
 tower-http = { version = "0.6.4", features = ["full"] }
-wasm-bindgen = "0.2.111"
-wasm-bindgen-futures = "0.4.61"
-web-sys = { version = "0.3.88", features = [
+wasm-bindgen = "=0.2.108"
+wasm-bindgen-futures = "0.4"
+web-sys = { version = "=0.3.85", features = [
   "CanvasRenderingContext2d",
   "CssStyleDeclaration",
   "HtmlCanvasElement",
