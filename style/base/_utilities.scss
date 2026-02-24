@@ -1,8 +1,23 @@
-/*
-  Semantic "design system" utilities
-*/
+@use "../index" as *;
 
-// ── Text ──────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════════
+// base/_utilities.scss — Single-purpose design system helpers
+// ═══════════════════════════════════════════════════════════════════════════════
+//
+// PHILOSOPHY
+//   Semantic utility classes — map design intent to a token.
+//   NOT a general-purpose framework like Tailwind.
+//   If a class is only used in one component, it belongs in that component's
+//   SCSS file, not here.
+//
+// TOKENS USED
+//   sp()  — spacing     (base/_tokens.scss via index)
+//   dur() — durations   (base/_tokens.scss via index)
+//   --color-* vars      (theme/_tokens.scss — runtime)
+//
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// ── Text colours ──────────────────────────────────────────────────────────────
 
 .text-base {
   color: var(--color-text);
@@ -23,7 +38,7 @@
   color: var(--color-neutral-text);
 }
 
-// ── Backgrounds ───────────────────────────────────────────
+// ── Background colours ────────────────────────────────────────────────────────
 
 .bg-base {
   background-color: var(--color-bg);
@@ -47,7 +62,7 @@
   background-color: var(--color-neutral-muted);
 }
 
-// ── Borders ───────────────────────────────────────────────
+// ── Border colours ────────────────────────────────────────────────────────────
 
 .border-base {
   border-color: var(--color-border);
@@ -62,46 +77,7 @@
   border-color: var(--color-neutral-border);
 }
 
-// ── Interactive links ─────────────────────────────────────
-
-.link-primary {
-  color: var(--color-text-muted);
-  transition: color 150ms;
-
-  &:hover {
-    color: var(--color-primary);
-  }
-}
-
-.link-secondary {
-  color: var(--color-text-muted);
-  transition: color 150ms;
-
-  &:hover {
-    color: var(--color-secondary);
-  }
-}
-
-.link-neutral {
-  color: var(--color-text-muted);
-  transition: color 150ms;
-
-  &:hover {
-    color: var(--color-neutral);
-  }
-}
-
-// ── Dividers ──────────────────────────────────────────────
-
-.divider {
-  border-color: var(--color-divider);
-}
-.divider-dot {
-  color: var(--color-dot);
-  fill: var(--color-dot);
-}
-
-// ── SVG fill ──────────────────────────────────────────────
+// ── SVG fill colours ──────────────────────────────────────────────────────────
 
 .fill-primary {
   fill: var(--color-primary-text);
@@ -114,4 +90,76 @@
 }
 .fill-muted {
   fill: var(--color-text-muted);
+}
+
+// ── Interactive links ─────────────────────────────────────────────────────────
+
+.link-primary {
+  color: var(--color-text-muted);
+  transition: color dur(fast);
+  &:hover {
+    color: var(--color-primary);
+  }
+}
+
+.link-secondary {
+  color: var(--color-text-muted);
+  transition: color dur(fast);
+  &:hover {
+    color: var(--color-secondary);
+  }
+}
+
+.link-neutral {
+  color: var(--color-text-muted);
+  transition: color dur(fast);
+  &:hover {
+    color: var(--color-neutral);
+  }
+}
+
+// ── Divider helper ────────────────────────────────────────────────────────────
+// For bare <hr> elements. Prefer <Divider /> in Leptos for complex cases.
+
+.divider {
+  border-color: var(--color-divider);
+}
+
+// ── Hover state helpers ───────────────────────────────────────────────────────
+
+.hover-primary {
+  transition: background-color dur(fast);
+  &:hover {
+    background-color: var(--color-primary-hover);
+  }
+}
+
+.hover-neutral {
+  transition: background-color dur(fast);
+  &:hover {
+    background-color: var(--color-neutral-hover);
+  }
+}
+
+// ── Focus ring ────────────────────────────────────────────────────────────────
+
+.focus-ring {
+  &:focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+  }
+}
+
+// ── Visually hidden ───────────────────────────────────────────────────────────
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }

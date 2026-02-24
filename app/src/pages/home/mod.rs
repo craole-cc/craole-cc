@@ -5,7 +5,7 @@ mod experience;
 mod hero;
 mod projects;
 
-use crate::prelude::*;
+use crate::_prelude::*;
 
 #[component]
 pub fn Home() -> impl IntoView {

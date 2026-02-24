@@ -1,15 +1,170 @@
-/*
-  Minimal global reset.
-*/
+// ═══════════════════════════════════════════════════════════════════════════════
+// base/_reset.scss — Modern CSS reset
+// ───────────────────────────────────────────────────────────────────────────────
+//
+// PHILOSOPHY
+//   This is an opinionated minimal reset, not a full normalizer.
+//   We zero what browser defaults get in our way, then set sensible starting
+//   points that work with the design system. We do NOT attempt to make all
+//   browsers identical — we level the floor, not the ceiling.
+//
+//   Tailwind's preflight (loaded via tailwind.css) handles some of this
+//   already (heading margins, list styles). This file supplements it with
+//   anything preflight doesn't cover or that we want to control explicitly.
+//
+// LOAD ORDER
+//   Loads after theme/_tokens.scss + theme/_runtime.scss so that CSS vars
+//   are available if needed, but before base/_globals.scss which adds
+//   typography and layout on top of this clean slate.
+//
+// ═══════════════════════════════════════════════════════════════════════════════
 
-html,
-body {
-  width: 100%;
-  overflow-x: hidden;
-}
-
+// ── Box model ─────────────────────────────────────────────────────────────────
+// Apply border-box universally. The wildcard + pseudo-elements covers
+// everything including dynamically inserted content.
 *,
 *::before,
 *::after {
   box-sizing: border-box;
+}
+
+// ── Document ──────────────────────────────────────────────────────────────────
+html {
+  // Prevent horizontal scroll from any overflow-x issues on narrow screens.
+  // overflow-x: hidden on html alone doesn't prevent horizontal scroll bars
+  // in all browsers; pairing with body covers the cases html misses.
+  overflow-x: hidden;
+
+  // Smooth scrolling for anchor links and scroll-to-section navigation.
+  // Respects prefers-reduced-motion below.
+  scroll-behavior: smooth;
+
+  // Prevent font size inflation on iOS when rotating to landscape.
+  // Without this, iOS increases font sizes "helpfully" in landscape.
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  overflow-x: hidden;
+
+  // Remove default body margin (present in some browsers)
+  margin: 0;
+
+  // Improve text rendering — subpixel on light backgrounds, antialiased
+  // on dark. Antialiased reads better at small sizes on Retina screens.
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// ── Typography ────────────────────────────────────────────────────────────────
+// Remove default margins from all typographic elements.
+// _globals.scss adds them back deliberately with the design system scale.
+h1, h2, h3, h4, h5, h6, p, blockquote, pre, dl, dd, figure {
+  margin: 0;
+}
+
+// ── Interactive elements ──────────────────────────────────────────────────────
+// Buttons should inherit font — browser defaults use system-ui at a different
+// size which breaks visual consistency.
+button,
+input,
+optgroup,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+// Remove default button appearance so we can style from scratch.
+// Keep cursor: pointer as a universally expected affordance.
+button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+// ── Links ─────────────────────────────────────────────────────────────────────
+// Remove default underline — we'll add it back deliberately where needed.
+// Colour inherits from parent so links don't break text colour flow
+// unless explicitly styled.
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+// ── Media ─────────────────────────────────────────────────────────────────────
+// Images and videos are inline by default, which causes a gap below them.
+// Block removes the gap. max-width: 100% prevents overflow.
+img,
+video,
+svg,
+canvas,
+audio,
+iframe,
+embed,
+object {
+  display: block;
+  max-width: 100%;
+}
+
+// SVGs used as icons are inline-flex children — allow them to be sized
+// by their parent container rather than by intrinsic dimensions.
+svg {
+  // Don't set width/height here — icon components control their own sizing.
+  // Overflow visible ensures that effects like drop shadows aren't clipped.
+  overflow: visible;
+}
+
+// ── Lists ─────────────────────────────────────────────────────────────────────
+// Remove list styling from semantic lists used as navigation or UI components.
+// Prose lists (inside article, .readable) keep their bullets/numbers.
+// Tailwind preflight handles this for all lists; this is a safety net.
+ul[role="list"],
+ol[role="list"] {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+// ── Tables ────────────────────────────────────────────────────────────────────
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+// ── Accessibility ─────────────────────────────────────────────────────────────
+// Respect the user's motion preferences. Reduces or removes animations
+// for users who have enabled "Reduce motion" in their OS.
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+// ── Focus ─────────────────────────────────────────────────────────────────────
+// Remove the default :focus outline (replaced by :focus-visible).
+// :focus-visible only shows the ring for keyboard navigation, not mouse clicks,
+// which is the modern, user-friendly approach.
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-ring);
+  outline-offset: 2px;
+}
+
+// ── Selection ─────────────────────────────────────────────────────────────────
+// Brand-tinted text selection. Subtle — uses primary-muted so selected text
+// remains readable without the selection colour washing out the text.
+::selection {
+  background-color: var(--color-primary-muted);
+  color: var(--color-text);
 }

@@ -1,7 +1,38 @@
-/*
-  Shared keyframes
-*/
+// ═══════════════════════════════════════════════════════════════════════════════
+// base/_animations.scss — @keyframes library
+// ───────────────────────────────────────────────────────────────────────────────
+//
+// RULE: This file contains ONLY @keyframes declarations.
+//   No selectors. No variables. No component styles.
+//   Components reference these by name in their `animation:` properties.
+//
+// WHY CENTRALISE
+//   Keeps all animation names discoverable in one place.
+//   Prevents accidental re-definition of the same keyframe in multiple files
+//   (SCSS silently lets you redefine keyframes — the last one wins, which is
+//   a hard bug to track down).
+//
+// NAMING CONVENTION
+//   Use kebab-case. Names describe the motion, not the component using it.
+//   Good:  rise, fade-in, slide-left, theme-spin
+//   Avoid: hero-content-appear, nav-link-hover (too component-specific)
+//
+//   Exception: hero-fade and ken-burns are specific to the hero because
+//   they have unusual timing curves baked in that wouldn't make sense
+//   in other contexts.
+//
+// USAGE
+//   In component files:
+//     animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+//     animation: nav-appear 0.5s ease both;
+//     animation: theme-spin 280ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+//
+// ═══════════════════════════════════════════════════════════════════════════════
 
+// ── Entrance animations ───────────────────────────────────────────────────────
+
+// General-purpose upward entrance. Used by hero content children
+// with staggered animation-delay for a cascading reveal effect.
 @keyframes rise {
   from {
     opacity: 0;
@@ -13,9 +44,35 @@
   }
 }
 
+// Downward entrance for the fixed header on page load.
+// Subtle — only 6px travel so it doesn't distract from page content.
+@keyframes nav-appear {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Simple opacity fade — no transform. Use when motion would be distracting.
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+// ── Looping / ambient animations ─────────────────────────────────────────────
+
+// Breathing pulse — scales and fades rhythmically.
+// Used by: hero badge dot (.hero__badge-dot)
 @keyframes pulse {
-  0%,
-  100% {
+  0%, 100% {
     opacity: 1;
     transform: scale(1);
   }
@@ -25,9 +82,10 @@
   }
 }
 
+// Horizontal scan — a line that compresses and fades.
+// Used by: hero scroll hint line (.hero__scroll-line)
 @keyframes scroll-pulse {
-  0%,
-  100% {
+  0%, 100% {
     transform: scaleX(1);
     opacity: 0.6;
   }
@@ -37,10 +95,66 @@
   }
 }
 
-@keyframes nav-appear {
+// ── Hero-specific ─────────────────────────────────────────────────────────────
+
+// Crossfade for hero background image slideshow.
+// Timing is designed for 12 images at 75s total cycle.
+// Each slide occupies: 0–2% fade in, 2–6% hold, 6–8.667% fade out.
+// The overlap (fade-out starts while next is fading in) creates a
+// smooth crossfade rather than a hard cut.
+@keyframes hero-fade {
+  0% {
+    opacity: 0;
+  }
+  2% {
+    opacity: 1;
+  } // fade in quickly
+  6% {
+    opacity: 1;
+  } // hold at full opacity
+  8.667% {
+    opacity: 0;
+  } // fade out, overlapping next slide's fade-in
+  100% {
+    opacity: 0;
+  } // stay invisible for rest of cycle
+}
+
+// Ken Burns — slow pan + zoom for hero background images.
+// Alternate direction (translate ends at negative values) prevents a
+// snap-back when the keyframe loops at 100%.
+@keyframes ken-burns {
+  from {
+    transform: scale(1) translate(0, 0);
+  }
+  to {
+    transform: scale(1.06) translate(-1%, 0.5%);
+  }
+}
+
+// ── UI interaction animations ─────────────────────────────────────────────────
+
+// Icon swap animation for the theme toggle button.
+// spring-like cubic-bezier (0.34, 1.56, 0.64, 1) adds a subtle overshoot
+// that makes the rotation feel physical rather than mechanical.
+// Triggered each time the icon element is replaced in the DOM.
+@keyframes theme-spin {
   from {
     opacity: 0;
-    transform: translateY(-6px);
+    transform: rotate(-90deg) scale(0.6);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+  }
+}
+
+// Slide down — for dropdown menus and mobile drawers (CSS-only alternative
+// to max-height animation when you know the exact height).
+@keyframes slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
   }
   to {
     opacity: 1;

@@ -1,11 +1,8 @@
-use crate::prelude::{
-  icons::{
-    registry::{
-      data,
-      devops,
-      social,
-    },
-    *,
+use crate::prelude::icons::{
+  registry::{
+    data,
+    devops,
+    social,
   },
   *,
 };

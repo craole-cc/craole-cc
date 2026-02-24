@@ -1,17 +1,93 @@
-/*
-  Sass entrypoint.
-  Load order: theme → base → components.
-*/
+// ═══════════════════════════════════════════════════════════════════════════════
+// main.scss — Sass build entry point
+// ───────────────────────────────────────────────────────────────────────────────
+//
+// SINGLE RESPONSIBILITY
+//   This file is the ROOT of the dependency tree. It @use's every stylesheet
+//   in the correct order to produce the final CSS bundle.
+//
+//   It contains ONLY @use declarations (and this comment block).
+//   It produces ALL CSS output — indirectly, by loading every other file.
+//   It must NEVER be @use'd by any other file in the project.
+//
+// THIS FILE vs _index.scss
+//   These two files have complementary but distinct roles:
+//
+//   main.scss    — the build entry point. Your compiler targets this file.
+//                  It loads every stylesheet in load-order sequence.
+//                  Nothing in the project @use's it — it is the root.
+//
+//   _index.scss  — the token manifest. Component files @use this to access
+//                  Sass functions (sp, sz, bp, etc.). It contains only
+//                  @forward and produces no CSS output.
+//
+//   They must be separate because main.scss is an ancestor of every file it
+//   loads. If a component tried to @use main.scss, Sass would detect the cycle:
+//
+//     main.scss → @use "base/globals"
+//     base/globals → @use "../main"    ✗  "Module loop" error
+//
+//   _index.scss has no @use dependencies of its own, so it can safely sit
+//   at the leaf of the tree and be imported by any file without looping.
+//
+// LOAD ORDER — order matters. Each layer depends on the previous.
+//
+//   1. theme/tokens    — CSS custom properties (:root + [data-theme] blocks).
+//                        Must be first — every subsequent file references
+//                        var(--color-*) and var(--hue), which are defined here.
+//
+//   2. theme/runtime   — @property registrations + :root hue/chroma transitions.
+//                        Must follow theme/tokens: --hue must exist before
+//                        @property declares its initial-value.
+//
+//   3. base/reset      — Browser default overrides (box-model, margins, etc).
+//                        No token dependency, but loads early so defaults are
+//                        cleared before any opinionated styles are applied.
+//
+//   4. base/animations — @keyframes library. No selectors, no dependencies.
+//                        Loaded before globals/components so all animation
+//                        names are defined before anything references them.
+//
+//   5. base/globals    — Bare element styles: html, body, headings, typography.
+//                        Depends on CSS custom props from theme/tokens.
+//
+//   6. base/utilities  — Single-purpose semantic helper classes (.text-muted,
+//                        .sr-only, .fill-muted, etc). Depends on CSS custom props.
+//
+//   7. theme/switch    — ThemeSwitcher button + dropdown panel. Depends on CSS
+//                        custom props AND the .site-nav context established by
+//                        components/header — so it loads after utilities but the
+//                        .site-nav--scrolled context it references is defined in
+//                        the header component. Specificity handles the cascade.
+//
+//   8. components/*    — BEM component blocks. Depend on everything above.
+//                        Order within this group is arbitrary (no cross-deps
+//                        between components at the CSS level).
+//
+// TAILWIND
+//   tailwind.css is loaded separately before this file in the HTML <head>.
+//   It provides preflight (element resets) and utility classes that SCSS
+//   overrides where needed. The @variant dark rule in tailwind.css maps
+//   Tailwind's dark: prefix to our [data-theme="dark"] attribute strategy
+//   so both systems use the same dark-mode mechanism.
+//
+// ═══════════════════════════════════════════════════════════════════════════════
 
-@use "theme/main";
-@use "theme/runtime";
-@use "theme/switch";
+// ── 1–2. CSS custom properties + runtime mechanics ───────────────────────────
+@use "theme/tokens"; // --color-* vars, :root, [data-theme]
+@use "theme/runtime"; // @property registrations, :root hue/chroma transitions
 
+// ── 3–6. Base layer ───────────────────────────────────────────────────────────
 @use "base/reset";
+@use "base/animations";
 @use "base/globals";
 @use "base/utilities";
-@use "base/animations";
 
+// ── 7. Theme UI ───────────────────────────────────────────────────────────────
+@use "theme/switch"; // ThemeSwitcher button + dropdown
+
+// ── 8. Components ─────────────────────────────────────────────────────────────
 @use "components/header";
+@use "components/divider";
 @use "components/hero";
 @use "components/footer";

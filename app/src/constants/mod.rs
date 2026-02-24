@@ -18,6 +18,6 @@ pub mod prelude {
       },
       stacks::*,
     },
-    crate::prelude::*,
+    crate::_prelude::*,
   };
 }

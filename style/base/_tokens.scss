@@ -1,0 +1,216 @@
+// ═══════════════════════════════════════════════════════════════════════════════
+// base/_tokens.scss — Sass-only design tokens
+// ───────────────────────────────────────────────────────────────────────────────
+//
+// SCOPE
+//   This file contains Sass variables and mixins — things that exist at
+//   compile time only and produce no CSS output on their own.
+//   It is the ONLY file in the system that uses Sass variables ($).
+//
+//   Runtime design tokens (CSS custom properties / var(--*)) live in
+//   theme/_tokens.scss instead.
+//
+// USAGE
+//   main.scss loads this with `@use "base/token" as *` so the bp() mixin
+//   and $breakpoints map are available in every subsequent @use'd file
+//   without needing a separate @use statement in each one.
+//
+//   In component files, use the mixin like this:
+//     @include bp(md) { ... }   → @media (min-width: 640px) { ... }
+//     @include bp(lg) { ... }   → @media (min-width: 900px) { ... }
+//
+//   This eliminates magic numbers in component files and means a breakpoint
+//   change here propagates everywhere automatically.
+//
+// Z-INDEX SCALE
+//   Defined here so layering decisions are visible in one place.
+//   Components reference these via the z() function rather than raw integers.
+//   This prevents accidental z-index collisions (the classic "just set it
+//   to 9999" pattern).
+//
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// ── Breakpoints ───────────────────────────────────────────────────────────────
+//
+//   xs   480px  — logo wordmark appears; still mobile layout
+//   sm   640px  — hamburger → inline nav; main layout shift
+//   md   900px  — hero stats panel appears; wider content
+//   lg  1200px  — max content width reached; large desktop
+//
+// Matches the responsive notes in _header.scss and _hero.scss.
+
+$breakpoints: (
+  xs: 480px,
+  sm: 640px,
+  md: 900px,
+  lg: 1200px,
+);
+
+// ── Breakpoint mixin ──────────────────────────────────────────────────────────
+//
+// Usage:  @include bp(sm) { ... }
+// Output: @media (min-width: 640px) { ... }
+//
+// Mobile-first: always min-width. If you need max-width (rare), write it
+// inline rather than adding a separate mixin — max-width queries are an
+// exception, not a pattern.
+
+@mixin bp($name) {
+  @if not map-has-key($breakpoints, $name) {
+    @error "Unknown breakpoint `#{$name}`. Available: #{map-keys($breakpoints)}";
+  }
+  @media (min-width: #{map-get($breakpoints, $name)}) {
+    @content;
+  }
+}
+
+// ── Z-index scale ─────────────────────────────────────────────────────────────
+//
+// Layers from back to front:
+//   below      -1   intentionally behind the stacking context
+//   base        0   normal flow
+//   raised     10   cards, tooltips on hover
+//   sticky     20   sticky sidebars
+//   nav        50   fixed header (site-nav)
+//   dropdown  100   theme picker, nav dropdowns (above nav)
+//   modal     200   dialog overlays
+//   toast     300   notification toasts (above everything)
+
+$z: (
+  below: -1,
+  base: 0,
+  raised: 10,
+  sticky: 20,
+  nav: 50,
+  dropdown: 100,
+  modal: 200,
+  toast: 300,
+);
+
+// ── Z-index function ──────────────────────────────────────────────────────────
+//
+// Usage:  z-index: z(nav);    → z-index: 50
+//         z-index: z(modal);  → z-index: 200
+
+@function z($layer) {
+  @if not map-has-key($z, $layer) {
+    @error "Unknown z-index layer `#{$layer}`. Available: #{map-keys($z)}";
+  }
+  @return map-get($z, $layer);
+}
+
+// ── Spacing scale ─────────────────────────────────────────────────────────────
+//
+// 1 unit = 0.25rem = 4px (matches Tailwind's default scale).
+// Use the sp() function instead of raw rem values in component files.
+//
+// Usage:  padding: sp(4);    → 1rem
+//         gap: sp(2);        → 0.5rem
+//         margin: sp(6) 0;   → 1.5rem 0
+
+$spacing: (
+  0: 0rem,
+  px: 0.0625rem, // 1px — for hairlines
+  1: 0.25rem, // 4px
+  2: 0.5rem, // 8px
+  3: 0.75rem, // 12px
+  4: 1rem, // 16px
+  5: 1.25rem, // 20px
+  6: 1.5rem, // 24px
+  8: 2rem, // 32px
+  10: 2.5rem, // 40px
+  12: 3rem, // 48px
+  16: 4rem, // 64px   ← header height
+  18: 4.5rem, // 72px
+  24: 6rem, // 96px
+);
+
+@function sp($step) {
+  @if not map-has-key($spacing, $step) {
+    @error "Unknown spacing step `#{$step}`. Available: #{map-keys($spacing)}";
+  }
+  @return map-get($spacing, $step);
+}
+
+// ── Size scale ────────────────────────────────────────────────────────────────
+//
+// Fixed sizes for UI chrome: icons, avatars, buttons, control clusters.
+// Usage:  width: sz(icon);   → 1.25rem
+
+$sizes: (
+  icon-sm: 1rem, // 16px — small inline icon
+  icon: 1.25rem, // 20px — standard icon
+  icon-lg: 1.75rem, // 28px — social/footer icons
+  control: 2rem, // 32px — theme-btn, hamburger, avatar
+  btn-h: 2.5rem, // 40px — standard button height
+  dot: 0.375rem, // 6px  — decorative accent dot (Divider, badge)
+  dot-lg: 0.5rem, // 8px  — larger dot variant
+  header: 4rem, // 64px — site-nav height
+);
+
+@function sz($name) {
+  @if not map-has-key($sizes, $name) {
+    @error "Unknown size `#{$name}`. Available: #{map-keys($sizes)}";
+  }
+  @return map-get($sizes, $name);
+}
+
+// ── Border radius scale ───────────────────────────────────────────────────────
+//
+// Usage:  border-radius: radius(md);   → 0.375rem
+
+$radii: (
+  none: 0,
+  sm: 0.25rem, // 4px  — tags, small chips
+  md: 0.375rem, // 6px  — buttons, inputs, nav links
+  lg: 0.5rem, // 8px  — cards, dropdowns, control buttons
+  xl: 0.75rem, // 12px — stat panels, large cards
+  pill: 9999px, // ∞    — badges, dots, fully rounded
+);
+
+@function radius($name) {
+  @if not map-has-key($radii, $name) {
+    @error "Unknown radius `#{$name}`. Available: #{map-keys($radii)}";
+  }
+  @return map-get($radii, $name);
+}
+
+// ── Typography scale ──────────────────────────────────────────────────────────
+//
+// Usage:  font-size: fs(sm);   → 0.875rem
+
+$font-sizes: (
+  xs: 0.6875rem, // 11px — metadata, labels, stat dt
+  sm: 0.75rem, // 12px — copyright, captions
+  base: 0.875rem, // 14px — secondary UI text (nav, footer facets)
+  md: 1rem, // 16px — body
+  lg: 1.25rem, // 20px — alias name, subheadings
+  xl: 1.5rem, // 24px — h4-level
+);
+
+@function fs($name) {
+  @if not map-has-key($font-sizes, $name) {
+    @error "Unknown font-size `#{$name}`. Available: #{map-keys($font-sizes)}";
+  }
+  @return map-get($font-sizes, $name);
+}
+
+// ── Transition durations ──────────────────────────────────────────────────────
+//
+// Usage:  transition: color dur(fast) ease;
+
+$durations: (
+  instant: 0ms,
+  fast: 150ms, // hover colour flips
+  base: 200ms, // most UI transitions
+  slow: 300ms, // drawer open/close, social lift
+  xslow: 400ms, // header scroll state
+  theme: 1500ms, // hue rotation (_runtime.scss)
+);
+
+@function dur($name) {
+  @if not map-has-key($durations, $name) {
+    @error "Unknown duration `#{$name}`. Available: #{map-keys($durations)}";
+  }
+  @return map-get($durations, $name);
+}

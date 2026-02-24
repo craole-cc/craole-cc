@@ -1,5 +1,5 @@
 use {
-  crate::prelude::*,
+  crate::_prelude::*,
   leptos::html::{
     Meta,
     Title,

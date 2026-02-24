@@ -1,7 +1,14 @@
 {
+  "scripts": {
+    "deno:fmt": "pnpm deno fmt",
+    "test": "pnpm exec test",
+    "test:e2e": "pnpm --filter end2end test",
+    "test:e2e:ui": "pnpm --filter end2end test --ui",
+    "playwright:install": "pnpm --filter end2end exec playwright install --with-deps"
+  },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.2.1",
-    "prettier": "^3.8.1",
-    "tailwindcss": "^4.2.1"
+    "tailwindcss": "^4.2.1",
+    "deno": "^2.6.8"
   }
 }

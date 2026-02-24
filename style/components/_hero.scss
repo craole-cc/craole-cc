@@ -201,10 +201,7 @@
     font-size: 0.875rem;
     font-weight: 600;
     text-decoration: none;
-    transition:
-      background-color 150ms,
-      transform 150ms,
-      box-shadow 150ms;
+    transition: background-color 150ms, transform 150ms, box-shadow 150ms;
 
     svg {
       width: 1rem;
@@ -233,11 +230,7 @@
     font-size: 0.875rem;
     font-weight: 500;
     text-decoration: none;
-    transition:
-      border-color 150ms,
-      color 150ms,
-      transform 150ms,
-      background 150ms;
+    transition: border-color 150ms, color 150ms, transform 150ms, background 150ms;
 
     &:hover {
       border-color: rgba(255, 255, 255, 0.65);
@@ -304,9 +297,7 @@
     background: rgba(0, 0, 0, 0.35);
     backdrop-filter: blur(12px);
     min-width: 5.5rem;
-    transition:
-      transform 200ms,
-      border-color 200ms;
+    transition: transform 200ms, border-color 200ms;
     cursor: default;
 
     &:hover {

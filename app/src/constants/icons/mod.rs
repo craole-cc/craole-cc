@@ -12,7 +12,7 @@ pub mod prelude {
   };
 }
 
-use crate::prelude::*;
+use crate::_prelude::*;
 pub use {
   core::*,
   icondata::{

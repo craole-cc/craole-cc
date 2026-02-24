@@ -1,0 +1,59 @@
+// ═══════════════════════════════════════════════════════════════════════════════
+// _index.scss — Sass token manifest
+// ───────────────────────────────────────────────────────────────────────────────
+//
+// SINGLE RESPONSIBILITY
+//   This file does exactly one thing: forward all compile-time Sass tokens
+//   (functions, mixins, variables) to any file that needs them.
+//
+//   It contains ONLY @forward declarations.
+//   It produces ZERO CSS output.
+//   It must NEVER contain @use.
+//
+// HOW CONSUMERS USE IT
+//   Any component, base, or theme file that needs Sass token functions:
+//
+//     @use "../_index" as *;    // from components/ or theme/
+//     @use "../../_index" as *; // from deeper nesting if needed
+//
+//   This gives the consumer access to:
+//     bp()     — breakpoint mixin    e.g. @include bp(sm) { ... }
+//     sp()     — spacing function    e.g. padding: sp(4)           → 1rem
+//     sz()     — size function       e.g. width: sz(control)       → 2rem
+//     fs()     — font-size function  e.g. font-size: fs(sm)        → 0.75rem
+//     dur()    — duration function   e.g. transition: color dur(fast)
+//     radius() — radius function     e.g. border-radius: radius(lg)
+//     z()      — z-index function    e.g. z-index: z(nav)          → 50
+//
+// WHY A SEPARATE FILE FROM main.scss
+//   main.scss is the build entry point — it sits at the ROOT of the dependency
+//   tree and @use's every other file in the project. If component files also
+//   @use main.scss, they would be pointing back at their own ancestor, creating
+//   a circular dependency that Sass rejects at compile time:
+//
+//     main.scss → @use "base/globals"
+//     base/globals → @use "../main"    ✗  "Module loop" error
+//
+//   _index.scss breaks the loop by being a leaf node — it @forward's outward
+//   but never @use's anything itself, so it can safely be imported by any
+//   file in the tree without creating a cycle:
+//
+//     main.scss → @use "base/globals"
+//     base/globals → @use "../_index"  ✓  _index has no dependencies
+//
+// WHY @forward AND NOT @use "base/tokens" DIRECTLY IN EACH COMPONENT
+//   You could write @use "base/tokens" as * in every component file directly.
+//   It would work. But if base/_tokens.scss is ever renamed or restructured,
+//   every single component file breaks and needs updating.
+//
+//   With _index.scss as the single manifest, only this file needs updating.
+//   All consumers reference "../_index" — a path that never changes.
+//
+// WHAT @forward DOES NOT DO
+//   @forward does not push tokens into files automatically. Each consumer
+//   still needs its own @use "../_index" as * to opt in. @forward simply
+//   ensures they all resolve through one stable, loop-safe path.
+//
+// ═══════════════════════════════════════════════════════════════════════════════
+
+@forward "base/tokens";

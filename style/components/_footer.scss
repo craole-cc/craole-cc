@@ -1,25 +1,58 @@
-/*
-  Footer component.
-*/
+@use "../index" as *;
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// components/_footer.scss — Footer component
+// ───────────────────────────────────────────────────────────────────────────────
+//
+// STRUCTURE (from footer.rs)
+// ─────────────────────────────────────────────────────────────────────────────
+//   .footer
+//     <Divider />                          — top divider (no dot)
+//     .footer__inner
+//       .footer__socials
+//         .footer__social-link.group       — each social icon anchor
+//           .footer__social-icon--default  — resting icon (muted fill)
+//           .footer__social-icon--hover    — hover icon (brand colour)
+//       .footer__facets
+//         .footer__facet[--divided]        — nav links with optional right border
+//     <Divider config=default_with_dot />  — middle divider WITH decorative dot
+//     .footer__bottom
+//       .footer__copyright
+//         .footer__name
+//           <span>                         — first name
+//           .footer__alias                 — accent colour alias name
+//           <span>                         — last name
+//         .footer__meta
+//           .footer__tech[--rust|--leptos] — tech credit links
+//
+// TOKENS USED
+//   sp()  — spacing      (base/_tokens.scss via index)
+//   sz()  — sizes        (base/_tokens.scss via index)
+//   fs()  — font sizes   (base/_tokens.scss via index)
+//   dur() — durations    (base/_tokens.scss via index)
+//   radius() — radii     (base/_tokens.scss via index)
+//   --color-* vars       (theme/_tokens.scss — runtime)
+//
+// ═══════════════════════════════════════════════════════════════════════════════
 
 .footer {
   text-align: center;
   color: var(--color-text-muted);
-  margin-bottom: 0.5rem;
+  margin-bottom: sp(2);
 
-  // ── Inner nav ─────────────────────────────────────────────
+  // ── Inner nav ─────────────────────────────────────────────────────────────
 
   &__inner {
     display: grid;
-    gap: 0.5rem;
+    gap: sp(2);
   }
 
-  // ── Socials ───────────────────────────────────────────────
+  // ── Socials ───────────────────────────────────────────────────────────────
 
   &__socials {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: sp(2);
     justify-content: center;
   }
 
@@ -28,10 +61,10 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 0.5rem;
-    transition: transform 300ms ease;
+    width: sz(btn-h); // 2.5rem — slightly larger than control for touch targets
+    height: sz(btn-h);
+    border-radius: radius(lg);
+    transition: transform dur(slow) ease;
 
     &:hover {
       transform: translateY(-4px);
@@ -44,7 +77,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: opacity 300ms ease;
+    transition: opacity dur(slow) ease;
 
     &--default {
       opacity: 1;
@@ -64,18 +97,18 @@
   }
 
   &__social-svg {
-    width: 1.75rem;
-    height: 1.75rem;
+    width: sz(icon-lg);
+    height: sz(icon-lg);
   }
 
-  // ── Facet nav ─────────────────────────────────────────────
+  // ── Facet nav ─────────────────────────────────────────────────────────────
 
   &__facets {
     display: flex;
-    gap: 1rem;
+    gap: sp(4);
     justify-content: center;
     align-items: center;
-    font-size: 0.875rem;
+    font-size: fs(base);
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
@@ -84,7 +117,7 @@
     color: var(--color-text-muted);
     text-decoration: none;
     cursor: pointer;
-    transition: color 300ms, transform 300ms, font-weight 300ms;
+    transition: color dur(slow), transform dur(slow), font-weight dur(slow);
 
     &:hover {
       color: var(--color-primary);
@@ -92,59 +125,67 @@
     }
 
     &--divided {
-      padding-right: 1rem;
-      border-right: 1px solid var(--color-neutral-border);
+      padding-right: sp(4);
+      border-right: sp(px) solid var(--color-neutral-border);
     }
   }
 
-  // ── Bottom row ────────────────────────────────────────────
+  // ── Bottom row ────────────────────────────────────────────────────────────
 
   &__bottom {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 1rem;
+    gap: sp(4);
     position: relative;
   }
 
-  // ── Copyright ─────────────────────────────────────────────
+  // ── Copyright block ───────────────────────────────────────────────────────
 
   &__copyright {
     text-align: center;
   }
 
   &__name {
-    margin-bottom: 0.5rem;
+    margin-bottom: sp(2);
     letter-spacing: -0.02em;
-    font-size: 1rem;
+    font-size: fs(md);
   }
 
+  // ── Alias — accent colour ──────────────────────────────────────────────────
+  // --color-primary-text rather than --color-primary: tuned for text contrast
+  // (L 0.46 light / L 0.82 dark) ensuring ≥ 4.5:1 on the page background.
+
   &__alias {
-    font-size: 1.25rem;
+    font-size: fs(lg);
     font-weight: 600;
+    color: var(--color-primary-text);
   }
 
   &__meta {
-    font-size: 0.75rem;
+    font-size: fs(sm);
     color: var(--color-text-faint);
 
     p + p {
-      margin-top: 0.125rem;
+      margin-top: sp(1);
     }
   }
 
-  // ── Tech Credits ──────────────────────────────────────────
+  // ── Tech credits ──────────────────────────────────────────────────────────
+  // Hard-coded brand colours — intentionally NOT using --color-primary so they
+  // stay recognisably on-brand regardless of site hue.
 
   &__tech {
     font-weight: 500;
     text-decoration: none;
-    transition: opacity 150ms;
+    transition: opacity dur(fast);
 
     &:hover {
       opacity: 0.75;
       text-decoration: underline;
     }
 
+    // Rust — warm orange (brand hue ≈ oklch 35°)
     &--rust {
       color: oklch(0.6 0.15 35);
 
@@ -153,6 +194,7 @@
       }
     }
 
+    // Leptos — deep red (brand hue ≈ oklch 15°)
     &--leptos {
       color: oklch(0.5 0.18 15);
 

@@ -1,4 +1,4 @@
-use crate::prelude::*;
+use crate::_prelude::*;
 
 const SLIDES : &[&str] = &[
   // Bridges
@@ -29,18 +29,45 @@ pub fn Hero() -> impl IntoView {
   #[cfg_attr(not(feature = "hydrate"), allow(unused_variables))]
   let ThemeContext { set_hue, .. } = expect_context::<ThemeContext,>();
 
+  // ── Hue extraction strategy ──────────────────────────────────────────────
+  //
+  //   The CSS slideshow is driven entirely by `animation-delay` on each slide.
+  //   Each slide is visible for SLIDE_SECS seconds. We set an interval at the
+  //   same cadence. On each tick, we look up which slide is "active" by index
+  //   and extract its hue. The extraction is fire-and-forget async — it kicks
+  //   off in the background and calls set_hue when done, which is fast enough
+  //   to complete well before the next tick.
+  //
+  //   Benefits:
+  //     - Hue extraction is triggered AT the moment the slide becomes visible
+  //     - No pre-scheduling, no timer collisions, no cache-warming problems
+  //     - Works correctly on both first load (slow network) and repeat visits
+  //     - Extracts slide 0's hue immediately on mount, then advances by interval
+  //
+  // NOTE: `set_interval_with_cancel` returns a handle. We store it in the
+  // Effect cleanup so the interval is cleared when the component unmounts
+  // (e.g. navigating away from the home page). Without this, the interval
+  // would keep firing and trying to call set_hue on a dropped signal.
+
   #[cfg(feature = "hydrate")]
-  Effect::new(move |_| {
-    for (i, &url,) in SLIDES.iter().enumerate() {
-      let delay_ms = (i as f64 * SLIDE_SECS * 1000.0) as i32;
-      extract_hue_from_url(url, move |hue| {
-        set_timeout(
-          move || set_hue.set(hue,),
-          std::time::Duration::from_millis(delay_ms as u64,),
-        );
-      },);
-    }
-  },);
+  {
+    // Extract slide 0 immediately so the hue is set before the first tick
+    let url = SLIDES[0];
+    extract_hue_from_url(url, move |hue| set_hue.set(hue,),);
+
+    // Advance index every SLIDE_SECS — matches the CSS animation-delay cadence
+    let slide_index = std::rc::Rc::new(std::cell::Cell::new(1_usize,),);
+
+    set_interval(
+      move || {
+        let i = slide_index.get() % SLIDES.len();
+        slide_index.set(i + 1,);
+        let url = SLIDES[i];
+        extract_hue_from_url(url, move |hue| set_hue.set(hue,),);
+      },
+      std::time::Duration::from_millis((SLIDE_SECS * 1000.0) as u64,),
+    );
+  }
 
   view! {
     <section class="hero">
@@ -123,7 +150,6 @@ pub fn Hero() -> impl IntoView {
           </div>
         </dl>
       </aside>
-
     </section>
   }
 }

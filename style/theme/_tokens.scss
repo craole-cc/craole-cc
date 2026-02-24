@@ -1,0 +1,198 @@
+// ═══════════════════════════════════════════════════════════════════════════════
+// theme/_tokens.scss — CSS custom properties (runtime design tokens)
+// ───────────────────────────────────────────────────────────────────────────────
+//
+// OVERVIEW
+//   All colour values in the system derive from three master controls defined
+//   on :root. Change --hue to retheme the entire site. Nothing else needs
+//   touching for a full colour retheme.
+//
+//   This file defines CSS custom properties only — no selectors, no layout,
+//   no component styles. It is the single source of truth for all var(--color-*)
+//   references used throughout components and utilities.
+//
+// HOW TO RETHEME
+//   Change --hue (0–360) on :root. Common values:
+//     164  → teal    (default)
+//     220  → blue
+//     270  → purple
+//      25  → orange
+//     340  → rose
+//
+//   Optionally nudge --chroma (0–0.37) for more or less saturation.
+//   The secondary accent is automatically derived at --hue + --hue-secondary-offset.
+//
+// OKLCH PRIMER
+//   oklch(lightness chroma hue)
+//     lightness : 0 (black) → 1 (white)
+//     chroma    : 0 (grey)  → ~0.37 (vivid)
+//     hue       : 0–360 degrees on the colour wheel
+//
+//   Unlike HSL, OKLCH is perceptually uniform — two colours at the same
+//   lightness value will appear equally bright to human vision regardless
+//   of hue. This means colour contrast ratios are reliable without manual
+//   per-hue adjustments.
+//
+// TOKEN NAMING CONVENTION
+//   --color-{role}              base token (e.g. --color-primary)
+//   --color-{role}-{variant}    variant token (e.g. --color-primary-text)
+//
+//   Variants:
+//     (none)     full-chroma brand colour — buttons, badges, indicators
+//     -text      reduced lightness for body text; ≥ 4.5:1 on surface bg
+//     -muted     very low chroma background tint — chips, tags, hover fills
+//     -hover     near-transparent hover overlay
+//     -border    mid-lightness border colour
+//
+// FILE STRUCTURE
+//   1. Master controls (:root)     — the ONE place to edit for rethemes
+//   2. Light theme                 — :root, [data-theme="light"]
+//   3. Dark theme                  — [data-theme="dark"]
+//
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// ╔═══════════════════════════════════════════════════════════╗
+// ║ 1. Master Controls                                        ║
+// ║    Edit only these for a full retheme                     ║
+// ╚═══════════════════════════════════════════════════════════╝
+
+:root {
+  // ── Primary hue (the ONE value to change) ─────────────────
+  --hue: 164; // teal — change this to retheme everything
+
+  // ── Secondary accent ──────────────────────────────────────
+  // Offset from primary hue. Common offsets:
+  //   +60  analogous  (default — harmonious, low contrast)
+  //  +180  complementary (high contrast, bold)
+  //  +120  triadic (vibrant, balanced)
+  --hue-secondary-offset: 60;
+
+  // ── Chroma (saturation) ───────────────────────────────────
+  --chroma: 0.2; // primary — medium saturation
+  --chroma-muted: 0.08; // surfaces, backgrounds — desaturated
+
+  // ── Derived secondary hue (do not edit) ───────────────────
+  --hue-2: calc(var(--hue) + var(--hue-secondary-offset));
+}
+
+// ╔═══════════════════════════════════════════════════════════╗
+// ║ 2. Light Theme                                            ║
+// ╚═══════════════════════════════════════════════════════════╝
+
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+
+  // ── Page surfaces ─────────────────────────────────────────
+  // bg         → page background (very light, faint hue tint)
+  // bg-alt     → slightly deeper — zebra rows, input backgrounds
+  // bg-surface → pure white — cards, panels, header glass base
+  // bg-overlay → semi-transparent white — modal backdrops
+  --color-bg: oklch(0.98 0.005 var(--hue));
+  --color-bg-alt: oklch(0.95 0.008 var(--hue));
+  --color-bg-surface: oklch(1 0 0);
+  --color-bg-overlay: oklch(1 0 0 / 0.65);
+
+  // ── Text ──────────────────────────────────────────────────
+  // text       → primary body text (near-black with hue tint)
+  // text-muted → secondary labels, captions, nav links at rest
+  // text-faint → placeholders, disabled states, metadata
+  --color-text: oklch(0.15 0.02 var(--hue));
+  --color-text-muted: oklch(0.42 0.02 var(--hue));
+  --color-text-faint: oklch(0.65 0.015 var(--hue));
+
+  // ── Primary ───────────────────────────────────────────────
+  // primary       → buttons, badges, logo-mark — full chroma
+  // primary-text  → body text in accent colour — lower L for contrast
+  // primary-muted → chip backgrounds, tag fills — very low opacity
+  // primary-hover → hover overlay — near-transparent tint
+  // primary-border→ input borders, card outlines in accent
+  --color-primary: oklch(0.54 var(--chroma) var(--hue));
+  --color-primary-text: oklch(0.46 var(--chroma) var(--hue));
+  --color-primary-muted: oklch(0.88 var(--chroma-muted) var(--hue));
+  --color-primary-hover: oklch(0.93 var(--chroma-muted) var(--hue));
+  --color-primary-border: oklch(0.75 var(--chroma) var(--hue));
+
+  // ── Secondary ─────────────────────────────────────────────
+  // Mirrors primary structure; hue derived from --hue-2
+  --color-secondary: oklch(0.54 var(--chroma) var(--hue-2));
+  --color-secondary-text: oklch(0.44 var(--chroma) var(--hue-2));
+  --color-secondary-muted: oklch(0.88 var(--chroma-muted) var(--hue-2));
+  --color-secondary-hover: oklch(0.93 var(--chroma-muted) var(--hue-2));
+  --color-secondary-border: oklch(0.75 var(--chroma) var(--hue-2));
+
+  // ── Neutral ───────────────────────────────────────────────
+  // Near-zero chroma — used for structural chrome that shouldn't
+  // carry accent colour (dividers, disabled states, breadcrumbs)
+  --color-neutral: oklch(0.52 0.01 var(--hue));
+  --color-neutral-text: oklch(0.35 0.01 var(--hue));
+  --color-neutral-muted: oklch(0.9 0.005 var(--hue));
+  --color-neutral-hover: oklch(0.94 0.005 var(--hue));
+  --color-neutral-border: oklch(0.82 0.01 var(--hue));
+
+  // ── UI chrome ─────────────────────────────────────────────
+  // border  → default hairline border (cards, inputs, table rows)
+  // ring    → focus ring (accessibility — keyboard navigation)
+  // divider → horizontal rule colour (between sections)
+  // dot     → decorative accent dot (Divider component, list markers)
+  --color-border: oklch(0.9 0.008 var(--hue));
+  --color-ring: oklch(0.54 var(--chroma) var(--hue));
+  --color-divider: oklch(0.84 0.01 var(--hue));
+  --color-dot: oklch(0.6 var(--chroma) var(--hue));
+}
+
+// ╔═══════════════════════════════════════════════════════════╗
+// ║ 3. Dark Theme                                             ║
+// ╚═══════════════════════════════════════════════════════════╝
+//
+// STRATEGY
+//   Dark mode doesn't simply invert light mode. The approach is:
+//   - Surfaces get darker (lower lightness)
+//   - Text gets lighter
+//   - Primary/secondary get BRIGHTER (higher L) so they remain
+//     vivid against dark backgrounds — same chroma, more luminance
+//   - Muted backgrounds become alpha-transparent overlays rather
+//     than opaque tints, so they layer cleanly over dark surfaces
+//   - Borders become near-black lines (high contrast threshold)
+
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  // ── Page surfaces ─────────────────────────────────────────
+  --color-bg: oklch(0.14 0.02 var(--hue)); // very dark, subtle hue
+  --color-bg-alt: oklch(0.19 0.02 var(--hue)); // slightly lighter panel
+  --color-bg-surface: oklch(0.19 0.02 var(--hue)); // cards, header glass
+  --color-bg-overlay: oklch(0.14 0.02 var(--hue) / 0.65); // modal scrim
+
+  // ── Text ──────────────────────────────────────────────────
+  --color-text: oklch(0.94 0.008 var(--hue)); // near-white with hue
+  --color-text-muted: oklch(0.65 0.015 var(--hue)); // mid grey
+  --color-text-faint: oklch(0.42 0.01 var(--hue)); // dim — same as light muted
+
+  // ── Primary (higher L than light for dark bg contrast) ────
+  --color-primary: oklch(0.72 var(--chroma) var(--hue));
+  --color-primary-text: oklch(0.82 var(--chroma) var(--hue));
+  --color-primary-muted: oklch(0.72 var(--chroma) var(--hue) / 0.15); // alpha overlay
+  --color-primary-hover: oklch(0.72 var(--chroma) var(--hue) / 0.1); // alpha overlay
+  --color-primary-border: oklch(0.54 var(--chroma) var(--hue)); // same as light primary
+
+  // ── Secondary ─────────────────────────────────────────────
+  --color-secondary: oklch(0.72 var(--chroma) var(--hue-2));
+  --color-secondary-text: oklch(0.82 var(--chroma) var(--hue-2));
+  --color-secondary-muted: oklch(0.72 var(--chroma) var(--hue-2) / 0.15);
+  --color-secondary-hover: oklch(0.72 var(--chroma) var(--hue-2) / 0.1);
+  --color-secondary-border: oklch(0.54 var(--chroma) var(--hue-2));
+
+  // ── Neutral ───────────────────────────────────────────────
+  --color-neutral: oklch(0.65 0.01 var(--hue));
+  --color-neutral-text: oklch(0.8 0.008 var(--hue));
+  --color-neutral-muted: oklch(0.65 0.01 var(--hue) / 0.15); // alpha overlay
+  --color-neutral-hover: oklch(0.65 0.01 var(--hue) / 0.1); // alpha overlay
+  --color-neutral-border: oklch(0.28 0.015 var(--hue)); // near-black line
+
+  // ── UI chrome ─────────────────────────────────────────────
+  --color-border: oklch(0.22 0.02 var(--hue)); // subtle dark border
+  --color-ring: oklch(0.72 var(--chroma) var(--hue)); // bright focus ring
+  --color-divider: oklch(0.28 0.015 var(--hue)); // faint section line
+  --color-dot: oklch(0.6 var(--chroma) var(--hue)); // same as light
+}

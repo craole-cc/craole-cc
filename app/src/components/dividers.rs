@@ -5,336 +5,199 @@
 //! ## Features
 //!
 //! - **Tapered lines** - Gradients fade in/out at edges for elegant visual separation
-//! - **Optional dot accent** - Centered decorative dot with configurable colors
-//! - **Flexible spacing** - Customizable gaps, padding, and margins
+//! - **Optional dot accent** - Centered decorative dot using `--color-dot` token
+//! - **Flexible spacing** - Gap and padding configurable via CSS custom properties
 //! - **Builder pattern** - Chainable methods for clean configuration
-//! - **Dark mode support** - Automatic theme adaptation via CSS variables
+//! - **Theme-aware** - All colours and sizes derive from SCSS/OKLCH tokens
 //!
 //! ## Quick Start
 //!
 //! ```rust
-//! use crate::prelude::*;
+//! use crate::_prelude::*;
 //!
 //! #[component]
 //! pub fn MyPage() -> impl IntoView {
 //!   view! {
 //!     <h1>"Section 1"</h1>
 //!
-//!     // Simple horizontal line
+//!     // Simple full-width line
 //!     <Divider />
 //!
-//!     // Line with default teal dot
+//!     // Centered line with accent dot (uses --color-dot token)
 //!     <Divider config=Divider::default_with_dot() />
-//!
-//!     // Line with secondary (purple) dot
-//!     <Divider config=Divider::default_with_dot()
-//!       .with_dot(SECONDARY_ACCENT)
-//!     />
 //!   }
 //! }
 //! ```
 //!
-//! ## Examples
+//! ## Layout behaviour
 //!
-//! ### Basic Usage
+//! - Plain `<Divider />` — full width, no dot
+//! - `default_with_dot()` — adds `.divider--centered` modifier, which applies `margin-inline: auto;
+//!   max-width: 36rem` via SCSS. No inline margin CSS needed.
 //!
-//! ```rust
-//! // Plain divider with defaults
-//! <Divider />
+//! ## Spacing
 //!
-//! // Divider with default teal dot
-//! <Divider config=Divider::default_with_dot() />
-//! ```
+//! Gap widths beside the dot are passed as CSS custom properties so SCSS can
+//! consume them without needing generated class names:
 //!
-//! ### Custom Dot Colors
+//!   `style="--divider-gap-left: 1rem; --divider-gap-right: 1rem;"`
 //!
-//! ```rust
-//! use crate::components::colors::*;
-//!
-//! // Primary (teal) dot
-//! <Divider config=Divider::default().with_dot(PRIMARY_ACCENT) />
-//!
-//! // Secondary (purple) dot
-//! <Divider config=Divider::default().with_dot(SECONDARY_ACCENT) />
-//!
-//! // Neutral dot
-//! <Divider config=Divider::default().with_dot(NEUTRAL_ACCENT) />
-//! ```
-//!
-//! ### Spacing Control
-//!
-//! ```rust
-//! // Symmetric gaps around dot (6 = 24px on each side)
-//! <Divider config=Divider::default()
-//!   .with_dot(PRIMARY_ACCENT)
-//!   .with_dot_pos(6, 6)
-//! />
-//!
-//! // Asymmetric gaps (tight left, loose right)
-//! <Divider config=Divider::default()
-//!   .with_dot(PRIMARY_ACCENT)
-//!   .with_dot_pos(4, 8)
-//! />
-//! ```
-//!
-//! ### Container Width
-//!
-//! ```rust
-//! // Narrow centered container
-//! <Divider config=Divider::default()
-//!   .with_dot(PRIMARY_ACCENT)
-//!   .with_margin("mx-auto max-w-2xl")
-//! />
-//!
-//! // Full width
-//! <Divider config=Divider::default().with_margin("w-full") />
-//! ```
-//!
-//! ### Complete Example
-//!
-//! ```rust
-//! #[component]
-//! pub fn Footer() -> impl IntoView {
-//!   view! {
-//!     <footer>
-//!       <Divider />
-//!       <nav class="grid gap-4">
-//!         <Socials />
-//!         <Facets />
-//!       </nav>
-//!       <Divider config=Divider::default()
-//!         .with_dot(SECONDARY_ACCENT)
-//!         .with_margin("mx-auto max-w-3xl")
-//!       />
-//!       <Copyright />
-//!     </footer>
-//!   }
-//! }
-//! ```
-//!
-//! ## Migration from Legacy Components
-//!
-//! ```rust
-//! // Before
-//! <DividerHr />
-//! <DividerHrDot dot_color=Some("bg-pink-500/80") />
-//!
-//! // After
-//! <Divider />
-//! <Divider config=Divider::default().with_dot("bg-pink-500/80") />
-//! ```
+//! Units follow the standard spacing scale (1 unit = 0.25rem = 4px).
 
-use crate::prelude::*;
-
-//╔═══════════════════════════════════════════════════════════╗
-//║ Line Gradient Helpers                                     ║
-//║                                                           ║
-//║ Uses `var(--color-{name}-{step})` syntax                  ║
-//║ The line color step is always 300 (light) / 700 (dark)    ║
-//╚═══════════════════════════════════════════════════════════╝
-/// Generates a left-side gradient class string: transparent → color at center.
-///
-/// `base` should be a plain Tailwind color name, e.g., `"slate"`.
-fn line_gradient_left(base : &str,) -> String {
-  format!(
-    "bg-[linear-gradient(to_right,transparent_0%,var(--color-{base}-300)_50%)] \
-     dark:bg-[linear-gradient(to_right,transparent_0%,var(--color-{base}-700)_50%)]"
-  )
-}
-
-/// Generates a right-side gradient class string: color at center → transparent.
-///
-/// `base` should be a plain Tailwind color name, e.g., `"slate"`.
-fn line_gradient_right(base : &str,) -> String {
-  format!(
-    "bg-[linear-gradient(to_right,var(--color-{base}-300)_50%,transparent_100%)] \
-     dark:bg-[linear-gradient(to_right,var(--color-{base}-700)_50%,transparent_100%)]"
-  )
-}
+use crate::_prelude::*;
 
 //╔═══════════════════════════════════════════════════════════╗
 //║ Configuration                                             ║
 //╚═══════════════════════════════════════════════════════════╝
+
 /// Configuration for a [`Divider`] component.
 ///
 /// Built via the builder pattern — all methods consume and return `Self`.
-/// Use [`Divider::default`] for a plain line or [`Divider::default_with_dot`]
-/// for the standard teal-dot preset.
 ///
 /// # Examples
 ///
 /// ```rust
-/// use app::{
-///   components::Divider,
-///   constants::colors::SECONDARY_ACCENT,
-/// };
-/// // Plain
+/// // Plain full-width line
 /// Divider::default()
 ///
-/// // Standard dot preset
+/// // Centered line with accent dot
 /// Divider::default_with_dot()
 ///
-/// // Custom
-/// Divider::default()
-///   .with_dot(SECONDARY_ACCENT)
-///   .with_dot_pos(4, 8)
-///   .with_margin("mx-auto max-w-4xl")
+/// // Dot with custom gap
+/// Divider::default_with_dot().with_dot_pos(2, 8)
+///
+/// // Custom padding
+/// Divider::default().with_padding("1.5rem")
 /// ```
 #[derive(Clone, Copy,)]
 pub struct Divider {
-  /// Base Tailwind color name for the line gradient (e.g., `"slate"`).
-  /// Used to construct `var(--color-{line_base}-300)` / `var(--color-{line_base}-700)`.
-  pub line_base : &'static str,
+  /// Whether to render the center dot (uses `--color-dot` token).
+  /// Also controls the `.divider--centered` modifier class.
+  pub show_dot : bool,
 
-  /// Complete Tailwind class string for the dot (e.g., `"bg-teal-500/70 dark:bg-teal-400/70"`).
-  /// Use constants from `colors.rs` — they are already theme-aware.
-  pub dot_class : Option<&'static str,>,
-
-  /// Gap spacing (left, right) in Tailwind units (1 unit = 4px).
+  /// Gap spacing (left, right) in spacing-scale units (1 unit = 0.25rem = 4px).
+  /// Injected as `--divider-gap-left` / `--divider-gap-right` CSS custom properties.
   pub dot_pos : Option<(u8, u8,),>,
 
-  /// Vertical padding class (e.g., `"py-4"`).
+  /// Vertical padding as a CSS length string.
+  /// Injected as `--divider-padding`. Default: `"0.5rem"` (sp(2) equivalent).
   pub padding : &'static str,
-
-  /// Horizontal margin / width constraint (e.g., `"mx-auto max-w-xl"`).
-  pub margin : &'static str,
 }
 
 impl Default for Divider {
   fn default() -> Self {
     Self {
-      line_base : "slate",
-      dot_class : None,
-      dot_pos :   None,
-      padding :   "py-2 md:py-6",
-      margin :    "",
+      show_dot : false,
+      dot_pos :  None,
+      padding :  "0.5rem", // sp(2) — SCSS default matches via var(--divider-padding, #{sp(2)})
     }
   }
 }
 
 impl Divider {
-  /// Standard centered divider with the default primary (teal) dot accent.
+  /// Centered divider with the default accent dot.
+  ///
+  /// Adds `.divider--centered` which applies `margin-inline: auto; max-width: 36rem`
+  /// via SCSS — no raw margin CSS is injected from Rust.
   ///
   /// Equivalent to:
   /// ```rust
-  /// use app::{
-  ///   components::Divider,
-  ///   constants::colors::PRIMARY_ACCENT,
-  /// };
-  /// Divider::default()
-  ///   .with_dot(PRIMARY_ACCENT,)
-  ///   .with_dot_pos(4, 4,)
-  ///   .with_margin("mx-auto max-w-xl",);
+  /// Divider::default().with_dot().with_dot_pos(4, 4,) 
   /// ```
-  pub fn default_with_dot() -> Self {
-    Self::default()
-      .with_dot(PRIMARY_ACCENT,)
-      .with_dot_pos(4, 4,)
-      .with_margin("mx-auto max-w-xl",)
-  }
+  pub fn default_with_dot() -> Self { Self::default().with_dot().with_dot_pos(4, 4,) }
 
-  /// Adds a centered dot with the given Tailwind background class.
+  /// Enables the center dot and the `.divider--centered` modifier.
   ///
-  /// Pass a theme-aware constant from `colors.rs` (e.g., `PRIMARY_ACCENT`, `SECONDARY_ACCENT`),
-  /// or any raw Tailwind class string. Automatically sets symmetric 6-unit gaps if
-  /// `with_dot_pos` has not already been called.
-  pub fn with_dot(mut self, class : &'static str,) -> Self {
-    self.dot_class = Some(class,);
+  /// Automatically sets symmetric 6-unit gaps if `with_dot_pos` has not
+  /// already been called.
+  pub fn with_dot(mut self,) -> Self {
+    self.show_dot = true;
     if self.dot_pos.is_none() {
       self.dot_pos = Some((6, 6,),);
     }
     self
   }
 
-  /// Sets the gap on each side of the dot in Tailwind spacing units (1 unit = 4px).
+  /// Sets the gap on each side of the dot in spacing-scale units (1 unit = 0.25rem).
   ///
-  /// Common values: 2 = 8px, 4 = 16px, 6 = 24px (default), 8 = 32px.
+  /// Common values: 2 = 8px, 4 = 16px, 6 = 24px (default when using `with_dot()`).
   pub fn with_dot_pos(mut self, left : u8, right : u8,) -> Self {
     self.dot_pos = Some((left, right,),);
     self
   }
 
-  /// Overrides the vertical padding class (default: `"py-4"`).
+  /// Overrides the vertical padding. Pass any valid CSS length, e.g. `"1.5rem"`.
   pub fn with_padding(mut self, padding : &'static str,) -> Self {
     self.padding = padding;
-    self
-  }
-
-  /// Sets the horizontal margin and/or max-width constraint.
-  ///
-  /// Examples: `"mx-auto max-w-2xl"`, `"mx-24"`, `"w-full"`.
-  pub fn with_margin(mut self, margin : &'static str,) -> Self {
-    self.margin = margin;
-    self
-  }
-
-  /// Overrides the line base color (default: `"slate"`).
-  ///
-  /// Must be a plain Tailwind color name (e.g., `"teal"`, `"zinc"`).
-  pub fn with_line_color(mut self, base : &'static str,) -> Self {
-    self.line_base = base;
     self
   }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
+//║ Helpers                                                   ║
+//╚═══════════════════════════════════════════════════════════╝
+
+/// Converts a spacing-scale unit to a CSS rem string.
+/// 1 unit = 0.25rem = 4px (matches the `$spacing` map in base/_tokens.scss).
+#[inline]
+fn units_to_rem(units : u8,) -> String { format!("{}rem", f32::from(units) * 0.25) }
+
+//╔═══════════════════════════════════════════════════════════╗
 //║ Component                                                 ║
 //╚═══════════════════════════════════════════════════════════╝
+
 /// Flexible horizontal divider with optional centered dot accent.
 ///
-/// Creates tapered gradient lines that fade in from the left edge and fade out
-/// at the right edge, with an optional decorative dot in the center.
+/// All layout, sizing, and colour is SCSS-driven via BEM classes and tokens.
+/// The only inline styles are the CSS custom properties for gap widths and
+/// padding, which cannot be expressed as static class names.
 ///
 /// # Props
 ///
-/// * `config` - [`Divider`] (optional, uses defaults if omitted)
-///
-/// # Examples
-///
-/// ```rust
-/// // Plain divider
-/// <Divider />
-///
-/// // Standard dot preset
-/// <Divider config=Divider::default_with_dot() />
-///
-/// // Custom
-/// <Divider config=Divider::default()
-///   .with_dot(SECONDARY_ACCENT)
-///   .with_dot_pos(4, 8)
-///   .with_margin("mx-auto max-w-3xl")
-/// />
-/// ```
+/// * `config` — [`Divider`] (optional — uses [`Divider::default`] if omitted)
 #[component]
 pub fn Divider(
   /// Divider configuration (optional — uses [`Divider::default`] if omitted)
   #[prop(default = Divider::default())]
   config : Divider,
 ) -> impl IntoView {
-  let left_gradient = line_gradient_left(config.line_base,);
-  let right_gradient = line_gradient_right(config.line_base,);
-
   let (left_gap, right_gap,) = config.dot_pos.unwrap_or((0, 0,),);
 
+  // Only --divider-padding and --divider-gap-* are injected as inline custom
+  // properties. All other layout (margin, max-width) is handled by the
+  // .divider--centered modifier in SCSS.
+  let style = format!(
+    "--divider-padding: {}; --divider-gap-left: {}; --divider-gap-right: {};",
+    config.padding,
+    units_to_rem(left_gap,),
+    units_to_rem(right_gap,),
+  );
+
+  // .divider--centered is applied when a dot is shown — matches the SCSS rule
+  // that constrains max-width and centres the divider in its parent.
+  let class = if config.show_dot {
+    "divider divider--centered"
+  } else {
+    "divider"
+  };
+
   view! {
-    <div class=format!("flex items-center {} {}", config.padding, config.margin)>
+    <div class=class style=style>
 
       // ~@ Left line — fades in from transparent
-      <div class=format!("flex-1 h-px {left_gradient}") />
+      <div class="divider__line divider__line--left" />
 
-      // ~@ Left spacer
-      {(left_gap > 0).then(|| view! { <div class=format!("w-{left_gap} flex-shrink-0") /> })}
+      // ~@ Left spacer (zero width when no dot)
+      <div class="divider__spacer divider__spacer--left" />
 
       // ~@ Dot
-      {config
-        .dot_class
-        .map(|cls| view! { <span class=format!("w-1.5 h-1.5 rounded-full shrink-0 {cls}") /> })}
+      {config.show_dot.then(|| view! { <span class="divider__dot" /> })}
 
-      // ~@ Right spacer
-      {(right_gap > 0).then(|| view! { <div class=format!("w-{right_gap} flex-shrink-0") /> })}
+      // ~@ Right spacer (zero width when no dot)
+      <div class="divider__spacer divider__spacer--right" />
 
       // ~@ Right line — fades out to transparent
-      <div class=format!("flex-1 h-px {right_gradient}") />
+      <div class="divider__line divider__line--right" />
 
     </div>
   }
@@ -343,27 +206,15 @@ pub fn Divider(
 /// Legacy simple divider. Use [`Divider`] instead.
 #[component]
 pub fn DividerHr() -> impl IntoView {
-  view! {
-    <div class="flex items-center py-3">
-      <div class="w-full h-px bg-[linear-gradient(to_right,transparent,var(--color-slate-300),transparent)] dark:bg-[linear-gradient(to_right,transparent,var(--color-slate-700),transparent)]" />
-    </div>
-  }
+  view! { <Divider /> }
 }
 
 /// Legacy dot divider. Use [`Divider`] with `.with_dot()` instead.
 #[component]
 pub fn DividerHrDot(
-  /// Optional Tailwind background class for the dot (e.g., `"bg-blue-500/80"`).
-  /// Defaults to the primary accent if `None`.
-  dot_color : Option<&'static str,>,
+  /// Ignored — dot colour now comes from `--color-dot` in the theme tokens.
+  /// Kept for API compatibility only.
+  _dot_color : Option<&'static str,>,
 ) -> impl IntoView {
-  let dot_color = dot_color.unwrap_or(PRIMARY_ACCENT,);
-
-  view! {
-    <div class="flex gap-6 items-center py-3 mx-36 max-w-4xl">
-      <div class="flex-1 h-px bg-[linear-gradient(to_right,transparent_0%,var(--color-slate-300)_50%)] dark:bg-[linear-gradient(to_right,transparent_0%,var(--color-slate-700)_50%)]" />
-      <span class=format!("w-1.5 h-1.5 rounded-full shrink-0 {dot_color}") />
-      <div class="flex-1 h-px bg-[linear-gradient(to_right,var(--color-slate-300)_50%,transparent_100%)] dark:bg-[linear-gradient(to_right,var(--color-slate-700)_50%,transparent_100%)]" />
-    </div>
-  }
+  view! { <Divider config=Divider::default_with_dot() /> }
 }

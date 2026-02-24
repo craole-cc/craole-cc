@@ -1,41 +1,78 @@
-/*
-  Site Header/Navigation
-*/
+@use "../index" as *;
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// components/_header.scss — Site Navigation
+// ═══════════════════════════════════════════════════════════════════════════════
+//
+// TOKENS USED
+//   sp()     — spacing          (base/_tokens.scss via index)
+//   sz()     — sizes            (base/_tokens.scss via index)
+//   fs()     — font sizes       (base/_tokens.scss via index)
+//   dur()    — durations        (base/_tokens.scss via index)
+//   radius() — radii            (base/_tokens.scss via index)
+//   z()      — z-index scale    (base/_tokens.scss via index)
+//   bp()     — breakpoints      (base/_tokens.scss via index)
+//   --color-* vars              (theme/_tokens.scss — runtime)
+//
+// (Full BEM/overview docs preserved below)
+// ───────────────────────────────────────────────────────────────────────────────
+//
+// OVERVIEW
+//   A fixed full-width header that starts fully transparent over the hero
+//   section and transitions to a frosted-glass panel once the user scrolls
+//   past 60px.
+//
+// BEM STRUCTURE
+//   .site-nav                 — root <header> element
+//   .site-nav--scrolled       — scroll-triggered modifier (JS)
+//   .site-nav__inner          — max-width centering wrapper
+//   .site-nav__logo           — logo anchor
+//   .site-nav__logo-mark      — coloured badge ("CC")
+//   .site-nav__logo-name      — wordmark (hidden on very small screens)
+//   .site-nav__links          — <nav> link list (mobile drawer / desktop bar)
+//   .site-nav__links--open    — mobile drawer open state (JS)
+//   .site-nav__link           — individual nav anchor
+//   .site-nav__controls       — right-side control cluster (theme + hamburger)
+//   .site-nav__menu-btn       — hamburger toggle button (mobile only)
+//   .site-nav__bar            — animated hamburger icon lines
+//   .site-nav__bar--open      — X-state of the hamburger (JS)
+//
+// ═══════════════════════════════════════════════════════════════════════════════
 
 .site-nav {
   position: fixed;
   inset: 0 0 auto 0;
-  z-index: 50;
-  height: 4rem;
-  padding: 0 1rem;
-  background: transparent; // stays transparent over hero
+  z-index: z(nav);
+  height: sz(header);
+  padding: 0 sp(4);
+
+  background: transparent;
   border-bottom: none;
+
   transition:
-    background-color 400ms ease,
-    border-bottom 400ms ease,
-    backdrop-filter 400ms ease,
-    box-shadow 400ms ease;
+    background-color dur(xslow) ease,
+    border-bottom dur(xslow) ease,
+    backdrop-filter dur(xslow) ease,
+    box-shadow dur(xslow) ease;
+
   animation: nav-appear 0.5s ease both;
 
-  // &--scrolled {
-  //   // Use primary color as a tinted glass background — distinctive in both modes
-  //   background: oklch(from var(--color-primary) l c h / 0.15);
-  //   backdrop-filter: blur(24px) saturate(180%);
-  //   -webkit-backdrop-filter: blur(24px) saturate(180%);
-  //   border-bottom: 1px solid oklch(from var(--color-primary) l c h / 0.25);
-  //   box-shadow:
-  //     0 1px 0 oklch(from var(--color-primary) l c h / 0.1),
-  //     0 4px 24px oklch(0 0 0 / 0.25);
-  // }
+  // ── Scrolled state ────────────────────────────────────────────────────────
+
   &--scrolled {
-    background: oklch(0.18 0.04 var(--hue) / 0.75);
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
-    border-bottom: 1px solid oklch(0.4 0.08 var(--hue) / 0.3);
-    box-shadow:
-      0 1px 0 oklch(0.5 0.1 var(--hue) / 0.15),
-      0 4px 24px oklch(0 0 0 / 0.25);
+    background: var(--color-bg-surface);
+
+    @supports (backdrop-filter: blur(1px)) {
+      background: color-mix(in oklch, var(--color-bg-surface) 75%, transparent);
+      backdrop-filter: blur(20px) saturate(160%);
+      -webkit-backdrop-filter: blur(20px) saturate(160%);
+    }
+
+    border-bottom: sp(px) solid var(--color-border);
+    box-shadow: 0 sp(px) 0 oklch(0 0 0 / 0.06), 0 sp(1) sp(5) oklch(0 0 0 / 0.12);
   }
+
+  // ── Inner wrapper ─────────────────────────────────────────────────────────
 
   &__inner {
     display: flex;
@@ -46,19 +83,19 @@
     margin: 0 auto;
   }
 
+  // ── Logo ──────────────────────────────────────────────────────────────────
+
   &__logo {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: sp(2);
     text-decoration: none;
-    color: #fff;
-    transition:
-      opacity 150ms,
-      color 300ms;
     flex-shrink: 0;
+    color: #fff;
+    transition: opacity dur(fast), color dur(slow);
 
     .site-nav--scrolled & {
-      color: var(--color-text);
+      color: var(--color-primary-text);
     }
 
     &:hover {
@@ -70,55 +107,56 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 2rem;
-    height: 2rem;
-    border-radius: 0.375rem;
+    width: sz(control);
+    height: sz(control);
+    border-radius: radius(md);
     background: var(--color-primary);
     color: #fff;
-    font-size: 0.75rem;
+    font-size: fs(sm);
     font-weight: 800;
     letter-spacing: 0.05em;
     flex-shrink: 0;
   }
 
   &__logo-name {
-    font-size: 1rem;
+    font-size: fs(md);
     font-weight: 700;
     letter-spacing: -0.02em;
     display: none;
 
-    @media (min-width: 480px) {
+    @include bp(xs) {
       display: inline;
     }
   }
 
+  // ── Nav links ─────────────────────────────────────────────────────────────
+
   &__links {
+    // Mobile drawer (hidden by default)
     position: fixed;
-    inset: 4rem 0 auto 0;
+    inset: sz(header) 0 auto 0;
+    display: flex;
     flex-direction: column;
     align-items: stretch;
     gap: 0;
     padding: 0;
     background: var(--color-bg-surface);
-    border-bottom: none; // ← hidden by default
-    display: flex;
+    border-bottom: none;
     max-height: 0;
     overflow: hidden;
-    transition:
-      max-height 300ms cubic-bezier(0.4, 0, 0.2, 1),
-      padding 300ms ease;
+    transition: max-height dur(slow) cubic-bezier(0.4, 0, 0.2, 1), padding dur(slow) ease;
 
     &--open {
       max-height: 24rem;
-      padding: 0.5rem 1rem 1rem;
-      border-bottom: 1px solid var(--color-border); // ← only when open
+      padding: sp(2) sp(4) sp(4);
+      border-bottom: sp(px) solid var(--color-border);
     }
 
-    @media (min-width: 640px) {
+    @include bp(sm) {
       position: static;
       flex-direction: row;
       align-items: center;
-      gap: 0.125rem;
+      gap: sp(1);
       padding: 0;
       max-height: none;
       overflow: visible;
@@ -129,19 +167,19 @@
     }
   }
 
+  // ── Nav link ──────────────────────────────────────────────────────────────
+
   &__link {
     display: block;
-    padding: 0.75rem 0.5rem;
-    font-size: 0.8125rem;
+    padding: sp(3) sp(2);
+    font-size: fs(base);
     font-weight: 500;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     text-decoration: none;
-    color: var(--color-text-muted); // ← theme color instead of hardcoded white
-    border-radius: 0.25rem;
-    transition:
-      color 150ms,
-      background-color 150ms;
+    color: var(--color-text-muted);
+    border-radius: radius(sm);
+    transition: color dur(fast), background-color dur(fast);
     white-space: nowrap;
 
     &:hover {
@@ -149,25 +187,24 @@
       background: var(--color-bg-alt);
     }
 
-    @media (min-width: 640px) {
+    @include bp(sm) {
       position: relative;
-      padding: 0.5rem 0.75rem;
+      padding: sp(2) sp(3);
       font-size: 0.8rem;
-      letter-spacing: 0.08em;
-      border-radius: 0.375rem;
+      border-radius: radius(md);
       color: #fff;
 
       .site-nav--scrolled & {
-        color: var(--color-text-muted);
+        color: var(--color-primary-text);
       }
 
       &::after {
         content: "";
         position: absolute;
-        bottom: 0.125rem;
-        left: 0.75rem;
-        right: 0.75rem;
-        height: 1px;
+        bottom: sp(1);
+        left: sp(3);
+        right: sp(3);
+        height: sp(px);
         background: var(--color-primary);
         transform: scaleX(0);
         transform-origin: left;
@@ -178,8 +215,8 @@
         background: rgba(255, 255, 255, 0.08);
 
         .site-nav--scrolled & {
-          background: var(--color-neutral-hover);
-          color: var(--color-text);
+          background: var(--color-primary-hover);
+          color: var(--color-primary-text);
         }
 
         &::after {
@@ -189,29 +226,30 @@
     }
   }
 
+  // ── Controls ──────────────────────────────────────────────────────────────
+
   &__controls {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: sp(2);
     flex-shrink: 0;
   }
+
+  // ── Hamburger button ──────────────────────────────────────────────────────
 
   &__menu-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 2rem;
-    height: 2rem;
-    padding: 0.375rem;
+    width: sz(control);
+    height: sz(control);
+    padding: sp(2);
     background: transparent;
-    border: 1px solid transparent;
-    border-radius: 0.5rem;
+    border: sp(px) solid transparent;
+    border-radius: radius(lg);
     cursor: pointer;
     color: #fff;
-    transition:
-      color 150ms,
-      background-color 150ms,
-      border-color 150ms;
+    transition: color dur(fast), background-color dur(fast), border-color dur(fast);
 
     .site-nav--scrolled & {
       color: var(--color-text);
@@ -227,10 +265,12 @@
       }
     }
 
-    @media (min-width: 640px) {
+    @include bp(sm) {
       display: none;
     }
   }
+
+  // ── Hamburger icon ────────────────────────────────────────────────────────
 
   &__bar {
     display: block;
@@ -239,7 +279,7 @@
     height: 2px;
     background: currentColor;
     border-radius: 2px;
-    transition: background 200ms;
+    transition: background dur(base);
 
     &::before,
     &::after {
@@ -250,16 +290,12 @@
       height: 2px;
       background: currentColor;
       border-radius: 2px;
-      transition:
-        top 200ms 200ms,
-        bottom 200ms 200ms,
-        transform 200ms 0ms;
+      transition: top dur(base) dur(base), bottom dur(base) dur(base), transform dur(base) 0ms;
     }
 
     &::before {
       top: -5px;
     }
-
     &::after {
       bottom: -5px;
     }
@@ -270,17 +306,13 @@
       &::before {
         top: 0;
         transform: rotate(45deg);
-        transition:
-          top 200ms 0ms,
-          transform 200ms 200ms;
+        transition: top dur(base) 0ms, transform dur(base) dur(base);
       }
 
       &::after {
         bottom: 0;
         transform: rotate(-45deg);
-        transition:
-          bottom 200ms 0ms,
-          transform 200ms 200ms;
+        transition: bottom dur(base) 0ms, transform dur(base) dur(base);
       }
     }
   }

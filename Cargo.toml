@@ -39,8 +39,8 @@ thiserror = "2.0.18"
 tokio = { version = "1.45.0", features = ["full"] }
 tower = { version = "0.5.2", features = ["full"] }
 tower-http = { version = "0.6.4", features = ["full"] }
-wasm-bindgen = "=0.2.108"
-wasm-bindgen-futures = "0.4"
+wasm-bindgen = "=0.2.108" #? Locked to highest available version in nixpkgs
+wasm-bindgen-futures = "0.4" #? Locked to match wasm-bindgen
 web-sys = { version = "=0.3.85", features = [
   "CanvasRenderingContext2d",
   "CssStyleDeclaration",
@@ -50,7 +50,7 @@ web-sys = { version = "=0.3.85", features = [
   "MediaQueryList",
   "Window",
   "Performance",
-] }
+] } #? Locked to match wasm-bindgen
 
 
 [[workspace.metadata.leptos]]
@@ -61,14 +61,13 @@ site-root = "target/site"
 
 style-file = "style/main.scss"
 tailwind-input-file = "style/tailwind.css"
-# tailwind-config-file = "style/tailwind.config.js"
 
 assets-dir = "public"
 site-addr = "127.0.0.1:3000"
 reload-port = 3001
 
 # [Optional] Command to use when running end2end tests. It will run in the end2end dir.
-#   [Windows] for non-WSL use "npx.cmd playwright test"
+#   [Windows] for non-WSL use "[npx|pnpx].cmd playwright test"
 #   This binary name can be checked in Powershell with Get-Command npx
-end2end-cmd = "pnpx playwright test"
+end2end-cmd = "pnpm test"
 end2end-dir = "end2end"

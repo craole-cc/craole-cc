@@ -1,19 +1,57 @@
-/*
-  Theme “mechanics”: animatable custom properties + transitions.
-*/
+// ═══════════════════════════════════════════════════════════════════════════════
+// theme/_runtime.scss — Animatable custom properties + theme transitions
+// ───────────────────────────────────────────────────────────────────────────────
+//
+// OVERVIEW
+//   CSS @property registrations tell the browser the type of a custom property,
+//   which enables it to interpolate (animate/transition) values.
+//
+//   Without @property, transitioning --hue from 164 to 220 would snap
+//   instantly because the browser treats unregistered custom properties as
+//   opaque strings. With @property + syntax: "<number>", the browser knows
+//   it's a number and can tween it.
+//
+//   This creates the smooth hue-rotation effect when the user switches themes
+//   or when a future hue-transition feature is added.
+//
+// WHY SEPARATE FROM _tokens.scss
+//   @property must be declared at the top level (not inside a selector).
+//   Keeping it here avoids mixing at-rules into the token variable blocks
+//   and makes the "what can animate" contract explicit.
+//
+// BROWSER SUPPORT
+//   @property is supported in all modern browsers (Chrome 85+, Safari 16.4+,
+//   Firefox 128+). Browsers that don't support it fall back to instant
+//   switching — still correct, just not animated.
+//
+// ═══════════════════════════════════════════════════════════════════════════════
 
+// ── Register --hue as an animatable number ────────────────────────────────────
+// This enables: transition: --hue 1.5s ease
+// Without this, --hue is an opaque string and cannot be interpolated.
 @property --hue {
   syntax: "<number>";
   inherits: true;
-  initial-value: 164;
+  initial-value: 164; // matches :root default in _tokens.scss
 }
 
+// ── Register --chroma as an animatable number ─────────────────────────────────
+// Allows saturation to animate during theme transitions alongside hue,
+// preventing a jarring chroma snap while the hue is smoothly rotating.
 @property --chroma {
   syntax: "<number>";
   inherits: true;
-  initial-value: 0.2;
+  initial-value: 0.2; // matches :root default in _tokens.scss
 }
 
+// ── Theme transition ──────────────────────────────────────────────────────────
+// Applied to :root so all derived values (which reference --hue and --chroma
+// via var()) re-paint with the eased interpolated value.
+//
+// 1.5s is slow enough to feel considered without being sluggish.
+// The background-color + color transitions on body (in _globals.scss) are
+// shorter (200ms) because surface colours update instantly feels snappier
+// than waiting for the full hue rotation.
 :root {
   transition: --hue 1.5s ease, --chroma 1.5s ease;
 }

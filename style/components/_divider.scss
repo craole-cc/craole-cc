@@ -1,0 +1,94 @@
+@use "../index" as *;
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// components/_divider.scss — Divider component
+// ───────────────────────────────────────────────────────────────────────────────
+//
+// BEM STRUCTURE
+//   .divider                    — root wrapper <div>
+//   .divider--centered          — modifier: centered with max-width (dot variant)
+//   .divider__line              — gradient line (left or right)
+//   .divider__line--left        — fades in: transparent → --color-divider
+//   .divider__line--right       — fades out: --color-divider → transparent
+//   .divider__spacer            — gap element beside the dot
+//   .divider__spacer--left      — left gap (width via --divider-gap-left)
+//   .divider__spacer--right     — right gap (width via --divider-gap-right)
+//   .divider__dot               — decorative circular accent dot
+//
+// TOKENS USED
+//   sp()     — spacing scale          (base/_tokens.scss via index)
+//   sz()     — size scale             (base/_tokens.scss via index)
+//   radius() — border radius scale    (base/_tokens.scss via index)
+//   --color-divider                   (theme/_tokens.scss — runtime)
+//   --color-dot                       (theme/_tokens.scss — runtime)
+//
+// SPACING FROM RUST
+//   Gap widths beside the dot are injected as inline CSS custom properties:
+//     style="--divider-gap-left: 1rem; --divider-gap-right: 1rem;"
+//   Padding is injected as --divider-padding (default: sp(2) = 0.5rem).
+//   The --centered modifier handles margin/max-width entirely in SCSS.
+//
+// ═══════════════════════════════════════════════════════════════════════════════
+
+.divider {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding-block: var(--divider-padding, #{sp(2)});
+
+  // ── Centered variant ───────────────────────────────────────────────────────
+  // Applied by Rust when show_dot is true. Constrains width and centres the
+  // divider — keeps the tapered lines from spanning the full page width,
+  // which would make the dot look lost at the centre of a very wide line.
+
+  &--centered {
+    margin-inline: auto;
+    max-width: 36rem;
+  }
+
+  // ── Lines ──────────────────────────────────────────────────────────────────
+
+  &__line {
+    flex: 1;
+    height: sp(px); // 1px hairline via token
+
+    &--left {
+      background: linear-gradient(
+        to right,
+        transparent 0%,
+        var(--color-divider) 50%
+      );
+    }
+
+    &--right {
+      background: linear-gradient(
+        to right,
+        var(--color-divider) 50%,
+        transparent 100%
+      );
+    }
+  }
+
+  // ── Spacers ────────────────────────────────────────────────────────────────
+
+  &__spacer {
+    flex-shrink: 0;
+
+    &--left {
+      width: var(--divider-gap-left, 0px);
+    }
+    &--right {
+      width: var(--divider-gap-right, 0px);
+    }
+  }
+
+  // ── Dot ────────────────────────────────────────────────────────────────────
+
+  &__dot {
+    width: sz(dot);
+    height: sz(dot);
+    border-radius: radius(pill);
+    flex-shrink: 0;
+    background-color: var(--color-dot);
+  }
+}

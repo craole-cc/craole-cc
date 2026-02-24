@@ -3,7 +3,7 @@ use {
     LeptosIcon,
     Source,
   },
-  crate::prelude::*,
+  crate::_prelude::*,
   std::{
     collections::HashMap,
     sync::{
