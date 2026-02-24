@@ -33,25 +33,22 @@ pub fn stacks() -> Vec<Stack,> {
       technologies : vec![
         Tech {
           name : "Rust",
-          logo : Icon::new_leptos(icon::FaRustBrands,)
-            .with_class("fill-[#D34516] dark:fill-[#F4A07C]",),
+          logo : Icons::Rust.get(),
           link : "https://www.rust-lang.org/",
         },
         Tech {
           name : "Shell",
-          logo : Icon::new_local("icons/logos/bash.svg",)
-            .with_class("dark:invert dark:hue-rotate-180",),
+          logo : Icons::Shell.get(),
           link : "https://pubs.opengroup.org/onlinepubs/9799919799/",
         },
         Tech {
           name : "Python",
-          logo : Icon::new_local("icons/logos/python.svg",),
+          logo : Icons::Python.get(),
           link : "https://www.python.org/",
         },
         Tech {
           name : "Zig",
-          logo : Icon::new_local("icons/logos/zig.svg",)
-            .with_class("dark:invert dark:hue-rotate-180",),
+          logo : Icons::Zig.get(),
           link : "https://ziglang.org/",
         },
       ],
@@ -61,28 +58,27 @@ pub fn stacks() -> Vec<Stack,> {
       technologies : vec![
         Tech {
           name : "Actix",
-          logo : Icon::new_leptos(icon::SiActix,).with_class("dark:invert dark:hue-rotate-180",),
+          logo : Icons::Actix.get(),
           link : "https://actix.rs/",
         },
         Tech {
           name : "Axum",
-          logo : Icon::new_local("icons/logos/tokio.svg",)
-            .with_class("dark:invert dark:hue-rotate-180",),
+          logo : Icons::Axum.get(),
           link : "https://github.com/tokio-rs/axum",
         },
         Tech {
           name : "HTMX",
-          logo : Icon::new_leptos(icon::SiHtmx,).with_class("dark:invert dark:hue-rotate-180",),
+          logo : Icons::Htmx.get(),
           link : "https://htmx.org/",
         },
         Tech {
           name : "Leptos",
-          logo : Icon::new_local("icons/logos/leptos.ico",),
+          logo : Icons::Leptos.get(),
           link : "https://leptos.dev/",
         },
         Tech {
           name : "Tailwind",
-          logo : Icon::new_local("icons/logos/tailwind-blue.svg",),
+          logo : Icons::Tailwind.get(),
           link : "https://tailwindcss.com/",
         },
       ],
@@ -91,9 +87,8 @@ pub fn stacks() -> Vec<Stack,> {
       title :        "Data Engineering",
       technologies : vec![
         Tech {
-          name : "DeltaLake",
-          logo : Icon::new_local("icons/logos/deltalake.svg",)
-            .with_class("dark:invert dark:hue-rotate-180",),
+          name : "Delta Lake",
+          logo : Icons::DeltaLake.get(),
           link : "https://delta.io/",
         },
         Tech {
@@ -103,18 +98,17 @@ pub fn stacks() -> Vec<Stack,> {
         },
         Tech {
           name : "Neo4j",
-          logo : Icon::new_local("icons/logos/neo4j-flat.svg",),
+          logo : Icons::Neo4j.get(),
           link : "https://neo4j.com/",
         },
         Tech {
           name : "PostgreSQL",
-          logo : Icon::new_local("icons/logos/postgresql.svg",),
+          logo : Icons::PostgreSql.get(),
           link : "https://www.postgresql.org/",
         },
         Tech {
           name : "SQLite",
-          logo : Icon::new_local("icons/logos/SQLite.svg",)
-            .with_class("dark:invert dark:hue-rotate-180",),
+          logo : Icons::Sqlite.get(),
           link : "https://www.sqlite.org/",
         },
       ],
@@ -124,29 +118,27 @@ pub fn stacks() -> Vec<Stack,> {
       technologies : vec![
         Tech {
           name : "Git",
-          logo : Icon::new_local("icons/logos/git.svg",),
+          logo : Icons::Git.get(),
           link : "https://git-scm.com/",
         },
         Tech {
           name : "GitHub",
-          logo : Icon::new_leptos(icon::FaGithubBrands,)
-            .with_class("fill-current dark:fill-white",),
+          logo : Icons::GitHub.get(),
           link : "https://github.com/",
         },
         Tech {
           name : "NixOS",
-          logo : Icon::new_local("icons/logos/nix.svg",)
-            .with_class("dark:invert dark:hue-rotate-180",),
+          logo : Icons::NixOs.get(),
           link : "https://nixos.org/",
         },
         Tech {
           name : "Raspberry Pi",
-          logo : Icon::new_local("icons/logos/raspberry.svg",),
+          logo : Icons::RaspberryPi.get(),
           link : "https://www.raspberrypi.com/",
         },
         Tech {
           name : "Windows",
-          logo : Icon::new_local("icons/logos/windows.svg",),
+          logo : Icons::Windows.get(),
           link : "https://www.microsoft.com/windows",
         },
       ],
@@ -156,26 +148,22 @@ pub fn stacks() -> Vec<Stack,> {
       technologies : vec![
         Tech {
           name : "Helix",
-          logo : Icon::new_local("icons/logos/helix.svg",)
-            .with_class("dark:invert dark:hue-rotate-180",),
+          logo : Icons::Helix.get(),
           link : "https://helix-editor.com/",
         },
         Tech {
           name : "Typst",
-          logo : Icon::new_local("icons/logos/typst.svg",)
-            .with_class("dark:invert dark:hue-rotate-180",),
+          logo : Icons::Typst.get(),
           link : "https://typst.app/",
         },
         Tech {
           name : "VS Code",
-          logo : Icon::new_local("icons/logos/vscode.svg",)
-            .with_class("dark:invert dark:hue-rotate-180",),
+          logo : Icons::VSCode.get(),
           link : "https://code.visualstudio.com/",
         },
         Tech {
           name : "Zed",
-          logo : Icon::new_local("icons/logos/zed.svg",)
-            .with_class("dark:invert dark:hue-rotate-180",),
+          logo : Icons::Zed.get(),
           link : "https://zed.dev/",
         },
       ],
@@ -185,26 +173,22 @@ pub fn stacks() -> Vec<Stack,> {
       technologies : vec![
         Tech {
           name : "Bash",
-          logo : Icon::new_local("icons/logos/bash.svg",)
-            .with_class("dark:invert dark:hue-rotate-180",),
+          logo : Icons::Bash.get(),
           link : "https://www.gnu.org/software/bash/",
         },
         Tech {
           name : "PowerShell",
-          logo : Icon::new_local("icons/logos/powershell.svg",)
-            .with_class("dark:invert dark:hue-rotate-180",),
+          logo : Icons::PowerShell.get(),
           link : "https://github.com/PowerShell/PowerShell",
         },
         Tech {
           name : "Starship",
-          logo : Icon::new_local("icons/logos/starship.svg",)
-            .with_class("dark:invert dark:hue-rotate-180",),
+          logo : Icons::Starship.get(),
           link : "https://starship.rs/",
         },
         Tech {
           name : "Oh My Posh",
-          logo : Icon::new_local("icons/logos/ohmyposh.svg",)
-            .with_class("dark:invert dark:hue-rotate-180",),
+          logo : Icons::OhMyPosh.get(),
           link : "https://ohmyposh.dev/",
         },
       ],

@@ -1,10 +1,16 @@
-use {
-  super::{
-    devops,
-    social,
+use crate::prelude::{
+  icons::{
+    registry::{
+      data,
+      devops,
+      social,
+    },
+    *,
   },
-  crate::prelude::Icon,
+  *,
 };
+
+const DARK_INVERT : &str = "dark:invert dark:hue-rotate-180";
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash,)]
 pub enum Icons {
@@ -60,47 +66,104 @@ impl Icons {
   pub fn get(self,) -> Icon {
     use Icons::*;
     match self {
-      // Rust => languages::rust(),
-      // Shell => languages::shell(),
-      // Python => languages::python(),
-      // Zig => languages::zig(),
-      // Bash => languages::bash(),
+      //╔═══════════════════════════════════════════════════════════╗
+      //║ Languages                                                 ║
+      //╚═══════════════════════════════════════════════════════════╝
+      | Rust => Icon::new_leptos(icon::FaRustBrands,)
+        .with_class("fill-[#D34516] dark:fill-[#F4A07C]",)
+        .with_tooltip("Rust programming language",)
+        .with_label("Rust",),
 
-      // Actix => web::actix(),
-      // Axum => web::axum(),
-      // Htmx => web::htmx(),
-      // Leptos => web::leptos(),
-      // Tailwind => web::tailwind(),
+      | Shell | Bash => Icon::new_local("icons/logos/bash.svg",)
+        .with_class(DARK_INVERT,)
+        .with_label("Shell",),
 
-      // DeltaLake => data::deltalake(),
-      // SurrealDb => data::surrealdb(),
-      // Neo4j => data::neo4j(),
-      // PostgreSql => data::postgresql(),
-      // Sqlite => data::sqlite(),
+      | Python => Icon::new_local("icons/logos/python.svg",).with_label("Python",),
 
-      // Git => devops::git(),
+      | Zig => Icon::new_local("icons/logos/zig.svg",)
+        .with_class(DARK_INVERT,)
+        .with_label("Zig",),
+
+      //╔═══════════════════════════════════════════════════════════╗
+      //║ Web                                                       ║
+      //╚═══════════════════════════════════════════════════════════╝
+      | Actix => Icon::new_leptos(icon::SiActix,)
+        .with_class(DARK_INVERT,)
+        .with_label("Actix",),
+
+      | Axum => Icon::new_local("icons/logos/tokio.svg",)
+        .with_class(DARK_INVERT,)
+        .with_label("Axum",),
+
+      | Htmx => Icon::new_leptos(icon::SiHtmx,)
+        .with_class(DARK_INVERT,)
+        .with_label("HTMX",),
+
+      | Leptos => Icon::new_local("icons/logos/leptos.ico",).with_label("Leptos",),
+
+      | Tailwind => Icon::new_local("icons/logos/tailwind-blue.svg",).with_label("Tailwind CSS",),
+
+      //╔═══════════════════════════════════════════════════════════╗
+      //║ Data                                                      ║
+      //╚═══════════════════════════════════════════════════════════╝
+      | DeltaLake => data::deltalake(),
+      | SurrealDb => data::surrealdb(),
+      | Neo4j => data::neo4j(),
+      | PostgreSql => data::postgresql(),
+      | Sqlite => data::sqlite(),
+
+      //╔═══════════════════════════════════════════════════════════╗
+      //║ DevOps                                                    ║
+      //╚═══════════════════════════════════════════════════════════╝
+      | Git => devops::git(),
       | GitHub => devops::github(),
-      // NixOs => devops::nixos(),
-      // RaspberryPi => devops::raspberry_pi(),
-      // Windows => devops::windows(),
+      | NixOs => devops::nix(),
+      | RaspberryPi => devops::raspberry_pi(),
+      | Windows => devops::windows(),
 
-      // Helix => editors::helix(),
-      // Typst => editors::typst(),
-      // VSCode => editors::vscode(),
-      // Zed => editors::zed(),
+      //╔═══════════════════════════════════════════════════════════╗
+      //║ Editors                                                   ║
+      //╚═══════════════════════════════════════════════════════════╝
+      | Helix => Icon::new_local("icons/logos/helix.svg",)
+        .with_class(DARK_INVERT,)
+        .with_label("Helix",),
 
-      // PowerShell => terminal::powershell(),
-      // Starship => terminal::starship(),
-      // OhMyPosh => terminal::ohmyposh(),
+      | Typst => Icon::new_local("icons/logos/typst.svg",)
+        .with_class(DARK_INVERT,)
+        .with_label("Typst",),
+
+      | VSCode => Icon::new_local("icons/logos/vscode.svg",)
+        .with_class(DARK_INVERT,)
+        .with_label("VS Code",),
+
+      | Zed => Icon::new_local("icons/logos/zed.svg",)
+        .with_class(DARK_INVERT,)
+        .with_label("Zed",),
+
+      //╔═══════════════════════════════════════════════════════════╗
+      //║ Terminal                                                  ║
+      //╚═══════════════════════════════════════════════════════════╝
+      | PowerShell => Icon::new_local("icons/logos/powershell.svg",)
+        .with_class(DARK_INVERT,)
+        .with_label("PowerShell",),
+
+      | Starship => Icon::new_local("icons/logos/starship.svg",)
+        .with_class(DARK_INVERT,)
+        .with_label("Starship",),
+
+      | OhMyPosh => Icon::new_local("icons/logos/ohmyposh.svg",)
+        .with_class(DARK_INVERT,)
+        .with_label("Oh My Posh",),
+
+      //╔═══════════════════════════════════════════════════════════╗
+      //║ Social                                                    ║
+      //╚═══════════════════════════════════════════════════════════╝
       | Gmail => social::gmail(),
       | LinkedIn => social::linkedin(),
       | WhatsApp => social::whatsapp(),
       | Instagram => social::instagram(),
       | Facebook => social::facebook(),
       | X => social::x(),
-
-      // Temporary stub for disabled categories
-      | _ => Icon::new(),
     }
   }
 }
