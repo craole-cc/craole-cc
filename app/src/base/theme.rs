@@ -1,4 +1,4 @@
-use crate::_prelude::*;
+use crate::prelude::*;
 
 //╔═══════════════════════════════════════════════════════════╗
 //║ Configuration                                             ║
@@ -91,18 +91,6 @@ fn srgb_to_linear(c : f64,) -> f64 {
 /// Convert sRGB (0–255 each) to an OKLCH hue in degrees,
 /// or `None` if the colour is too achromatic to have a meaningful hue.
 ///
-/// ─── WHY this replaces `rgb_to_hue()` ───────────────────────────────────────
-///
-/// The old function computed an HSL hue. HSL and OKLCH both express hue as
-/// 0–360°, but they map colours to completely different positions on that range.
-///
-/// Outdoor landscape photos (beaches, mountains, rivers, ruins) almost always
-/// average to a warm brownish tone — the mix of sand, soil, vegetation, and sky
-/// produces an average sRGB of roughly (140, 110, 80). In HSL that's hue ≈ 30°.
-/// Written to `--hue` (which the CSS token system treats as OKLCH degrees),
-/// 30° in OKLCH is brown-amber — exactly #874700. Every slide maps there,
-/// so the hue never moves regardless of the photo content.
-///
 /// The correct pipeline: sRGB → gamma decode → linear RGB →
 ///   OKLab (via Ottosson's two-matrix method) → atan2(b, a) → OKLCH hue
 ///
@@ -154,6 +142,7 @@ pub fn extract_hue_from_url(url : &'static str, on_hue : impl Fn(f64,)+'static,)
     let Some(window,) = web_sys::window() else {
       return;
     };
+
     let Some(document,) = window.document() else {
       return;
     };
@@ -161,6 +150,7 @@ pub fn extract_hue_from_url(url : &'static str, on_hue : impl Fn(f64,)+'static,)
     let Ok(el,) = document.create_element("canvas",) else {
       return;
     };
+
     let canvas = el.unchecked_into::<HtmlCanvasElement>();
     canvas.set_width(128,);
     canvas.set_height(128,);
@@ -276,71 +266,18 @@ pub fn ThemeProvider(children : Children,) -> impl IntoView {
 }
 
 //╔═══════════════════════════════════════════════════════════╗
-//║ SVG Icons                                                 ║
-//╚═══════════════════════════════════════════════════════════╝
-
-#[component]
-fn IconSystem() -> impl IntoView {
-  view! {
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke-width="1.5"
-      stroke="currentColor"
-    >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        d="M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12V15a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 15V5.25m18 0A2.25 2.25 0 0 0 18.75 3H5.25A2.25 2.25 0 0 0 3 5.25m18 0H3"
-      />
-    </svg>
-  }
-}
-
-#[component]
-fn IconLight() -> impl IntoView {
-  view! {
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke-width="1.5"
-      stroke="currentColor"
-    >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"
-      />
-    </svg>
-  }
-}
-
-#[component]
-fn IconDark() -> impl IntoView {
-  view! {
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke-width="1.5"
-      stroke="currentColor"
-    >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 \
-        0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 \
-        12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"
-      />
-    </svg>
-  }
-}
-
-//╔═══════════════════════════════════════════════════════════╗
 //║ ThemeSwitcher                                             ║
 //╚═══════════════════════════════════════════════════════════╝
+// Icons come from the central registry (Icons::Theme* in registry/core.rs
+// → registry/ui.rs). No SVG is defined here — swapping icon families is
+// a one-line change in ui.rs.
+//
+// Toggle button: always sun (light) or moon (dark). Never the monitor.
+//   Theme::resolve() reads window.matchMedia at runtime, so System mode
+//   correctly shows whichever icon the user is actually experiencing.
+//
+// Dropdown: all three options with their own labelled icons, including
+//   the monitor for "System" where its meaning is unambiguous.
 
 #[component]
 pub fn ThemeSwitcher(#[prop(default = "")] class : &'static str,) -> impl IntoView {
@@ -354,19 +291,25 @@ pub fn ThemeSwitcher(#[prop(default = "")] class : &'static str,) -> impl IntoVi
     let Some(doc,) = window().and_then(|w| w.document(),) else {
       return;
     };
-    let handler = Closure::<dyn Fn(MouseEvent,),>::wrap(Box::new(move |_| set_open.set(false,),),);
+    let handler =
+      wasm_bindgen::closure::Closure::<dyn Fn(MouseEvent,),>::wrap(Box::new(move |_| {
+        set_open.set(false,)
+      },),);
     let _ = doc.add_event_listener_with_callback("click", handler.as_ref().unchecked_ref(),);
     handler.forget();
   },);
 
+  // (Theme variant, display label, Icons variant for the dropdown icon)
   let options = [
-    (Theme::System, "System", view! { <IconSystem /> }.into_any(),),
-    (Theme::Light, "Light", view! { <IconLight /> }.into_any(),),
-    (Theme::Dark, "Dark", view! { <IconDark /> }.into_any(),),
+    (Theme::System, "System", Icons::ThemeSystem,),
+    (Theme::Light, "Light", Icons::ThemeLight,),
+    (Theme::Dark, "Dark", Icons::ThemeDark,),
   ];
 
   view! {
     <div class=format!("theme-dropdown {class}") on:click=move |e| e.stop_propagation()>
+
+      // Toggle — shows the icon of whichever option is currently selected
       <button
         type="button"
         class="theme-btn"
@@ -374,13 +317,17 @@ pub fn ThemeSwitcher(#[prop(default = "")] class : &'static str,) -> impl IntoVi
         title="Change theme"
         on:click=move |_| set_open.update(|v| *v = !*v)
       >
-        {move || match theme.get() {
-          Theme::System => view! { <IconSystem /> }.into_any(),
-          Theme::Light => view! { <IconLight /> }.into_any(),
-          Theme::Dark => view! { <IconDark /> }.into_any(),
+        {move || {
+          let icon = match theme.get() {
+            Theme::System => Icons::ThemeSystem.get(),
+            Theme::Light => Icons::ThemeLight.get(),
+            Theme::Dark => Icons::ThemeDark.get(),
+          };
+          view! { <IconRender icon /> }
         }}
       </button>
 
+      // Dropdown — all three with labelled icons
       {move || {
         open
           .get()
@@ -389,8 +336,7 @@ pub fn ThemeSwitcher(#[prop(default = "")] class : &'static str,) -> impl IntoVi
               <div class="theme-dropdown__menu">
                 {options
                   .iter()
-                  .map(|(t, label, _)| {
-                    let t = *t;
+                  .map(|&(t, label, icon_variant)| {
                     view! {
                       <button
                         type="button"
@@ -406,12 +352,8 @@ pub fn ThemeSwitcher(#[prop(default = "")] class : &'static str,) -> impl IntoVi
                           set_open.set(false);
                         }
                       >
-                        {match t {
-                          Theme::System => view! { <IconSystem /> }.into_any(),
-                          Theme::Light => view! { <IconLight /> }.into_any(),
-                          Theme::Dark => view! { <IconDark /> }.into_any(),
-                        }}
-                        {*label}
+                        <IconRender icon=icon_variant.get() />
+                        {label}
                       </button>
                     }
                   })
@@ -420,6 +362,7 @@ pub fn ThemeSwitcher(#[prop(default = "")] class : &'static str,) -> impl IntoVi
             }
           })
       }}
+
     </div>
   }
 }

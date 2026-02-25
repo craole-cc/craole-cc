@@ -5,16 +5,15 @@
 // ═══════════════════════════════════════════════════════════════════════════════
 //
 // TOKENS USED
-//   sp()     — spacing          (base/_tokens.scss via index)
-//   sz()     — sizes            (base/_tokens.scss via index)
-//   fs()     — font sizes       (base/_tokens.scss via index)
-//   dur()    — durations        (base/_tokens.scss via index)
-//   radius() — radii            (base/_tokens.scss via index)
-//   z()      — z-index scale    (base/_tokens.scss via index)
-//   bp()     — breakpoints      (base/_tokens.scss via index)
+//   spacing()        — spacing          (base/_tokens.scss via index)
+//   size()           — sizes            (base/_tokens.scss via index)
+//   fontsize()       — font sizes       (base/_tokens.scss via index)
+//   duration()       — durations        (base/_tokens.scss via index)
+//   radius()         — radii            (base/_tokens.scss via index)
+//   layer()          — z-index scale    (base/_tokens.scss via index)
+//   breakpoint()     — breakpoints      (base/_tokens.scss via index)
 //   --color-* vars              (theme/_tokens.scss — runtime)
 //
-// (Full BEM/overview docs preserved below)
 // ───────────────────────────────────────────────────────────────────────────────
 //
 // OVERVIEW
@@ -42,18 +41,18 @@
 .site-nav {
   position: fixed;
   inset: 0 0 auto 0;
-  z-index: z(nav);
-  height: sz(header);
-  padding: 0 sp(4);
+  z-index: layer(nav);
+  height: size(header);
+  padding: 0 spacing(4);
 
   background: transparent;
   border-bottom: none;
 
   transition:
-    background-color dur(xslow) ease,
-    border-bottom dur(xslow) ease,
-    backdrop-filter dur(xslow) ease,
-    box-shadow dur(xslow) ease;
+    background-color duration(xslow) ease,
+    border-bottom duration(xslow) ease,
+    backdrop-filter duration(xslow) ease,
+    box-shadow duration(xslow) ease;
 
   animation: nav-appear 0.5s ease both;
 
@@ -68,8 +67,8 @@
       -webkit-backdrop-filter: blur(20px) saturate(160%);
     }
 
-    border-bottom: sp(px) solid var(--color-border);
-    box-shadow: 0 sp(px) 0 oklch(0 0 0 / 0.06), 0 sp(1) sp(5) oklch(0 0 0 / 0.12);
+    border-bottom: spacing(px) solid var(--color-border);
+    box-shadow: 0 spacing(px) 0 oklch(0 0 0 / 0.06), 0 spacing(1) spacing(5) oklch(0 0 0 / 0.12);
   }
 
   // ── Inner wrapper ─────────────────────────────────────────────────────────
@@ -88,11 +87,11 @@
   &__logo {
     display: inline-flex;
     align-items: center;
-    gap: sp(2);
+    gap: spacing(2);
     text-decoration: none;
     flex-shrink: 0;
     color: #fff;
-    transition: opacity dur(fast), color dur(slow);
+    transition: opacity duration(fast), color duration(slow);
 
     .site-nav--scrolled & {
       color: var(--color-primary-text);
@@ -107,24 +106,24 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: sz(control);
-    height: sz(control);
+    width: size(control);
+    height: size(control);
     border-radius: radius(md);
     background: var(--color-primary);
     color: #fff;
-    font-size: fs(sm);
+    font-size: fontsize(sm);
     font-weight: 800;
     letter-spacing: 0.05em;
     flex-shrink: 0;
   }
 
   &__logo-name {
-    font-size: fs(md);
+    font-size: fontsize(md);
     font-weight: 700;
     letter-spacing: -0.02em;
     display: none;
 
-    @include bp(xs) {
+    @include breakpoint(xs) {
       display: inline;
     }
   }
@@ -134,7 +133,7 @@
   &__links {
     // Mobile drawer (hidden by default)
     position: fixed;
-    inset: sz(header) 0 auto 0;
+    inset: size(header) 0 auto 0;
     display: flex;
     flex-direction: column;
     align-items: stretch;
@@ -144,19 +143,19 @@
     border-bottom: none;
     max-height: 0;
     overflow: hidden;
-    transition: max-height dur(slow) cubic-bezier(0.4, 0, 0.2, 1), padding dur(slow) ease;
+    transition: max-height duration(slow) cubic-bezier(0.4, 0, 0.2, 1), padding duration(slow) ease;
 
     &--open {
       max-height: 24rem;
-      padding: sp(2) sp(4) sp(4);
-      border-bottom: sp(px) solid var(--color-border);
+      padding: spacing(2) spacing(4) spacing(4);
+      border-bottom: spacing(px) solid var(--color-border);
     }
 
-    @include bp(sm) {
+    @include breakpoint(sm) {
       position: static;
       flex-direction: row;
       align-items: center;
-      gap: sp(1);
+      gap: spacing(1);
       padding: 0;
       max-height: none;
       overflow: visible;
@@ -171,15 +170,15 @@
 
   &__link {
     display: block;
-    padding: sp(3) sp(2);
-    font-size: fs(base);
+    padding: spacing(3) spacing(2);
+    font-size: fontsize(base);
     font-weight: 500;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     text-decoration: none;
     color: var(--color-text-muted);
     border-radius: radius(sm);
-    transition: color dur(fast), background-color dur(fast);
+    transition: color duration(fast), background-color duration(fast);
     white-space: nowrap;
 
     &:hover {
@@ -187,9 +186,9 @@
       background: var(--color-bg-alt);
     }
 
-    @include bp(sm) {
+    @include breakpoint(sm) {
       position: relative;
-      padding: sp(2) sp(3);
+      padding: spacing(2) spacing(3);
       font-size: 0.8rem;
       border-radius: radius(md);
       color: #fff;
@@ -201,10 +200,10 @@
       &::after {
         content: "";
         position: absolute;
-        bottom: sp(1);
-        left: sp(3);
-        right: sp(3);
-        height: sp(px);
+        bottom: spacing(1);
+        left: spacing(3);
+        right: spacing(3);
+        height: spacing(px);
         background: var(--color-primary);
         transform: scaleX(0);
         transform-origin: left;
@@ -231,25 +230,25 @@
   &__controls {
     display: flex;
     align-items: center;
-    gap: sp(2);
+    gap: spacing(2);
     flex-shrink: 0;
   }
 
-  // ── Hamburger button ──────────────────────────────────────────────────────
+  // ── Site Menu button ──────────────────────────────────────────────────────
 
   &__menu-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: sz(control);
-    height: sz(control);
-    padding: sp(2);
+    width: size(control);
+    height: size(control);
+    padding: spacing(2);
     background: transparent;
-    border: sp(px) solid transparent;
+    border: spacing(px) solid transparent;
     border-radius: radius(lg);
     cursor: pointer;
     color: #fff;
-    transition: color dur(fast), background-color dur(fast), border-color dur(fast);
+    transition: color duration(fast), background-color duration(fast), border-color duration(fast);
 
     .site-nav--scrolled & {
       color: var(--color-text);
@@ -265,12 +264,12 @@
       }
     }
 
-    @include bp(sm) {
+    @include breakpoint(sm) {
       display: none;
     }
   }
 
-  // ── Hamburger icon ────────────────────────────────────────────────────────
+  // ── Site Menu icon ────────────────────────────────────────────────────────
 
   &__bar {
     display: block;
@@ -279,7 +278,7 @@
     height: 2px;
     background: currentColor;
     border-radius: 2px;
-    transition: background dur(base);
+    transition: background duration(base);
 
     &::before,
     &::after {
@@ -290,7 +289,7 @@
       height: 2px;
       background: currentColor;
       border-radius: 2px;
-      transition: top dur(base) dur(base), bottom dur(base) dur(base), transform dur(base) 0ms;
+      transition: top duration(base) duration(base), bottom duration(base) duration(base), transform duration(base) 0ms;
     }
 
     &::before {
@@ -306,13 +305,13 @@
       &::before {
         top: 0;
         transform: rotate(45deg);
-        transition: top dur(base) 0ms, transform dur(base) dur(base);
+        transition: top duration(base) 0ms, transform duration(base) duration(base);
       }
 
       &::after {
         bottom: 0;
         transform: rotate(-45deg);
-        transition: bottom dur(base) 0ms, transform dur(base) dur(base);
+        transition: bottom duration(base) 0ms, transform duration(base) duration(base);
       }
     }
   }

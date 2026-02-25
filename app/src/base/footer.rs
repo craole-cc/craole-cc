@@ -1,5 +1,12 @@
 use crate::prelude::{
-  icons::*,
+  icons::social::{
+    facebook,
+    gmail,
+    instagram,
+    linkedin,
+    whatsapp,
+    x,
+  },
   *,
 };
 
@@ -18,13 +25,13 @@ fn SocialIcon(icon_enum : Icons,) -> impl IntoView {
   let default_icon = icon_enum
     .get()
     .with_source(match icon_enum {
-      | Icons::WhatsApp => whatsapp_variants::filled(),
-      | Icons::GitHub => github_variants::filled(),
-      | Icons::Instagram => instagram_variants::filled(),
-      | Icons::LinkedIn => linkedin_variants::filled(),
-      | Icons::Gmail => gmail_variants::filled(),
-      | Icons::Facebook => facebook_variants::filled(),
-      | Icons::X => x_variants::filled(),
+      | Icons::WhatsApp => whatsapp::filled(),
+      | Icons::GitHub => github::filled(),
+      | Icons::Instagram => instagram::filled(),
+      | Icons::LinkedIn => linkedin::filled(),
+      | Icons::Gmail => gmail::filled(),
+      | Icons::Facebook => facebook::filled(),
+      | Icons::X => x::filled(),
       | _ => icon_enum.get().source,
     },)
     .and_class("fill-muted",);

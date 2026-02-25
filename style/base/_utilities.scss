@@ -11,8 +11,8 @@
 //   SCSS file, not here.
 //
 // TOKENS USED
-//   sp()  — spacing     (base/_tokens.scss via index)
-//   dur() — durations   (base/_tokens.scss via index)
+//   spacing()  — spacing     (base/_tokens.scss via index)
+//   duration() — durations   (base/_tokens.scss via index)
 //   --color-* vars      (theme/_tokens.scss — runtime)
 //
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -96,7 +96,7 @@
 
 .link-primary {
   color: var(--color-text-muted);
-  transition: color dur(fast);
+  transition: color duration(fast);
   &:hover {
     color: var(--color-primary);
   }
@@ -104,7 +104,7 @@
 
 .link-secondary {
   color: var(--color-text-muted);
-  transition: color dur(fast);
+  transition: color duration(fast);
   &:hover {
     color: var(--color-secondary);
   }
@@ -112,7 +112,7 @@
 
 .link-neutral {
   color: var(--color-text-muted);
-  transition: color dur(fast);
+  transition: color duration(fast);
   &:hover {
     color: var(--color-neutral);
   }
@@ -128,14 +128,14 @@
 // ── Hover state helpers ───────────────────────────────────────────────────────
 
 .hover-primary {
-  transition: background-color dur(fast);
+  transition: background-color duration(fast);
   &:hover {
     background-color: var(--color-primary-hover);
   }
 }
 
 .hover-neutral {
-  transition: background-color dur(fast);
+  transition: background-color duration(fast);
   &:hover {
     background-color: var(--color-neutral-hover);
   }

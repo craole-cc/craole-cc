@@ -1,36 +1,52 @@
 use crate::prelude::icons::*;
 
 //╔═══════════════════════════════════════════════════════════╗
-//║ DeltaLake                                                ║
+//║ Actix                                                     ║
 //╚═══════════════════════════════════════════════════════════╝
-pub mod deltalake {
+pub mod actix {
   use super::*;
 
   fn base() -> Icon {
-    Icon::new_local("icons/logos/deltalake.svg",)
-      .with_link("https://delta.io/",)
-      .with_tooltip("Open-source storage framework",)
-      .with_label("Delta Lake",)
+    Icon::new_local("icons/logos/actix.svg",)
+      .with_link("https://actix.rs",)
+      .with_tooltip("Fast, pragmatic, and extensible web framework",)
+      .with_label("Actix",)
   }
 
   pub fn local() -> Icon { base() }
   pub fn default() -> Icon { local() }
-  // No upstream Leptos icon yet — swap when assets are available.
-  pub fn filled() -> Icon { default() }
-  pub fn outlined() -> Icon { default() }
+  pub fn filled() -> Icon { local() }
+  pub fn outlined() -> Icon { local() }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
-//║ SurrealDB                                                 ║
+//║ Axum                                                      ║
 //╚═══════════════════════════════════════════════════════════╝
-pub mod surrealdb {
+pub mod axum {
   use super::*;
 
   fn base() -> Icon {
-    Icon::new_leptos(icon::SiSurrealdb,)
-      .with_link("https://surrealdb.com/",)
-      .with_tooltip("Multi-model database",)
-      .with_label("SurrealDB",)
+    Icon::new_local("icons/logos/tokio.svg",)
+      .with_tooltip("",)
+      .with_label("Axum",)
+  }
+
+  pub fn local() -> Icon { base() }
+  pub fn default() -> Icon { local() }
+  pub fn filled() -> Icon { local() }
+  pub fn outlined() -> Icon { local() }
+}
+
+//╔═══════════════════════════════════════════════════════════╗
+//║ HTMX                                                      ║
+//╚═══════════════════════════════════════════════════════════╝
+pub mod htmx {
+  use super::*;
+
+  fn base() -> Icon {
+    Icon::new_leptos(icon::SiHtmx,)
+      .with_tooltip("",)
+      .with_label("HTMX",)
   }
 
   pub fn default() -> Icon { base() }
@@ -39,58 +55,37 @@ pub mod surrealdb {
 }
 
 //╔═══════════════════════════════════════════════════════════╗
-//║ Neo4j                                                     ║
+//║ Leptos                                                    ║
 //╚═══════════════════════════════════════════════════════════╝
-pub mod neo4j {
+pub mod leptos {
   use super::*;
 
   fn base() -> Icon {
-    Icon::new_local("icons/logos/neo4j-flat.svg",)
-      .with_link("https://neo4j.com/",)
-      .with_tooltip("Graph database platform",)
-      .with_label("Neo4j",)
+    Icon::new_local("icons/logos/leptos.ico",)
+      .with_tooltip("",)
+      .with_label("Leptos",)
   }
 
   pub fn local() -> Icon { base() }
   pub fn default() -> Icon { local() }
-  pub fn filled() -> Icon { default() }
-  pub fn outlined() -> Icon { default() }
+  pub fn filled() -> Icon { local() }
+  pub fn outlined() -> Icon { local() }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
-//║ PostgreSQL                                                ║
+//║ Tailwind                                                  ║
 //╚═══════════════════════════════════════════════════════════╝
-pub mod postgresql {
+pub mod tailwind {
   use super::*;
 
   fn base() -> Icon {
-    Icon::new_local("icons/logos/postgresql.svg",)
-      .with_link("https://www.postgresql.org/",)
-      .with_tooltip("Advanced open source relational database",)
-      .with_label("PostgreSQL",)
+    Icon::new_local("icons/logos/tailwind-blue.svg",)
+      .with_tooltip("",)
+      .with_label("Tailwind CSS",)
   }
 
   pub fn local() -> Icon { base() }
   pub fn default() -> Icon { local() }
-  pub fn filled() -> Icon { base().with_source(Source::Leptos(icon::SiPostgresql,),) }
-  pub fn outlined() -> Icon { filled() }
-}
-
-//╔═══════════════════════════════════════════════════════════╗
-//║ SQLite                                                    ║
-//╚═══════════════════════════════════════════════════════════╝
-pub mod sqlite {
-  use super::*;
-
-  fn base() -> Icon {
-    Icon::new_local("icons/logos/SQLite.svg",)
-      .with_link("https://www.sqlite.org/",)
-      .with_tooltip("Self-contained embedded database",)
-      .with_label("SQLite",)
-  }
-
-  pub fn local() -> Icon { base() }
-  pub fn default() -> Icon { local() }
-  pub fn filled() -> Icon { base().with_source(Source::Leptos(icon::SiSqlite,),) }
-  pub fn outlined() -> Icon { filled() }
+  pub fn filled() -> Icon { local() }
+  pub fn outlined() -> Icon { local() }
 }

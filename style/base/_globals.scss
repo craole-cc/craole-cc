@@ -9,10 +9,10 @@
 //   Everything else is BEM or utility classes.
 //
 // TOKENS USED
-//   sp()  — spacing     (base/_tokens.scss via index)
-//   fs()  — font sizes  (base/_tokens.scss via index)
-//   bp()  — breakpoints (base/_tokens.scss via index)
-//   dur() — durations   (base/_tokens.scss via index)
+//   spacing()  — spacing     (base/_tokens.scss via index)
+//   fontsize()  — font sizes  (base/_tokens.scss via index)
+//   breakpoint()  — breakpoints (base/_tokens.scss via index)
+//   duration() — durations   (base/_tokens.scss via index)
 //   --color-* vars      (theme/_tokens.scss — runtime)
 //
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -30,7 +30,7 @@ html {
 body {
   background-color: var(--color-bg);
   color: var(--color-text);
-  transition: background-color dur(base), color dur(base);
+  transition: background-color duration(base), color duration(base);
   min-height: 100svh;
 }
 
@@ -61,15 +61,15 @@ h3 {
   font-size: clamp(1.25rem, 2vw, 1.75rem);
 }
 h4 {
-  font-size: fs(lg);
+  font-size: fontsize(lg);
   font-weight: 600;
 }
 h5 {
-  font-size: fs(md);
+  font-size: fontsize(md);
   font-weight: 600;
 }
 h6 {
-  font-size: fs(base);
+  font-size: fontsize(base);
   font-weight: 600;
   letter-spacing: 0.02em;
 }
@@ -104,17 +104,17 @@ code, kbd, samp, pre {
 }
 
 code {
-  padding: 0.125em sp(2);
-  border-radius: sp(1);
+  padding: 0.125em spacing(2);
+  border-radius: spacing(1);
   background: var(--color-primary-muted);
   color: var(--color-primary-text);
 }
 
 pre {
-  padding: sp(4) sp(5);
-  border-radius: sp(2);
+  padding: spacing(4) spacing(5);
+  border-radius: spacing(2);
   background: var(--color-bg-alt);
-  border: sp(px) solid var(--color-border);
+  border: spacing(px) solid var(--color-border);
   overflow-x: auto;
 
   code {
@@ -131,7 +131,7 @@ pre {
   color: var(--color-primary-text);
   text-decoration: underline;
   text-underline-offset: 0.2em;
-  transition: color dur(fast);
+  transition: color duration(fast);
 
   &:hover {
     color: var(--color-primary);
@@ -142,14 +142,14 @@ pre {
 
 hr {
   border: none;
-  border-top: sp(px) solid var(--color-divider);
-  margin-block: sp(8);
+  border-top: spacing(px) solid var(--color-divider);
+  margin-block: spacing(8);
 }
 
 // ── Blockquote ────────────────────────────────────────────────────────────────
 
 blockquote {
-  padding-left: sp(5);
+  padding-left: spacing(5);
   border-left: 3px solid var(--color-primary-border);
   color: var(--color-text-muted);
   font-style: italic;
@@ -161,15 +161,15 @@ blockquote {
   width: 100%;
   max-width: 72rem;
   margin-inline: auto;
-  padding-inline: sp(6);
-  padding-block: sp(8);
+  padding-inline: spacing(6);
+  padding-block: spacing(8);
 
-  @include bp(sm) {
-    padding-inline: sp(8);
+  @include breakpoint(sm) {
+    padding-inline: spacing(8);
   }
 
-  @include bp(md) {
-    padding-inline: sp(12);
+  @include breakpoint(md) {
+    padding-inline: spacing(12);
   }
 }
 

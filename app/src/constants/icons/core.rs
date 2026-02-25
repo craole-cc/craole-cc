@@ -1,4 +1,7 @@
-use super::IconData;
+use {
+  super::IconData,
+  crate::_prelude::icons::fill_class,
+};
 
 /// Where an icon's visual asset comes from.
 #[derive(Default, Clone, Copy,)]
@@ -7,6 +10,16 @@ pub enum Source {
   Empty,
   Leptos(IconData,),
   Local(&'static str,),
+}
+
+/// Which visual style variant of an icon to use.
+#[derive(Default, Clone, Copy, PartialEq, Eq,)]
+pub enum Variant {
+  #[default]
+  Default,
+  Local,
+  Filled,
+  Outlined,
 }
 
 /// A single icon with all its metadata.
@@ -37,6 +50,15 @@ impl Icon {
     self
   }
 
+  pub fn via_leptos_colored(
+    self,
+    src : IconData,
+    light : &'static str,
+    dark : &'static str,
+  ) -> Self {
+    self.via_leptos(src,).colorize(light, dark,)
+  }
+
   pub const fn new_local(src : &'static str,) -> Self { Self::new().via_local(src,) }
 
   pub const fn via_local(mut self, src : &'static str,) -> Self {
@@ -44,13 +66,11 @@ impl Icon {
     self
   }
 
-  /// Replace just the source while keeping other metadata
   pub const fn with_source(mut self, source : Source,) -> Self {
     self.source = source;
     self
   }
 
-  /// Append additional classes to existing ones
   pub fn and_class(mut self, additional : &'static str,) -> Self {
     if self.class.is_empty() {
       self.class = additional;
@@ -60,7 +80,6 @@ impl Icon {
     self
   }
 
-  /// Clear the class while keeping other metadata
   pub const fn without_class(mut self,) -> Self {
     self.class = "";
     self
@@ -85,6 +104,12 @@ impl Icon {
     self.link = link;
     self
   }
+
+  pub fn colorize(self, light : &'static str, dark : &'static str,) -> Self {
+    self.and_class(fill_class(light, dark,),)
+  }
+
+  pub fn muted(self,) -> Self { self.and_class("saturate-0",) }
 
   // Accessor methods
   pub const fn source(&self,) -> &Source { &self.source }

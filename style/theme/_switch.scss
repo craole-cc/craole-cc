@@ -5,12 +5,12 @@
 // ═══════════════════════════════════════════════════════════════════════════════
 //
 // TOKENS USED
-//   sp()     — spacing       (base/_tokens.scss via index)
-//   sz()     — sizes         (base/_tokens.scss via index)
-//   fs()     — font sizes    (base/_tokens.scss via index)
-//   dur()    — durations     (base/_tokens.scss via index)
+//   spacing()     — spacing       (base/_tokens.scss via index)
+//   size()     — sizes         (base/_tokens.scss via index)
+//   fontsize()     — font sizes    (base/_tokens.scss via index)
+//   duration()    — durations     (base/_tokens.scss via index)
 //   radius() — radii         (base/_tokens.scss via index)
-//   z()      — z-index       (base/_tokens.scss via index)
+//   layer()      — z-index       (base/_tokens.scss via index)
 //   --color-* vars           (theme/_tokens.scss — runtime)
 //
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -21,15 +21,15 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: sz(control);
-  height: sz(control);
-  padding: sp(2);
-  border: sp(px) solid transparent;
+  width: size(control);
+  height: size(control);
+  padding: spacing(2);
+  border: spacing(px) solid transparent;
   border-radius: radius(lg);
   background: transparent;
   cursor: pointer;
   color: #fff;
-  transition: color dur(fast), background-color dur(fast), border-color dur(fast);
+  transition: color duration(fast), background-color duration(fast), border-color duration(fast);
 
   .site-nav--scrolled & {
     color: var(--color-text);
@@ -51,8 +51,8 @@
   }
 
   svg {
-    width: sz(icon);
-    height: sz(icon);
+    width: size(icon);
+    height: size(icon);
     display: block;
     animation: theme-spin 280ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
   }
@@ -66,33 +66,33 @@
   &__menu {
     position: absolute;
     right: 0;
-    top: calc(100% + #{sp(2)});
+    top: calc(100% + #{spacing(2)});
     min-width: 10rem;
     background: var(--color-bg-surface);
-    border: sp(px) solid var(--color-border);
+    border: spacing(px) solid var(--color-border);
     border-radius: radius(lg);
-    box-shadow: 0 sp(2) sp(6) oklch(0 0 0 / 0.15);
+    box-shadow: 0 spacing(2) spacing(6) oklch(0 0 0 / 0.15);
     overflow: hidden;
-    z-index: z(dropdown);
+    z-index: layer(dropdown);
   }
 
   &__option {
     display: flex;
     align-items: center;
-    gap: sp(2);
+    gap: spacing(2);
     width: 100%;
-    padding: sp(2) sp(3);
+    padding: spacing(2) spacing(3);
     background: transparent;
     border: none;
     color: var(--color-text-muted);
-    font-size: fs(base);
+    font-size: fontsize(base);
     cursor: pointer;
-    transition: background-color dur(fast), color dur(fast);
+    transition: background-color duration(fast), color duration(fast);
     text-align: left;
 
     svg {
-      width: sz(icon-sm);
-      height: sz(icon-sm);
+      width: size(icon-sm);
+      height: size(icon-sm);
       flex-shrink: 0;
     }
 

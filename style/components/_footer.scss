@@ -26,10 +26,10 @@
 //           .footer__tech[--rust|--leptos] — tech credit links
 //
 // TOKENS USED
-//   sp()  — spacing      (base/_tokens.scss via index)
-//   sz()  — sizes        (base/_tokens.scss via index)
-//   fs()  — font sizes   (base/_tokens.scss via index)
-//   dur() — durations    (base/_tokens.scss via index)
+//   spacing()  — spacing      (base/_tokens.scss via index)
+//   size()  — sizes        (base/_tokens.scss via index)
+//   fontsize()  — font sizes   (base/_tokens.scss via index)
+//   duration() — durations    (base/_tokens.scss via index)
 //   radius() — radii     (base/_tokens.scss via index)
 //   --color-* vars       (theme/_tokens.scss — runtime)
 //
@@ -38,13 +38,13 @@
 .footer {
   text-align: center;
   color: var(--color-text-muted);
-  margin-bottom: sp(2);
+  margin-bottom: spacing(2);
 
   // ── Inner nav ─────────────────────────────────────────────────────────────
 
   &__inner {
     display: grid;
-    gap: sp(2);
+    gap: spacing(2);
   }
 
   // ── Socials ───────────────────────────────────────────────────────────────
@@ -52,7 +52,7 @@
   &__socials {
     display: flex;
     flex-wrap: wrap;
-    gap: sp(2);
+    gap: spacing(2);
     justify-content: center;
   }
 
@@ -61,10 +61,10 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: sz(btn-h); // 2.5rem — slightly larger than control for touch targets
-    height: sz(btn-h);
+    width: size(btn-h); // 2.5rem — slightly larger than control for touch targets
+    height: size(btn-h);
     border-radius: radius(lg);
-    transition: transform dur(slow) ease;
+    transition: transform duration(slow) ease;
 
     &:hover {
       transform: translateY(-4px);
@@ -77,7 +77,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: opacity dur(slow) ease;
+    transition: opacity duration(slow) ease;
 
     &--default {
       opacity: 1;
@@ -97,18 +97,18 @@
   }
 
   &__social-svg {
-    width: sz(icon-lg);
-    height: sz(icon-lg);
+    width: size(icon-lg);
+    height: size(icon-lg);
   }
 
   // ── Facet nav ─────────────────────────────────────────────────────────────
 
   &__facets {
     display: flex;
-    gap: sp(4);
+    gap: spacing(4);
     justify-content: center;
     align-items: center;
-    font-size: fs(base);
+    font-size: fontsize(base);
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
@@ -117,7 +117,7 @@
     color: var(--color-text-muted);
     text-decoration: none;
     cursor: pointer;
-    transition: color dur(slow), transform dur(slow), font-weight dur(slow);
+    transition: color duration(slow), transform duration(slow), font-weight duration(slow);
 
     &:hover {
       color: var(--color-primary);
@@ -125,8 +125,8 @@
     }
 
     &--divided {
-      padding-right: sp(4);
-      border-right: sp(px) solid var(--color-neutral-border);
+      padding-right: spacing(4);
+      border-right: spacing(px) solid var(--color-neutral-border);
     }
   }
 
@@ -136,7 +136,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: sp(4);
+    gap: spacing(4);
     position: relative;
   }
 
@@ -147,9 +147,9 @@
   }
 
   &__name {
-    margin-bottom: sp(2);
+    margin-bottom: spacing(2);
     letter-spacing: -0.02em;
-    font-size: fs(md);
+    font-size: fontsize(md);
   }
 
   // ── Alias — accent colour ──────────────────────────────────────────────────
@@ -157,17 +157,17 @@
   // (L 0.46 light / L 0.82 dark) ensuring ≥ 4.5:1 on the page background.
 
   &__alias {
-    font-size: fs(lg);
+    font-size: fontsize(lg);
     font-weight: 600;
     color: var(--color-primary-text);
   }
 
   &__meta {
-    font-size: fs(sm);
+    font-size: fontsize(sm);
     color: var(--color-text-faint);
 
     p + p {
-      margin-top: sp(1);
+      margin-top: spacing(1);
     }
   }
 
@@ -178,7 +178,7 @@
   &__tech {
     font-weight: 500;
     text-decoration: none;
-    transition: opacity dur(fast);
+    transition: opacity duration(fast);
 
     &:hover {
       opacity: 0.75;

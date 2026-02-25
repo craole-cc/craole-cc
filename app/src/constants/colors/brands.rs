@@ -92,6 +92,27 @@ pub const CLR_INSTAGRAM_LIGHT : &str = CLR_INSTAGRAM_ROSE;
 pub const CLR_INSTAGRAM_DARK : &str = CLR_INSTAGRAM_ROSE;
 
 //╔═══════════════════════════════════════════════════════════╗
+//║ JavaScript                                                ║
+//╚═══════════════════════════════════════════════════════════╝
+pub const CLR_JS_YELLOW : &str = "#F7DF1E";
+pub const CLR_JS_BLACK : &str = "#000000";
+pub const CLR_JS_LIGHT : &str = CLR_JS_YELLOW;
+pub const CLR_JS_DARK : &str = CLR_JS_BLACK;
+
+pub const CLR_TS_BLUE : &str = "#3178C6";
+pub const CLR_TS_LIGHT_BLUE : &str = "#2F72BC";
+pub const CLR_TS_LIGHT : &str = CLR_TS_BLUE;
+pub const CLR_TS_DARK : &str = CLR_TS_LIGHT_BLUE;
+
+//╔═══════════════════════════════════════════════════════════╗
+//║ Kubernetes                                                ║
+//╚═══════════════════════════════════════════════════════════╝
+pub const CLR_KUBERNETES_BLUE : &str = "#326CE5";
+pub const CLR_KUBERNETES_WHITE : &str = "#FFFFFF";
+pub const CLR_KUBERNETES_LIGHT : &str = CLR_KUBERNETES_BLUE;
+pub const CLR_KUBERNETES_DARK : &str = CLR_KUBERNETES_WHITE;
+
+//╔═══════════════════════════════════════════════════════════╗
 //║ LinkedIn                                                  ║
 //╚═══════════════════════════════════════════════════════════╝
 pub const CLR_LINKEDIN_BLUE : &str = "#0A66C2";
@@ -110,12 +131,12 @@ pub const CLR_LINUX_LIGHT : &str = CLR_LINUX_YELLOW;
 pub const CLR_LINUX_DARK : &str = CLR_LINUX_WHITE;
 
 //╔═══════════════════════════════════════════════════════════╗
-//║ Kubernetes                                                ║
+//║ Nushell                                                   ║
 //╚═══════════════════════════════════════════════════════════╝
-pub const CLR_KUBERNETES_BLUE : &str = "#326CE5";
-pub const CLR_KUBERNETES_WHITE : &str = "#FFFFFF";
-pub const CLR_KUBERNETES_LIGHT : &str = CLR_KUBERNETES_BLUE;
-pub const CLR_KUBERNETES_DARK : &str = CLR_KUBERNETES_WHITE;
+pub const CLR_NUSHELL_GREEN : &str = "#33A65C";
+pub const CLR_NUSHELL_GRAY : &str = "#1A1A1A";
+pub const CLR_NUSHELL_LIGHT : &str = CLR_NUSHELL_GREEN;
+pub const CLR_NUSHELL_DARK : &str = CLR_NUSHELL_GRAY;
 
 //╔═══════════════════════════════════════════════════════════╗
 //║ Nix                                                       ║
@@ -126,6 +147,22 @@ pub const CLR_NIX_LIGHT : &str = CLR_NIX_DARK_BLUE;
 pub const CLR_NIX_DARK : &str = CLR_NIX_LIGHT_BLUE;
 
 //╔═══════════════════════════════════════════════════════════╗
+//║ PowerShell                                                ║
+//╚═══════════════════════════════════════════════════════════╝
+pub const CLR_POWERSHELL_BLUE : &str = "#017CBA";
+pub const CLR_POWERSHELL_LIGHT_BLUE : &str = "#00A4EF";
+pub const CLR_POWERSHELL_LIGHT : &str = CLR_POWERSHELL_LIGHT_BLUE;
+pub const CLR_POWERSHELL_DARK : &str = CLR_POWERSHELL_BLUE;
+
+//╔═══════════════════════════════════════════════════════════╗
+//║ Python                                                    ║
+//╚═══════════════════════════════════════════════════════════╝
+pub const CLR_PYTHON_BLUE : &str = "#3776AB";
+pub const CLR_PYTHON_YELLOW : &str = "#FFD43B";
+pub const CLR_PYTHON_LIGHT : &str = CLR_PYTHON_YELLOW;
+pub const CLR_PYTHON_DARK : &str = CLR_PYTHON_BLUE;
+
+//╔═══════════════════════════════════════════════════════════╗
 //║ Raspberry Pi                                              ║
 //╚═══════════════════════════════════════════════════════════╝
 pub const CLR_RASPBERRY_PI_RED : &str = "#C51D4A";
@@ -133,6 +170,29 @@ pub const CLR_RASPBERRY_PI_GREEN : &str = "#6AC146";
 pub const CLR_RASPBERRY_PI_DARK_RED : &str = "#A11235";
 pub const CLR_RASPBERRY_PI_LIGHT : &str = CLR_RASPBERRY_PI_RED;
 pub const CLR_RASPBERRY_PI_DARK : &str = CLR_RASPBERRY_PI_DARK_RED;
+
+//╔═══════════════════════════════════════════════════════════╗
+//║ Rust                                                      ║
+//╚═══════════════════════════════════════════════════════════╝
+pub const CLR_RUST_ORANGE : &str = "#D34516";
+pub const CLR_RUST_DARK_BLUE : &str = "#1E2650";
+pub const CLR_RUST_BLUE : &str = "#28607F";
+pub const CLR_RUST_SILVER : &str = "#67737A";
+pub const CLR_RUST_GREEN : &str = "#61784D";
+pub const CLR_RUST_LIGHT : &str = CLR_RUST_ORANGE;
+pub const CLR_RUST_DARK : &str = CLR_RUST_DARK_BLUE;
+
+//╔═══════════════════════════════════════════════════════════╗
+//║ Shellscript                                               ║
+//╚═══════════════════════════════════════════════════════════╝
+pub const CLR_BASH_BLACK : &str = "#000000";
+pub const CLR_BASH_GREEN : &str = "#4EAA25";
+pub const CLR_BASH_LIGHT : &str = CLR_BASH_GREEN;
+pub const CLR_BASH_DARK : &str = CLR_BASH_BLACK;
+
+pub const CLR_POSIX_BLACK : &str = "#000000";
+pub const CLR_POSIX_LIGHT : &str = "#4EAA25";
+pub const CLR_POSIX_DARK : &str = CLR_POSIX_BLACK;
 
 //╔═══════════════════════════════════════════════════════════╗
 //║ Terraform                                                 ║
@@ -168,3 +228,11 @@ pub const CLR_X_WHITE : &str = "#FFFFFF";
 pub const CLR_X_BLACK : &str = "#000000";
 pub const CLR_X_LIGHT : &str = CLR_X_WHITE;
 pub const CLR_X_DARK : &str = CLR_X_BLACK;
+
+//╔═══════════════════════════════════════════════════════════╗
+//║ Zig                                                       ║
+//╚═══════════════════════════════════════════════════════════╝
+pub const CLR_ZIG_ORANGE : &str = "#F7A41D";
+pub const CLR_ZIG_BLACK : &str = "#000000";
+pub const CLR_ZIG_LIGHT : &str = CLR_ZIG_ORANGE;
+pub const CLR_ZIG_DARK : &str = CLR_ZIG_BLACK;

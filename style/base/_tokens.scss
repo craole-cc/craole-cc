@@ -11,20 +11,20 @@
 //   theme/_tokens.scss instead.
 //
 // USAGE
-//   main.scss loads this with `@use "base/token" as *` so the bp() mixin
+//   main.scss loads this with `@use "base/token" as *` so the breakpoint() mixin
 //   and $breakpoints map are available in every subsequent @use'd file
 //   without needing a separate @use statement in each one.
 //
 //   In component files, use the mixin like this:
-//     @include bp(md) { ... }   → @media (min-width: 640px) { ... }
-//     @include bp(lg) { ... }   → @media (min-width: 900px) { ... }
+//     @include breakpoint(md) { ... }   → @media (min-width: 640px) { ... }
+//     @include breakpoint(lg) { ... }   → @media (min-width: 900px) { ... }
 //
 //   This eliminates magic numbers in component files and means a breakpoint
 //   change here propagates everywhere automatically.
 //
 // Z-INDEX SCALE
 //   Defined here so layering decisions are visible in one place.
-//   Components reference these via the z() function rather than raw integers.
+//   Components reference these via the layer() function rather than raw integers.
 //   This prevents accidental z-index collisions (the classic "just set it
 //   to 9999" pattern).
 //
@@ -48,14 +48,14 @@ $breakpoints: (
 
 // ── Breakpoint mixin ──────────────────────────────────────────────────────────
 //
-// Usage:  @include bp(sm) { ... }
+// Usage:  @include breakpoint(sm) { ... }
 // Output: @media (min-width: 640px) { ... }
 //
 // Mobile-first: always min-width. If you need max-width (rare), write it
 // inline rather than adding a separate mixin — max-width queries are an
 // exception, not a pattern.
 
-@mixin bp($name) {
+@mixin breakpoint($name) {
   @if not map-has-key($breakpoints, $name) {
     @error "Unknown breakpoint `#{$name}`. Available: #{map-keys($breakpoints)}";
   }
@@ -89,10 +89,10 @@ $z: (
 
 // ── Z-index function ──────────────────────────────────────────────────────────
 //
-// Usage:  z-index: z(nav);    → z-index: 50
-//         z-index: z(modal);  → z-index: 200
+// Usage:  z-index: layer(nav);    → z-index: 50
+//         z-index: layer(modal);  → z-index: 200
 
-@function z($layer) {
+@function layer($layer) {
   @if not map-has-key($z, $layer) {
     @error "Unknown z-index layer `#{$layer}`. Available: #{map-keys($z)}";
   }
@@ -102,11 +102,11 @@ $z: (
 // ── Spacing scale ─────────────────────────────────────────────────────────────
 //
 // 1 unit = 0.25rem = 4px (matches Tailwind's default scale).
-// Use the sp() function instead of raw rem values in component files.
+// Use the spacing() function instead of raw rem values in component files.
 //
-// Usage:  padding: sp(4);    → 1rem
-//         gap: sp(2);        → 0.5rem
-//         margin: sp(6) 0;   → 1.5rem 0
+// Usage:  padding: spacing(4);    → 1rem
+//         gap: spacing(2);        → 0.5rem
+//         margin: spacing(6) 0;   → 1.5rem 0
 
 $spacing: (
   0: 0rem,
@@ -125,7 +125,7 @@ $spacing: (
   24: 6rem, // 96px
 );
 
-@function sp($step) {
+@function spacing($step) {
   @if not map-has-key($spacing, $step) {
     @error "Unknown spacing step `#{$step}`. Available: #{map-keys($spacing)}";
   }
@@ -135,7 +135,7 @@ $spacing: (
 // ── Size scale ────────────────────────────────────────────────────────────────
 //
 // Fixed sizes for UI chrome: icons, avatars, buttons, control clusters.
-// Usage:  width: sz(icon);   → 1.25rem
+// Usage:  width: size(icon);   → 1.25rem
 
 $sizes: (
   icon-sm: 1rem, // 16px — small inline icon
@@ -148,7 +148,7 @@ $sizes: (
   header: 4rem, // 64px — site-nav height
 );
 
-@function sz($name) {
+@function size($name) {
   @if not map-has-key($sizes, $name) {
     @error "Unknown size `#{$name}`. Available: #{map-keys($sizes)}";
   }
@@ -177,7 +177,7 @@ $radii: (
 
 // ── Typography scale ──────────────────────────────────────────────────────────
 //
-// Usage:  font-size: fs(sm);   → 0.875rem
+// Usage:  font-size: fontsize(sm);   → 0.875rem
 
 $font-sizes: (
   xs: 0.6875rem, // 11px — metadata, labels, stat dt
@@ -188,7 +188,7 @@ $font-sizes: (
   xl: 1.5rem, // 24px — h4-level
 );
 
-@function fs($name) {
+@function fontsize($name) {
   @if not map-has-key($font-sizes, $name) {
     @error "Unknown font-size `#{$name}`. Available: #{map-keys($font-sizes)}";
   }
@@ -197,7 +197,7 @@ $font-sizes: (
 
 // ── Transition durations ──────────────────────────────────────────────────────
 //
-// Usage:  transition: color dur(fast) ease;
+// Usage:  transition: color duration(fast) ease;
 
 $durations: (
   instant: 0ms,
@@ -208,7 +208,7 @@ $durations: (
   theme: 1500ms, // hue rotation (_runtime.scss)
 );
 
-@function dur($name) {
+@function duration($name) {
   @if not map-has-key($durations, $name) {
     @error "Unknown duration `#{$name}`. Available: #{map-keys($durations)}";
   }

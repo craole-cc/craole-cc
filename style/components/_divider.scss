@@ -16,8 +16,8 @@
 //   .divider__dot               — decorative circular accent dot
 //
 // TOKENS USED
-//   sp()     — spacing scale          (base/_tokens.scss via index)
-//   sz()     — size scale             (base/_tokens.scss via index)
+//   spacing()     — spacing scale          (base/_tokens.scss via index)
+//   size()     — size scale             (base/_tokens.scss via index)
 //   radius() — border radius scale    (base/_tokens.scss via index)
 //   --color-divider                   (theme/_tokens.scss — runtime)
 //   --color-dot                       (theme/_tokens.scss — runtime)
@@ -25,7 +25,7 @@
 // SPACING FROM RUST
 //   Gap widths beside the dot are injected as inline CSS custom properties:
 //     style="--divider-gap-left: 1rem; --divider-gap-right: 1rem;"
-//   Padding is injected as --divider-padding (default: sp(2) = 0.5rem).
+//   Padding is injected as --divider-padding (default: spacing(2) = 0.5rem).
 //   The --centered modifier handles margin/max-width entirely in SCSS.
 //
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -34,7 +34,7 @@
   display: flex;
   align-items: center;
   width: 100%;
-  padding-block: var(--divider-padding, #{sp(2)});
+  padding-block: var(--divider-padding, #{spacing(2)});
 
   // ── Centered variant ───────────────────────────────────────────────────────
   // Applied by Rust when show_dot is true. Constrains width and centres the
@@ -50,7 +50,7 @@
 
   &__line {
     flex: 1;
-    height: sp(px); // 1px hairline via token
+    height: spacing(px); // 1px hairline via token
 
     &--left {
       background: linear-gradient(
@@ -85,8 +85,8 @@
   // ── Dot ────────────────────────────────────────────────────────────────────
 
   &__dot {
-    width: sz(dot);
-    height: sz(dot);
+    width: size(dot);
+    height: size(dot);
     border-radius: radius(pill);
     flex-shrink: 0;
     background-color: var(--color-dot);

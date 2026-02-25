@@ -17,13 +17,13 @@
 //     @use "../../_index" as *; // from deeper nesting if needed
 //
 //   This gives the consumer access to:
-//     bp()     — breakpoint mixin    e.g. @include bp(sm) { ... }
-//     sp()     — spacing function    e.g. padding: sp(4)           → 1rem
-//     sz()     — size function       e.g. width: sz(control)       → 2rem
-//     fs()     — font-size function  e.g. font-size: fs(sm)        → 0.75rem
-//     dur()    — duration function   e.g. transition: color dur(fast)
+//     breakpoint()     — breakpoint mixin    e.g. @include breakpoint(sm) { ... }
+//     spacing()     — spacing function    e.g. padding: spacing(4)           → 1rem
+//     size()     — size function       e.g. width: size(control)       → 2rem
+//     fontsize()     — font-size function  e.g. font-size: fontsize(sm)        → 0.75rem
+//     duration()    — duration function   e.g. transition: color duration(fast)
 //     radius() — radius function     e.g. border-radius: radius(lg)
-//     z()      — z-index function    e.g. z-index: z(nav)          → 50
+//     layer()      — z-index function    e.g. z-index: layer(nav)          → 50
 //
 // WHY A SEPARATE FILE FROM main.scss
 //   main.scss is the build entry point — it sits at the ROOT of the dependency
