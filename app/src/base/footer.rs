@@ -1,75 +1,88 @@
-use crate::prelude::{
-  icons::social::{
-    facebook,
-    gmail,
-    instagram,
-    linkedin,
-    whatsapp,
-    x,
-  },
+use crate::_prelude::{
+  icons::*,
   *,
 };
 
-const SOCIALS : &[Icons] = &[
-  Icons::Gmail,
-  Icons::GitHub,
-  Icons::LinkedIn,
-  Icons::WhatsApp,
-  Icons::Instagram,
-  Icons::Facebook,
-  Icons::X,
-];
+//╔═══════════════════════════════════════════════════════════╗
+//║ Social Icons                                              ║
+//╚═══════════════════════════════════════════════════════════╝
 
+/// Social platform entries rendered in the footer.
+/// Each entry pairs a filled (hover) icon with a default (rest) icon.
+struct SocialEntry {
+  /// Coloured Leptos icon — shown on hover.
+  filled :  Icon,
+  /// Monochrome local SVG — shown at rest.
+  default : Icon,
+}
+
+impl SocialEntry {
+  fn new(default : Icon, filled : Icon,) -> Self { Self { default, filled, } }
+}
+
+fn socials() -> Vec<SocialEntry,> {
+  vec![
+    SocialEntry::new(gmail::local(), gmail::filled(),),
+    SocialEntry::new(github::local(), github::filled(),),
+    SocialEntry::new(linkedin::local(), linkedin::filled(),),
+    SocialEntry::new(whatsapp::local(), whatsapp::filled(),),
+    SocialEntry::new(instagram::local(), instagram::filled(),),
+    SocialEntry::new(facebook::local(), facebook::filled(),),
+    SocialEntry::new(x::local(), x::filled(),),
+  ]
+}
+
+/// Renders a single social icon link with a monochrome rest state
+/// and a coloured hover state.
 #[component]
-fn SocialIcon(icon_enum : Icons,) -> impl IntoView {
-  let default_icon = icon_enum
-    .get()
-    .with_source(match icon_enum {
-      | Icons::WhatsApp => whatsapp::filled(),
-      | Icons::GitHub => github::filled(),
-      | Icons::Instagram => instagram::filled(),
-      | Icons::LinkedIn => linkedin::filled(),
-      | Icons::Gmail => gmail::filled(),
-      | Icons::Facebook => facebook::filled(),
-      | Icons::X => x::filled(),
-      | _ => icon_enum.get().source,
-    },)
-    .and_class("fill-muted",);
-
-  let hover_icon = match icon_enum {
-    | Icons::GitHub => github_variants::with_color(github_variants::outlined(),),
-    | Icons::X => x_variants::with_color(x_variants::outlined(),),
-    | _ => icon_enum.get(),
-  };
-
+fn SocialIcon(
+  /// Monochrome local SVG — shown at rest.
+  default : Icon,
+  /// Coloured Leptos icon — shown on hover.
+  filled : Icon,
+) -> impl IntoView {
   view! {
     <a
-      href=default_icon.link()
+      href=default.link()
       target="_blank"
       rel="noopener noreferrer"
-      aria-label=default_icon.label()
-      title=default_icon.tooltip()
+      aria-label=default.label()
+      title=default.tooltip()
       class="footer__social-link group"
     >
       <span class="footer__social-icon footer__social-icon--default">
-        <IconRender icon=default_icon class="footer__social-svg" />
+        <IconRender icon=default class="footer__social-svg color-muted" />
       </span>
       <span class="footer__social-icon footer__social-icon--hover">
-        <IconRender icon=hover_icon class="footer__social-svg" />
+        <IconRender icon=filled class="footer__social-svg" />
       </span>
     </a>
   }
 }
 
+/// Renders the full row of social platform links.
 #[component]
 pub fn Socials() -> impl IntoView {
   view! {
     <div class="footer__socials">
-      {SOCIALS.iter().map(|&icon| view! { <SocialIcon icon_enum=icon /> }).collect::<Vec<_>>()}
+      {socials()
+        .into_iter()
+        .map(|entry| view! {
+          <SocialIcon
+            default=entry.default
+            filled=entry.filled
+          />
+        })
+        .collect::<Vec<_>>()}
     </div>
   }
 }
 
+//╔═══════════════════════════════════════════════════════════╗
+//║ Facet Nav                                                 ║
+//╚═══════════════════════════════════════════════════════════╝
+
+/// Renders the horizontal facet navigation links in the footer.
 #[component]
 pub fn Facets() -> impl IntoView {
   view! {
@@ -83,7 +96,11 @@ pub fn Facets() -> impl IntoView {
             <a
               href=format!("/{}", facet.slug)
               title=facet.description
-              class=if is_last { "footer__facet" } else { "footer__facet footer__facet--divided" }
+              class=if is_last {
+                "footer__facet"
+              } else {
+                "footer__facet footer__facet--divided"
+              }
             >
               {facet.label}
             </a>
@@ -94,6 +111,11 @@ pub fn Facets() -> impl IntoView {
   }
 }
 
+//╔═══════════════════════════════════════════════════════════╗
+//║ Copyright                                                 ║
+//╚═══════════════════════════════════════════════════════════╝
+
+/// Renders the author name, tech credits, and copyright notice.
 #[component]
 pub fn Copyright() -> impl IntoView {
   view! {
@@ -113,7 +135,8 @@ pub fn Copyright() -> impl IntoView {
             class="footer__tech footer__tech--rust"
           >
             "Rust"
-          </a> " & "
+          </a>
+          " & "
           <a
             href="https://leptos.dev"
             target="_blank"
@@ -129,6 +152,12 @@ pub fn Copyright() -> impl IntoView {
   }
 }
 
+//╔═══════════════════════════════════════════════════════════╗
+//║ Root                                                      ║
+//╚═══════════════════════════════════════════════════════════╝
+
+/// Site-wide footer containing social links, facet navigation,
+/// and copyright information.
 #[component]
 pub fn Footer() -> impl IntoView {
   view! {

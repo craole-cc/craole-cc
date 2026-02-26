@@ -1,6 +1,6 @@
 mod about;
 mod contact;
-mod dev;
+// mod dev;
 mod experience;
 mod hero;
 mod projects;
@@ -13,8 +13,8 @@ pub fn Home() -> impl IntoView {
     <hero::Hero />
     <div class="readable">
       <about::About />
-      <dev::Stacks />
-      <dev::Areas />
+      // <dev::Stacks />
+      // <dev::Areas />
       <projects::Projects />
       <experience::Experience />
       <about::Philosophy />

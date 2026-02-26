@@ -74,7 +74,7 @@
 // ═══════════════════════════════════════════════════════════════════════════════
 
 // ── 1–2. CSS custom properties + runtime mechanics ───────────────────────────
-@use "theme/tokens"; // --color-* vars, :root, [data-theme]
+@use "theme/colors"; // --color-* vars, :root, [data-theme]
 @use "theme/runtime"; // @property registrations, :root hue/chroma transitions
 
 // ── 3–6. Base layer ───────────────────────────────────────────────────────────

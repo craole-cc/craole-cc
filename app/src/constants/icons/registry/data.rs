@@ -1,10 +1,23 @@
-use crate::prelude::icons::*;
+use crate::_prelude::*;
 
 //╔═══════════════════════════════════════════════════════════╗
-//║ DeltaLake                                                ║
+//║ Delta Lake                                                ║
 //╚═══════════════════════════════════════════════════════════╝
 pub mod deltalake {
+
   use super::*;
+
+  /// No Leptos icon available yet — all variants resolve to the local asset.
+  impl From<IconVariant,> for Icon {
+    fn from(v : IconVariant,) -> Icon {
+      match v {
+        | IconVariant::Default => local(),
+        | IconVariant::Local => local(),
+        | IconVariant::Filled => local(),   // no upstream icon yet
+        | IconVariant::Outlined => local(), // no upstream icon yet
+      }
+    }
+  }
 
   fn base() -> Icon {
     Icon::new_local("icons/logos/deltalake.svg",)
@@ -13,29 +26,15 @@ pub mod deltalake {
       .with_label("Delta Lake",)
   }
 
+  /// Local SVG asset — monochrome, inherits colour from context.
+  /// No Leptos icon available upstream — swap `filled` when one lands.
   pub fn local() -> Icon { base() }
+  /// Canonical default — uses the local asset.
   pub fn default() -> Icon { local() }
-  // No upstream Leptos icon yet — swap when assets are available.
-  pub fn filled() -> Icon { default() }
-  pub fn outlined() -> Icon { default() }
-}
-
-//╔═══════════════════════════════════════════════════════════╗
-//║ SurrealDB                                                 ║
-//╚═══════════════════════════════════════════════════════════╝
-pub mod surrealdb {
-  use super::*;
-
-  fn base() -> Icon {
-    Icon::new_leptos(icon::SiSurrealdb,)
-      .with_link("https://surrealdb.com/",)
-      .with_tooltip("Multi-model database",)
-      .with_label("SurrealDB",)
-  }
-
-  pub fn default() -> Icon { base() }
-  pub fn filled() -> Icon { base() }
-  pub fn outlined() -> Icon { base() }
+  /// Falls back to local until an upstream Leptos icon is available.
+  pub fn filled() -> Icon { local() }
+  /// Falls back to local until an upstream Leptos icon is available.
+  pub fn outlined() -> Icon { local() }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
@@ -44,6 +43,18 @@ pub mod surrealdb {
 pub mod neo4j {
   use super::*;
 
+  /// No Leptos icon available yet — all variants resolve to the local asset.
+  impl From<IconVariant,> for Icon {
+    fn from(v : IconVariant,) -> Icon {
+      match v {
+        | IconVariant::Default => local(),
+        | IconVariant::Local => local(),
+        | IconVariant::Filled => local(),   // no upstream icon yet
+        | IconVariant::Outlined => local(), // no upstream icon yet
+      }
+    }
+  }
+
   fn base() -> Icon {
     Icon::new_local("icons/logos/neo4j-flat.svg",)
       .with_link("https://neo4j.com/",)
@@ -51,10 +62,15 @@ pub mod neo4j {
       .with_label("Neo4j",)
   }
 
+  /// Local SVG asset — monochrome, inherits colour from context.
+  /// No Leptos icon available upstream — swap `filled` when one lands.
   pub fn local() -> Icon { base() }
+  /// Canonical default — uses the local asset.
   pub fn default() -> Icon { local() }
-  pub fn filled() -> Icon { default() }
-  pub fn outlined() -> Icon { default() }
+  /// Falls back to local until an upstream Leptos icon is available.
+  pub fn filled() -> Icon { local() }
+  /// Falls back to local until an upstream Leptos icon is available.
+  pub fn outlined() -> Icon { local() }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
@@ -63,6 +79,18 @@ pub mod neo4j {
 pub mod postgresql {
   use super::*;
 
+  /// No distinct outlined style — `Outlined` falls back to `Filled`.
+  impl From<IconVariant,> for Icon {
+    fn from(v : IconVariant,) -> Icon {
+      match v {
+        | IconVariant::Default => local(),
+        | IconVariant::Local => local(),
+        | IconVariant::Filled => filled(),
+        | IconVariant::Outlined => filled(),
+      }
+    }
+  }
+
   fn base() -> Icon {
     Icon::new_local("icons/logos/postgresql.svg",)
       .with_link("https://www.postgresql.org/",)
@@ -70,10 +98,16 @@ pub mod postgresql {
       .with_label("PostgreSQL",)
   }
 
+  /// Local SVG asset — monochrome, inherits colour from context.
   pub fn local() -> Icon { base() }
+  /// Canonical default — uses the local asset.
   pub fn default() -> Icon { local() }
-  pub fn filled() -> Icon { base().with_source(Source::Leptos(icon::SiPostgresql,),) }
-  pub fn outlined() -> Icon { filled() }
+  /// Filled Simple Icons icon with `--brand-postgresql` colour.
+  pub fn filled() -> Icon {
+    base()
+      .with_source(IconSource::Leptos(icon::SiPostgresql,),)
+      .colored("brand-postgresql",)
+  }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
@@ -82,6 +116,18 @@ pub mod postgresql {
 pub mod sqlite {
   use super::*;
 
+  /// No distinct outlined style — `Outlined` falls back to `Filled`.
+  impl From<IconVariant,> for Icon {
+    fn from(v : IconVariant,) -> Icon {
+      match v {
+        | IconVariant::Default => local(),
+        | IconVariant::Local => local(),
+        | IconVariant::Filled => filled(),
+        | IconVariant::Outlined => filled(),
+      }
+    }
+  }
+
   fn base() -> Icon {
     Icon::new_local("icons/logos/SQLite.svg",)
       .with_link("https://www.sqlite.org/",)
@@ -89,8 +135,45 @@ pub mod sqlite {
       .with_label("SQLite",)
   }
 
+  /// Local SVG asset — monochrome, inherits colour from context.
   pub fn local() -> Icon { base() }
+  /// Canonical default — uses the local asset.
   pub fn default() -> Icon { local() }
-  pub fn filled() -> Icon { base().with_source(Source::Leptos(icon::SiSqlite,),) }
-  pub fn outlined() -> Icon { filled() }
+  /// Filled Simple Icons icon with `--brand-sqlite` colour.
+  pub fn filled() -> Icon {
+    base()
+      .with_source(IconSource::Leptos(icon::SiSqlite,),)
+      .colored("brand-sqlite",)
+  }
+}
+
+//╔═══════════════════════════════════════════════════════════╗
+//║ SurrealDB                                                 ║
+//╚═══════════════════════════════════════════════════════════╝
+pub mod surrealdb {
+  use super::*;
+
+  /// No local asset — all variants resolve to the Leptos icon.
+  impl From<IconVariant,> for Icon {
+    fn from(v : IconVariant,) -> Icon {
+      match v {
+        | IconVariant::Default => default(),
+        | IconVariant::Local => default(), // no local asset
+        | IconVariant::Filled => default(),
+        | IconVariant::Outlined => default(),
+      }
+    }
+  }
+
+  fn base() -> Icon {
+    Icon::new_leptos(icon::SiSurrealdb,)
+      .with_link("https://surrealdb.com/",)
+      .with_tooltip("Multi-model database",)
+      .with_label("SurrealDB",)
+  }
+
+  /// Canonical default — Leptos icon, no local asset available.
+  pub fn default() -> Icon { base() }
+  /// Filled Simple Icons icon (same as default for SurrealDB).
+  pub fn filled() -> Icon { base() }
 }

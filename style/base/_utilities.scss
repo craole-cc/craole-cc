@@ -13,11 +13,12 @@
 // TOKENS USED
 //   spacing()  — spacing     (base/_tokens.scss via index)
 //   duration() — durations   (base/_tokens.scss via index)
-//   --color-* vars      (theme/_tokens.scss — runtime)
+//   --color-* vars      (theme/_colors.scss — runtime)
+//   --brand-* vars      (theme/_colors.scss — runtime)
 //
 // ═══════════════════════════════════════════════════════════════════════════════
 
-// ── Text colours ──────────────────────────────────────────────────────────────
+// -- Text colours ──────────────────────────────────────────────────────────────
 
 .text-base {
   color: var(--color-text);
@@ -38,7 +39,7 @@
   color: var(--color-neutral-text);
 }
 
-// ── Background colours ────────────────────────────────────────────────────────
+// -- Background colours ────────────────────────────────────────────────────────
 
 .bg-base {
   background-color: var(--color-bg);
@@ -62,7 +63,7 @@
   background-color: var(--color-neutral-muted);
 }
 
-// ── Border colours ────────────────────────────────────────────────────────────
+// -- Border colours ────────────────────────────────────────────────────────────
 
 .border-base {
   border-color: var(--color-border);
@@ -77,22 +78,7 @@
   border-color: var(--color-neutral-border);
 }
 
-// ── SVG fill colours ──────────────────────────────────────────────────────────
-
-.fill-primary {
-  fill: var(--color-primary-text);
-}
-.fill-secondary {
-  fill: var(--color-secondary-text);
-}
-.fill-neutral {
-  fill: var(--color-neutral-text);
-}
-.fill-muted {
-  fill: var(--color-text-muted);
-}
-
-// ── Interactive links ─────────────────────────────────────────────────────────
+// -- Interactive links ─────────────────────────────────────────────────────────
 
 .link-primary {
   color: var(--color-text-muted);
@@ -118,14 +104,14 @@
   }
 }
 
-// ── Divider helper ────────────────────────────────────────────────────────────
+// -- Divider helper ────────────────────────────────────────────────────────────
 // For bare <hr> elements. Prefer <Divider /> in Leptos for complex cases.
 
 .divider {
   border-color: var(--color-divider);
 }
 
-// ── Hover state helpers ───────────────────────────────────────────────────────
+// -- Hover state helpers ───────────────────────────────────────────────────────
 
 .hover-primary {
   transition: background-color duration(fast);
@@ -141,7 +127,7 @@
   }
 }
 
-// ── Focus ring ────────────────────────────────────────────────────────────────
+// -- Focus ring ────────────────────────────────────────────────────────────────
 
 .focus-ring {
   &:focus-visible {
@@ -150,7 +136,7 @@
   }
 }
 
-// ── Visually hidden ───────────────────────────────────────────────────────────
+// -- Visually hidden ───────────────────────────────────────────────────────────
 
 .sr-only {
   position: absolute;
@@ -162,4 +148,128 @@
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border-width: 0;
+}
+
+// -- Brand fills ───────────────────────────────────────────────────────────────
+
+// Languages
+.brand-rust {
+  color: var(--brand-rust);
+}
+.brand-python {
+  color: var(--brand-python);
+}
+.brand-javascript {
+  color: var(--brand-javascript);
+}
+.brand-typescript {
+  color: var(--brand-typescript);
+}
+.brand-bash {
+  color: var(--brand-bash);
+}
+.brand-posix {
+  color: var(--brand-posix);
+}
+.brand-nushell {
+  color: var(--brand-nushell);
+}
+.brand-powershell {
+  color: var(--brand-powershell);
+}
+.brand-zig {
+  color: var(--brand-zig);
+}
+
+// DevOps
+.brand-ansible {
+  color: var(--brand-ansible);
+}
+.brand-docker {
+  color: var(--brand-docker);
+}
+.brand-git {
+  color: var(--brand-git);
+}
+.brand-github {
+  color: var(--brand-github);
+}
+.brand-gitlab {
+  color: var(--brand-gitlab);
+}
+.brand-kubernetes {
+  color: var(--brand-kubernetes);
+}
+.brand-linux {
+  color: var(--brand-linux);
+}
+.brand-nix {
+  color: var(--brand-nix);
+}
+.brand-raspberry {
+  color: var(--brand-raspberry);
+}
+.brand-terraform {
+  color: var(--brand-terraform);
+}
+.brand-windows {
+  color: var(--brand-windows);
+}
+
+// WebDev
+.brand-leptos {
+  color: var(--brand-leptos);
+}
+
+// Editors
+.brand-vscode {
+  color: var(--brand-vscode);
+}
+.brand-vscodeinsiders {
+  color: var(--brand-vscodeinsiders);
+}
+.brand-vscodium {
+  color: var(--brand-vscodium);
+}
+
+// Social
+.brand-facebook {
+  color: var(--brand-facebook);
+}
+.brand-gmail {
+  color: var(--brand-gmail);
+}
+.brand-instagram {
+  color: var(--brand-instagram);
+}
+.brand-linkedin {
+  color: var(--brand-linkedin);
+}
+.brand-whatsapp {
+  color: var(--brand-whatsapp);
+}
+.brand-x {
+  color: var(--brand-x);
+}
+
+// -- Site semantic fills ───────────────────────────────────────────────────────
+.color-primary {
+  color: var(--color-primary-text);
+}
+.color-secondary {
+  color: var(--color-secondary-text);
+}
+.color-neutral {
+  color: var(--color-neutral-text);
+}
+.color-muted {
+  color: var(--color-text-muted);
+}
+
+// -- Invert helper — for monochrome black local SVGs ───────────────────────────
+
+.color-invert {
+  [data-theme="dark"] & {
+    filter: invert(1);
+  }
 }

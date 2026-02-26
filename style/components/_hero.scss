@@ -31,7 +31,7 @@
     pointer-events: none;
   }
 
-  // ── Backdrop ─────────────────────────────────────────────
+  // -- Backdrop ─────────────────────────────────────────────
 
   &__backdrop {
     position: absolute;
@@ -69,7 +69,7 @@
     }
   }
 
-  // ── Scrim ─────────────────────────────────────────────────
+  // -- Scrim ─────────────────────────────────────────────────
 
   &__scrim {
     position: absolute;
@@ -102,7 +102,7 @@
     pointer-events: none;
   }
 
-  // ── Content ───────────────────────────────────────────────
+  // -- Content ───────────────────────────────────────────────
 
   &__content {
     position: relative;
@@ -123,7 +123,7 @@
     }
   }
 
-  // ── Badge ─────────────────────────────────────────────────
+  // -- Badge ─────────────────────────────────────────────────
 
   &__badge {
     display: inline-flex;
@@ -151,7 +151,7 @@
     flex-shrink: 0;
   }
 
-  // ── Headline ──────────────────────────────────────────────
+  // -- Headline ──────────────────────────────────────────────
 
   &__headline {
     font-size: clamp(2.5rem, 7vw, 5.25rem);
@@ -170,7 +170,7 @@
     }
   }
 
-  // ── Sub ────────────────────────────────────────────────────
+  // -- Sub ────────────────────────────────────────────────────
 
   &__sub {
     font-size: 1rem;
@@ -181,7 +181,7 @@
     text-shadow: 0 1px 6px oklch(0 0 0 / 0.35);
   }
 
-  // ── CTAs ───────────────────────────────────────────────────
+  // -- CTAs ───────────────────────────────────────────────────
 
   &__ctas {
     display: flex;
@@ -201,7 +201,10 @@
     font-size: 0.875rem;
     font-weight: 600;
     text-decoration: none;
-    transition: background-color 150ms, transform 150ms, box-shadow 150ms;
+    transition:
+      background-color 150ms,
+      transform 150ms,
+      box-shadow 150ms;
 
     svg {
       width: 1rem;
@@ -230,7 +233,11 @@
     font-size: 0.875rem;
     font-weight: 500;
     text-decoration: none;
-    transition: border-color 150ms, color 150ms, transform 150ms, background 150ms;
+    transition:
+      border-color 150ms,
+      color 150ms,
+      transform 150ms,
+      background 150ms;
 
     &:hover {
       border-color: rgba(255, 255, 255, 0.65);
@@ -240,7 +247,7 @@
     }
   }
 
-  // ── Scroll hint ────────────────────────────────────────────
+  // -- Scroll hint ────────────────────────────────────────────
 
   &__scroll {
     display: flex;
@@ -265,7 +272,7 @@
     animation: scroll-pulse 2.2s ease-in-out infinite;
   }
 
-  // ── Stats ──────────────────────────────────────────────────
+  // -- Stats ──────────────────────────────────────────────────
 
   &__stats {
     position: absolute;
@@ -297,7 +304,9 @@
     background: rgba(0, 0, 0, 0.35);
     backdrop-filter: blur(12px);
     min-width: 5.5rem;
-    transition: transform 200ms, border-color 200ms;
+    transition:
+      transform 200ms,
+      border-color 200ms;
     cursor: default;
 
     &:hover {

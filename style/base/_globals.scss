@@ -21,8 +21,8 @@ html {
   font-size: 16px;
   line-height: 1.6;
   font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, "Helvetica Neue", Arial,
-    sans-serif;
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+    "Helvetica Neue", Arial, sans-serif;
   background-color: var(--color-bg);
   color: var(--color-text);
 }
@@ -30,7 +30,9 @@ html {
 body {
   background-color: var(--color-bg);
   color: var(--color-text);
-  transition: background-color duration(base), color duration(base);
+  transition:
+    background-color duration(base),
+    color duration(base);
   min-height: 100svh;
 }
 
@@ -40,10 +42,16 @@ main {
   min-height: 100svh;
 }
 
-// ── Headings ──────────────────────────────────────────────────────────────────
+// -- Headings ──────────────────────────────────────────────────────────────────
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   line-height: 1.15;
   font-weight: 700;
   letter-spacing: -0.02em;
@@ -74,7 +82,7 @@ h6 {
   letter-spacing: 0.02em;
 }
 
-// ── Body text ─────────────────────────────────────────────────────────────────
+// -- Body text ─────────────────────────────────────────────────────────────────
 
 p {
   margin: 0;
@@ -84,22 +92,27 @@ p {
   }
 }
 
-strong, b {
+strong,
+b {
   font-weight: 700;
 }
-em, i {
+em,
+i {
   font-style: italic;
 }
 small {
   font-size: 0.875em;
 }
 
-// ── Code ──────────────────────────────────────────────────────────────────────
+// -- Code ──────────────────────────────────────────────────────────────────────
 
-code, kbd, samp, pre {
+code,
+kbd,
+samp,
+pre {
   font-family:
-    "SF Mono", "Fira Code", "Fira Mono", "Roboto Mono", Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+    "SF Mono", "Fira Code", "Fira Mono", "Roboto Mono", Menlo, Monaco, Consolas,
+    "Courier New", monospace;
   font-size: 0.875em;
 }
 
@@ -125,7 +138,7 @@ pre {
   }
 }
 
-// ── Links ─────────────────────────────────────────────────────────────────────
+// -- Links ─────────────────────────────────────────────────────────────────────
 
 .readable a {
   color: var(--color-primary-text);
@@ -138,7 +151,7 @@ pre {
   }
 }
 
-// ── Horizontal rule ───────────────────────────────────────────────────────────
+// -- Horizontal rule ───────────────────────────────────────────────────────────
 
 hr {
   border: none;
@@ -146,7 +159,7 @@ hr {
   margin-block: spacing(8);
 }
 
-// ── Blockquote ────────────────────────────────────────────────────────────────
+// -- Blockquote ────────────────────────────────────────────────────────────────
 
 blockquote {
   padding-left: spacing(5);
@@ -155,7 +168,7 @@ blockquote {
   font-style: italic;
 }
 
-// ── Layout container ──────────────────────────────────────────────────────────
+// -- Layout container ──────────────────────────────────────────────────────────
 
 .readable {
   width: 100%;
@@ -173,7 +186,7 @@ blockquote {
   }
 }
 
-// ── Scrollbar ─────────────────────────────────────────────────────────────────
+// -- Scrollbar ─────────────────────────────────────────────────────────────────
 
 @supports selector(::-webkit-scrollbar) {
   ::-webkit-scrollbar {

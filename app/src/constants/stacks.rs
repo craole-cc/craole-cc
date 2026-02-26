@@ -3,11 +3,19 @@ use crate::_prelude::*;
 //╔═══════════════════════════════════════════════════════════╗
 //║ Types                                                     ║
 //╚═══════════════════════════════════════════════════════════╝
+
 #[derive(Clone,)]
 pub struct Tech {
   pub name : &'static str,
-  pub logo : Icon,
+  pub icon : Icons,
   pub link : &'static str,
+}
+
+impl Tech {
+  /// Resolve the Icon for rendering. Link and label come from the registry,
+  /// so callers don't need to repeat them — but the link field here can
+  /// override the registry default if needed (e.g. a specific docs page).
+  pub fn icon(&self,) -> Icon { self.icon.get() }
 }
 
 #[derive(Clone,)]
@@ -26,6 +34,7 @@ pub struct Area {
 //╔═══════════════════════════════════════════════════════════╗
 //║ Data                                                      ║
 //╚═══════════════════════════════════════════════════════════╝
+
 pub fn stacks() -> Vec<Stack,> {
   vec![
     Stack {
@@ -33,22 +42,22 @@ pub fn stacks() -> Vec<Stack,> {
       technologies : vec![
         Tech {
           name : "Rust",
-          logo : Icons::Rust.get(),
+          icon : Icons::Rust,
           link : "https://www.rust-lang.org/",
         },
         Tech {
           name : "Shell",
-          logo : Icons::Shell.get(),
+          icon : Icons::Posix,
           link : "https://pubs.opengroup.org/onlinepubs/9799919799/",
         },
         Tech {
           name : "Python",
-          logo : Icons::Python.get(),
+          icon : Icons::Python,
           link : "https://www.python.org/",
         },
         Tech {
           name : "Zig",
-          logo : Icons::Zig.get(),
+          icon : Icons::Zig,
           link : "https://ziglang.org/",
         },
       ],
@@ -58,27 +67,27 @@ pub fn stacks() -> Vec<Stack,> {
       technologies : vec![
         Tech {
           name : "Actix",
-          logo : Icons::Actix.get(),
+          icon : Icons::Actix,
           link : "https://actix.rs/",
         },
         Tech {
           name : "Axum",
-          logo : Icons::Axum.get(),
+          icon : Icons::Axum,
           link : "https://github.com/tokio-rs/axum",
         },
         Tech {
           name : "HTMX",
-          logo : Icons::Htmx.get(),
+          icon : Icons::Htmx,
           link : "https://htmx.org/",
         },
         Tech {
           name : "Leptos",
-          logo : Icons::Leptos.get(),
+          icon : Icons::Leptos,
           link : "https://leptos.dev/",
         },
         Tech {
           name : "Tailwind",
-          logo : Icons::Tailwind.get(),
+          icon : Icons::Tailwind,
           link : "https://tailwindcss.com/",
         },
       ],
@@ -88,27 +97,27 @@ pub fn stacks() -> Vec<Stack,> {
       technologies : vec![
         Tech {
           name : "Delta Lake",
-          logo : Icons::DeltaLake.get(),
+          icon : Icons::DeltaLake,
           link : "https://delta.io/",
         },
         Tech {
           name : "SurrealDB",
-          logo : Icons::SurrealDb.get(),
+          icon : Icons::SurrealDb,
           link : "https://surrealdb.com/",
         },
         Tech {
           name : "Neo4j",
-          logo : Icons::Neo4j.get(),
+          icon : Icons::Neo4j,
           link : "https://neo4j.com/",
         },
         Tech {
           name : "PostgreSQL",
-          logo : Icons::PostgreSql.get(),
+          icon : Icons::PostgreSql,
           link : "https://www.postgresql.org/",
         },
         Tech {
           name : "SQLite",
-          logo : Icons::Sqlite.get(),
+          icon : Icons::Sqlite,
           link : "https://www.sqlite.org/",
         },
       ],
@@ -118,27 +127,27 @@ pub fn stacks() -> Vec<Stack,> {
       technologies : vec![
         Tech {
           name : "Git",
-          logo : Icons::Git.get(),
+          icon : Icons::Git,
           link : "https://git-scm.com/",
         },
         Tech {
           name : "GitHub",
-          logo : Icons::GitHub.get(),
+          icon : Icons::GitHub,
           link : "https://github.com/",
         },
         Tech {
           name : "NixOS",
-          logo : Icons::NixOs.get(),
+          icon : Icons::NixOs,
           link : "https://nixos.org/",
         },
         Tech {
           name : "Raspberry Pi",
-          logo : Icons::RaspberryPi.get(),
+          icon : Icons::RaspberryPi,
           link : "https://www.raspberrypi.com/",
         },
         Tech {
           name : "Windows",
-          logo : Icons::Windows.get(),
+          icon : Icons::Windows,
           link : "https://www.microsoft.com/windows",
         },
       ],
@@ -148,22 +157,22 @@ pub fn stacks() -> Vec<Stack,> {
       technologies : vec![
         Tech {
           name : "Helix",
-          logo : Icons::Helix.get(),
+          icon : Icons::Helix,
           link : "https://helix-editor.com/",
         },
         Tech {
           name : "Typst",
-          logo : Icons::Typst.get(),
+          icon : Icons::Typst,
           link : "https://typst.app/",
         },
         Tech {
           name : "VS Code",
-          logo : Icons::VSCode.get(),
+          icon : Icons::VSCode,
           link : "https://code.visualstudio.com/",
         },
         Tech {
           name : "Zed",
-          logo : Icons::Zed.get(),
+          icon : Icons::Zed,
           link : "https://zed.dev/",
         },
       ],
@@ -173,22 +182,22 @@ pub fn stacks() -> Vec<Stack,> {
       technologies : vec![
         Tech {
           name : "Bash",
-          logo : Icons::Bash.get(),
+          icon : Icons::Bash,
           link : "https://www.gnu.org/software/bash/",
         },
         Tech {
           name : "PowerShell",
-          logo : Icons::PowerShell.get(),
+          icon : Icons::PowerShell,
           link : "https://github.com/PowerShell/PowerShell",
         },
         Tech {
           name : "Starship",
-          logo : Icons::Starship.get(),
+          icon : Icons::Starship,
           link : "https://starship.rs/",
         },
         Tech {
           name : "Oh My Posh",
-          logo : Icons::OhMyPosh.get(),
+          icon : Icons::OhMyPosh,
           link : "https://ohmyposh.dev/",
         },
       ],

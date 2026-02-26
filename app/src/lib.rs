@@ -19,7 +19,12 @@ pub mod _prelude {
   pub use {
     crate::prelude::*,
     futures::channel::oneshot,
+    icondata::{
+      self as icon,
+      Icon as IconData,
+    },
     leptos::prelude::*,
+    leptos_icons::Icon as LeptosIcon,
     paste_complete::paste,
     std::cell::Cell,
     wasm_bindgen::{

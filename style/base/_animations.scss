@@ -29,7 +29,7 @@
 //
 // ═══════════════════════════════════════════════════════════════════════════════
 
-// ── Entrance animations ───────────────────────────────────────────────────────
+// -- Entrance animations ───────────────────────────────────────────────────────
 
 // General-purpose upward entrance. Used by hero content children
 // with staggered animation-delay for a cascading reveal effect.
@@ -67,12 +67,13 @@
   }
 }
 
-// ── Looping / ambient animations ─────────────────────────────────────────────
+// -- Looping / ambient animations ─────────────────────────────────────────────
 
 // Breathing pulse — scales and fades rhythmically.
 // Used by: hero badge dot (.hero__badge-dot)
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
     transform: scale(1);
   }
@@ -85,7 +86,8 @@
 // Horizontal scan — a line that compresses and fades.
 // Used by: hero scroll hint line (.hero__scroll-line)
 @keyframes scroll-pulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: scaleX(1);
     opacity: 0.6;
   }
@@ -95,7 +97,7 @@
   }
 }
 
-// ── Hero-specific ─────────────────────────────────────────────────────────────
+// -- Hero-specific ─────────────────────────────────────────────────────────────
 
 // Crossfade for hero background image slideshow.
 // Timing is designed for 12 images at 75s total cycle.
@@ -132,7 +134,7 @@
   }
 }
 
-// ── UI interaction animations ─────────────────────────────────────────────────
+// -- UI interaction animations ─────────────────────────────────────────────────
 
 // Icon swap animation for the theme toggle button.
 // spring-like cubic-bezier (0.34, 1.56, 0.64, 1) adds a subtle overshoot

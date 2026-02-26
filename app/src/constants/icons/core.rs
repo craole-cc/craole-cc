@@ -1,7 +1,4 @@
-use {
-  super::IconData,
-  crate::_prelude::icons::fill_class,
-};
+use crate::_prelude::*;
 
 /// Where an icon's visual asset comes from.
 #[derive(Default, Clone, Copy,)]
@@ -12,17 +9,11 @@ pub enum Source {
   Local(&'static str,),
 }
 
-/// Which visual style variant of an icon to use.
-#[derive(Default, Clone, Copy, PartialEq, Eq,)]
-pub enum Variant {
-  #[default]
-  Default,
-  Local,
-  Filled,
-  Outlined,
-}
-
 /// A single icon with all its metadata.
+///
+/// Color is always expressed as a CSS class name referencing a token from
+/// `theme/_colors.scss`. No hex values, no inline styles, no runtime
+/// string generation. Dark mode is handled entirely by the stylesheet.
 #[derive(Default, Clone, Copy,)]
 pub struct Icon {
   pub source :  Source,
@@ -50,15 +41,6 @@ impl Icon {
     self
   }
 
-  pub fn via_leptos_colored(
-    self,
-    src : IconData,
-    light : &'static str,
-    dark : &'static str,
-  ) -> Self {
-    self.via_leptos(src,).colorize(light, dark,)
-  }
-
   pub const fn new_local(src : &'static str,) -> Self { Self::new().via_local(src,) }
 
   pub const fn via_local(mut self, src : &'static str,) -> Self {
@@ -71,22 +53,27 @@ impl Icon {
     self
   }
 
+  /// Append a CSS class. If the icon already has classes, the new one is
+  /// space-separated. Allocates only when combining two non-empty strings.
   pub fn and_class(mut self, additional : &'static str,) -> Self {
-    if self.class.is_empty() {
-      self.class = additional;
-    } else {
-      self.class = Box::leak(format!("{} {}", self.class, additional).into_boxed_str(),);
+    if additional.is_empty() {
+      return self;
     }
-    self
-  }
-
-  pub const fn without_class(mut self,) -> Self {
-    self.class = "";
+    self.class = if self.class.is_empty() {
+      additional
+    } else {
+      Box::leak(format!("{} {}", self.class, additional).into_boxed_str(),)
+    };
     self
   }
 
   pub const fn with_class(mut self, class : &'static str,) -> Self {
     self.class = class;
+    self
+  }
+
+  pub const fn without_class(mut self,) -> Self {
+    self.class = "";
     self
   }
 
@@ -105,13 +92,22 @@ impl Icon {
     self
   }
 
-  pub fn colorize(self, light : &'static str, dark : &'static str,) -> Self {
-    self.and_class(fill_class(light, dark,),)
-  }
+  /// Apply a brand fill class from `_utilities.scss`.
+  ///
+  /// The class must be a `.brand-{brand}` name defined in the stylesheet —
+  /// for example `"brand-rust"`, `"brand-docker"`, `"brand-github"`.
+  /// Dark mode is handled by `[data-theme="dark"]` overrides in
+  /// `theme/_colors.scss`. No hex values belong here.
+  pub fn colored(self, fill_class : &'static str,) -> Self { self.and_class(fill_class,) }
 
-  pub fn muted(self,) -> Self { self.and_class("saturate-0",) }
+  /// Dim the icon — useful for muted/rest states.
+  pub fn muted(self,) -> Self { self.and_class("opacity-60",) }
 
-  // Accessor methods
+  /// Dim the icon — useful for muted/rest states.
+  pub fn desaturated(self,) -> Self { self.and_class("saturate-0",) }
+
+  // -- Accessors ─────────────────────────────────────────────────────────────
+
   pub const fn source(&self,) -> &Source { &self.source }
 
   pub const fn class(&self,) -> &'static str { self.class }

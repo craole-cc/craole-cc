@@ -36,7 +36,7 @@
   width: 100%;
   padding-block: var(--divider-padding, #{spacing(2)});
 
-  // ── Centered variant ───────────────────────────────────────────────────────
+  // -- Centered variant ───────────────────────────────────────────────────────
   // Applied by Rust when show_dot is true. Constrains width and centres the
   // divider — keeps the tapered lines from spanning the full page width,
   // which would make the dot look lost at the centre of a very wide line.
@@ -46,7 +46,7 @@
     max-width: 36rem;
   }
 
-  // ── Lines ──────────────────────────────────────────────────────────────────
+  // -- Lines ──────────────────────────────────────────────────────────────────
 
   &__line {
     flex: 1;
@@ -69,7 +69,7 @@
     }
   }
 
-  // ── Spacers ────────────────────────────────────────────────────────────────
+  // -- Spacers ────────────────────────────────────────────────────────────────
 
   &__spacer {
     flex-shrink: 0;
@@ -82,7 +82,7 @@
     }
   }
 
-  // ── Dot ────────────────────────────────────────────────────────────────────
+  // -- Dot ────────────────────────────────────────────────────────────────────
 
   &__dot {
     width: size(dot);

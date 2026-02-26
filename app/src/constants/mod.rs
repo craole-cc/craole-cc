@@ -1,10 +1,11 @@
 pub mod colors;
-pub use colors::*;
 pub mod facets;
-pub use facets::*;
 pub mod icons;
-pub mod stacks;
-pub use stacks::*;
+// pub mod stacks;
+
+pub use facets::*;
+// pub use colors::*;
+// pub use stacks::*;
 
 pub mod prelude {
   pub use {
@@ -12,11 +13,8 @@ pub mod prelude {
       colors,
       colors::*,
       facets::*,
-      icons::{
-        self,
-        prelude::*,
-      },
-      stacks::*,
+      icons::prelude::*,
+      // stacks::*,
     },
     crate::_prelude::*,
   };

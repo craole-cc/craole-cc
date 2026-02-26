@@ -1,25 +1,21 @@
 mod core;
-mod registry;
+pub mod registry;
 mod utilities;
+mod variant;
+
+pub use {
+  core::*,
+  registry::*,
+  utilities::*,
+  variant::*,
+};
 
 pub mod prelude {
   pub use super::{
     Icon,
-    Icons,
     Render as IconRender,
     Source as IconSource,
-    icon,
+    Variant as IconVariant,
+    registry as icons,
   };
 }
-
-use crate::_prelude::*;
-pub use {
-  core::*,
-  icondata::{
-    self as icon,
-    Icon as IconData,
-  },
-  leptos_icons::Icon as LeptosIcon,
-  registry::*,
-  utilities::*,
-};

@@ -26,7 +26,7 @@
 //
 // ═══════════════════════════════════════════════════════════════════════════════
 
-// ── Register --hue as an animatable number ────────────────────────────────────
+// -- Register --hue as an animatable number ────────────────────────────────────
 // This enables: transition: --hue 1.5s ease
 // Without this, --hue is an opaque string and cannot be interpolated.
 @property --hue {
@@ -35,7 +35,7 @@
   initial-value: 164; // matches :root default in _tokens.scss
 }
 
-// ── Register --chroma as an animatable number ─────────────────────────────────
+// -- Register --chroma as an animatable number ─────────────────────────────────
 // Allows saturation to animate during theme transitions alongside hue,
 // preventing a jarring chroma snap while the hue is smoothly rotating.
 @property --chroma {
@@ -44,7 +44,7 @@
   initial-value: 0.2; // matches :root default in _tokens.scss
 }
 
-// ── Theme transition ──────────────────────────────────────────────────────────
+// -- Theme transition ──────────────────────────────────────────────────────────
 // Applied to :root so all derived values (which reference --hue and --chroma
 // via var()) re-paint with the eased interpolated value.
 //
@@ -53,5 +53,7 @@
 // shorter (200ms) because surface colours update instantly feels snappier
 // than waiting for the full hue rotation.
 :root {
-  transition: --hue 1.5s ease, --chroma 1.5s ease;
+  transition:
+    --hue 1.5s ease,
+    --chroma 1.5s ease;
 }

@@ -40,14 +40,14 @@
   color: var(--color-text-muted);
   margin-bottom: spacing(2);
 
-  // ── Inner nav ─────────────────────────────────────────────────────────────
+  // -- Inner nav ─────────────────────────────────────────────────────────────
 
   &__inner {
     display: grid;
     gap: spacing(2);
   }
 
-  // ── Socials ───────────────────────────────────────────────────────────────
+  // -- Socials ───────────────────────────────────────────────────────────────
 
   &__socials {
     display: flex;
@@ -61,7 +61,9 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: size(btn-h); // 2.5rem — slightly larger than control for touch targets
+    width: size(
+      btn-h
+    ); // 2.5rem — slightly larger than control for touch targets
     height: size(btn-h);
     border-radius: radius(lg);
     transition: transform duration(slow) ease;
@@ -101,7 +103,7 @@
     height: size(icon-lg);
   }
 
-  // ── Facet nav ─────────────────────────────────────────────────────────────
+  // -- Facet nav ─────────────────────────────────────────────────────────────
 
   &__facets {
     display: flex;
@@ -117,7 +119,10 @@
     color: var(--color-text-muted);
     text-decoration: none;
     cursor: pointer;
-    transition: color duration(slow), transform duration(slow), font-weight duration(slow);
+    transition:
+      color duration(slow),
+      transform duration(slow),
+      font-weight duration(slow);
 
     &:hover {
       color: var(--color-primary);
@@ -130,7 +135,7 @@
     }
   }
 
-  // ── Bottom row ────────────────────────────────────────────────────────────
+  // -- Bottom row ────────────────────────────────────────────────────────────
 
   &__bottom {
     display: flex;
@@ -140,7 +145,7 @@
     position: relative;
   }
 
-  // ── Copyright block ───────────────────────────────────────────────────────
+  // -- Copyright block ───────────────────────────────────────────────────────
 
   &__copyright {
     text-align: center;
@@ -152,7 +157,7 @@
     font-size: fontsize(md);
   }
 
-  // ── Alias — accent colour ──────────────────────────────────────────────────
+  // -- Alias — accent colour ──────────────────────────────────────────────────
   // --color-primary-text rather than --color-primary: tuned for text contrast
   // (L 0.46 light / L 0.82 dark) ensuring ≥ 4.5:1 on the page background.
 
@@ -171,7 +176,7 @@
     }
   }
 
-  // ── Tech credits ──────────────────────────────────────────────────────────
+  // -- Tech credits ──────────────────────────────────────────────────────────
   // Hard-coded brand colours — intentionally NOT using --color-primary so they
   // stay recognisably on-brand regardless of site hue.
 
@@ -185,22 +190,30 @@
       text-decoration: underline;
     }
 
-    // Rust — warm orange (brand hue ≈ oklch 35°)
     &--rust {
-      color: oklch(0.6 0.15 35);
-
-      [data-theme="dark"] & {
-        color: oklch(0.75 0.12 35);
-      }
+      color: var(--brand-rust);
     }
 
-    // Leptos — deep red (brand hue ≈ oklch 15°)
     &--leptos {
-      color: oklch(0.5 0.18 15);
-
-      [data-theme="dark"] & {
-        color: oklch(0.7 0.15 15);
-      }
+      color: var(--brand-leptos);
     }
+
+    // // Rust — warm orange (brand hue ≈ oklch 35°)
+    // &--rust {
+    //   color: oklch(0.6 0.15 35);
+
+    //   [data-theme="dark"] & {
+    //     color: oklch(0.75 0.12 35);
+    //   }
+    // }
+
+    // // Leptos — deep red (brand hue ≈ oklch 15°)
+    // &--leptos {
+    //   color: oklch(0.5 0.18 15);
+
+    //   [data-theme="dark"] & {
+    //     color: oklch(0.7 0.15 15);
+    //   }
+    // }
   }
 }

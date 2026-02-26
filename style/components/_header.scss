@@ -56,7 +56,7 @@
 
   animation: nav-appear 0.5s ease both;
 
-  // ── Scrolled state ────────────────────────────────────────────────────────
+  // -- Scrolled state ────────────────────────────────────────────────────────
 
   &--scrolled {
     background: var(--color-bg-surface);
@@ -68,10 +68,12 @@
     }
 
     border-bottom: spacing(px) solid var(--color-border);
-    box-shadow: 0 spacing(px) 0 oklch(0 0 0 / 0.06), 0 spacing(1) spacing(5) oklch(0 0 0 / 0.12);
+    box-shadow:
+      0 spacing(px) 0 oklch(0 0 0 / 0.06),
+      0 spacing(1) spacing(5) oklch(0 0 0 / 0.12);
   }
 
-  // ── Inner wrapper ─────────────────────────────────────────────────────────
+  // -- Inner wrapper ─────────────────────────────────────────────────────────
 
   &__inner {
     display: flex;
@@ -82,7 +84,7 @@
     margin: 0 auto;
   }
 
-  // ── Logo ──────────────────────────────────────────────────────────────────
+  // -- Logo ──────────────────────────────────────────────────────────────────
 
   &__logo {
     display: inline-flex;
@@ -91,7 +93,9 @@
     text-decoration: none;
     flex-shrink: 0;
     color: #fff;
-    transition: opacity duration(fast), color duration(slow);
+    transition:
+      opacity duration(fast),
+      color duration(slow);
 
     .site-nav--scrolled & {
       color: var(--color-primary-text);
@@ -128,7 +132,7 @@
     }
   }
 
-  // ── Nav links ─────────────────────────────────────────────────────────────
+  // -- Nav links ─────────────────────────────────────────────────────────────
 
   &__links {
     // Mobile drawer (hidden by default)
@@ -143,7 +147,9 @@
     border-bottom: none;
     max-height: 0;
     overflow: hidden;
-    transition: max-height duration(slow) cubic-bezier(0.4, 0, 0.2, 1), padding duration(slow) ease;
+    transition:
+      max-height duration(slow) cubic-bezier(0.4, 0, 0.2, 1),
+      padding duration(slow) ease;
 
     &--open {
       max-height: 24rem;
@@ -166,7 +172,7 @@
     }
   }
 
-  // ── Nav link ──────────────────────────────────────────────────────────────
+  // -- Nav link ──────────────────────────────────────────────────────────────
 
   &__link {
     display: block;
@@ -178,7 +184,9 @@
     text-decoration: none;
     color: var(--color-text-muted);
     border-radius: radius(sm);
-    transition: color duration(fast), background-color duration(fast);
+    transition:
+      color duration(fast),
+      background-color duration(fast);
     white-space: nowrap;
 
     &:hover {
@@ -225,7 +233,7 @@
     }
   }
 
-  // ── Controls ──────────────────────────────────────────────────────────────
+  // -- Controls ──────────────────────────────────────────────────────────────
 
   &__controls {
     display: flex;
@@ -234,7 +242,7 @@
     flex-shrink: 0;
   }
 
-  // ── Site Menu button ──────────────────────────────────────────────────────
+  // -- Site Menu button ──────────────────────────────────────────────────────
 
   &__menu-btn {
     display: inline-flex;
@@ -248,7 +256,10 @@
     border-radius: radius(lg);
     cursor: pointer;
     color: #fff;
-    transition: color duration(fast), background-color duration(fast), border-color duration(fast);
+    transition:
+      color duration(fast),
+      background-color duration(fast),
+      border-color duration(fast);
 
     .site-nav--scrolled & {
       color: var(--color-text);
@@ -269,7 +280,7 @@
     }
   }
 
-  // ── Site Menu icon ────────────────────────────────────────────────────────
+  // -- Site Menu icon ────────────────────────────────────────────────────────
 
   &__bar {
     display: block;
@@ -289,7 +300,10 @@
       height: 2px;
       background: currentColor;
       border-radius: 2px;
-      transition: top duration(base) duration(base), bottom duration(base) duration(base), transform duration(base) 0ms;
+      transition:
+        top duration(base) duration(base),
+        bottom duration(base) duration(base),
+        transform duration(base) 0ms;
     }
 
     &::before {
@@ -305,13 +319,17 @@
       &::before {
         top: 0;
         transform: rotate(45deg);
-        transition: top duration(base) 0ms, transform duration(base) duration(base);
+        transition:
+          top duration(base) 0ms,
+          transform duration(base) duration(base);
       }
 
       &::after {
         bottom: 0;
         transform: rotate(-45deg);
-        transition: bottom duration(base) 0ms, transform duration(base) duration(base);
+        transition:
+          bottom duration(base) 0ms,
+          transform duration(base) duration(base);
       }
     }
   }

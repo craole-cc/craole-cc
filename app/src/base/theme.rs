@@ -1,18 +1,29 @@
-use crate::prelude::*;
+use crate::prelude::{
+  icons::*,
+  *,
+};
 
 //╔═══════════════════════════════════════════════════════════╗
 //║ Configuration                                             ║
 //╚═══════════════════════════════════════════════════════════╝
 
+/// The three theme modes the application supports.
+///
+/// `System` defers to the OS `prefers-color-scheme` media query at runtime.
+/// Cycling order: `System` → `Light` → `Dark` → `System`.
 #[derive(Clone, Copy, PartialEq, Eq, Default,)]
 pub enum Theme {
+  /// Follow the OS colour-scheme preference.
   #[default]
   System,
+  /// Force light mode regardless of OS preference.
   Light,
+  /// Force dark mode regardless of OS preference.
   Dark,
 }
 
 impl Theme {
+  /// Returns the next theme in the cycle: System → Light → Dark → System.
   pub fn next(self,) -> Self {
     match self {
       | Self::System => Self::Light,
@@ -21,6 +32,7 @@ impl Theme {
     }
   }
 
+  /// Human-readable label for the *current* theme state.
   pub fn label(self,) -> &'static str {
     match self {
       | Self::System => "System theme",
@@ -29,6 +41,7 @@ impl Theme {
     }
   }
 
+  /// Tooltip hint describing what the *next* action will do.
   pub fn next_label(self,) -> &'static str {
     match self {
       | Self::System => "Switch to light theme",
@@ -37,6 +50,10 @@ impl Theme {
     }
   }
 
+  /// Resolves `System` to the actual `"light"` or `"dark"` string
+  /// by reading `window.matchMedia` in the browser.
+  ///
+  /// Falls back to `"dark"` on the server (SSR / non-hydrate builds).
   pub fn resolve(self,) -> &'static str {
     match self {
       | Self::Light => "light",
@@ -59,15 +76,34 @@ impl Theme {
       }
     }
   }
+
+  /// Returns the icon pair (rest, active) for this theme variant.
+  ///
+  /// - `rest` — outlined style, used in the toggle button when this theme is *not* currently
+  ///   active.
+  /// - `active` — filled style, used when this theme *is* active.
+  pub fn icons(self,) -> (Icon, Icon,) {
+    match self {
+      | Self::System => (theme_system::default(), theme_system::filled(),),
+      | Self::Light => (theme_light::outlined(), theme_light::filled(),),
+      | Self::Dark => (theme_dark::outlined(), theme_dark::filled(),),
+    }
+  }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
 //║ Context                                                   ║
 //╚═══════════════════════════════════════════════════════════╝
 
+/// Shared reactive context provided by [`ThemeProvider`].
+///
+/// Inject with `provide_context` at the app root and read anywhere
+/// via `expect_context::<ThemeContext>()`.
 #[derive(Clone, Copy,)]
 pub struct ThemeContext {
+  /// The currently selected [`Theme`] variant.
   pub theme :   RwSignal<Theme,>,
+  /// Write end of the dynamic accent hue signal (0–360°, OKLCH).
   pub set_hue : WriteSignal<f64,>,
 }
 
@@ -76,6 +112,7 @@ pub struct ThemeContext {
 //╚═══════════════════════════════════════════════════════════╝
 
 /// Linearise one sRGB channel (0–255) to linear light (0.0–1.0).
+///
 /// Applies the IEC 61966-2-1 inverse gamma curve required before any
 /// colour-space matrix multiplication.
 #[inline]
@@ -88,13 +125,13 @@ fn srgb_to_linear(c : f64,) -> f64 {
   }
 }
 
-/// Convert sRGB (0–255 each) to an OKLCH hue in degrees,
-/// or `None` if the colour is too achromatic to have a meaningful hue.
+/// Convert sRGB (0–255 each) to an OKLCH hue in degrees, or `None` if the
+/// colour is too achromatic to have a meaningful hue.
 ///
-/// The correct pipeline: sRGB → gamma decode → linear RGB →
-///   OKLab (via Ottosson's two-matrix method) → atan2(b, a) → OKLCH hue
+/// Pipeline: sRGB → gamma decode → linear RGB → OKLab
+/// (Ottosson two-matrix method) → `atan2(b, a)` → OKLCH hue.
 ///
-/// Reference: https://bottosson.github.io/posts/oklab/
+/// Reference: <https://bottosson.github.io/posts/oklab/>
 pub fn rgb_to_oklch_hue(r : f64, g : f64, b : f64,) -> Option<f64,> {
   // 1. Remove sRGB gamma
   let r = srgb_to_linear(r,);
@@ -116,7 +153,7 @@ pub fn rgb_to_oklch_hue(r : f64, g : f64, b : f64,) -> Option<f64,> {
   let a = 1.9779984951 * l_ - 2.4285922050 * m_ + 0.4505937099 * s_;
   let b_ = 0.0259040371 * l_ + 0.7827717662 * m_ - 0.8086757660 * s_;
 
-  // 5. Chroma guard — reject near-grey pixels
+  // 5. Chroma guard — reject near-grey pixels.
   // Vivid colours have OKLab chroma 0.1–0.37.
   // 0.03 rejects grey skies and near-black shadows without excluding
   // subtly saturated pixels like overcast seascapes.
@@ -133,7 +170,7 @@ pub fn rgb_to_oklch_hue(r : f64, g : f64, b : f64,) -> Option<f64,> {
 /// Load an image into an off-screen canvas, sample pixels, compute the
 /// circular-mean OKLCH hue, and pass it to `on_hue`.
 ///
-/// Uses **circular mean** (sum unit vectors → atan2) rather than arithmetic
+/// Uses **circular mean** (sum unit vectors → `atan2`) rather than arithmetic
 /// mean because hue is an angle on a circle. Averaging 350° and 10° naively
 /// gives 180° when the correct answer is 0°.
 #[cfg(feature = "hydrate")]
@@ -142,11 +179,9 @@ pub fn extract_hue_from_url(url : &'static str, on_hue : impl Fn(f64,)+'static,)
     let Some(window,) = web_sys::window() else {
       return;
     };
-
     let Some(document,) = window.document() else {
       return;
     };
-
     let Ok(el,) = document.create_element("canvas",) else {
       return;
     };
@@ -189,11 +224,10 @@ pub fn extract_hue_from_url(url : &'static str, on_hue : impl Fn(f64,)+'static,)
     };
     let data = image_data.data();
     let len = data.len();
-
     let (mut sum_cos, mut sum_sin, mut n,) = (0.0_f64, 0.0_f64, 0_u64,);
 
-    // Sample every 8th pixel (32-byte stride in RGBA data).
-    // 128×128 / 8 = 2048 samples — accurate and fast.
+    // Sample every 8th pixel (32-byte stride in RGBA).
+    // 128×128 / 8 = 2 048 samples — accurate and fast.
     let mut i = 0_usize;
     while i + 3 < len {
       if data[i + 3] > 128
@@ -223,7 +257,10 @@ pub fn extract_hue_from_url(url : &'static str, on_hue : impl Fn(f64,)+'static,)
 }
 
 /// Write `--hue` to the `<html>` element's inline style.
+///
 /// CSS `@property` + `transition: --hue 1.5s ease` handles the animation.
+/// Called inside a reactive `Effect` so it re-runs whenever the hue signal
+/// changes.
 #[cfg(feature = "hydrate")]
 pub fn apply_hue_to_root(hue : f64,) {
   if let Some(el,) = window()
@@ -239,6 +276,10 @@ pub fn apply_hue_to_root(hue : f64,) {
 //║ Provider                                                  ║
 //╚═══════════════════════════════════════════════════════════╝
 
+/// Provides [`ThemeContext`] to the subtree and keeps `data-theme` on
+/// `<html>` in sync with the reactive signal.
+///
+/// Place this at the application root, wrapping all other components.
 #[component]
 pub fn ThemeProvider(children : Children,) -> impl IntoView {
   let theme = RwSignal::new(Theme::default(),);
@@ -248,6 +289,7 @@ pub fn ThemeProvider(children : Children,) -> impl IntoView {
 
   provide_context(ThemeContext { theme, set_hue, },);
 
+  // Keep data-theme attribute on <html> in sync
   #[cfg(feature = "hydrate")]
   Effect::new(move |_| {
     let resolved = theme.get().resolve();
@@ -259,6 +301,7 @@ pub fn ThemeProvider(children : Children,) -> impl IntoView {
     }
   },);
 
+  // Keep --hue CSS property in sync
   #[cfg(feature = "hydrate")]
   Effect::new(move |_| apply_hue_to_root(hue.get(),),);
 
@@ -268,22 +311,35 @@ pub fn ThemeProvider(children : Children,) -> impl IntoView {
 //╔═══════════════════════════════════════════════════════════╗
 //║ ThemeSwitcher                                             ║
 //╚═══════════════════════════════════════════════════════════╝
-// Icons come from the central registry (Icons::Theme* in registry/core.rs
-// → registry/ui.rs). No SVG is defined here — swapping icon families is
-// a one-line change in ui.rs.
+// Icons come entirely from the registry (ui.rs). No SVG is defined here —
+// swapping icon families is a one-line change in ui.rs.
 //
-// Toggle button: always sun (light) or moon (dark). Never the monitor.
-//   Theme::resolve() reads window.matchMedia at runtime, so System mode
-//   correctly shows whichever icon the user is actually experiencing.
+// Toggle button: shows the *filled* icon of whichever theme is currently
+// active. Theme::resolve() reads matchMedia at runtime so System mode
+// correctly shows light or dark rather than the monitor icon.
 //
-// Dropdown: all three options with their own labelled icons, including
-//   the monitor for "System" where its meaning is unambiguous.
+// Dropdown: all three options with labelled icons, including the monitor
+// for System where its meaning is unambiguous.
 
+/// Dropdown theme switcher with a toggle button and a three-option menu.
+///
+/// The `class` prop is forwarded to the outer `<div>` so callers can
+/// position the component without wrapper elements.
+///
+/// # Example
+/// ```rust
+/// <ThemeSwitcher class="nav__theme" />
+/// ```
 #[component]
-pub fn ThemeSwitcher(#[prop(default = "")] class : &'static str,) -> impl IntoView {
+pub fn ThemeSwitcher(
+  /// Extra CSS class forwarded to the outer wrapper `<div>`.
+  #[prop(default = "")]
+  class : &'static str,
+) -> impl IntoView {
   let ThemeContext { theme, .. } = expect_context::<ThemeContext,>();
   let (open, set_open,) = signal(false,);
 
+  // Close dropdown when anything outside it is clicked
   Effect::new(move |_| {
     if !open.get() {
       return;
@@ -299,17 +355,21 @@ pub fn ThemeSwitcher(#[prop(default = "")] class : &'static str,) -> impl IntoVi
     handler.forget();
   },);
 
-  // (Theme variant, display label, Icons variant for the dropdown icon)
+  // Each option: (Theme variant, display label)
+  // Icons are resolved at render time via Theme::icons() — no Icons enum needed.
   let options = [
-    (Theme::System, "System", Icons::ThemeSystem,),
-    (Theme::Light, "Light", Icons::ThemeLight,),
-    (Theme::Dark, "Dark", Icons::ThemeDark,),
+    (Theme::System, "System",),
+    (Theme::Light, "Light",),
+    (Theme::Dark, "Dark",),
   ];
 
   view! {
-    <div class=format!("theme-dropdown {class}") on:click=move |e| e.stop_propagation()>
-
-      // Toggle — shows the icon of whichever option is currently selected
+    <div
+      class=format!("theme-dropdown {class}")
+      on:click=move |e| e.stop_propagation()
+    >
+      // ── Toggle button ───────────────────────────────────────────────────
+      // Shows the filled icon for whichever theme is currently active.
       <button
         type="button"
         class="theme-btn"
@@ -318,51 +378,45 @@ pub fn ThemeSwitcher(#[prop(default = "")] class : &'static str,) -> impl IntoVi
         on:click=move |_| set_open.update(|v| *v = !*v)
       >
         {move || {
-          let icon = match theme.get() {
-            Theme::System => Icons::ThemeSystem.get(),
-            Theme::Light => Icons::ThemeLight.get(),
-            Theme::Dark => Icons::ThemeDark.get(),
-          };
-          view! { <IconRender icon /> }
+          let (_rest, active,) = theme.get().icons();
+          view! { <IconRender icon=active /> }
         }}
       </button>
 
-      // Dropdown — all three with labelled icons
+      // ── Dropdown menu ───────────────────────────────────────────────────
+      // All three options; active option is highlighted via CSS modifier.
       {move || {
-        open
-          .get()
-          .then(|| {
-            view! {
-              <div class="theme-dropdown__menu">
-                {options
-                  .iter()
-                  .map(|&(t, label, icon_variant)| {
-                    view! {
-                      <button
-                        type="button"
-                        class=move || {
-                          if theme.get() == t {
-                            "theme-dropdown__option theme-dropdown__option--active"
-                          } else {
-                            "theme-dropdown__option"
-                          }
-                        }
-                        on:click=move |_| {
-                          theme.set(t);
-                          set_open.set(false);
-                        }
-                      >
-                        <IconRender icon=icon_variant.get() />
-                        {label}
-                      </button>
-                    }
-                  })
-                  .collect::<Vec<_>>()}
-              </div>
-            }
-          })
-      }}
+        open.get().then(|| view! {
+          <div class="theme-dropdown__menu">
+            {options
+              .iter()
+              .map(|&(t, label,)| {
+                // Resolve icons at render time — no enum dispatch needed
+                let (rest, active,) = t.icons();
+                let icon = if theme.get() == t { active } else { rest };
 
+                view! {
+                  <button
+                    type="button"
+                    class=move || if theme.get() == t {
+                      "theme-dropdown__option theme-dropdown__option--active"
+                    } else {
+                      "theme-dropdown__option"
+                    }
+                    on:click=move |_| {
+                      theme.set(t,);
+                      set_open.set(false,);
+                    }
+                  >
+                    <IconRender icon />
+                    {label}
+                  </button>
+                }
+              })
+              .collect::<Vec<_>>()}
+          </div>
+        })
+      }}
     </div>
   }
 }

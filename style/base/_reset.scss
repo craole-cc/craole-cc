@@ -19,7 +19,7 @@
 //
 // ═══════════════════════════════════════════════════════════════════════════════
 
-// ── Box model ─────────────────────────────────────────────────────────────────
+// -- Box model ─────────────────────────────────────────────────────────────────
 // Apply border-box universally. The wildcard + pseudo-elements covers
 // everything including dynamically inserted content.
 *,
@@ -28,7 +28,7 @@
   box-sizing: border-box;
 }
 
-// ── Document ──────────────────────────────────────────────────────────────────
+// -- Document ──────────────────────────────────────────────────────────────────
 html {
   // Prevent horizontal scroll from any overflow-x issues on narrow screens.
   // overflow-x: hidden on html alone doesn't prevent horizontal scroll bars
@@ -57,14 +57,25 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-// ── Typography ────────────────────────────────────────────────────────────────
+// -- Typography ────────────────────────────────────────────────────────────────
 // Remove default margins from all typographic elements.
 // _globals.scss adds them back deliberately with the design system scale.
-h1, h2, h3, h4, h5, h6, p, blockquote, pre, dl, dd, figure {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+dl,
+dd,
+figure {
   margin: 0;
 }
 
-// ── Interactive elements ──────────────────────────────────────────────────────
+// -- Interactive elements ──────────────────────────────────────────────────────
 // Buttons should inherit font — browser defaults use system-ui at a different
 // size which breaks visual consistency.
 button,
@@ -85,7 +96,7 @@ button {
   cursor: pointer;
 }
 
-// ── Links ─────────────────────────────────────────────────────────────────────
+// -- Links ─────────────────────────────────────────────────────────────────────
 // Remove default underline — we'll add it back deliberately where needed.
 // Colour inherits from parent so links don't break text colour flow
 // unless explicitly styled.
@@ -94,12 +105,11 @@ a {
   text-decoration: none;
 }
 
-// ── Media ─────────────────────────────────────────────────────────────────────
+// -- Media ─────────────────────────────────────────────────────────────────────
 // Images and videos are inline by default, which causes a gap below them.
 // Block removes the gap. max-width: 100% prevents overflow.
 img,
 video,
-svg,
 canvas,
 audio,
 iframe,
@@ -109,15 +119,48 @@ object {
   max-width: 100%;
 }
 
-// SVGs used as icons are inline-flex children — allow them to be sized
-// by their parent container rather than by intrinsic dimensions.
+// -- SVG ───────────────────────────────────────────────────────────────────────
+// SVGs get their own block — behaviour differs enough from img/video to
+// warrant separate treatment.
+//
+// display: block   — removes the inline gap (same reason as img above)
+// max-width: 100%  — prevents overflow out of containers
+// overflow: visible — allows drop shadows / glows that paint outside the
+//                    viewBox to render without being clipped
+//
+// width/height are intentionally NOT set here. Two reasons:
+//   1. Decorative SVGs (logos, illustrations) should keep their intrinsic size.
+//   2. Icon SVGs are controlled by their wrapper — see the icon rule below.
 svg {
-  // Don't set width/height here — icon components control their own sizing.
-  // Overflow visible ensures that effects like drop shadows aren't clipped.
+  display: block;
+  max-width: 100%;
   overflow: visible;
 }
 
-// ── Lists ─────────────────────────────────────────────────────────────────────
+// -- Icon SVG fill ─────────────────────────────────────────────────────────────
+// LeptosIcon (and similar icon renderers) bake width/height as inline
+// attributes on the <svg> element — e.g. width="1em" height="1em".
+// Inline attributes beat stylesheet rules at equal specificity, so we
+// must override them here at the reset level for any element that is
+// explicitly acting as an icon container.
+//
+// Selector rationale:
+//   [class*="fill-"]  — matches .fill-rust, .fill-github, etc. (brand icons)
+//   [class*="icon"]   — matches .footer__social-svg, .icon-lg, etc.
+//   div inside those  — covers LeptosIcon's <div> wrapper around the <svg>
+//
+// This does NOT apply to bare SVGs outside icon containers, so logos,
+// illustrations, and inline SVG graphics are unaffected.
+[class*="fill-"],
+[class*="icon"] {
+  svg,
+  div > svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+// -- Lists ─────────────────────────────────────────────────────────────────────
 // Remove list styling from semantic lists used as navigation or UI components.
 // Prose lists (inside article, .readable) keep their bullets/numbers.
 // Tailwind preflight handles this for all lists; this is a safety net.
@@ -128,13 +171,13 @@ ol[role="list"] {
   padding: 0;
 }
 
-// ── Tables ────────────────────────────────────────────────────────────────────
+// -- Tables ────────────────────────────────────────────────────────────────────
 table {
   border-collapse: collapse;
   border-spacing: 0;
 }
 
-// ── Accessibility ─────────────────────────────────────────────────────────────
+// -- Accessibility ─────────────────────────────────────────────────────────────
 // Respect the user's motion preferences. Reduces or removes animations
 // for users who have enabled "Reduce motion" in their OS.
 @media (prefers-reduced-motion: reduce) {
@@ -148,7 +191,7 @@ table {
   }
 }
 
-// ── Focus ─────────────────────────────────────────────────────────────────────
+// -- Focus ─────────────────────────────────────────────────────────────────────
 // Remove the default :focus outline (replaced by :focus-visible).
 // :focus-visible only shows the ring for keyboard navigation, not mouse clicks,
 // which is the modern, user-friendly approach.
@@ -161,7 +204,7 @@ table {
   outline-offset: 2px;
 }
 
-// ── Selection ─────────────────────────────────────────────────────────────────
+// -- Selection ─────────────────────────────────────────────────────────────────
 // Brand-tinted text selection. Subtle — uses primary-muted so selected text
 // remains readable without the selection colour washing out the text.
 ::selection {
