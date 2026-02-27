@@ -150,16 +150,3 @@
     transform: rotate(0deg) scale(1);
   }
 }
-
-// Slide down — for dropdown menus and mobile drawers (CSS-only alternative
-// to max-height animation when you know the exact height).
-@keyframes slide-down {
-  from {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}

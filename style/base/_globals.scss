@@ -9,11 +9,11 @@
 //   Everything else is BEM or utility classes.
 //
 // TOKENS USED
-//   spacing()  — spacing     (base/_tokens.scss via index)
-//   fontsize()  — font sizes  (base/_tokens.scss via index)
-//   breakpoint()  — breakpoints (base/_tokens.scss via index)
-//   duration() — durations   (base/_tokens.scss via index)
-//   --color-* vars      (theme/_tokens.scss — runtime)
+//   spacing()    — spacing      (base/_tokens.scss via index)
+//   fontsize()   — font sizes   (base/_tokens.scss via index)
+//   breakpoint() — breakpoints  (base/_tokens.scss via index)
+//   duration()   — durations    (base/_tokens.scss via index)
+//   --color-* vars              (theme/_colors.scss — runtime)
 //
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -28,8 +28,7 @@ html {
 }
 
 body {
-  background-color: var(--color-bg);
-  color: var(--color-text);
+  // background-color and color are inherited from html — only transitions needed
   transition:
     background-color duration(base),
     color duration(base);
@@ -37,12 +36,12 @@ body {
 }
 
 main {
-  background-color: var(--color-bg);
-  color: var(--color-text);
+  // background-color and color are inherited — only min-height needed
   min-height: 100svh;
 }
 
 // -- Headings ──────────────────────────────────────────────────────────────────
+// color is inherited from html — not repeated here
 
 h1,
 h2,
@@ -55,7 +54,6 @@ h6 {
   line-height: 1.15;
   font-weight: 700;
   letter-spacing: -0.02em;
-  color: var(--color-text);
 }
 
 h1 {

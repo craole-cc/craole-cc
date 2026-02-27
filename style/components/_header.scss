@@ -35,11 +35,16 @@
 //   .site-nav__menu-btn       — hamburger toggle button (mobile only)
 //
 // ICON SIZING
-//   Both .theme-btn (theme/_switch.scss) and .site-nav__menu-btn share the
-//   same token stack for a uniform controls cluster:
+//   .site-nav__menu-btn is the primary navigation control:
 //     button:  size(btn-h) × size(btn-h)  — 2.5rem / 40px tap target
 //     padding: spacing(2)                 — 0.5rem / 8px
 //     icon:    size(icon-lg)              — 1.75rem / 28px
+//
+//   .theme-btn (theme/_switcher.scss) is a secondary action — one step smaller
+//   and muted at rest so it recedes behind the hamburger visually:
+//     button:  size(control) × size(control) — 2rem / 32px tap target
+//     padding: spacing(2)                    — 0.5rem / 8px
+//     icon:    size(icon-sm)                 — 1rem / 16px
 //
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -246,8 +251,28 @@
     flex-shrink: 0;
   }
 
+  // -- Theme button — muted in header context ────────────────────────────────
+  // The switcher is a secondary action here. Muting is applied as a context
+  // override so .theme-btn remains full-colour when used elsewhere.
+
+  .theme-btn {
+    color: rgba(255, 255, 255, 0.55);
+
+    &:hover {
+      color: #fff;
+    }
+  }
+
+  &--scrolled .theme-btn {
+    color: var(--color-text-muted);
+
+    &:hover {
+      color: var(--color-text);
+    }
+  }
+
   // -- Hamburger button ──────────────────────────────────────────────────────
-  // Token stack mirrors .theme-btn in theme/_switch.scss exactly.
+  // Primary navigation control — larger than .theme-btn to signal importance.
 
   &__menu-btn {
     display: inline-flex;

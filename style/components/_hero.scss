@@ -1,5 +1,6 @@
 /*
   Hero component. Crossfade is driven by inline opacity.
+  Keyframes hero-fade and ken-burns live in base/_animations.scss.
 */
 
 .hero {
@@ -71,24 +72,6 @@
     opacity: 0;
     animation: hero-fade 75s linear infinite;
     will-change: opacity;
-  }
-
-  @keyframes hero-fade {
-    0% {
-      opacity: 0;
-    }
-    2% {
-      opacity: 1;
-    } // fade in quickly
-    6% {
-      opacity: 1;
-    } // hold
-    8.667% {
-      opacity: 0;
-    } // fade out, overlapping into next slide's fade-in
-    100% {
-      opacity: 0;
-    }
   }
 
   // -- Scrim ─────────────────────────────────────────────────
@@ -372,21 +355,12 @@
 // -- Keyframes ─────────────────────────────────────────────────────────────
 
 // Scroll-driven bottom fade (Tier 1 — CSS path).
+// hero-fade and ken-burns are defined in base/_animations.scss.
 @keyframes hero-bottom-fade {
   from {
     opacity: 0;
   }
   to {
     opacity: 1;
-  }
-}
-
-// Ken-Burns: alternate direction avoids the snap-back at 100%
-@keyframes ken-burns {
-  from {
-    transform: scale(1) translate(0, 0);
-  }
-  to {
-    transform: scale(1.06) translate(-1%, 0.5%);
   }
 }
