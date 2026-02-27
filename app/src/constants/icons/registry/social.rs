@@ -186,8 +186,10 @@ pub mod gmail {
 
   /// Local SVG asset — monochrome, inherits colour from context.
   pub fn local() -> Icon { base() }
+
   /// Canonical default — resolves to [`local`].
   pub fn default() -> Icon { local() }
+
   /// Filled [`MdiGmail`](icon::MdiGmail) with `--brand-gmail` colour.
   pub fn filled() -> Icon {
     base()

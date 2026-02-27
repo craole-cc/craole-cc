@@ -10,25 +10,25 @@ use crate::_prelude::{
 /// Social platform entries rendered in the footer.
 /// Each entry pairs a filled (hover) icon with a default (rest) icon.
 struct SocialEntry {
-  /// Coloured Leptos icon — shown on hover.
-  filled :  Icon,
-  /// Monochrome local SVG — shown at rest.
+  /// Icon shown on hover.
+  hover :   Icon,
+  /// Icon shown at rest.
   default : Icon,
 }
 
 impl SocialEntry {
-  fn new(default : Icon, filled : Icon,) -> Self { Self { default, filled, } }
+  fn new(default : Icon, hover : Icon,) -> Self { Self { default, hover, } }
 }
 
 fn socials() -> Vec<SocialEntry,> {
   vec![
-    SocialEntry::new(gmail::local(), gmail::filled(),),
-    SocialEntry::new(github::local(), github::filled(),),
-    SocialEntry::new(linkedin::local(), linkedin::filled(),),
-    SocialEntry::new(whatsapp::local(), whatsapp::filled(),),
-    SocialEntry::new(instagram::local(), instagram::filled(),),
-    SocialEntry::new(facebook::local(), facebook::filled(),),
-    SocialEntry::new(x::local(), x::filled(),),
+    SocialEntry::new(gmail::filled(), gmail::local(),),
+    SocialEntry::new(github::filled(), github::filled(),),
+    SocialEntry::new(linkedin::filled(), linkedin::local(),),
+    SocialEntry::new(whatsapp::filled(), whatsapp::local(),),
+    SocialEntry::new(instagram::filled(), instagram::local(),),
+    SocialEntry::new(facebook::filled(), facebook::local(),),
+    SocialEntry::new(x::filled(), x::filled(),),
   ]
 }
 
@@ -36,10 +36,10 @@ fn socials() -> Vec<SocialEntry,> {
 /// and a coloured hover state.
 #[component]
 fn SocialIcon(
-  /// Monochrome local SVG — shown at rest.
+  /// Icon shown at rest.
   default : Icon,
-  /// Coloured Leptos icon — shown on hover.
-  filled : Icon,
+  /// Icon shown on hover.
+  hover : Icon,
 ) -> impl IntoView {
   view! {
     <a
@@ -54,7 +54,7 @@ fn SocialIcon(
         <IconRender icon=default class="footer__social-svg color-muted" />
       </span>
       <span class="footer__social-icon footer__social-icon--hover">
-        <IconRender icon=filled class="footer__social-svg" />
+        <IconRender icon=hover class="footer__social-svg" />
       </span>
     </a>
   }
@@ -67,7 +67,7 @@ pub fn Socials() -> impl IntoView {
     <div class="footer__socials">
       {socials()
         .into_iter()
-        .map(|entry| view! { <SocialIcon default=entry.default filled=entry.filled /> })
+        .map(|entry| view! { <SocialIcon default=entry.default hover=entry.hover /> })
         .collect::<Vec<_>>()}
     </div>
   }

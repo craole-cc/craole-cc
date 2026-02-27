@@ -61,10 +61,8 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: size(
-      btn-h
-    ); // 2.5rem — slightly larger than control for touch targets
-    height: size(btn-h);
+    width: size(icon-lg);
+    height: size(icon-lg);
     border-radius: radius(lg);
     transition: transform duration(slow) ease;
 
@@ -158,8 +156,6 @@
   }
 
   // -- Alias — accent colour ──────────────────────────────────────────────────
-  // --color-primary-text rather than --color-primary: tuned for text contrast
-  // (L 0.46 light / L 0.82 dark) ensuring ≥ 4.5:1 on the page background.
 
   &__alias {
     font-size: fontsize(lg);
@@ -177,8 +173,6 @@
   }
 
   // -- Tech credits ──────────────────────────────────────────────────────────
-  // Hard-coded brand colours — intentionally NOT using --color-primary so they
-  // stay recognisably on-brand regardless of site hue.
 
   &__tech {
     font-weight: 500;
@@ -197,23 +191,5 @@
     &--leptos {
       color: var(--brand-leptos);
     }
-
-    // // Rust — warm orange (brand hue ≈ oklch 35°)
-    // &--rust {
-    //   color: oklch(0.6 0.15 35);
-
-    //   [data-theme="dark"] & {
-    //     color: oklch(0.75 0.12 35);
-    //   }
-    // }
-
-    // // Leptos — deep red (brand hue ≈ oklch 15°)
-    // &--leptos {
-    //   color: oklch(0.5 0.18 15);
-
-    //   [data-theme="dark"] & {
-    //     color: oklch(0.7 0.15 15);
-    //   }
-    // }
   }
 }
