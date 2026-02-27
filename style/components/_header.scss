@@ -135,7 +135,6 @@
   // -- Nav links ─────────────────────────────────────────────────────────────
 
   &__links {
-    // Mobile drawer (hidden by default)
     position: fixed;
     inset: size(header) 0 auto 0;
     display: flex;

@@ -54,6 +54,10 @@
     flex-wrap: wrap;
     gap: spacing(2);
     justify-content: center;
+
+    @include breakpoint(sm) {
+      gap: spacing(4);
+    }
   }
 
   &__social-link {
@@ -65,6 +69,12 @@
     height: size(icon-lg);
     border-radius: radius(lg);
     transition: transform duration(slow) ease;
+
+    @include breakpoint(sm) {
+      width: size(btn-h);
+      height: size(btn-h);
+      border-radius: radius(xl);
+    }
 
     &:hover {
       transform: translateY(-4px);
@@ -99,6 +109,11 @@
   &__social-svg {
     width: size(icon-lg);
     height: size(icon-lg);
+
+    @include breakpoint(sm) {
+      width: size(btn-h);
+      height: size(btn-h);
+    }
   }
 
   // -- Facet nav ─────────────────────────────────────────────────────────────

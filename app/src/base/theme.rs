@@ -1,4 +1,4 @@
-use crate::prelude::{
+use crate::_prelude::{
   icons::*,
   *,
 };
@@ -84,7 +84,7 @@ impl Theme {
   /// - `active` — filled style, used when this theme *is* active.
   pub fn icons(self,) -> (Icon, Icon,) {
     match self {
-      | Self::System => (theme_system::default(), theme_system::filled(),),
+      | Self::System => (theme_system::default(), theme_system::outlined(),),
       | Self::Light => (theme_light::outlined(), theme_light::filled(),),
       | Self::Dark => (theme_dark::outlined(), theme_dark::filled(),),
     }
@@ -347,10 +347,7 @@ pub fn ThemeSwitcher(
     let Some(doc,) = window().and_then(|w| w.document(),) else {
       return;
     };
-    let handler =
-      wasm_bindgen::closure::Closure::<dyn Fn(MouseEvent,),>::wrap(Box::new(move |_| {
-        set_open.set(false,)
-      },),);
+    let handler = Closure::<dyn Fn(MouseEvent,),>::wrap(Box::new(move |_| set_open.set(false,),),);
     let _ = doc.add_event_listener_with_callback("click", handler.as_ref().unchecked_ref(),);
     handler.forget();
   },);
@@ -368,16 +365,16 @@ pub fn ThemeSwitcher(
       // ── Toggle button ───────────────────────────────────────────────────
       // Shows the filled icon for whichever theme is currently active.
       <button
-        type="button"
-        class="theme-btn"
-        aria-label=move || theme.get().label()
-        title="Change theme"
-        on:click=move |_| set_open.update(|v| *v = !*v)
+      type="button"
+      class="theme-btn"
+      aria-label=move || theme.get().label()
+      title="Change theme"
+      on:click=move |_| set_open.update(|v| *v = !*v)
       >
-        {move || {
-          let (_rest, active) = theme.get().icons();
-          view! { <IconRender icon=active /> }
-        }}
+      {move || {
+      let (_rest, active) = theme.get().icons();
+      view! { <IconRender icon=active /> }
+      }}
       </button>
 
       // ── Dropdown menu ───────────────────────────────────────────────────
@@ -393,7 +390,6 @@ pub fn ThemeSwitcher(
                   .map(|&(t, label)| {
                     let (rest, active) = t.icons();
                     let icon = if theme.get() == t { active } else { rest };
-                    // Resolve icons at render time — no enum dispatch needed
 
                     view! {
                       <button

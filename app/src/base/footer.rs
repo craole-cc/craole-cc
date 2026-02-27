@@ -25,8 +25,8 @@ fn socials() -> Vec<SocialEntry,> {
     SocialEntry::new(gmail::filled(), gmail::local(),),
     SocialEntry::new(github::filled(), github::filled(),),
     SocialEntry::new(linkedin::filled(), linkedin::local(),),
-    SocialEntry::new(whatsapp::filled(), whatsapp::local(),),
-    SocialEntry::new(instagram::filled(), instagram::local(),),
+    SocialEntry::new(whatsapp::filled(), whatsapp::filled(),),
+    SocialEntry::new(instagram::filled(), instagram::filled(),),
     SocialEntry::new(facebook::filled(), facebook::local(),),
     SocialEntry::new(x::filled(), x::filled(),),
   ]

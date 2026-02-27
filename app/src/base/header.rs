@@ -43,7 +43,7 @@ fn NavLogo() -> impl IntoView {
 }
 
 //╔═══════════════════════════════════════════════════════════╗
-//║ Link List                                                 ║
+//║ Site Navigation - Link List                               ║
 //╚═══════════════════════════════════════════════════════════╝
 
 /// Renders the primary navigation link list.
@@ -85,7 +85,7 @@ fn NavLinks(
 }
 
 //╔═══════════════════════════════════════════════════════════╗
-//║ Hamburger                                                 ║
+//║ Site Navigation  - Hamburger                              ║
 //╚═══════════════════════════════════════════════════════════╝
 // Reactively swaps between menu_open::default() and menu_closed::default()
 // from the registry. Icons inherit currentColor from the button CSS —
@@ -112,7 +112,6 @@ fn Hamburger(
     >
       {move || {
         let icon = if open.get() { menu_open::default() } else { menu_closed::default() };
-        // Resolve icon at render time — no Icons enum dispatch needed
         view! { <IconRender icon /> }
       }}
     </button>

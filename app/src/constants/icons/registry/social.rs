@@ -179,7 +179,7 @@ pub mod gmail {
 
   fn base() -> Icon {
     Icon::new_local("icons/logos/gmail.svg",)
-      .with_link("mailto:craig.craole.cole@gmail.com",)
+      .with_link("mailto:info@craole.cc",)
       .with_tooltip("Send me an email",)
       .with_label("Gmail",)
   }

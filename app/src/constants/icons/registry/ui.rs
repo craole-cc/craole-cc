@@ -38,17 +38,14 @@ pub mod theme_light {
   }
 
   fn base() -> Icon {
-    Icon::new_leptos(icon::BsSun,)
+    Icon::new_leptos(icon::RiSunWeatherFill,)
       .with_label("Light theme",)
       .with_tooltip("Switch to light theme",)
   }
 
-  /// Canonical default — resolves to [`outlined`].
   pub fn default() -> Icon { outlined() }
-  /// Bootstrap outlined [`BsSun`](icon::BsSun) stroke icon.
-  pub fn outlined() -> Icon { base().with_source(Source::Leptos(icon::BsSun,),) }
-  /// Bootstrap filled [`BsSunFill`](icon::BsSunFill) solid icon.
-  pub fn filled() -> Icon { base().with_source(Source::Leptos(icon::BsSunFill,),) }
+  pub fn outlined() -> Icon { base().with_source(Source::Leptos(icon::RiSunWeatherLine,),) }
+  pub fn filled() -> Icon { base().with_source(Source::Leptos(icon::RiSunWeatherFill,),) }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
@@ -96,10 +93,12 @@ pub mod theme_dark {
 
   /// Canonical default — resolves to [`outlined`].
   pub fn default() -> Icon { outlined() }
+
   /// Bootstrap outlined [`BsMoon`](icon::BsMoon) stroke icon.
-  pub fn outlined() -> Icon { base().with_source(Source::Leptos(icon::BsMoon,),) }
+  pub fn outlined() -> Icon { base().with_source(Source::Leptos(icon::RiMoonClearWeatherLine,),) }
+
   /// Bootstrap filled [`BsMoonFill`](icon::BsMoonFill) solid icon.
-  pub fn filled() -> Icon { base().with_source(Source::Leptos(icon::BsMoonFill,),) }
+  pub fn filled() -> Icon { base().with_source(Source::Leptos(icon::RiMoonClearWeatherFill,),) }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
@@ -146,10 +145,12 @@ pub mod theme_system {
       .with_tooltip("Use system theme",)
   }
 
-  /// Canonical default — Tabler [`TbSunMoonOutline`](icon::TbSunMoonOutline).
-  pub fn default() -> Icon { base() }
   /// Lucide [`LuSunMoon`](icon::LuSunMoon) outlined icon — lighter feel.
-  pub fn outlined() -> Icon { base().with_source(Source::Leptos(icon::LuSunMoon,),) }
+  pub fn default() -> Icon { base().with_source(Source::Leptos(icon::MdiMonitorDashboard,),) }
+
+  /// Canonical default — Tabler [`TbSunMoonOutline`](icon::TbSunMoonOutline).
+  pub fn outlined() -> Icon { base().with_source(Source::Leptos(icon::TbSunMoonOutline,),) }
+
   /// Material Design [`MdiMonitorDashboard`](icon::MdiMonitorDashboard) — conveys OS-level control.
   pub fn filled() -> Icon { base().with_source(Source::Leptos(icon::MdiMonitorDashboard,),) }
 }
