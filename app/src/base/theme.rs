@@ -364,10 +364,7 @@ pub fn ThemeSwitcher(
   ];
 
   view! {
-    <div
-      class=format!("theme-dropdown {class}")
-      on:click=move |e| e.stop_propagation()
-    >
+    <div class=format!("theme-dropdown {class}") on:click=move |e| e.stop_propagation()>
       // ── Toggle button ───────────────────────────────────────────────────
       // Shows the filled icon for whichever theme is currently active.
       <button
@@ -378,7 +375,7 @@ pub fn ThemeSwitcher(
         on:click=move |_| set_open.update(|v| *v = !*v)
       >
         {move || {
-          let (_rest, active,) = theme.get().icons();
+          let (_rest, active) = theme.get().icons();
           view! { <IconRender icon=active /> }
         }}
       </button>
@@ -386,36 +383,42 @@ pub fn ThemeSwitcher(
       // ── Dropdown menu ───────────────────────────────────────────────────
       // All three options; active option is highlighted via CSS modifier.
       {move || {
-        open.get().then(|| view! {
-          <div class="theme-dropdown__menu">
-            {options
-              .iter()
-              .map(|&(t, label,)| {
-                // Resolve icons at render time — no enum dispatch needed
-                let (rest, active,) = t.icons();
-                let icon = if theme.get() == t { active } else { rest };
+        open
+          .get()
+          .then(|| {
+            view! {
+              <div class="theme-dropdown__menu">
+                {options
+                  .iter()
+                  .map(|&(t, label)| {
+                    let (rest, active) = t.icons();
+                    let icon = if theme.get() == t { active } else { rest };
+                    // Resolve icons at render time — no enum dispatch needed
 
-                view! {
-                  <button
-                    type="button"
-                    class=move || if theme.get() == t {
-                      "theme-dropdown__option theme-dropdown__option--active"
-                    } else {
-                      "theme-dropdown__option"
+                    view! {
+                      <button
+                        type="button"
+                        class=move || {
+                          if theme.get() == t {
+                            "theme-dropdown__option theme-dropdown__option--active"
+                          } else {
+                            "theme-dropdown__option"
+                          }
+                        }
+                        on:click=move |_| {
+                          theme.set(t);
+                          set_open.set(false);
+                        }
+                      >
+                        <IconRender icon />
+                        {label}
+                      </button>
                     }
-                    on:click=move |_| {
-                      theme.set(t,);
-                      set_open.set(false,);
-                    }
-                  >
-                    <IconRender icon />
-                    {label}
-                  </button>
-                }
-              })
-              .collect::<Vec<_>>()}
-          </div>
-        })
+                  })
+                  .collect::<Vec<_>>()}
+              </div>
+            }
+          })
       }}
     </div>
   }

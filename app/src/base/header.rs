@@ -61,11 +61,7 @@ fn NavLinks(
     <nav
       id="primary-nav"
       class=move || {
-        if open.get() {
-          "site-nav__links site-nav__links--open"
-        } else {
-          "site-nav__links"
-        }
+        if open.get() { "site-nav__links site-nav__links--open" } else { "site-nav__links" }
       }
       aria-label="Primary"
     >
@@ -77,7 +73,7 @@ fn NavLinks(
               href=format!("/{}", facet.slug)
               class="site-nav__link"
               title=facet.description
-              on:click=move |_| set_open.set(false,)
+              on:click=move |_| set_open.set(false)
             >
               {facet.label}
             </a>
@@ -115,12 +111,8 @@ fn Hamburger(
       on:click=move |_| set_open.update(|v| *v = !*v)
     >
       {move || {
+        let icon = if open.get() { menu_open::default() } else { menu_closed::default() };
         // Resolve icon at render time — no Icons enum dispatch needed
-        let icon = if open.get() {
-          menu_open::default()
-        } else {
-          menu_closed::default()
-        };
         view! { <IconRender icon /> }
       }}
     </button>
@@ -181,11 +173,9 @@ pub fn Header() -> impl IntoView {
   let (open, set_open,) = signal(false,);
 
   view! {
-    <header
-      class=move || {
-        if scrolled.get() { "site-nav site-nav--scrolled" } else { "site-nav" }
-      }
-    >
+    <header class=move || {
+      if scrolled.get() { "site-nav site-nav--scrolled" } else { "site-nav" }
+    }>
       <div class="site-nav__inner">
         <NavLogo />
         <NavLinks open set_open />

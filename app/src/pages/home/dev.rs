@@ -54,7 +54,7 @@ fn TechBadge(tech : Tech,) -> impl IntoView {
         PRIMARY_BORDER_400,
       )
     >
-      <span class="flex items-center justify-center w-5 h-5">
+      <span class="flex justify-center items-center w-5 h-5">
         <IconRender icon=tech.logo class="w-5 h-5" />
       </span>
       <span class=format!("text-sm font-medium {}", NEUTRAL_TEXT_700)>{tech.name}</span>

@@ -1,4 +1,4 @@
-use crate::_prelude::*;
+use super::_prelude::*;
 
 //╔═══════════════════════════════════════════════════════════╗
 //║ Actix                                                     ║
@@ -6,14 +6,30 @@ use crate::_prelude::*;
 pub mod actix {
   use super::*;
 
-  /// Local-only — no Leptos icon available. All variants use the local asset.
-  impl From<Variant,> for Icon {
-    fn from(v : Variant,) -> Icon {
-      match v {
+  /// Icon selector for [Actix](https://actix.rs), a fast, pragmatic,
+  /// and extensible Rust web framework.
+  ///
+  /// No distinct outlined style — [`Variant::Outlined`] falls back to
+  /// [`filled`].
+  ///
+  /// # Variants
+  /// | Variant  | Resolves to |
+  /// |----------|-------------|
+  /// | Default  | [`local`]   |
+  /// | Local    | [`local`]   |
+  /// | Filled   | [`filled`] — `SiActix` with `--brand-actix` |
+  /// | Outlined | [`filled`] — no distinct outlined style |
+  pub struct Actix(pub Variant,);
+
+  impl Actix {
+    /// Resolves the wrapped [`Variant`] to an [`Icon`].
+    /// `Outlined` falls back to [`filled`] — no distinct outlined style exists.
+    pub fn get(self,) -> Icon {
+      match self.0 {
         | Variant::Default => local(),
         | Variant::Local => local(),
-        | Variant::Filled => local(),
-        | Variant::Outlined => local(),
+        | Variant::Filled => filled(),
+        | Variant::Outlined => filled(),
       }
     }
   }
@@ -27,40 +43,16 @@ pub mod actix {
 
   /// Local SVG asset — monochrome, inherits colour from context.
   pub fn local() -> Icon { base() }
-  /// Canonical default — uses the local asset.
+
+  /// Canonical default — resolves to [`local`].
   pub fn default() -> Icon { local() }
-}
 
-//╔═══════════════════════════════════════════════════════════╗
-//║ Axum                                                      ║
-//╚═══════════════════════════════════════════════════════════╝
-pub mod axum {
-  use super::*;
-
-  /// Local-only — uses the Tokio logo as a stand-in. All variants use the
-  /// local asset until a dedicated Axum icon is available.
-  impl From<Variant,> for Icon {
-    fn from(v : Variant,) -> Icon {
-      match v {
-        | Variant::Default => local(),
-        | Variant::Local => local(),
-        | Variant::Filled => local(),
-        | Variant::Outlined => local(),
-      }
-    }
+  /// Filled [`SiActix`](icon::SiActix) with `--brand-actix` colour.
+  pub fn filled() -> Icon {
+    base()
+      .with_source(Source::Leptos(icon::SiActix,),)
+      .colored("brand-actix",)
   }
-
-  fn base() -> Icon {
-    Icon::new_local("icons/logos/tokio.svg",)
-      .with_link("https://github.com/tokio-rs/axum",)
-      .with_tooltip("Ergonomic and modular web framework built with Tokio",)
-      .with_label("Axum",)
-  }
-
-  /// Local SVG asset (Tokio logo stand-in) — swap when a dedicated asset lands.
-  pub fn local() -> Icon { base() }
-  /// Canonical default — uses the local asset.
-  pub fn default() -> Icon { local() }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
@@ -69,15 +61,26 @@ pub mod axum {
 pub mod htmx {
   use super::*;
 
-  /// Leptos-only — no local asset. All variants resolve to the same
-  /// Simple Icons icon.
-  impl From<Variant,> for Icon {
-    fn from(v : Variant,) -> Icon {
-      match v {
-        | Variant::Default => default(),
-        | Variant::Local => default(), // no local asset
-        | Variant::Filled => default(),
-        | Variant::Outlined => default(),
+  /// Icon selector for [HTMX](https://htmx.org), a library that gives
+  /// HTML access to modern browser features without JavaScript.
+  ///
+  /// No distinct outlined style — [`Variant::Outlined`] falls back to
+  /// [`filled`].
+  ///
+  /// # Variants
+  /// | Variant  | Resolves to |
+  /// |----------|-------------|
+  /// | Default  | [`local`] — no local asset, resolves via Leptos |
+  /// | Local    | [`filled`] — no local asset |
+  /// | Filled   | [`filled`] — `SiHtmx` with `--brand-htmx` |
+  /// | Outlined | [`filled`] — no distinct outlined style |
+  pub struct Htmx(pub Variant,);
+
+  impl Htmx {
+    /// Resolves the wrapped [`Variant`] to an [`Icon`].
+    pub fn get(self,) -> Icon {
+      match self.0 {
+        | Variant::Default | Variant::Local | Variant::Filled | Variant::Outlined => filled(),
       }
     }
   }
@@ -89,8 +92,11 @@ pub mod htmx {
       .with_label("HTMX",)
   }
 
-  /// Canonical default — Simple Icons Leptos icon.
-  pub fn default() -> Icon { base() }
+  /// Canonical default — resolves to [`filled`]; no local asset available.
+  pub fn default() -> Icon { filled() }
+
+  /// Filled [`SiHtmx`](icon::SiHtmx) with `--brand-htmx` colour.
+  pub fn filled() -> Icon { base().colored("brand-htmx",) }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
@@ -99,10 +105,26 @@ pub mod htmx {
 pub mod leptos {
   use super::*;
 
-  /// No distinct outlined style — `Outlined` falls back to `Filled`.
-  impl From<Variant,> for Icon {
-    fn from(v : Variant,) -> Icon {
-      match v {
+  /// Icon selector for [Leptos](https://leptos.dev/), a cutting-edge
+  /// full-stack Rust web framework.
+  ///
+  /// No distinct outlined style — [`Variant::Outlined`] falls back to
+  /// [`filled`].
+  ///
+  /// # Variants
+  /// | Variant  | Resolves to |
+  /// |----------|-------------|
+  /// | Default  | [`local`]   |
+  /// | Local    | [`local`]   |
+  /// | Filled   | [`filled`] — `SiLeptos` with `--brand-leptos` |
+  /// | Outlined | [`filled`] — no distinct outlined style |
+  pub struct Leptos(pub Variant,);
+
+  impl Leptos {
+    /// Resolves the wrapped [`Variant`] to an [`Icon`].
+    /// `Outlined` falls back to [`filled`] — no distinct outlined style exists.
+    pub fn get(self,) -> Icon {
+      match self.0 {
         | Variant::Default => local(),
         | Variant::Local => local(),
         | Variant::Filled => filled(),
@@ -120,9 +142,11 @@ pub mod leptos {
 
   /// Local SVG asset — monochrome, inherits colour from context.
   pub fn local() -> Icon { base().via_local("icons/logos/leptos.svg",) }
-  /// Canonical default — uses the local asset.
+
+  /// Canonical default — resolves to [`local`].
   pub fn default() -> Icon { local() }
-  /// Filled Simple Icons icon with `--brand-leptos` colour.
+
+  /// Filled [`SiLeptos`](icon::SiLeptos) with `--brand-leptos` colour.
   pub fn filled() -> Icon { base().via_leptos(icon::SiLeptos,).colored("brand-leptos",) }
 }
 
@@ -132,14 +156,26 @@ pub mod leptos {
 pub mod tailwind {
   use super::*;
 
-  /// Local-only — no Leptos icon available. All variants use the local asset.
-  impl From<Variant,> for Icon {
-    fn from(v : Variant,) -> Icon {
-      match v {
+  /// Icon selector for [Tailwind CSS](https://tailwindcss.com), a
+  /// utility-first CSS framework for rapid UI development.
+  ///
+  /// # Variants
+  /// | Variant  | Resolves to |
+  /// |----------|-------------|
+  /// | Default  | [`local`]   |
+  /// | Local    | [`local`]   |
+  /// | Filled   | [`filled`] — `SiTailwindcss` with `--brand-tailwind` |
+  /// | Outlined | [`outlined`] — `TbBrandTailwindOutline` with `--brand-tailwind` |
+  pub struct Tailwind(pub Variant,);
+
+  impl Tailwind {
+    /// Resolves the wrapped [`Variant`] to an [`Icon`].
+    pub fn get(self,) -> Icon {
+      match self.0 {
         | Variant::Default => local(),
         | Variant::Local => local(),
-        | Variant::Filled => local(),
-        | Variant::Outlined => local(),
+        | Variant::Filled => filled(),
+        | Variant::Outlined => outlined(),
       }
     }
   }
@@ -153,6 +189,22 @@ pub mod tailwind {
 
   /// Local SVG asset — monochrome, inherits colour from context.
   pub fn local() -> Icon { base() }
-  /// Canonical default — uses the local asset.
+
+  /// Canonical default — resolves to [`local`].
   pub fn default() -> Icon { local() }
+
+  /// Filled [`SiTailwindcss`](icon::SiTailwindcss) with `--brand-tailwind` colour.
+  pub fn filled() -> Icon {
+    base()
+      .with_source(Source::Leptos(icon::SiTailwindcss,),)
+      .colored("brand-tailwind",)
+  }
+
+  /// Outlined [`TbBrandTailwindOutline`](icon::TbBrandTailwindOutline) with `--brand-tailwind`
+  /// colour.
+  pub fn outlined() -> Icon {
+    base()
+      .with_source(Source::Leptos(icon::TbBrandTailwindOutline,),)
+      .colored("brand-tailwind",)
+  }
 }

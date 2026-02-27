@@ -1,4 +1,4 @@
-use crate::_prelude::*;
+use super::_prelude::*;
 
 //╔═══════════════════════════════════════════════════════════╗
 //║ Helix                                                     ║
@@ -6,14 +6,35 @@ use crate::_prelude::*;
 pub mod helix {
   use super::*;
 
-  /// Local-only — no Leptos icon available. All variants use the local asset.
-  impl From<Variant,> for Icon {
-    fn from(v : Variant,) -> Icon {
-      match v {
+  /// Icon selector for [Helix](https://helix-editor.com/), a post‑modern
+  /// modal text editor.
+  ///
+  /// No distinct outlined style — [`Variant::Outlined`] falls back to
+  /// [`filled`].
+  ///
+  /// # Variants
+  /// | Variant  | Resolves to |
+  /// |----------|-------------|
+  /// | Default  | [`local`]   |
+  /// | Local    | [`local`]   |
+  /// | Filled   | [`filled`] — `SiHelix` with `--brand-helix` |
+  /// | Outlined | [`filled`] — no distinct outlined style |
+  ///
+  /// # Example
+  /// ```rust
+  /// let icon = helix::Helix(Variant::Filled,).get(); 
+  /// ```
+  pub struct Helix(pub Variant,);
+
+  impl Helix {
+    /// Resolves the wrapped [`Variant`] to an [`Icon`].
+    /// `Outlined` falls back to [`filled`] — no distinct outlined style exists.
+    pub fn get(self,) -> Icon {
+      match self.0 {
         | Variant::Default => local(),
         | Variant::Local => local(),
-        | Variant::Filled => local(),
-        | Variant::Outlined => local(),
+        | Variant::Filled => filled(),
+        | Variant::Outlined => filled(),
       }
     }
   }
@@ -25,10 +46,21 @@ pub mod helix {
       .with_label("Helix",)
   }
 
-  /// Local SVG asset with `color-invert` for dark mode compatibility.
+  /// Local SVG asset with `color-invert` applied for dark mode compatibility.
   pub fn local() -> Icon { base().and_class("color-invert",) }
-  /// Canonical default — uses the local asset.
+
+  /// Canonical default — resolves to [`local`].
   pub fn default() -> Icon { local() }
+
+  /// Filled [`SiHelix`](icon::SiHelix) with `--brand-helix` colour.
+  pub fn filled() -> Icon {
+    base()
+      .with_source(Source::Leptos(icon::SiHelix,),)
+      .colored("brand-helix",)
+  }
+
+  /// Falls back to [`filled`] — no distinct outlined Leptos icon exists.
+  pub fn outlined() -> Icon { filled() }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
@@ -37,14 +69,26 @@ pub mod helix {
 pub mod ohmyposh {
   use super::*;
 
-  /// Local-only — no Leptos icon available. All variants use the local asset.
-  impl From<Variant,> for Icon {
-    fn from(v : Variant,) -> Icon {
-      match v {
-        | Variant::Default => local(),
-        | Variant::Local => local(),
-        | Variant::Filled => local(),
-        | Variant::Outlined => local(),
+  /// Icon selector for [Oh My Posh](https://ohmyposh.dev/), a highly
+  /// customisable cross‑platform prompt theme engine.
+  ///
+  /// Local-only — no upstream Leptos icon exists. All variants resolve
+  /// to the bundled SVG.
+  ///
+  /// # Variants
+  /// | Variant  | Resolves to |
+  /// |----------|-------------|
+  /// | Default  | [`local`]   |
+  /// | Local    | [`local`]   |
+  /// | Filled   | [`local`]   |
+  /// | Outlined | [`local`]   |
+  pub struct OhMyPosh(pub Variant,);
+
+  impl OhMyPosh {
+    /// Resolves the wrapped [`Variant`] to an [`Icon`].
+    pub fn get(self,) -> Icon {
+      match self.0 {
+        | Variant::Default | Variant::Local | Variant::Filled | Variant::Outlined => local(),
       }
     }
   }
@@ -56,10 +100,17 @@ pub mod ohmyposh {
       .with_label("Oh My Posh",)
   }
 
-  /// Local SVG asset with `color-invert` for dark mode compatibility.
+  /// Local SVG asset with `color-invert` applied for dark mode compatibility.
   pub fn local() -> Icon { base().and_class("color-invert",) }
-  /// Canonical default — uses the local asset.
+
+  /// Canonical default — resolves to [`local`].
   pub fn default() -> Icon { local() }
+
+  /// Falls back to [`local`] — no upstream Leptos icon yet.
+  pub fn filled() -> Icon { local() }
+
+  /// Falls back to [`local`] — no upstream Leptos icon yet.
+  pub fn outlined() -> Icon { local() }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
@@ -68,14 +119,26 @@ pub mod ohmyposh {
 pub mod ohmyzsh {
   use super::*;
 
-  /// Local-only — no Leptos icon available. All variants use the local asset.
-  impl From<Variant,> for Icon {
-    fn from(v : Variant,) -> Icon {
-      match v {
-        | Variant::Default => local(),
-        | Variant::Local => local(),
-        | Variant::Filled => local(),
-        | Variant::Outlined => local(),
+  /// Icon selector for [Oh My Zsh](https://ohmyz.sh/), a framework for
+  /// managing Zsh configuration.
+  ///
+  /// Local-only — no upstream Leptos icon exists. All variants resolve
+  /// to the bundled SVG.
+  ///
+  /// # Variants
+  /// | Variant  | Resolves to |
+  /// |----------|-------------|
+  /// | Default  | [`local`]   |
+  /// | Local    | [`local`]   |
+  /// | Filled   | [`local`]   |
+  /// | Outlined | [`local`]   |
+  pub struct OhMyZsh(pub Variant,);
+
+  impl OhMyZsh {
+    /// Resolves the wrapped [`Variant`] to an [`Icon`].
+    pub fn get(self,) -> Icon {
+      match self.0 {
+        | Variant::Default | Variant::Local | Variant::Filled | Variant::Outlined => local(),
       }
     }
   }
@@ -87,10 +150,17 @@ pub mod ohmyzsh {
       .with_label("Oh My Zsh",)
   }
 
-  /// Local SVG asset with `color-invert` for dark mode compatibility.
+  /// Local SVG asset with `color-invert` applied for dark mode compatibility.
   pub fn local() -> Icon { base().and_class("color-invert",) }
-  /// Canonical default — uses the local asset.
+
+  /// Canonical default — resolves to [`local`].
   pub fn default() -> Icon { local() }
+
+  /// Falls back to [`local`] — no upstream Leptos icon yet.
+  pub fn filled() -> Icon { local() }
+
+  /// Falls back to [`local`] — no upstream Leptos icon yet.
+  pub fn outlined() -> Icon { local() }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
@@ -99,14 +169,30 @@ pub mod ohmyzsh {
 pub mod starship {
   use super::*;
 
-  /// Local-only — no Leptos icon available. All variants use the local asset.
-  impl From<Variant,> for Icon {
-    fn from(v : Variant,) -> Icon {
-      match v {
+  /// Icon selector for [Starship](https://starship.rs/), a minimal,
+  /// fast, cross‑shell prompt.
+  ///
+  /// No distinct outlined style — [`Variant::Outlined`] falls back to
+  /// [`filled`].
+  ///
+  /// # Variants
+  /// | Variant  | Resolves to |
+  /// |----------|-------------|
+  /// | Default  | [`local`]   |
+  /// | Local    | [`local`]   |
+  /// | Filled   | [`filled`] — `SiStarship` with `--brand-starship` |
+  /// | Outlined | [`filled`] — no distinct outlined style |
+  pub struct Starship(pub Variant,);
+
+  impl Starship {
+    /// Resolves the wrapped [`Variant`] to an [`Icon`].
+    /// `Outlined` falls back to [`filled`] — no distinct outlined style exists.
+    pub fn get(self,) -> Icon {
+      match self.0 {
         | Variant::Default => local(),
         | Variant::Local => local(),
-        | Variant::Filled => local(),
-        | Variant::Outlined => local(),
+        | Variant::Filled => filled(),
+        | Variant::Outlined => filled(),
       }
     }
   }
@@ -118,10 +204,21 @@ pub mod starship {
       .with_label("Starship",)
   }
 
-  /// Local SVG asset with `color-invert` for dark mode compatibility.
+  /// Local SVG asset with `color-invert` applied for dark mode compatibility.
   pub fn local() -> Icon { base().and_class("color-invert",) }
-  /// Canonical default — uses the local asset.
+
+  /// Canonical default — resolves to [`local`].
   pub fn default() -> Icon { local() }
+
+  /// Filled [`SiStarship`](icon::SiStarship) with `--brand-starship` colour.
+  pub fn filled() -> Icon {
+    base()
+      .with_source(Source::Leptos(icon::SiStarship,),)
+      .colored("brand-starship",)
+  }
+
+  /// Falls back to [`filled`] — no distinct outlined Leptos icon exists.
+  pub fn outlined() -> Icon { filled() }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
@@ -130,14 +227,35 @@ pub mod starship {
 pub mod typst {
   use super::*;
 
-  /// Local-only — no Leptos icon available. All variants use the local asset.
-  impl From<Variant,> for Icon {
-    fn from(v : Variant,) -> Icon {
-      match v {
+  /// Icon selector for [Typst](https://typst.app/), a modern typesetting
+  /// system built as a fast alternative to LaTeX.
+  ///
+  /// No distinct outlined style — [`Variant::Outlined`] falls back to
+  /// [`filled`].
+  ///
+  /// # Variants
+  /// | Variant  | Resolves to |
+  /// |----------|-------------|
+  /// | Default  | [`local`]   |
+  /// | Local    | [`local`]   |
+  /// | Filled   | [`filled`] — `SiTypst` with `--brand-typst` |
+  /// | Outlined | [`filled`] — no distinct outlined style |
+  ///
+  /// # Example
+  /// ```rust
+  /// let icon = typst::Typst(Variant::Filled,).get(); 
+  /// ```
+  pub struct Typst(pub Variant,);
+
+  impl Typst {
+    /// Resolves the wrapped [`Variant`] to an [`Icon`].
+    /// `Outlined` falls back to [`filled`] — no distinct outlined style exists.
+    pub fn get(self,) -> Icon {
+      match self.0 {
         | Variant::Default => local(),
         | Variant::Local => local(),
-        | Variant::Filled => local(),
-        | Variant::Outlined => local(),
+        | Variant::Filled => filled(),
+        | Variant::Outlined => filled(),
       }
     }
   }
@@ -149,10 +267,21 @@ pub mod typst {
       .with_label("Typst",)
   }
 
-  /// Local SVG asset with `color-invert` for dark mode compatibility.
+  /// Local SVG asset with `color-invert` applied for dark mode compatibility.
   pub fn local() -> Icon { base().and_class("color-invert",) }
-  /// Canonical default — uses the local asset.
+
+  /// Canonical default — resolves to [`local`].
   pub fn default() -> Icon { local() }
+
+  /// Filled [`SiTypst`](icon::SiTypst) with `--brand-typst` colour.
+  pub fn filled() -> Icon {
+    base()
+      .with_source(Source::Leptos(icon::SiTypst,),)
+      .colored("brand-typst",)
+  }
+
+  /// Falls back to [`filled`] — no distinct outlined Leptos icon exists.
+  pub fn outlined() -> Icon { filled() }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
@@ -161,9 +290,21 @@ pub mod typst {
 pub mod vscode {
   use super::*;
 
-  impl From<Variant,> for Icon {
-    fn from(v : Variant,) -> Icon {
-      match v {
+  /// Icon selector for [Visual Studio Code](https://code.visualstudio.com/).
+  ///
+  /// # Variants
+  /// | Variant  | Resolves to |
+  /// |----------|-------------|
+  /// | Default  | [`local`]   |
+  /// | Local    | [`local`]   |
+  /// | Filled   | [`filled`] — `VsVscode` with `--brand-vscode` |
+  /// | Outlined | [`outlined`] — `TbBrandVscodeOutline` with `--brand-vscode` |
+  pub struct VsCode(pub Variant,);
+
+  impl VsCode {
+    /// Resolves the wrapped [`Variant`] to an [`Icon`].
+    pub fn get(self,) -> Icon {
+      match self.0 {
         | Variant::Default => local(),
         | Variant::Local => local(),
         | Variant::Filled => filled(),
@@ -179,20 +320,23 @@ pub mod vscode {
       .with_label("VS Code",)
   }
 
-  /// Local SVG asset with `color-invert` for dark mode compatibility.
+  /// Local SVG asset with `color-invert` applied for dark mode compatibility.
   pub fn local() -> Icon { base().and_class("color-invert",) }
-  /// Canonical default — uses the local asset.
+
+  /// Canonical default — resolves to [`local`].
   pub fn default() -> Icon { local() }
-  /// Filled VS Code icon with `--brand-vscode` colour.
+
+  /// Filled [`VsVscode`](icon::VsVscode) with `--brand-vscode` colour.
   pub fn filled() -> Icon {
     base()
-      .with_source(IconSource::Leptos(icon::VsVscode,),)
+      .with_source(Source::Leptos(icon::VsVscode,),)
       .colored("brand-vscode",)
   }
-  /// Outlined Tabler icon with `--brand-vscode` colour.
+
+  /// Outlined [`TbBrandVscodeOutline`](icon::TbBrandVscodeOutline) with `--brand-vscode` colour.
   pub fn outlined() -> Icon {
     base()
-      .with_source(IconSource::Leptos(icon::TbBrandVscodeOutline,),)
+      .with_source(Source::Leptos(icon::TbBrandVscodeOutline,),)
       .colored("brand-vscode",)
   }
 }
@@ -203,9 +347,25 @@ pub mod vscode {
 pub mod vscode_insiders {
   use super::*;
 
-  impl From<Variant,> for Icon {
-    fn from(v : Variant,) -> Icon {
-      match v {
+  /// Icon selector for [VS Code Insiders](https://code.visualstudio.com/insiders/),
+  /// the nightly preview build of Visual Studio Code.
+  ///
+  /// Mirrors [`vscode`] but uses the Insiders glyph and
+  /// `--brand-vscodeinsiders` colour token.
+  ///
+  /// # Variants
+  /// | Variant  | Resolves to |
+  /// |----------|-------------|
+  /// | Default  | [`local`]   |
+  /// | Local    | [`local`]   |
+  /// | Filled   | [`filled`] — `VsVscodeInsiders` with `--brand-vscodeinsiders` |
+  /// | Outlined | [`outlined`] — `TbBrandVscodeOutline` with `--brand-vscodeinsiders` |
+  pub struct VsCodeInsiders(pub Variant,);
+
+  impl VsCodeInsiders {
+    /// Resolves the wrapped [`Variant`] to an [`Icon`].
+    pub fn get(self,) -> Icon {
+      match self.0 {
         | Variant::Default => local(),
         | Variant::Local => local(),
         | Variant::Filled => filled(),
@@ -221,20 +381,24 @@ pub mod vscode_insiders {
       .with_label("VS Code Insiders",)
   }
 
-  /// Local SVG asset with `color-invert` for dark mode compatibility.
+  /// Local SVG asset with `color-invert` applied for dark mode compatibility.
   pub fn local() -> Icon { base().and_class("color-invert",) }
-  /// Canonical default — uses the local asset.
+
+  /// Canonical default — resolves to [`local`].
   pub fn default() -> Icon { local() }
-  /// Filled VS Code Insiders icon with `--brand-vscodeinsiders` colour.
+
+  /// Filled [`VsVscodeInsiders`](icon::VsVscodeInsiders) with `--brand-vscodeinsiders` colour.
   pub fn filled() -> Icon {
     base()
-      .with_source(IconSource::Leptos(icon::VsVscodeInsiders,),)
+      .with_source(Source::Leptos(icon::VsVscodeInsiders,),)
       .colored("brand-vscodeinsiders",)
   }
-  /// Outlined Tabler icon with `--brand-vscodeinsiders` colour.
+
+  /// Outlined [`TbBrandVscodeOutline`](icon::TbBrandVscodeOutline) with `--brand-vscodeinsiders`
+  /// colour.
   pub fn outlined() -> Icon {
     base()
-      .with_source(IconSource::Leptos(icon::TbBrandVscodeOutline,),)
+      .with_source(Source::Leptos(icon::TbBrandVscodeOutline,),)
       .colored("brand-vscodeinsiders",)
   }
 }
@@ -245,9 +409,22 @@ pub mod vscode_insiders {
 pub mod vscodium {
   use super::*;
 
-  impl From<Variant,> for Icon {
-    fn from(v : Variant,) -> Icon {
-      match v {
+  /// Icon selector for [VSCodium](https://vscodium.com/), a community‑driven,
+  /// telemetry‑free build of VS Code.
+  ///
+  /// # Variants
+  /// | Variant  | Resolves to |
+  /// |----------|-------------|
+  /// | Default  | [`local`]   |
+  /// | Local    | [`local`]   |
+  /// | Filled   | [`filled`] — `SiVscodium` with `--brand-vscodium` |
+  /// | Outlined | [`outlined`] — `VsCodeOss` with `--brand-vscodium` |
+  pub struct VsCodium(pub Variant,);
+
+  impl VsCodium {
+    /// Resolves the wrapped [`Variant`] to an [`Icon`].
+    pub fn get(self,) -> Icon {
+      match self.0 {
         | Variant::Default => local(),
         | Variant::Local => local(),
         | Variant::Filled => filled(),
@@ -263,20 +440,23 @@ pub mod vscodium {
       .with_label("VSCodium",)
   }
 
-  /// Local SVG asset with `color-invert` for dark mode compatibility.
+  /// Local SVG asset with `color-invert` applied for dark mode compatibility.
   pub fn local() -> Icon { base().and_class("color-invert",) }
-  /// Canonical default — uses the local asset.
+
+  /// Canonical default — resolves to [`local`].
   pub fn default() -> Icon { local() }
-  /// Filled Simple Icons icon with `--brand-vscodium` colour.
+
+  /// Filled [`SiVscodium`](icon::SiVscodium) with `--brand-vscodium` colour.
   pub fn filled() -> Icon {
     base()
-      .with_source(IconSource::Leptos(icon::SiVscodium,),)
+      .with_source(Source::Leptos(icon::SiVscodium,),)
       .colored("brand-vscodium",)
   }
-  /// Outlined VS Code OSS icon with `--brand-vscodium` colour.
+
+  /// Outlined [`VsCodeOss`](icon::VsCodeOss) with `--brand-vscodium` colour.
   pub fn outlined() -> Icon {
     base()
-      .with_source(IconSource::Leptos(icon::VsCodeOss,),)
+      .with_source(Source::Leptos(icon::VsCodeOss,),)
       .colored("brand-vscodium",)
   }
 }
@@ -287,14 +467,30 @@ pub mod vscodium {
 pub mod zed {
   use super::*;
 
-  /// Local-only — no Leptos icon available. All variants use the local asset.
-  impl From<Variant,> for Icon {
-    fn from(v : Variant,) -> Icon {
-      match v {
+  /// Icon selector for [Zed](https://zed.dev/), a high‑performance,
+  /// multiplayer code editor.
+  ///
+  /// No distinct outlined style — [`Variant::Outlined`] falls back to
+  /// [`filled`].
+  ///
+  /// # Variants
+  /// | Variant  | Resolves to |
+  /// |----------|-------------|
+  /// | Default  | [`local`]   |
+  /// | Local    | [`local`]   |
+  /// | Filled   | [`filled`] — `SiZedindustries` with `--brand-zed` |
+  /// | Outlined | [`filled`] — no distinct outlined style |
+  pub struct Zed(pub Variant,);
+
+  impl Zed {
+    /// Resolves the wrapped [`Variant`] to an [`Icon`].
+    /// `Outlined` falls back to [`filled`] — no distinct outlined style exists.
+    pub fn get(self,) -> Icon {
+      match self.0 {
         | Variant::Default => local(),
         | Variant::Local => local(),
-        | Variant::Filled => local(),
-        | Variant::Outlined => local(),
+        | Variant::Filled => filled(),
+        | Variant::Outlined => filled(),
       }
     }
   }
@@ -306,8 +502,19 @@ pub mod zed {
       .with_label("Zed",)
   }
 
-  /// Local SVG asset with `color-invert` for dark mode compatibility.
+  /// Local SVG asset with `color-invert` applied for dark mode compatibility.
   pub fn local() -> Icon { base().and_class("color-invert",) }
-  /// Canonical default — uses the local asset.
+
+  /// Canonical default — resolves to [`local`].
   pub fn default() -> Icon { local() }
+
+  /// Filled [`SiZedindustries`](icon::SiZedindustries) with `--brand-zed` colour.
+  pub fn filled() -> Icon {
+    base()
+      .with_source(Source::Leptos(icon::SiZedindustries,),)
+      .colored("brand-zed",)
+  }
+
+  /// Falls back to [`filled`] — no distinct outlined Leptos icon exists.
+  pub fn outlined() -> Icon { filled() }
 }

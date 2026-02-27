@@ -43,14 +43,17 @@ pub mod ansible {
 
   /// Local SVG asset — monochrome, inherits colour from context.
   pub fn local() -> Icon { base() }
+
   /// Canonical default — resolves to [`local`].
   pub fn default() -> Icon { local() }
+
   /// Filled [`SiAnsible`](icon::SiAnsible) with `--brand-ansible` colour.
   pub fn filled() -> Icon {
     base()
       .with_source(Source::Leptos(icon::SiAnsible,),)
       .colored("brand-ansible",)
   }
+
   /// Outlined [`TbBrandAnsibleOutline`](icon::TbBrandAnsibleOutline) with `--brand-ansible` colour.
   pub fn outlined() -> Icon {
     base()
@@ -136,14 +139,20 @@ pub mod docker {
 
   /// Local SVG asset — monochrome, inherits colour from context.
   pub fn local() -> Icon { base() }
+
   /// Canonical default — resolves to [`local`].
   pub fn default() -> Icon { local() }
+
   /// Filled [`FaDockerBrands`](icon::FaDockerBrands) with `--brand-docker` colour.
   pub fn filled() -> Icon {
     base()
       .with_source(Source::Leptos(icon::FaDockerBrands,),)
       .colored("brand-docker",)
   }
+
+  /// Falls back to [`filled`] — no distinct outlined style exists.
+  pub fn outlined() -> Icon { filled() }
+
   /// Simple Icons [`SiDocker`](icon::SiDocker) alternative with `--brand-docker` colour.
   pub fn si_simple() -> Icon {
     base()

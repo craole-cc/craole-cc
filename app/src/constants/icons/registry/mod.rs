@@ -1,10 +1,20 @@
-// mod data;
+mod data;
 mod devops;
-// mod languages;
+mod languages;
 mod social;
-// mod tools;
+mod tools;
 mod ui;
-// mod web;
+mod web;
+
+pub use {
+  data::*,
+  devops::*,
+  languages::*,
+  social::*,
+  tools::*,
+  ui::*,
+  web::*,
+};
 
 pub mod _prelude {
   pub use {
@@ -18,13 +28,3 @@ pub mod _prelude {
     },
   };
 }
-
-pub use {
-  // data::*,
-  devops::*,
-  // languages::*,
-  social::*,
-  // tools::*,
-  ui::*,
-  // web::*,
-};

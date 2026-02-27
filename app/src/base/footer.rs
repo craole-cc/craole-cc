@@ -67,12 +67,7 @@ pub fn Socials() -> impl IntoView {
     <div class="footer__socials">
       {socials()
         .into_iter()
-        .map(|entry| view! {
-          <SocialIcon
-            default=entry.default
-            filled=entry.filled
-          />
-        })
+        .map(|entry| view! { <SocialIcon default=entry.default filled=entry.filled /> })
         .collect::<Vec<_>>()}
     </div>
   }
@@ -96,11 +91,7 @@ pub fn Facets() -> impl IntoView {
             <a
               href=format!("/{}", facet.slug)
               title=facet.description
-              class=if is_last {
-                "footer__facet"
-              } else {
-                "footer__facet footer__facet--divided"
-              }
+              class=if is_last { "footer__facet" } else { "footer__facet footer__facet--divided" }
             >
               {facet.label}
             </a>
@@ -135,8 +126,7 @@ pub fn Copyright() -> impl IntoView {
             class="footer__tech footer__tech--rust"
           >
             "Rust"
-          </a>
-          " & "
+          </a> " & "
           <a
             href="https://leptos.dev"
             target="_blank"
