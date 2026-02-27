@@ -12,7 +12,7 @@
 //   radius()         — radii            (base/_tokens.scss via index)
 //   layer()          — z-index scale    (base/_tokens.scss via index)
 //   breakpoint()     — breakpoints      (base/_tokens.scss via index)
-//   --color-* vars              (theme/_tokens.scss — runtime)
+//   --color-* vars              (theme/_colors.scss — runtime)
 //
 // ───────────────────────────────────────────────────────────────────────────────
 //
@@ -33,8 +33,13 @@
 //   .site-nav__link           — individual nav anchor
 //   .site-nav__controls       — right-side control cluster (theme + hamburger)
 //   .site-nav__menu-btn       — hamburger toggle button (mobile only)
-//   .site-nav__bar            — animated hamburger icon lines
-//   .site-nav__bar--open      — X-state of the hamburger (JS)
+//
+// ICON SIZING
+//   Both .theme-btn (theme/_switch.scss) and .site-nav__menu-btn share the
+//   same token stack for a uniform controls cluster:
+//     button:  size(btn-h) × size(btn-h)  — 2.5rem / 40px tap target
+//     padding: spacing(2)                 — 0.5rem / 8px
+//     icon:    size(icon-lg)              — 1.75rem / 28px
 //
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -190,7 +195,7 @@
 
     &:hover {
       color: var(--color-text);
-      background: var(--color-bg-alt);
+      background: var(--color-bg-hover);
     }
 
     @include breakpoint(sm) {
@@ -218,7 +223,7 @@
       }
 
       &:hover {
-        background: rgba(255, 255, 255, 0.08);
+        background: var(--color-bg-hover);
 
         .site-nav--scrolled & {
           background: var(--color-primary-hover);
@@ -232,7 +237,7 @@
     }
   }
 
-  // -- Controls ──────────────────────────────────────────────────────────────
+  // -- Controls cluster ──────────────────────────────────────────────────────
 
   &__controls {
     display: flex;
@@ -241,14 +246,15 @@
     flex-shrink: 0;
   }
 
-  // -- Site Menu button ──────────────────────────────────────────────────────
+  // -- Hamburger button ──────────────────────────────────────────────────────
+  // Token stack mirrors .theme-btn in theme/_switch.scss exactly.
 
   &__menu-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: size(control);
-    height: size(control);
+    width: size(btn-h);
+    height: size(btn-h);
     padding: spacing(2);
     background: transparent;
     border: spacing(px) solid transparent;
@@ -260,15 +266,21 @@
       background-color duration(fast),
       border-color duration(fast);
 
+    svg {
+      width: size(icon-lg);
+      height: size(icon-lg);
+      display: block;
+    }
+
     .site-nav--scrolled & {
       color: var(--color-text);
     }
 
     &:hover {
-      background: rgba(255, 255, 255, 0.08);
+      background: var(--color-bg-hover);
 
       .site-nav--scrolled & {
-        background-color: var(--color-bg-alt);
+        background-color: var(--color-bg-hover);
         border-color: var(--color-border);
         color: var(--color-text);
       }
@@ -276,60 +288,6 @@
 
     @include breakpoint(sm) {
       display: none;
-    }
-  }
-
-  // -- Site Menu icon ────────────────────────────────────────────────────────
-
-  &__bar {
-    display: block;
-    position: relative;
-    width: 1.1rem;
-    height: 2px;
-    background: currentColor;
-    border-radius: 2px;
-    transition: background duration(base);
-
-    &::before,
-    &::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      width: 100%;
-      height: 2px;
-      background: currentColor;
-      border-radius: 2px;
-      transition:
-        top duration(base) duration(base),
-        bottom duration(base) duration(base),
-        transform duration(base) 0ms;
-    }
-
-    &::before {
-      top: -5px;
-    }
-    &::after {
-      bottom: -5px;
-    }
-
-    &--open {
-      background: transparent;
-
-      &::before {
-        top: 0;
-        transform: rotate(45deg);
-        transition:
-          top duration(base) 0ms,
-          transform duration(base) duration(base);
-      }
-
-      &::after {
-        bottom: 0;
-        transform: rotate(-45deg);
-        transition:
-          bottom duration(base) 0ms,
-          transform duration(base) duration(base);
-      }
     }
   }
 }

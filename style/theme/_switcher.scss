@@ -102,13 +102,18 @@
     }
 
     &:hover {
-      background-color: var(--color-bg-alt);
+      background-color: color-mix(in oklch, var(--color-text) 25%, transparent);
       color: var(--color-text);
     }
 
     &--active {
       color: var(--color-primary-text);
       background-color: var(--color-primary-muted);
+
+      &:hover {
+        background-color: var(--color-neutral-hover);
+        color: var(--color-primary-text);
+      }
     }
   }
 }

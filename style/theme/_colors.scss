@@ -61,6 +61,11 @@
   --color-bg-alt: oklch(0.95 0.008 var(--hue)); // zebra rows, inputs
   --color-bg-surface: oklch(1 0 0); // cards, panels
   --color-bg-overlay: oklch(1 0 0 / 0.65); // modal backdrops
+  --color-bg-hover: color-mix(
+    in oklch,
+    var(--color-text) 8%,
+    transparent
+  ); // generic interactive hover
 
   // -- Text ──────────────────────────────────────────────────
   --color-text: oklch(0.15 0.02 var(--hue)); // primary body text
@@ -107,6 +112,11 @@
   --color-bg-alt: oklch(0.19 0.02 var(--hue));
   --color-bg-surface: oklch(0.19 0.02 var(--hue));
   --color-bg-overlay: oklch(0.14 0.02 var(--hue) / 0.65);
+  --color-bg-hover: color-mix(
+    in oklch,
+    var(--color-text) 12%,
+    transparent
+  ); // slightly stronger — dark surfaces need more contrast
 
   // -- Text ──────────────────────────────────────────────────
   --color-text: oklch(0.94 0.008 var(--hue));

@@ -77,6 +77,18 @@ impl Theme {
     }
   }
 
+  /// Returns the outlined icon for the toggle button.
+  ///
+  /// Always outlined regardless of active state — the button is a control,
+  /// not an indicator. Use [`icons`] for the dropdown where filled = active.
+  pub fn icon(self,) -> Icon {
+    match self {
+      | Self::System => theme_system::outlined(),
+      | Self::Light => theme_light::outlined(),
+      | Self::Dark => theme_dark::outlined(),
+    }
+  }
+
   /// Returns the icon pair (rest, active) for this theme variant.
   ///
   /// - `rest` — outlined style, used in the toggle button when this theme is *not* currently
@@ -84,7 +96,7 @@ impl Theme {
   /// - `active` — filled style, used when this theme *is* active.
   pub fn icons(self,) -> (Icon, Icon,) {
     match self {
-      | Self::System => (theme_system::default(), theme_system::outlined(),),
+      | Self::System => (theme_system::default(), theme_system::filled(),),
       | Self::Light => (theme_light::outlined(), theme_light::filled(),),
       | Self::Dark => (theme_dark::outlined(), theme_dark::filled(),),
     }
@@ -314,12 +326,13 @@ pub fn ThemeProvider(children : Children,) -> impl IntoView {
 // Icons come entirely from the registry (ui.rs). No SVG is defined here —
 // swapping icon families is a one-line change in ui.rs.
 //
-// Toggle button: shows the *filled* icon of whichever theme is currently
-// active. Theme::resolve() reads matchMedia at runtime so System mode
-// correctly shows light or dark rather than the monitor icon.
+// Toggle button: always shows the *outlined* icon of whichever theme is
+// currently active. The button is a control, not a state indicator — outline
+// keeps it visually light and consistent regardless of selection.
 //
 // Dropdown: all three options with labelled icons, including the monitor
-// for System where its meaning is unambiguous.
+// for System where its meaning is unambiguous. Active option uses filled
+// icon to clearly indicate the current selection.
 
 /// Dropdown theme switcher with a toggle button and a three-option menu.
 ///
@@ -363,22 +376,23 @@ pub fn ThemeSwitcher(
   view! {
     <div class=format!("theme-dropdown {class}") on:click=move |e| e.stop_propagation()>
       // ── Toggle button ───────────────────────────────────────────────────
-      // Shows the filled icon for whichever theme is currently active.
+      // Always shows the outlined icon — the button is a control, not an
+      // indicator. Outlined keeps it visually lightweight at all times.
       <button
-      type="button"
-      class="theme-btn"
-      aria-label=move || theme.get().label()
-      title="Change theme"
-      on:click=move |_| set_open.update(|v| *v = !*v)
+        type="button"
+        class="theme-btn"
+        aria-label=move || theme.get().label()
+        title="Change theme"
+        on:click=move |_| set_open.update(|v| *v = !*v)
       >
-      {move || {
-      let (_rest, active) = theme.get().icons();
-      view! { <IconRender icon=active /> }
-      }}
+        {move || {
+          view! { <IconRender icon=theme.get().icon() /> }
+        }}
       </button>
 
       // ── Dropdown menu ───────────────────────────────────────────────────
       // All three options; active option is highlighted via CSS modifier.
+      // Active option uses filled icon; inactive options use outlined.
       {move || {
         open
           .get()
