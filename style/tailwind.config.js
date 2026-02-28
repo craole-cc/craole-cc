@@ -2,10 +2,6 @@
 export const content = [
   "*.html",
   "*.rs",
-  "./src/**/*.rs", // Scan all Rust files
-  "./app/src/**/*.rs", // If using workspace
-  "./frontend/src/**/*.rs", // Your frontend package
-  "./server/src/**/*.rs", // Your server package
 ];
 export const theme = {
   extend: {

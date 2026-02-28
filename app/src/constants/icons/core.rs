@@ -1,4 +1,4 @@
-use crate::_prelude::*;
+use crate::prelude::*;
 
 /// Where an icon's visual asset comes from.
 #[derive(Default, Clone, Copy,)]

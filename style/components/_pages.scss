@@ -1,0 +1,40 @@
+@use "../index" as *;
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// components/_pages.scss — Shell layout for non-home pages
+// ───────────────────────────────────────────────────────────────────────────────
+//
+// .page            — outer section, clears the fixed header
+// .page__header    — title + subtitle block
+// .page__title     — h1, inherits global heading styles
+// .page__sub       — supporting description line
+// .page__placeholder — temporary "coming soon" message
+// .page--{slug}    — per-page modifier hook for future accent colour overrides
+//
+// ═══════════════════════════════════════════════════════════════════════════════
+
+.page {
+  padding-top: size(header); // clear the fixed nav
+
+  &__header {
+    margin-bottom: spacing(8);
+  }
+
+  &__title {
+    color: var(--color-text);
+    margin-bottom: spacing(3);
+  }
+
+  &__sub {
+    font-size: fontsize(lg);
+    color: var(--color-text-muted);
+    max-width: 40rem;
+  }
+
+  &__placeholder {
+    padding-block: spacing(16);
+    text-align: center;
+    color: var(--color-text-faint);
+    font-style: italic;
+  }
+}

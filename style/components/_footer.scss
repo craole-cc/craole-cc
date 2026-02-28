@@ -4,34 +4,16 @@
 // components/_footer.scss — Footer component
 // ───────────────────────────────────────────────────────────────────────────────
 //
-// STRUCTURE (from footer.rs)
-// ─────────────────────────────────────────────────────────────────────────────
+// BEM STRUCTURE
 //   .footer
-//     <Divider />                          — top divider (no dot)
+//     <Divider />
 //     .footer__inner
-//       .footer__socials
-//         .footer__social-link.group       — each social icon anchor
-//           .footer__social-icon--default  — resting icon (muted fill)
-//           .footer__social-icon--hover    — hover icon (brand colour)
-//       .footer__facets
-//         .footer__facet[--divided]        — nav links with optional right border
-//     <Divider config=default_with_dot />  — middle divider WITH decorative dot
+//       .footer__socials / .footer__social-link / .footer__social-icon
+//     <Divider config=default_with_dot />
 //     .footer__bottom
-//       .footer__copyright
-//         .footer__name
-//           <span>                         — first name
-//           .footer__alias                 — accent colour alias name
-//           <span>                         — last name
-//         .footer__meta
-//           .footer__tech[--rust|--leptos] — tech credit links
-//
-// TOKENS USED
-//   spacing()  — spacing      (base/_tokens.scss via index)
-//   size()  — sizes        (base/_tokens.scss via index)
-//   fontsize()  — font sizes   (base/_tokens.scss via index)
-//   duration() — durations    (base/_tokens.scss via index)
-//   radius() — radii     (base/_tokens.scss via index)
-//   --color-* vars       (theme/_tokens.scss — runtime)
+//       .footer__copyright / .footer__name / .footer__alias
+//       .footer__meta / .footer__tech[--rust|--leptos]
+//     .footer__pages / .footer__page[--divided]
 //
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -116,11 +98,10 @@
     }
   }
 
-  // -- Facet nav ─────────────────────────────────────────────────────────────
+  // -- Page nav ──────────────────────────────────────────────────────────────
 
-  &__facets {
+  &__pages {
     display: flex;
-    gap: spacing(4);
     justify-content: center;
     align-items: center;
     font-size: fontsize(base);
@@ -128,22 +109,21 @@
     letter-spacing: 0.05em;
   }
 
-  &__facet {
+  &__page {
+    padding-inline: spacing(4);
     color: var(--color-text-muted);
     text-decoration: none;
-    cursor: pointer;
     transition:
       color duration(slow),
-      transform duration(slow),
-      font-weight duration(slow);
+      transform duration(slow);
 
     &:hover {
       color: var(--color-primary);
       transform: translateY(-2px);
     }
 
+    // Border sits between items — right edge of this item, gap before the next.
     &--divided {
-      padding-right: spacing(4);
       border-right: spacing(px) solid var(--color-neutral-border);
     }
   }
@@ -169,8 +149,6 @@
     letter-spacing: -0.02em;
     font-size: fontsize(md);
   }
-
-  // -- Alias — accent colour ──────────────────────────────────────────────────
 
   &__alias {
     font-size: fontsize(lg);
@@ -202,7 +180,6 @@
     &--rust {
       color: var(--brand-rust);
     }
-
     &--leptos {
       color: var(--brand-leptos);
     }

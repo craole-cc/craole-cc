@@ -1,20 +1,4 @@
-use {
-  crate::_prelude::*,
-  leptos::prelude::*,
-  leptos_meta::{
-    Stylesheet,
-    Title,
-    provide_meta_context,
-  },
-  leptos_router::{
-    StaticSegment,
-    components::{
-      Route,
-      Router,
-      Routes,
-    },
-  },
-};
+use crate::prelude::*;
 
 #[component]
 pub fn App() -> impl IntoView {
@@ -28,8 +12,10 @@ pub fn App() -> impl IntoView {
         <Header />
         <main>
           <Routes fallback=|| "Page not found.".into_view()>
-            <Route path=StaticSegment("") view=Home />
-          // <Route path=path!("/post/:id") view=BlogPost1 ssr=SsrMode::PartiallyBlocked />
+            <Route path=StaticSegment("") view=HomePage />
+            <Route path=StaticSegment("dev") view=DevPage />
+            <Route path=StaticSegment("art") view=ArtPage />
+            <Route path=StaticSegment("log") view=LogPage />
           </Routes>
         </main>
         <Footer />

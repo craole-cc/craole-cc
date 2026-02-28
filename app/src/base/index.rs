@@ -1,19 +1,4 @@
-use {
-  crate::_prelude::*,
-  leptos_meta::MetaTags,
-};
-
-//? Resolves system theme before first paint to prevent flash.
-//? Runs synchronously in <head> before any rendering.
-const THEME_INIT_SCRIPT : &str = "(function() {
-    var theme = document.documentElement.dataset.theme;
-    if (!theme || theme === 'system') {
-        document.documentElement.dataset.theme =
-            window.matchMedia('(prefers-color-scheme: dark)').matches
-                ? 'dark'
-                : 'light';
-    }
-})();";
+use crate::prelude::*;
 
 pub fn shell(options : LeptosOptions,) -> impl IntoView {
   view! {
@@ -28,7 +13,7 @@ pub fn shell(options : LeptosOptions,) -> impl IntoView {
 
         // ? inner_html is required — text nodes inside view! are
         // ? HTML-escaped, so plain string content never executes
-        <script inner_html=THEME_INIT_SCRIPT />
+        <script inner_html=THEME_INIT />
       </head>
       <body>
         <App />

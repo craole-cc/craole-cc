@@ -3,7 +3,7 @@ use {
     Icon,
     Source,
   },
-  crate::_prelude::*,
+  crate::prelude::*,
 };
 
 #[component]

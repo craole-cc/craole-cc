@@ -73,21 +73,22 @@
 //
 // ═══════════════════════════════════════════════════════════════════════════════
 
-// ── 1–2. CSS custom properties + runtime mechanics ───────────────────────────
+// -- 1–2. CSS custom properties + runtime mechanics ───────────────────────────
 @use "theme/colors"; // --color-* vars, :root, [data-theme]
 @use "theme/runtime"; // @property registrations, :root hue/chroma transitions
 
-// ── 3–6. Base layer ───────────────────────────────────────────────────────────
+// -- 3–6. Base layer ───────────────────────────────────────────────────────────
 @use "base/reset";
 @use "base/animations";
 @use "base/globals";
 @use "base/utilities";
 
-// ── 7. Theme UI ───────────────────────────────────────────────────────────────
+// -- 7. Theme UI ───────────────────────────────────────────────────────────────
 @use "theme/switcher"; // ThemeSwitcher button + dropdown
 
-// ── 8. Components ─────────────────────────────────────────────────────────────
+// -- 8. Components ─────────────────────────────────────────────────────────────
 @use "components/header";
 @use "components/divider";
 @use "components/hero";
 @use "components/footer";
+@use "components/pages";

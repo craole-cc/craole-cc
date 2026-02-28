@@ -8,7 +8,7 @@
 //   },
 //   prelude::*,
 // };
-use crate::_prelude::*;
+use crate::prelude::*;
 
 #[component]
 pub fn Stacks() -> impl IntoView {

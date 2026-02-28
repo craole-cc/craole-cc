@@ -1,50 +1,4 @@
-//! # Divider Components
-//!
-//! Flexible horizontal divider components with optional centered dots and tapered line effects.
-//!
-//! ## Features
-//!
-//! - **Tapered lines** - Gradients fade in/out at edges for elegant visual separation
-//! - **Optional dot accent** - Centered decorative dot using `--color-dot` token
-//! - **Flexible spacing** - Gap and padding configurable via CSS custom properties
-//! - **Builder pattern** - Chainable methods for clean configuration
-//! - **Theme-aware** - All colours and sizes derive from SCSS/OKLCH tokens
-//!
-//! ## Quick Start
-//!
-//! ```rust
-//! use crate::_prelude::*;
-//!
-//! #[component]
-//! pub fn MyPage() -> impl IntoView {
-//!   view! {
-//!     <h1>"Section 1"</h1>
-//!
-//!     // Simple full-width line
-//!     <Divider />
-//!
-//!     // Centered line with accent dot (uses --color-dot token)
-//!     <Divider config=Divider::default_with_dot() />
-//!   }
-//! }
-//! ```
-//!
-//! ## Layout behaviour
-//!
-//! - Plain `<Divider />` — full width, no dot
-//! - `default_with_dot()` — adds `.divider--centered` modifier, which applies `margin-inline: auto;
-//!   max-width: 36rem` via SCSS. No inline margin CSS needed.
-//!
-//! ## Spacing
-//!
-//! Gap widths beside the dot are passed as CSS custom properties so SCSS can
-//! consume them without needing generated class names:
-//!
-//!   `style="--divider-gap-left: 1rem; --divider-gap-right: 1rem;"`
-//!
-//! Units follow the standard spacing scale (1 unit = 0.25rem = 4px).
-
-use crate::_prelude::*;
+use crate::prelude::*;
 
 //╔═══════════════════════════════════════════════════════════╗
 //║ Configuration                                             ║
@@ -201,20 +155,4 @@ pub fn Divider(
 
     </div>
   }
-}
-
-/// Legacy simple divider. Use [`Divider`] instead.
-#[component]
-pub fn DividerHr() -> impl IntoView {
-  view! { <Divider /> }
-}
-
-/// Legacy dot divider. Use [`Divider`] with `.with_dot()` instead.
-#[component]
-pub fn DividerHrDot(
-  /// Ignored — dot colour now comes from `--color-dot` in the theme tokens.
-  /// Kept for API compatibility only.
-  _dot_color : Option<&'static str,>,
-) -> impl IntoView {
-  view! { <Divider config=Divider::default_with_dot() /> }
 }
