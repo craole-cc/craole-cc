@@ -15,7 +15,7 @@ pub fn Projects() -> impl IntoView {
       title :       "Full-Stack Portfolio",
       description : "Rust-powered portfolio site with Leptos + Axum, showcasing modern full-stack \
                      development with HTMX and Tailwind",
-      tags :        vec!["Rust", "Leptos", "Axum", "HTMX", "Tailwind"],
+      tags :        vec!["Rust", "Leptos", "Axum", "HTMX"],
       status :      "🚀 Active",
     },
     Project {
@@ -41,13 +41,10 @@ pub fn Projects() -> impl IntoView {
   ];
 
   view! {
-    <section id="projects" class="mb-20">
-      <h2 class=format!("mb-8 text-4xl font-bold {NEUTRAL_TEXT_800}")>"🚀 Projects"</h2>
-      <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-        {projects
-          .into_iter()
-          .map(|project| view! { <ProjectCard project=project /> })
-          .collect::<Vec<_>>()}
+    <section id="projects" class="projects">
+      <h2>"🚀 Projects"</h2>
+      <div class="projects__grid">
+        {projects.into_iter().map(|p| view! { <ProjectCard project=p /> }).collect_view()}
       </div>
     </section>
   }
@@ -56,33 +53,15 @@ pub fn Projects() -> impl IntoView {
 #[component]
 fn ProjectCard(project : Project,) -> impl IntoView {
   view! {
-    <div class=format!(
-      "p-6 rounded-xl border shadow-sm transition-all duration-300 \
-      hover:shadow-lg hover:-translate-y-1 \
-      group backdrop-blur {NEUTRAL_BG_SURFACE} {NEUTRAL_BORDER_300} hover:{PRIMARY_BORDER_400}",
-    )>
-      <div class="flex justify-between items-start mb-3">
-        <h3 class=format!(
-          "text-2xl font-semibold transition-colors {NEUTRAL_TEXT_800} group-hover:{PRIMARY_TEXT_600}",
-        )>{project.title}</h3>
-        <span class="ml-2 text-xs font-medium whitespace-nowrap">{project.status}</span>
-      </div>
-
-      <p class=format!("mb-4 leading-relaxed {NEUTRAL_TEXT_600}")>{project.description}</p>
-
-      <div class="flex flex-wrap gap-2">
-        {project
-          .tags
-          .into_iter()
-          .map(|tag| {
-            view! {
-              <span class=format!(
-                "py-1 px-3 text-xs font-medium rounded-md border {PRIMARY_TEXT_600} {PRIMARY_BG_100} {PRIMARY_BORDER_300}",
-              )>{tag}</span>
-            }
-          })
-          .collect::<Vec<_>>()}
-      </div>
-    </div>
+    <article class="project-card">
+      <header>
+        <h3>{project.title}</h3>
+        <span>{project.status}</span>
+      </header>
+      <p>{project.description}</p>
+      <ul role="list">
+        {project.tags.into_iter().map(|tag| view! { <li>{tag}</li> }).collect_view()}
+      </ul>
+    </article>
   }
 }

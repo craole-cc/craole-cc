@@ -1,43 +1,29 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// theme/_colors.scss — Single source of truth for all color in the project
+// theme/_colors.scss — Site semantic palette
 // ───────────────────────────────────────────────────────────────────────────────
 //
-// STRUCTURE
-//   1. Master controls   — change --hue here to retheme the entire site
-//   2. Site palette      — semantic tokens (bg, text, primary, secondary, etc.)
-//      a. Light theme    — :root, [data-theme="light"]
-//      b. Dark theme     — [data-theme="dark"]
-//   3. Brand colors      — named swatches per brand, then --brand-* tokens
-//      a. Swatches       — every named brand color as a CSS custom property
-//      b. Tokens         — --brand-{name} pointing at the right swatch
-//      c. Dark overrides — [data-theme="dark"] swaps illegible values
+// SINGLE RESPONSIBILITY
+//   This file defines --color-* tokens only. These are YOUR design decisions —
+//   derived from --hue, participating in the theme system, expressing intent.
 //
-// RULES
-//   - Hex values appear ONLY in this file. Nowhere else in the codebase.
-//   - _utilities.scss consumes --brand-* and --color-* via var().
-//   - Rust icon registry uses class name strings only ("fill-rust").
-//   - No Tailwind color classes. No inline style strings. No hex in Rust.
+//   Brand colors (external facts about third-party companies) live in
+//   theme/_brands.scss and are entirely separate from this file.
 //
 // HOW TO RETHEME
-//   Change --hue (0–360). Common values:
+//   Change --hue in section 1. Common values:
 //     164 → teal (default)   220 → blue    270 → purple
 //      25 → orange           340 → rose
 //
-// HOW TO UPDATE A BRAND COLOR
-//   Find the brand's swatch block in section 3a. Change the hex there.
-//   The --brand-* token in 3b and the dark override in 3c pick it up
-//   automatically via var().
-//
 // OKLCH PRIMER
 //   oklch(lightness chroma hue)
-//   Perceptually uniform — same L value = same perceived brightness
-//   regardless of hue. Contrast ratios are reliable without per-hue tweaks.
+//   Perceptually uniform — same L = same perceived brightness across hues.
+//   Reliable contrast ratios without per-hue tweaks.
 //
 // ═══════════════════════════════════════════════════════════════════════════════
 
 // ╔═══════════════════════════════════════════════════════════╗
 // ║ 1. Master Controls                                        ║
-// ║    The ONE place to edit for a full site retheme          ║
+// ║    The ONE place to edit for a full site retheme.         ║
 // ╚═══════════════════════════════════════════════════════════╝
 
 :root {
@@ -49,7 +35,7 @@
 }
 
 // ╔═══════════════════════════════════════════════════════════╗
-// ║ 2a. Site Palette — Light Theme                            ║
+// ║ 2. Light theme                                            ║
 // ╚═══════════════════════════════════════════════════════════╝
 
 :root,
@@ -61,11 +47,7 @@
   --color-bg-alt: oklch(0.95 0.008 var(--hue)); // zebra rows, inputs
   --color-bg-surface: oklch(1 0 0); // cards, panels
   --color-bg-overlay: oklch(1 0 0 / 0.65); // modal backdrops
-  --color-bg-hover: color-mix(
-    in oklch,
-    var(--color-text) 8%,
-    transparent
-  ); // generic interactive hover
+  --color-bg-hover: color-mix(in oklch, var(--color-text) 8%, transparent);
 
   // -- Text ──────────────────────────────────────────────────
   --color-text: oklch(0.15 0.02 var(--hue)); // primary body text
@@ -101,7 +83,7 @@
 }
 
 // ╔═══════════════════════════════════════════════════════════╗
-// ║ 2b. Site Palette — Dark Theme                             ║
+// ║ 3. Dark theme                                             ║
 // ╚═══════════════════════════════════════════════════════════╝
 
 [data-theme="dark"] {
@@ -112,18 +94,14 @@
   --color-bg-alt: oklch(0.19 0.02 var(--hue));
   --color-bg-surface: oklch(0.19 0.02 var(--hue));
   --color-bg-overlay: oklch(0.14 0.02 var(--hue) / 0.65);
-  --color-bg-hover: color-mix(
-    in oklch,
-    var(--color-text) 12%,
-    transparent
-  ); // slightly stronger — dark surfaces need more contrast
+  --color-bg-hover: color-mix(in oklch, var(--color-text) 12%, transparent);
 
   // -- Text ──────────────────────────────────────────────────
   --color-text: oklch(0.94 0.008 var(--hue));
   --color-text-muted: oklch(0.65 0.015 var(--hue));
   --color-text-faint: oklch(0.42 0.01 var(--hue));
 
-  // -- Primary (higher L for dark bg contrast) ───────────────
+  // -- Primary ───────────────────────────────────────────────
   --color-primary: oklch(0.72 var(--chroma) var(--hue));
   --color-primary-text: oklch(0.82 var(--chroma) var(--hue));
   --color-primary-muted: oklch(0.72 var(--chroma) var(--hue) / 0.15);
@@ -144,222 +122,9 @@
   --color-neutral-hover: oklch(0.65 0.01 var(--hue) / 0.1);
   --color-neutral-border: oklch(0.28 0.015 var(--hue));
 
-  // -- UI ─────────────────────────────────────────────
+  // -- UI Chrome ─────────────────────────────────────────────
   --color-border: oklch(0.22 0.02 var(--hue));
   --color-ring: oklch(0.72 var(--chroma) var(--hue));
   --color-divider: oklch(0.28 0.015 var(--hue));
   --color-dot: oklch(0.6 var(--chroma) var(--hue));
-}
-
-// ╔═══════════════════════════════════════════════════════════╗
-// ║ 3a. Brand Swatches                                        ║
-// ║                                                           ║
-// ║ These are the raw palette — not consumed directly.        ║
-// ║ Tokens in 3b point at these. Change hex here only.        ║
-// ╚═══════════════════════════════════════════════════════════╝
-
-:root {
-  // -- Ansible ───────────────────────────────────────────────
-  --swatch-ansible-red: #ee0000;
-  --swatch-ansible-white: #ffffff;
-
-  // -- Docker ────────────────────────────────────────────────
-  --swatch-docker-moby-blue: #2496ed;
-  --swatch-docker-whale-blue: #0d99ff;
-  --swatch-docker-light-blue: #e5f2fc;
-  --swatch-docker-off-black: #17191e;
-
-  // -- Facebook ──────────────────────────────────────────────
-  --swatch-facebook-blue: #1877f2;
-  --swatch-facebook-dark-blue: #0866ff;
-
-  // -- Git ───────────────────────────────────────────────────
-  --swatch-git-orange: #f05032;
-  --swatch-git-dark-orange: #cc412b;
-
-  // -- GitHub ────────────────────────────────────────────────
-  --swatch-github-blue: #4078c0;
-  --swatch-github-green: #6cc644;
-  --swatch-github-red: #bd2c00;
-  --swatch-github-purple: #6e5494;
-  --swatch-github-dark-green: #2d6a28;
-  --swatch-github-black: #000000;
-  --swatch-github-white: #ffffff;
-
-  // -- GitLab ────────────────────────────────────────────────
-  --swatch-gitlab-orange: #fca326;
-  --swatch-gitlab-red: #e24329;
-  --swatch-gitlab-purple: #554488;
-  --swatch-gitlab-dark-orange: #e68f00;
-
-  // -- Gmail ─────────────────────────────────────────────────
-  --swatch-gmail-blue: #4285f4;
-  --swatch-gmail-green: #34a853;
-  --swatch-gmail-red: #ea4335;
-  --swatch-gmail-yellow: #fbbc05;
-
-  // -- Instagram ─────────────────────────────────────────────
-  --swatch-instagram-royal-blue: #405de6;
-  --swatch-instagram-purple-blue: #5851db;
-  --swatch-instagram-purple: #833ab4;
-  --swatch-instagram-purple-red: #c13584;
-  --swatch-instagram-rose: #e1306c;
-  --swatch-instagram-bright-red: #fd1d1d;
-  --swatch-instagram-red-orange: #f56040;
-  --swatch-instagram-orange: #f77737;
-  --swatch-instagram-orange-yellow: #fcaf45;
-  --swatch-instagram-yellow: #ffdc80;
-
-  // -- [Java|Type]Script ─────────────────────────────────
-  --swatch-js-yellow: #f7df1e;
-  --swatch-js-black: #000000;
-  --swatch-ts-blue: #3178c6;
-  --swatch-ts-light-blue: #2f72bc;
-
-  // -- Kubernetes ────────────────────────────────────────────
-  --swatch-kubernetes-blue: #326ce5;
-  --swatch-kubernetes-white: #ffffff;
-
-  // -- Leptos ────────────────────────────────────────────────
-  --swatch-leptos-red: #e82d37;
-  --swatch-leptos-indigo: #171138;
-  --swatch-leptos-white: #ffffff;
-
-  // -- LinkedIn ──────────────────────────────────────────────
-  --swatch-linkedin-blue: #0a66c2;
-  --swatch-linkedin-dark-blue: #004182;
-
-  // -- Linux ─────────────────────────────────────────────────
-  --swatch-linux-yellow: #fcc624;
-  --swatch-linux-white: #ffffff;
-  --swatch-linux-black: #000000;
-  --swatch-linux-dark-purple: #873792;
-
-  // -- Nushell ───────────────────────────────────────────────
-  --swatch-nushell-green: #33a65c;
-  --swatch-nushell-gray: #1a1a1a;
-
-  // -- Nix ───────────────────────────────────────────────────
-  --swatch-nix-dark-blue: #5277c3;
-  --swatch-nix-light-blue: #7ebae4;
-
-  // -- PowerShell ────────────────────────────────────────────
-  --swatch-powershell-blue: #017cba;
-  --swatch-powershell-light-blue: #00a4ef;
-
-  // -- Python ────────────────────────────────────────────────
-  --swatch-python-blue: #3776ab;
-  --swatch-python-yellow: #ffd43b;
-
-  // -- Raspberry Pi ──────────────────────────────────────────
-  --swatch-raspberry-red: #c51d4a;
-  --swatch-raspberry-green: #6ac146;
-  --swatch-raspberry-dark-red: #a11235;
-
-  // -- Rust ──────────────────────────────────────────────────
-  --swatch-rust-orange: #d34516;
-  --swatch-rust-dark-blue: #1e2650;
-  --swatch-rust-blue: #28607f;
-  --swatch-rust-silver: #67737a;
-  --swatch-rust-green: #61784d;
-
-  // -- Bash / POSIX ──────────────────────────────────────────
-  --swatch-bash-green: #4eaa25;
-  --swatch-bash-black: #000000;
-
-  // -- Terraform ─────────────────────────────────────────────
-  --swatch-terraform-purple: #7b42bc;
-  --swatch-terraform-white: #ffffff;
-
-  // -- WhatsApp ──────────────────────────────────────────────
-  --swatch-whatsapp-green: #25d366;
-  --swatch-whatsapp-dark-green: #128c7e;
-
-  // -- VSCode ───────────────────────────────────────────────
-  --swatch-vscode-blue: #007acc;
-  --swatch-vscode-dark-blue: #005f9e;
-  --swatch-vscodeinsiders-dark-green: #1a9980;
-  --swatch-vscodeinsiders-green: #24bfa5;
-  --swatch-vscodium-coral: #be4b28;
-  --swatch-vscodium-light-coral: #f08060;
-
-  // -- Windows ───────────────────────────────────────────────
-  --swatch-windows-blue: #0078d6;
-  --swatch-windows-cyan: #00bcf2;
-  --swatch-windows-red: #ff6b35;
-  --swatch-windows-yellow: #ffd23f;
-  --swatch-windows-dark-blue: #005a9e;
-
-  // -- X (formerly Twitter) ──────────────────────────────────
-  --swatch-x-white: #ffffff;
-  --swatch-x-black: #000000;
-
-  // -- Zig ───────────────────────────────────────────────────
-  --swatch-zig-orange: #f7a41d;
-  --swatch-zig-black: #000000;
-}
-
-// ╔═══════════════════════════════════════════════════════════╗
-// ║ 3b. Brand Tokens — Light defaults                         ║
-// ║                                                           ║
-// ║ --brand-{name} is what _utilities.scss and components     ║
-// ║ consume. They point at swatches — never raw hex.          ║
-// ║                                                           ║
-// ║ currentColor = inherits --color-text, adapts automatically║
-// ╚═══════════════════════════════════════════════════════════╝
-
-:root {
-  --brand-ansible: var(--swatch-ansible-red);
-  --brand-bash: var(--swatch-bash-green);
-  --brand-docker: var(--swatch-docker-moby-blue);
-  --brand-facebook: var(--swatch-facebook-blue);
-  --brand-git: var(--swatch-git-orange);
-  --brand-github: var(--swatch-github-black);
-  --brand-gitlab: var(--swatch-gitlab-orange);
-  --brand-gmail: var(--swatch-gmail-blue);
-  --brand-instagram: var(--swatch-instagram-rose);
-  --brand-javascript: var(--swatch-js-yellow);
-  --brand-kubernetes: var(--swatch-kubernetes-blue);
-  --brand-leptos: var(--swatch-leptos-red);
-  --brand-linkedin: var(--swatch-linkedin-blue);
-  --brand-linux: var(--swatch-linux-yellow);
-  --brand-nix: var(--swatch-nix-dark-blue);
-  --brand-nushell: var(--swatch-nushell-green);
-  --brand-posix: var(--swatch-bash-green);
-  --brand-powershell: var(--swatch-powershell-light-blue);
-  --brand-python: var(--swatch-python-yellow);
-  --brand-raspberry: var(--swatch-raspberry-red);
-  --brand-rust: var(--swatch-rust-orange);
-  --brand-terraform: var(--swatch-terraform-purple);
-  --brand-typescript: var(--swatch-ts-blue);
-  --brand-vscode: var(--swatch-vscode-blue);
-  --brand-vscodeinsiders: var(--swatch-vscodeinsiders-dark-green);
-  --brand-vscodium: var(--swatch-vscodium-coral);
-  --brand-whatsapp: var(--swatch-whatsapp-green);
-  --brand-windows: var(--swatch-windows-blue);
-  --brand-x: var(--swatch-x-black);
-  --brand-zig: var(--swatch-zig-orange);
-}
-
-// ╔═══════════════════════════════════════════════════════════╗
-// ║ 3c. Brand Tokens — Dark overrides                         ║
-// ║                                                           ║
-// ║ Only brands where the light value becomes illegible       ║
-// ║ against a dark surface. Everything else stays as-is.      ║
-// ╚═══════════════════════════════════════════════════════════╝
-
-[data-theme="dark"] {
-  --brand-ansible: var(--swatch-ansible-white);
-  --brand-bash: var(--swatch-linux-white);
-  --brand-github: var(--swatch-github-white);
-  --brand-kubernetes: var(--swatch-kubernetes-white);
-  --brand-linux: var(--swatch-linux-white);
-  --brand-nix: var(--swatch-nix-light-blue);
-  --brand-posix: var(--swatch-linux-white);
-  --brand-python: var(--swatch-python-blue);
-  --brand-terraform: var(--swatch-terraform-white);
-  --brand-vscodeinsiders: var(--swatch-vscodeinsiders-green);
-  --brand-vscodium: var(--swatch-vscodium-light-coral);
-  --brand-x: var(--swatch-x-white);
-  --brand-zig: var(--swatch-linux-white);
 }

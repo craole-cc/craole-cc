@@ -16,15 +16,6 @@
   padding-top: 4rem;
   overflow: hidden;
 
-  // Fade the bottom of the hero into the page background.
-  //
-  // Three-tier fallback:
-  //   1. Modern Chrome/Edge/Safari  → @supports CSS scroll-driven animation
-  //   2. Firefox / partial support  → JS sets --hero-fade-opacity on scroll
-  //   3. No JS + no support         → static opacity: 0.25 (subtle hint)
-  //
-  // NOTE: overflow: hidden on .hero breaks scroll(root) in some engines,
-  // so we use a named scroll timeline declared on :root instead.
   &::after {
     content: "";
     position: absolute;
@@ -39,22 +30,16 @@
       var(--color-bg) 100%
     );
     pointer-events: none;
-
-    // Tier 3 — static fallback (Firefox, no-JS, legacy)
     opacity: var(--hero-fade-opacity, 0.25);
     transition: opacity 600ms ease;
 
-    // Tier 1 — CSS scroll-driven (Chrome 115+, Edge 115+, Safari 18+)
-    // Gate on both properties to exclude Firefox Nightly's partial impl.
     @supports (animation-timeline: scroll()) and (animation-range: 0% 100%) {
       opacity: 0;
       animation: hero-bottom-fade linear both;
-      animation-timeline: --hero-scroll; // named timeline from :root
+      animation-timeline: --hero-scroll;
       animation-range: 8% 40%;
     }
   }
-
-  // -- Backdrop ─────────────────────────────────────────────
 
   &__backdrop {
     position: absolute;
@@ -73,8 +58,6 @@
     animation: hero-fade 75s linear infinite;
     will-change: opacity;
   }
-
-  // -- Scrim ─────────────────────────────────────────────────
 
   &__scrim {
     position: absolute;
@@ -107,8 +90,6 @@
     pointer-events: none;
   }
 
-  // -- Content ───────────────────────────────────────────────
-
   &__content {
     position: relative;
     z-index: 5;
@@ -127,8 +108,6 @@
       }
     }
   }
-
-  // -- Badge ─────────────────────────────────────────────────
 
   &__badge {
     display: inline-flex;
@@ -156,8 +135,6 @@
     flex-shrink: 0;
   }
 
-  // -- Headline ──────────────────────────────────────────────
-
   &__headline {
     font-size: clamp(2.5rem, 7vw, 5.25rem);
     font-weight: 800;
@@ -174,8 +151,6 @@
     }
   }
 
-  // -- Sub ────────────────────────────────────────────────────
-
   &__sub {
     font-size: 1rem;
     color: rgba(255, 255, 255, 0.8);
@@ -184,8 +159,6 @@
     margin: 0 0 2.25rem;
     text-shadow: 0 1px 6px oklch(0 0 0 / 0.35);
   }
-
-  // -- CTAs ───────────────────────────────────────────────────
 
   &__ctas {
     display: flex;
@@ -251,8 +224,6 @@
     }
   }
 
-  // -- Scroll hint ────────────────────────────────────────────
-
   &__scroll {
     display: flex;
     align-items: center;
@@ -275,8 +246,6 @@
     transform-origin: left;
     animation: scroll-pulse 2.2s ease-in-out infinite;
   }
-
-  // -- Stats ──────────────────────────────────────────────────
 
   &__stats {
     position: absolute;
@@ -339,23 +308,12 @@
   }
 }
 
-// -- Global: named scroll timeline ─────────────────────────────────────────
-//
-// Declared on :root so the ::after pseudo-element inside .hero can reference
-// it even though .hero itself has overflow: hidden (which would otherwise
-// break scroll(root) lookups in some engines).
-//
-// Only applied when the browser actually supports scroll-driven animations.
 @supports (animation-timeline: scroll()) and (animation-range: 0% 100%) {
   :root {
     scroll-timeline: --hero-scroll block;
   }
 }
 
-// -- Keyframes ─────────────────────────────────────────────────────────────
-
-// Scroll-driven bottom fade (Tier 1 — CSS path).
-// hero-fade and ken-burns are defined in base/_animations.scss.
 @keyframes hero-bottom-fade {
   from {
     opacity: 0;

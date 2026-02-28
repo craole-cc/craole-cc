@@ -40,14 +40,14 @@ pub mod helix {
   }
 
   fn base() -> Icon {
-    Icon::new_local("icons/logos/helix.svg",)
+    Icon::new()
       .with_link("https://helix-editor.com/",)
       .with_tooltip("Post-modern modal text editor",)
       .with_label("Helix",)
   }
 
-  /// Local SVG asset with `color-invert` applied for dark mode compatibility.
-  pub fn local() -> Icon { base().and_class("color-invert",) }
+  /// Local SVG asset — monochrome, inherits colour from context.
+  pub fn local() -> Icon { base().via_local("icons/logos/helix.svg",) }
 
   /// Canonical default — resolves to [`local`].
   pub fn default() -> Icon { local() }
@@ -94,64 +94,14 @@ pub mod ohmyposh {
   }
 
   fn base() -> Icon {
-    Icon::new_local("icons/logos/ohmyposh.svg",)
+    Icon::new()
       .with_link("https://ohmyposh.dev/",)
       .with_tooltip("Prompt theme engine for any shell",)
       .with_label("Oh My Posh",)
   }
 
-  /// Local SVG asset with `color-invert` applied for dark mode compatibility.
-  pub fn local() -> Icon { base().and_class("color-invert",) }
-
-  /// Canonical default — resolves to [`local`].
-  pub fn default() -> Icon { local() }
-
-  /// Falls back to [`local`] — no upstream Leptos icon yet.
-  pub fn filled() -> Icon { local() }
-
-  /// Falls back to [`local`] — no upstream Leptos icon yet.
-  pub fn outlined() -> Icon { local() }
-}
-
-//╔═══════════════════════════════════════════════════════════╗
-//║ Oh My Zsh                                                 ║
-//╚═══════════════════════════════════════════════════════════╝
-pub mod ohmyzsh {
-  use super::*;
-
-  /// Icon selector for [Oh My Zsh](https://ohmyz.sh/), a framework for
-  /// managing Zsh configuration.
-  ///
-  /// Local-only — no upstream Leptos icon exists. All variants resolve
-  /// to the bundled SVG.
-  ///
-  /// # Variants
-  /// | Variant  | Resolves to |
-  /// |----------|-------------|
-  /// | Default  | [`local`]   |
-  /// | Local    | [`local`]   |
-  /// | Filled   | [`local`]   |
-  /// | Outlined | [`local`]   |
-  pub struct OhMyZsh(pub Variant,);
-
-  impl OhMyZsh {
-    /// Resolves the wrapped [`Variant`] to an [`Icon`].
-    pub fn get(self,) -> Icon {
-      match self.0 {
-        | Variant::Default | Variant::Local | Variant::Filled | Variant::Outlined => local(),
-      }
-    }
-  }
-
-  fn base() -> Icon {
-    Icon::new_local("icons/logos/ohmyzsh.svg",)
-      .with_link("https://ohmyz.sh/",)
-      .with_tooltip("Framework for managing Zsh configuration",)
-      .with_label("Oh My Zsh",)
-  }
-
-  /// Local SVG asset with `color-invert` applied for dark mode compatibility.
-  pub fn local() -> Icon { base().and_class("color-invert",) }
+  /// Local SVG asset — monochrome, inherits colour from context.
+  pub fn local() -> Icon { base().via_local("icons/logos/ohmyposh.svg",) }
 
   /// Canonical default — resolves to [`local`].
   pub fn default() -> Icon { local() }
@@ -198,14 +148,14 @@ pub mod starship {
   }
 
   fn base() -> Icon {
-    Icon::new_local("icons/logos/starship.svg",)
+    Icon::new()
       .with_link("https://starship.rs/",)
       .with_tooltip("Minimal, fast, cross-shell prompt",)
       .with_label("Starship",)
   }
 
-  /// Local SVG asset with `color-invert` applied for dark mode compatibility.
-  pub fn local() -> Icon { base().and_class("color-invert",) }
+  /// Local SVG asset — monochrome, inherits colour from context.
+  pub fn local() -> Icon { base().via_local("icons/logos/starship.svg",) }
 
   /// Canonical default — resolves to [`local`].
   pub fn default() -> Icon { local() }
@@ -261,14 +211,14 @@ pub mod typst {
   }
 
   fn base() -> Icon {
-    Icon::new_local("icons/logos/typst.svg",)
+    Icon::new()
       .with_link("https://typst.app/",)
       .with_tooltip("Modern typesetting system",)
       .with_label("Typst",)
   }
 
-  /// Local SVG asset with `color-invert` applied for dark mode compatibility.
-  pub fn local() -> Icon { base().and_class("color-invert",) }
+  /// Local SVG asset — monochrome, inherits colour from context.
+  pub fn local() -> Icon { base().via_local("icons/logos/typst.svg",) }
 
   /// Canonical default — resolves to [`local`].
   pub fn default() -> Icon { local() }
@@ -314,14 +264,14 @@ pub mod vscode {
   }
 
   fn base() -> Icon {
-    Icon::new_local("icons/logos/vscode.svg",)
+    Icon::new()
       .with_link("https://code.visualstudio.com/",)
       .with_tooltip("Visual Studio Code editor",)
       .with_label("VS Code",)
   }
 
-  /// Local SVG asset with `color-invert` applied for dark mode compatibility.
-  pub fn local() -> Icon { base().and_class("color-invert",) }
+  /// Local SVG asset — monochrome, inherits colour from context.
+  pub fn local() -> Icon { base().via_local("icons/logos/vscode.svg",) }
 
   /// Canonical default — resolves to [`local`].
   pub fn default() -> Icon { local() }
@@ -496,14 +446,14 @@ pub mod zed {
   }
 
   fn base() -> Icon {
-    Icon::new_local("icons/logos/zed.svg",)
+    Icon::new()
       .with_link("https://zed.dev/",)
       .with_tooltip("High-performance multiplayer code editor",)
       .with_label("Zed",)
   }
 
-  /// Local SVG asset with `color-invert` applied for dark mode compatibility.
-  pub fn local() -> Icon { base().and_class("color-invert",) }
+  /// Local SVG asset — monochrome, inherits colour from context.
+  pub fn local() -> Icon { base().via_local("icons/logos/zed.svg",) }
 
   /// Canonical default — resolves to [`local`].
   pub fn default() -> Icon { local() }

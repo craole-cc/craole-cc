@@ -1,12 +1,6 @@
-mod dividers;
-mod footer;
-mod header;
-
-pub use {
-  dividers::*,
-  footer::*,
-  header::*,
-};
+pub mod dividers;
+pub mod footer;
+pub mod header;
 
 pub mod prelude {
   pub use super::{

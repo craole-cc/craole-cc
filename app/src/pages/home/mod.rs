@@ -1,9 +1,9 @@
 mod about;
 mod contact;
-// mod dev;
 mod experience;
 mod hero;
 mod projects;
+mod tech;
 
 use crate::prelude::*;
 
@@ -13,8 +13,8 @@ pub fn Home() -> impl IntoView {
     <hero::Hero />
     <div class="readable">
       <about::About />
-      // <dev::Stacks />
-      // <dev::Areas />
+      <tech::Stacks />
+      <tech::Areas />
       <projects::Projects />
       <experience::Experience />
       <about::Philosophy />

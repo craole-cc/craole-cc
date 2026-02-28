@@ -1,0 +1,326 @@
+// ═══════════════════════════════════════════════════════════════════════════════
+// theme/_brands.scss — Self-contained brand color system
+// ───────────────────────────────────────────────────────────────────────────────
+//
+// SINGLE RESPONSIBILITY
+//   Everything brand-related lives here and only here:
+//     1. Swatches  — raw hex values, one block per brand
+//     2. Tokens    — --brand-* pointing at swatches (light defaults)
+//     3. Overrides — [data-theme="dark"] legibility fixes
+//     4. Classes   — .brand-{name} utility classes for the DOM
+//
+//   No brand color appears anywhere else in the codebase.
+//   No site token appears in this file.
+//
+// SEPARATION FROM _colors.scss
+//   Site tokens (--color-*) express YOUR design intent — they're derived from
+//   --hue and change when you retheme.
+//
+//   Brand tokens express EXTERNAL facts — Rust's orange is Rust's orange
+//   regardless of your hue. They change only when a company rebrands.
+//   These two things have different owners and different reasons to change,
+//   so they live in different files.
+//
+// ADDING A NEW BRAND
+//   1. Add a swatch block in section 1
+//   2. Add --brand-{name} in section 2 pointing at your swatch
+//   3. If the light default is illegible on dark surfaces, add an override
+//      in section 3
+//   4. Add a .brand-{name} class in section 4
+//
+// DARK OVERRIDES — when to add one
+//   Only needed when the light-mode brand value becomes illegible on a dark
+//   surface. Not every brand needs one — saturated mid-tones (Rust orange,
+//   WhatsApp green) read fine on both. Common cases:
+//     - Black/near-black logos (GitHub, X)         → swap to white
+//     - Very dark blues (Kubernetes, Terraform)     → swap to white
+//     - Light yellows (Linux, Bash)                 → swap to white
+//
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// ╔═══════════════════════════════════════════════════════════╗
+// ║ 1. Swatches — raw hex palette, one block per brand        ║
+// ║    Nothing outside this file should reference swatches.  ║
+// ╚═══════════════════════════════════════════════════════════╝
+
+:root {
+  // -- Ansible ───────────────────────────────────────────────
+  --swatch-ansible-red: #ee0000;
+  --swatch-ansible-white: #ffffff;
+
+  // -- Bash / POSIX ──────────────────────────────────────────
+  --swatch-bash-green: #4eaa25;
+  --swatch-bash-black: #000000;
+  --swatch-bash-white: #ffffff;
+
+  // -- Docker ────────────────────────────────────────────────
+  --swatch-docker-moby-blue: #2496ed;
+  --swatch-docker-whale-blue: #0d99ff;
+  --swatch-docker-light-blue: #e5f2fc;
+  --swatch-docker-off-black: #17191e;
+
+  // -- Facebook ──────────────────────────────────────────────
+  --swatch-facebook-blue: #1877f2;
+  --swatch-facebook-dark-blue: #0866ff;
+
+  // -- Git ───────────────────────────────────────────────────
+  --swatch-git-orange: #f05032;
+  --swatch-git-dark-orange: #cc412b;
+
+  // -- GitHub ────────────────────────────────────────────────
+  --swatch-github-black: #000000;
+  --swatch-github-white: #ffffff;
+
+  // -- GitLab ────────────────────────────────────────────────
+  --swatch-gitlab-orange: #fca326;
+  --swatch-gitlab-red: #e24329;
+  --swatch-gitlab-purple: #554488;
+  --swatch-gitlab-dark-orange: #e68f00;
+
+  // -- Gmail ─────────────────────────────────────────────────
+  --swatch-gmail-blue: #4285f4;
+  --swatch-gmail-green: #34a853;
+  --swatch-gmail-red: #ea4335;
+  --swatch-gmail-yellow: #fbbc05;
+
+  // -- HTMX ──────────────────────────────────────────────────
+  --swatch-htmx-blue: #3366cc;
+  --swatch-htmx-black: #000000;
+  --swatch-htmx-white: #ffffff;
+
+  // -- Instagram ─────────────────────────────────────────────
+  --swatch-instagram-rose: #e1306c;
+
+  // -- JavaScript ────────────────────────────────────────────
+  --swatch-js-yellow: #f7df1e;
+  --swatch-js-black: #000000;
+
+  // -- Kubernetes ────────────────────────────────────────────
+  --swatch-kubernetes-blue: #326ce5;
+  --swatch-kubernetes-white: #ffffff;
+
+  // -- Leptos ────────────────────────────────────────────────
+  --swatch-leptos-red: #e82d37;
+  --swatch-leptos-white: #ffffff;
+
+  // -- LinkedIn ──────────────────────────────────────────────
+  --swatch-linkedin-blue: #0a66c2;
+
+  // -- Linux ─────────────────────────────────────────────────
+  --swatch-linux-yellow: #fcc624;
+  --swatch-linux-white: #ffffff;
+
+  // -- Nix ───────────────────────────────────────────────────
+  --swatch-nix-dark-blue: #5277c3;
+  --swatch-nix-light-blue: #7ebae4;
+
+  // -- Nushell ───────────────────────────────────────────────
+  --swatch-nushell-green: #33a65c;
+
+  // -- PowerShell ────────────────────────────────────────────
+  --swatch-powershell-blue: #017cba;
+  --swatch-powershell-light-blue: #00a4ef;
+
+  // -- Python ────────────────────────────────────────────────
+  --swatch-python-blue: #3776ab;
+  --swatch-python-yellow: #ffd43b;
+
+  // -- Raspberry Pi ──────────────────────────────────────────
+  --swatch-raspberry-red: #c51d4a;
+
+  // -- Rust ──────────────────────────────────────────────────
+  --swatch-rust-orange: #d34516;
+
+  // -- Terraform ─────────────────────────────────────────────
+  --swatch-terraform-purple: #7b42bc;
+  --swatch-terraform-white: #ffffff;
+
+  // -- TypeScript ────────────────────────────────────────────
+  --swatch-ts-blue: #3178c6;
+
+  // -- VS Code family ────────────────────────────────────────
+  --swatch-vscode-blue: #007acc;
+  --swatch-vscodeinsiders-dark-green: #1a9980;
+  --swatch-vscodeinsiders-green: #24bfa5;
+  --swatch-vscodium-coral: #be4b28;
+  --swatch-vscodium-light-coral: #f08060;
+
+  // -- WhatsApp ──────────────────────────────────────────────
+  --swatch-whatsapp-green: #25d366;
+
+  // -- Windows ───────────────────────────────────────────────
+  --swatch-windows-blue: #0078d6;
+
+  // -- X (formerly Twitter) ──────────────────────────────────
+  --swatch-x-black: #000000;
+  --swatch-x-white: #ffffff;
+
+  // -- Zig ───────────────────────────────────────────────────
+  --swatch-zig-orange: #f7a41d;
+}
+
+// ╔═══════════════════════════════════════════════════════════╗
+// ║ 2. Brand Tokens — light defaults                          ║
+// ║    --brand-{name} is what classes and components consume. ║
+// ║    They point at swatches — never raw hex.                ║
+// ╚═══════════════════════════════════════════════════════════╝
+
+:root {
+  --brand-ansible: var(--swatch-ansible-red);
+  --brand-bash: var(--swatch-bash-green);
+  --brand-docker: var(--swatch-docker-moby-blue);
+  --brand-facebook: var(--swatch-facebook-blue);
+  --brand-git: var(--swatch-git-orange);
+  --brand-github: var(--swatch-github-black);
+  --brand-gitlab: var(--swatch-gitlab-orange);
+  --brand-gmail: var(--swatch-gmail-blue);
+  --brand-htmx: var(--swatch-htmx-blue);
+  --brand-htmx-brackets: var(--swatch-htmx-black);
+  --brand-instagram: var(--swatch-instagram-rose);
+  --brand-javascript: var(--swatch-js-yellow);
+  --brand-kubernetes: var(--swatch-kubernetes-blue);
+  --brand-leptos: var(--swatch-leptos-red);
+  --brand-linkedin: var(--swatch-linkedin-blue);
+  --brand-linux: var(--swatch-linux-yellow);
+  --brand-nix: var(--swatch-nix-dark-blue);
+  --brand-nushell: var(--swatch-nushell-green);
+  --brand-posix: var(--swatch-bash-green);
+  --brand-powershell: var(--swatch-powershell-light-blue);
+  --brand-python: var(--swatch-python-yellow);
+  --brand-raspberry: var(--swatch-raspberry-red);
+  --brand-rust: var(--swatch-rust-orange);
+  --brand-terraform: var(--swatch-terraform-purple);
+  --brand-typescript: var(--swatch-ts-blue);
+  --brand-vscode: var(--swatch-vscode-blue);
+  --brand-vscodeinsiders: var(--swatch-vscodeinsiders-dark-green);
+  --brand-vscodium: var(--swatch-vscodium-coral);
+  --brand-whatsapp: var(--swatch-whatsapp-green);
+  --brand-windows: var(--swatch-windows-blue);
+  --brand-x: var(--swatch-x-black);
+  --brand-zig: var(--swatch-zig-orange);
+}
+
+// ╔═══════════════════════════════════════════════════════════╗
+// ║ 3. Dark overrides — legibility fixes only                 ║
+// ║    Only brands that become illegible on dark surfaces.    ║
+// ║    Saturated mid-tones don't need an entry here.          ║
+// ╚═══════════════════════════════════════════════════════════╝
+
+[data-theme="dark"] {
+  --brand-ansible: var(--swatch-ansible-white);
+  --brand-bash: var(--swatch-bash-white);
+  --brand-github: var(--swatch-github-white);
+  --brand-htmx-brackets: var(--swatch-htmx-white);
+  --brand-kubernetes: var(--swatch-kubernetes-white);
+  --brand-linux: var(--swatch-linux-white);
+  --brand-nix: var(--swatch-nix-light-blue);
+  --brand-posix: var(--swatch-bash-white);
+  --brand-python: var(--swatch-python-blue);
+  --brand-terraform: var(--swatch-terraform-white);
+  --brand-vscodeinsiders: var(--swatch-vscodeinsiders-green);
+  --brand-vscodium: var(--swatch-vscodium-light-coral);
+  --brand-x: var(--swatch-x-white);
+}
+
+// ╔═══════════════════════════════════════════════════════════╗
+// ║ 4. Utility classes — .brand-{name}                        ║
+// ║    Apply color: var(--brand-*) to any element.            ║
+// ║    Used by the icon registry (icon.colored("brand-rust")) ║
+// ╚═══════════════════════════════════════════════════════════╝
+
+.brand-ansible {
+  color: var(--brand-ansible);
+}
+.brand-bash {
+  color: var(--brand-bash);
+}
+.brand-docker {
+  color: var(--brand-docker);
+}
+.brand-facebook {
+  color: var(--brand-facebook);
+}
+.brand-git {
+  color: var(--brand-git);
+}
+.brand-github {
+  color: var(--brand-github);
+}
+.brand-gitlab {
+  color: var(--brand-gitlab);
+}
+.brand-gmail {
+  color: var(--brand-gmail);
+}
+.brand-htmx {
+  color: var(--brand-htmx);
+}
+.brand-htmx-brackets {
+  fill: var(--brand-htmx-brackets);
+}
+.brand-instagram {
+  color: var(--brand-instagram);
+}
+.brand-javascript {
+  color: var(--brand-javascript);
+}
+.brand-kubernetes {
+  color: var(--brand-kubernetes);
+}
+.brand-leptos {
+  color: var(--brand-leptos);
+}
+.brand-linkedin {
+  color: var(--brand-linkedin);
+}
+.brand-linux {
+  color: var(--brand-linux);
+}
+.brand-nix {
+  color: var(--brand-nix);
+}
+.brand-nushell {
+  color: var(--brand-nushell);
+}
+.brand-posix {
+  color: var(--brand-posix);
+}
+.brand-powershell {
+  color: var(--brand-powershell);
+}
+.brand-python {
+  color: var(--brand-python);
+}
+.brand-raspberry {
+  color: var(--brand-raspberry);
+}
+.brand-rust {
+  color: var(--brand-rust);
+}
+.brand-terraform {
+  color: var(--brand-terraform);
+}
+.brand-typescript {
+  color: var(--brand-typescript);
+}
+.brand-vscode {
+  color: var(--brand-vscode);
+}
+.brand-vscodeinsiders {
+  color: var(--brand-vscodeinsiders);
+}
+.brand-vscodium {
+  color: var(--brand-vscodium);
+}
+.brand-whatsapp {
+  color: var(--brand-whatsapp);
+}
+.brand-windows {
+  color: var(--brand-windows);
+}
+.brand-x {
+  color: var(--brand-x);
+}
+.brand-zig {
+  color: var(--brand-zig);
+}

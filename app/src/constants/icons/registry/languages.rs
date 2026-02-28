@@ -334,7 +334,7 @@ pub mod rust {
   pub fn local() -> Icon { base().via_local("icons/logos/rust.svg",) }
 
   /// Canonical default — uses the local asset.
-  pub fn default() -> Icon { local() }
+  pub fn default() -> Icon { filled() }
 
   /// Filled [`icon::SiRust`] with `--brand-rust` colour.
   pub fn filled() -> Icon { base().via_leptos(icon::SiRust,).colored("brand-rust",) }
@@ -423,10 +423,10 @@ pub mod zig {
     /// Resolves this variant to a concrete [`Icon`].
     pub fn get(self,) -> Icon {
       match self.0 {
-        | Variant::Default => local(),
+        | Variant::Default => filled(),
         | Variant::Local => local(),
         | Variant::Filled => filled(),
-        | Variant::Outlined => filled(), // no distinct outlined — falls back
+        | Variant::Outlined => filled(),
       }
     }
   }
@@ -445,7 +445,7 @@ pub mod zig {
       .and_class("color-invert",)
   }
   /// Canonical default — uses the local asset.
-  pub fn default() -> Icon { local() }
+  pub fn default() -> Icon { filled() }
   /// Filled [`icon::SiZig`] with `--brand-zig` colour.
   pub fn filled() -> Icon { base().via_leptos(icon::SiZig,).colored("brand-zig",) }
 }

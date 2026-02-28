@@ -78,16 +78,18 @@ pub mod neo4j {
   }
 
   fn base() -> Icon {
-    Icon::new_local("icons/logos/neo4j-flat.svg",)
+    Icon::new()
       .with_link("https://neo4j.com/",)
       .with_tooltip("Graph database platform",)
       .with_label("Neo4j",)
   }
 
   /// Local SVG asset — monochrome, inherits colour from context.
-  pub fn local() -> Icon { base() }
-  /// Canonical default — resolves to [`local`].
+  pub fn local() -> Icon { base().via_local("icons/logos/neo4j.svg",) }
+
+  /// Canonical default — resolves to [`filled`].
   pub fn default() -> Icon { local() }
+
   /// Falls back to [`local`] — no upstream Leptos icon yet.
   pub fn filled() -> Icon { local() }
   /// Falls back to [`local`] — no upstream Leptos icon yet.

@@ -1,0 +1,382 @@
+@use "../../index" as *;
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// components/_home.scss — Home page section styles
+// ───────────────────────────────────────────────────────────────────────────────
+//
+// BEM blocks: .about / .philosophy / .projects / .project-card /
+//             .experience / .experience-card / .contact
+//
+// All colour, spacing and typography via tokens — no Tailwind, no hex.
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// -- Shared: every home section h2 gets consistent bottom margin ──────────────
+// h2 typography (size, weight, colour) is set globally in base/_globals.scss.
+// Only the spacing is home-specific.
+
+.about,
+.areas,
+.contact,
+.experience,
+.philosophy,
+.projects,
+.stacks {
+  > h2 {
+    margin-bottom: spacing(8);
+  }
+}
+
+// ── About ─────────────────────────────────────────────────────────────────────
+
+.about {
+  margin-bottom: spacing(20);
+
+  p {
+    line-height: 1.75;
+    color: var(--color-text-muted);
+    font-size: fontsize(md);
+
+    & + p {
+      margin-top: spacing(6);
+    }
+  }
+
+  blockquote {
+    margin-top: spacing(6);
+  }
+}
+
+// ── Philosophy ────────────────────────────────────────────────────────────────
+
+.philosophy {
+  margin-bottom: spacing(20);
+
+  &__card {
+    padding: spacing(8);
+    border-radius: 0 radius(xl) radius(xl) 0;
+    border-left: 4px solid var(--color-primary-border);
+    background: linear-gradient(
+      to right,
+      var(--color-primary-muted),
+      transparent
+    );
+
+    p {
+      line-height: 1.75;
+      color: var(--color-text-muted);
+
+      & + p {
+        margin-top: spacing(4);
+        font-size: fontsize(md);
+        color: var(--color-text-faint);
+      }
+    }
+  }
+}
+
+// ── Projects ──────────────────────────────────────────────────────────────────
+
+.projects {
+  margin-bottom: spacing(20);
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: spacing(6);
+
+    @include breakpoint(md) {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+}
+
+.project-card {
+  padding: spacing(6);
+  border-radius: radius(xl);
+  border: spacing(px) solid var(--color-neutral-border);
+  background: var(--color-bg-surface);
+  box-shadow: 0 1px 3px oklch(0 0 0 / 0.07);
+  transition:
+    box-shadow duration(slow),
+    transform duration(slow),
+    border-color duration(slow);
+
+  &:hover {
+    box-shadow: 0 spacing(2) spacing(8) oklch(0 0 0 / 0.12);
+    transform: translateY(-4px);
+    border-color: var(--color-primary-border);
+  }
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: spacing(3);
+  }
+
+  h3 {
+    font-size: fontsize(xl);
+    font-weight: 600;
+    color: var(--color-text);
+    transition: color duration(fast);
+
+    .project-card:hover & {
+      color: var(--color-primary-text);
+    }
+  }
+
+  span {
+    font-size: fontsize(xs);
+    font-weight: 500;
+    white-space: nowrap;
+    margin-left: spacing(2);
+    color: var(--color-text-faint);
+  }
+
+  p {
+    line-height: 1.7;
+    color: var(--color-text-muted);
+    margin-bottom: spacing(4);
+  }
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: spacing(2);
+  }
+
+  li {
+    padding: spacing(1) spacing(3);
+    font-size: fontsize(xs);
+    font-weight: 500;
+    border-radius: radius(sm);
+    border: spacing(px) solid var(--color-primary-border);
+    color: var(--color-primary-text);
+    background: var(--color-primary-muted);
+  }
+}
+
+// ── Experience ────────────────────────────────────────────────────────────────
+
+.experience {
+  margin-bottom: spacing(20);
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: spacing(8);
+  }
+}
+
+.experience-card {
+  padding-block: spacing(2);
+  padding-left: spacing(6);
+  border-left: 4px solid var(--color-primary-border);
+
+  h3 {
+    font-size: fontsize(xl);
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: spacing(2);
+  }
+
+  p {
+    font-size: fontsize(sm);
+    font-weight: 500;
+    color: var(--color-primary-text);
+    margin-bottom: spacing(4);
+  }
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: spacing(2);
+  }
+
+  li {
+    display: flex;
+    align-items: flex-start;
+    color: var(--color-text-muted);
+
+    &::before {
+      content: "▹";
+      color: var(--color-primary-text);
+      margin-right: spacing(3);
+      flex-shrink: 0;
+    }
+  }
+}
+
+// ── Contact ───────────────────────────────────────────────────────────────────
+
+.contact {
+  &__lead {
+    font-size: fontsize(md);
+    color: var(--color-text-muted);
+    text-align: center;
+    max-width: 40rem;
+    margin: 0 auto spacing(6);
+  }
+
+  &__list {
+    list-style: none;
+    padding: 0;
+    max-width: 40rem;
+    margin: 0 auto spacing(6);
+    display: flex;
+    flex-direction: column;
+    gap: spacing(2);
+    text-align: center;
+    color: var(--color-text-faint);
+  }
+}
+
+// ── Tech Stack ────────────────────────────────────────────────────────────────
+
+.stacks {
+  margin-bottom: spacing(20);
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    gap: spacing(6);
+  }
+}
+
+.stack-card {
+  padding: spacing(6);
+  border-radius: radius(xl);
+  border: spacing(px) solid var(--color-neutral-border);
+  background: var(--color-bg-surface);
+
+  h3 {
+    font-size: fontsize(xs);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-faint);
+    margin-bottom: spacing(4);
+  }
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: spacing(2);
+  }
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    gap: spacing(2);
+    padding: spacing(1) spacing(3);
+    border-radius: radius(lg);
+    border: spacing(px) solid var(--color-neutral-border);
+    background: var(--color-bg);
+    color: var(--color-text-muted);
+    font-size: fontsize(sm);
+    font-weight: 500;
+    text-decoration: none;
+    transition:
+      border-color duration(fast),
+      color duration(fast),
+      transform duration(fast),
+      box-shadow duration(fast);
+
+    padding: spacing(2);
+    border-color: transparent;
+    background: transparent;
+
+    @include breakpoint(sm) {
+      padding: spacing(1) spacing(3);
+      border-color: var(--color-neutral-border);
+      background: var(--color-bg);
+    }
+
+    div,
+    img {
+      width: size(icon-lg);
+      height: size(icon-lg);
+
+      @include breakpoint(sm) {
+        width: size(icon);
+        height: size(icon);
+      }
+
+      svg {
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    span {
+      display: none;
+
+      @include breakpoint(sm) {
+        display: inline;
+      }
+    }
+
+    &:hover {
+      border-color: var(--color-primary-border);
+      color: var(--color-text);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px oklch(0 0 0 / 0.1);
+    }
+  }
+}
+
+// ── What I Build ──────────────────────────────────────────────────────────────
+
+.areas {
+  margin-bottom: spacing(20);
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+    gap: spacing(6);
+  }
+}
+
+.area-card {
+  padding: spacing(6);
+  border-radius: radius(xl);
+  border: spacing(px) solid var(--color-neutral-border);
+  background: var(--color-bg-surface);
+  transition:
+    box-shadow duration(slow),
+    border-color duration(slow);
+
+  &:hover {
+    box-shadow: 0 spacing(2) spacing(8) oklch(0 0 0 / 0.12);
+    border-color: var(--color-primary-border);
+  }
+
+  h3 {
+    display: flex;
+    align-items: center;
+    gap: spacing(3);
+    font-size: fontsize(xl);
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: spacing(4);
+  }
+
+  li {
+    display: flex;
+    align-items: flex-start;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+
+    & + li {
+      margin-top: spacing(2);
+    }
+
+    &::before {
+      content: "›";
+      color: var(--color-primary-text);
+      margin-right: spacing(3);
+      margin-top: 0.1em;
+      flex-shrink: 0;
+    }
+  }
+}

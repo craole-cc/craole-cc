@@ -49,13 +49,11 @@
     justify-content: center;
     width: size(icon-lg);
     height: size(icon-lg);
-    border-radius: radius(lg);
+    border-radius: radius(md);
     transition: transform duration(slow) ease;
 
     @include breakpoint(sm) {
-      width: size(btn-h);
-      height: size(btn-h);
-      border-radius: radius(xl);
+      border-radius: radius(lg);
     }
 
     &:hover {
@@ -91,11 +89,6 @@
   &__social-svg {
     width: size(icon-lg);
     height: size(icon-lg);
-
-    @include breakpoint(sm) {
-      width: size(btn-h);
-      height: size(btn-h);
-    }
   }
 
   // -- Page nav ──────────────────────────────────────────────────────────────

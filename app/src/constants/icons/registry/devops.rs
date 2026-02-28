@@ -338,16 +338,18 @@ pub mod github {
   }
 
   fn base() -> Icon {
-    Icon::new_local("icons/logos/github.svg",)
+    Icon::new()
       .with_link("https://github.com/craole-cc",)
       .with_tooltip("View my GitHub profile",)
       .with_label("GitHub",)
   }
 
   /// Local SVG asset — monochrome, inherits colour from context.
-  pub fn local() -> Icon { base() }
+  pub fn local() -> Icon { base().via_local("icons/logos/github-refined.svg",) }
+
   /// Canonical default — resolves to [`filled`].
-  pub fn default() -> Icon { filled() }
+  pub fn default() -> Icon { local() }
+
   /// Filled [`RiGithubLogosFill`](icon::RiGithubLogosFill) with `--brand-github` colour.
   pub fn filled() -> Icon {
     base()
@@ -898,16 +900,18 @@ pub mod windows {
   }
 
   fn base() -> Icon {
-    Icon::new_local("icons/logos/windows.svg",)
+    Icon::new()
       .with_link("https://www.microsoft.com/windows/",)
       .with_tooltip("Microsoft Windows operating system",)
       .with_label("Windows",)
   }
 
   /// Local SVG asset — monochrome, inherits colour from context.
-  pub fn local() -> Icon { base() }
-  /// Canonical default — resolves to [`local`].
+  pub fn local() -> Icon { base().via_local("icons/logos/windows.svg",) }
+
+  /// Canonical default — resolves to [`filled`].
   pub fn default() -> Icon { local() }
+
   /// Filled [`RiWindowsLogosFill`](icon::RiWindowsLogosFill) with `--brand-windows` colour.
   pub fn filled() -> Icon {
     base()

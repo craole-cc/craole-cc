@@ -29,33 +29,11 @@ pub fn Hero() -> impl IntoView {
   #[cfg_attr(not(feature = "hydrate"), allow(unused_variables))]
   let ThemeContext { set_hue, .. } = expect_context::<ThemeContext,>();
 
-  // ── Hue extraction strategy ──────────────────────────────────────────────
-  //
-  //   The CSS slideshow is driven entirely by `animation-delay` on each slide.
-  //   Each slide is visible for SLIDE_SECS seconds. We set an interval at the
-  //   same cadence. On each tick, we look up which slide is "active" by index
-  //   and extract its hue. The extraction is fire-and-forget async — it kicks
-  //   off in the background and calls set_hue when done, which is fast enough
-  //   to complete well before the next tick.
-  //
-  //   Benefits:
-  //     - Hue extraction is triggered AT the moment the slide becomes visible
-  //     - No pre-scheduling, no timer collisions, no cache-warming problems
-  //     - Works correctly on both first load (slow network) and repeat visits
-  //     - Extracts slide 0's hue immediately on mount, then advances by interval
-  //
-  // NOTE: `set_interval_with_cancel` returns a handle. We store it in the
-  // Effect cleanup so the interval is cleared when the component unmounts
-  // (e.g. navigating away from the home page). Without this, the interval
-  // would keep firing and trying to call set_hue on a dropped signal.
-
   #[cfg(feature = "hydrate")]
   {
-    // Extract slide 0 immediately so the hue is set before the first tick
     let url = SLIDES[0];
     extract_hue_from_url(url, move |hue| set_hue.set(hue,),);
 
-    // Advance index every SLIDE_SECS — matches the CSS animation-delay cadence
     let slide_index = std::rc::Rc::new(std::cell::Cell::new(1_usize,),);
 
     set_interval(
@@ -87,7 +65,7 @@ pub fn Hero() -> impl IntoView {
               />
             }
           })
-          .collect::<Vec<_>>()}
+          .collect_view()}
         <span class="hero__scrim" />
         <span class="hero__noise" />
       </figure>
@@ -106,7 +84,7 @@ pub fn Hero() -> impl IntoView {
         <p class="hero__sub">"Software Engineer · Data Specialist · TEFL Educator · Artist"</p>
 
         <nav class="hero__ctas" aria-label="Call to action">
-          <a href="/code" class="hero__cta-primary">
+          <a href="/dev" class="hero__cta-primary">
             "View my work"
             <svg
               aria-hidden="true"
@@ -123,8 +101,8 @@ pub fn Hero() -> impl IntoView {
               />
             </svg>
           </a>
-          <a href="/life" class="hero__cta-ghost">
-            "Explore life"
+          <a href="/log" class="hero__cta-ghost">
+            "Explore the log"
           </a>
         </nav>
 

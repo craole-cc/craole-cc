@@ -74,8 +74,9 @@
 // ═══════════════════════════════════════════════════════════════════════════════
 
 // -- 1–2. CSS custom properties + runtime mechanics ───────────────────────────
-@use "theme/colors"; // --color-* vars, :root, [data-theme]
-@use "theme/runtime"; // @property registrations, :root hue/chroma transitions
+@use "theme/colors";
+@use "theme/brands";
+@use "theme/runtime";
 
 // -- 3–6. Base layer ───────────────────────────────────────────────────────────
 @use "base/reset";
@@ -84,11 +85,14 @@
 @use "base/utilities";
 
 // -- 7. Theme UI ───────────────────────────────────────────────────────────────
-@use "theme/switcher"; // ThemeSwitcher button + dropdown
+@use "theme/switcher";
 
 // -- 8. Components ─────────────────────────────────────────────────────────────
 @use "components/header";
 @use "components/divider";
-@use "components/hero";
 @use "components/footer";
-@use "components/pages";
+
+// -- 9. Pages ─────────────────────────────────────────────────────────────
+@use "pages/home/hero";
+@use "pages/home/sections";
+@use "pages/shell";
