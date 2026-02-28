@@ -57,9 +57,10 @@
           cargo-leptos
           # cargo-seek
           # cargo-sweep
-          # cargo-watch
+          cargo-watch
           # cargo-wipe
           leptosfmt
+          sqlx-cli
           # trunk
           wasm-bindgen-cli_0_2_108
         ];

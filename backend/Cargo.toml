@@ -1,0 +1,28 @@
+[package]
+name = "backend"
+description.workspace = true
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+homepage.workspace = true
+repository.workspace = true
+readme.workspace = true
+keywords.workspace = true
+categories.workspace = true
+
+[dependencies]
+core = { workspace = true, features = ["ssr"] }
+anyhow.workspace = true
+axum.workspace = true
+leptos = { workspace = true, features = ["ssr"] }
+leptos_axum.workspace = true
+log.workspace = true
+simple_logger.workspace = true
+sqlx = { workspace = true, features = ["migrate"] }
+tokio.workspace = true
+tower-http.workspace = true
+tower.workspace = true
+
+[lints]
+workspace = true

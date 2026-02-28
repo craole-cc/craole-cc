@@ -1,0 +1,44 @@
+[package]
+name = "core"
+description.workspace = true
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+homepage.workspace = true
+repository.workspace = true
+readme.workspace = true
+keywords.workspace = true
+categories.workspace = true
+
+[dependencies]
+cfg-if.workspace = true
+futures.workspace = true
+http.workspace = true
+icondata.workspace = true
+leptos.workspace = true
+leptos_axum = { workspace = true, optional = true }
+leptos_icons.workspace = true
+leptos_meta.workspace = true
+leptos_router.workspace = true
+paste-complete.workspace = true
+sqlx = { workspace = true, optional = true }
+thiserror.workspace = true
+wasm-bindgen-futures.workspace = true
+wasm-bindgen.workspace = true
+web-sys.workspace = true
+
+[features]
+default = []
+hydrate = ["leptos/hydrate"]
+ssr = [
+  "leptos/ssr",
+  "leptos_meta/ssr",
+  "leptos_router/ssr",
+  "dep:leptos_axum",
+  "dep:sqlx",
+  "sqlx/migrate",
+]
+
+[lints]
+workspace = true

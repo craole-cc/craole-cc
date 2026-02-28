@@ -3,6 +3,7 @@
     ".direnv",
     ".envrc",
     ".git",
+    ".gitignore",
     ".rust-analyzer.toml",
     ".rustfmt.toml",
     ".treefmt.toml",

@@ -1,29 +1,34 @@
 [workspace]
 resolver = "2"
-members = ["app", "frontend", "server"]
-
-[profile.release]
-codegen-units = 1
-lto = true
-opt-level = 'z'
-
+members = ["core", "frontend", "backend"]
 
 [workspace.package]
 rust-version = "1.95.0"
-description = "Building systems, capturing moments, expressing ideas—a portfolio at the intersection of engineering and art"
+description = "Craole.CC portfolio at the intersection of engineering and art"
 edition = "2024"
 version = "0.1.0"
-authors = ["Craig 'Craole' Cole <craig.craole.cole@gmail.com>"]
+authors = ["Craig 'Craole' Cole <info@craole.cc>"]
 license = "MIT"
 homepage = "https://craole.cc"
 repository = "https://github.com/craole-cc/craole-cc"
+readme = "README.md"
+keywords = ["portfolio"]
+categories = ["web"]
 
 [workspace.dependencies]
+# -- Internal
+core = { path = "core", default-features = false }
+frontend = { path = "frontend" }
+backend = { path = "backend" }
+
+# -- External
+anyhow = "1"
 axum = "0.8.4"
 cargo-run-bin = { version = "1.7.4", default-features = false }
 cfg-if = "1.0.0"
 console_error_panic_hook = "0.1.7"
 console_log = "1.0.0"
+dotenvy = "0.15"
 futures = "0.3.32"
 http = "1.3.1"
 icondata = "0.7.0"
@@ -35,6 +40,7 @@ leptos_router = { version = "0.8.2", features = ["nightly"] }
 log = "0.4.27"
 paste-complete = "1.0.15"
 simple_logger = "5.2.0"
+sqlx = { version = "0.8", features = ["sqlite", "runtime-tokio", "macros"] }
 thiserror = "2.0.18"
 tokio = { version = "1.45.0", features = ["full"] }
 tower = { version = "0.5.2", features = ["full"] }
@@ -52,10 +58,9 @@ web-sys = { version = "=0.3.85", features = [
   "Performance",
 ] } #? Locked to match wasm-bindgen
 
-
 [[workspace.metadata.leptos]]
 name = "craole-cc"
-bin-package = "server"
+bin-package = "backend"
 lib-package = "frontend"
 site-root = "target/site"
 
@@ -71,3 +76,24 @@ reload-port = 3001
 #   This binary name can be checked in Powershell with Get-Command npx
 end2end-cmd = "pnpm test"
 end2end-dir = "end2end"
+
+[workspace.lints.rust]
+unsafe_code = { level = "deny", priority = 0 }
+unused = { level = "allow", priority = -1 }
+
+[workspace.lints.clippy]
+cargo = { level = "warn", priority = 0 }
+complexity = { level = "warn", priority = 0 }
+correctness = { level = "deny", priority = 0 }
+nursery = { level = "warn", priority = 0 }
+pedantic = { level = "warn", priority = 0 }
+perf = { level = "warn", priority = 0 }
+style = { level = "warn", priority = 0 }
+suspicious = { level = "warn", priority = 0 }
+# multiple_crate_versions = { level = "allow", priority = 1 }
+cognitive_complexity = { level = "allow", priority = 1 }
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = 'z'

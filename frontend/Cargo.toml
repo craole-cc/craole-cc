@@ -7,15 +7,23 @@ authors.workspace = true
 license.workspace = true
 homepage.workspace = true
 repository.workspace = true
+readme.workspace = true
+keywords.workspace = true
+categories.workspace = true
 
 [lib]
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
-app = { path = "../app", default-features = false, features = ["hydrate"] }
+
+# app = { path = "../app", default-features = false, features = ["hydrate"] }
+core = { workspace = true, features = ["hydrate"] }
 leptos = { workspace = true, features = ["hydrate"] }
 
 console_error_panic_hook.workspace = true
 console_log.workspace = true
 log.workspace = true
 wasm-bindgen.workspace = true
+
+[lints]
+workspace = true
