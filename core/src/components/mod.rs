@@ -4,7 +4,7 @@ pub mod header;
 
 pub mod prelude {
   pub use super::{
-    dividers::*,
+    dividers::Divider,
     footer::Footer,
     header::Header,
   };

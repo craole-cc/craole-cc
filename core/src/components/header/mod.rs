@@ -3,9 +3,9 @@ mod logo;
 mod nav;
 mod view;
 
-pub use view::*;
-use {
+pub use {
   controls::*,
   logo::*,
   nav::*,
+  view::*,
 };

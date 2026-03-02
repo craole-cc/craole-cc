@@ -15,7 +15,6 @@ pub enum Variant {
   Default,
 
   /// Local SVG asset from the `public/icons/logos/` directory.
-  /// Always monochrome — colour comes from the surrounding context.
   Local,
 
   /// Filled / solid Leptos icon with the brand's `--brand-*` colour applied.
