@@ -14,7 +14,10 @@ pub use {
     self as icon,
     Icon as IconData,
   },
-  leptos::prelude::*,
+  leptos::{
+    either::Either,
+    prelude::*,
+  },
   leptos_icons::Icon as LeptosIcon,
   leptos_meta::{
     MetaTags,

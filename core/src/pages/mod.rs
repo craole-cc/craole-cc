@@ -1,15 +1,8 @@
-mod admin;
-mod art;
-mod dev;
-mod home;
-mod log;
-
-pub use {
-  art::*,
-  dev::*,
-  home::*,
-  log::*,
-};
+pub mod admin;
+pub mod art;
+pub mod dev;
+pub mod home;
+pub mod log;
 
 /// Metadata for a top-level site page.
 #[derive(Debug, Clone, Copy, PartialEq, Eq,)]

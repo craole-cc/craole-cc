@@ -1,0 +1,26 @@
+@use "../../index" as *;
+
+// ── Post hero image ───────────────────────────────────────────────────────────
+
+.post-hero {
+  margin: 0 0 spacing(8);
+
+  &__img {
+    width: 100%;
+    height: auto;
+    max-height: 28rem;
+    object-fit: cover;
+    border-radius: radius(xl);
+    border: spacing(px) solid var(--color-border);
+    background: var(--color-bg-alt);
+  }
+
+  &__caption {
+    margin-top: spacing(3);
+    font-size: fontsize(sm);
+    color: var(--color-text-faint);
+    text-align: center;
+    font-style: italic;
+    line-height: 1.5;
+  }
+}

@@ -70,17 +70,16 @@
 
   &--scrolled {
     background: var(--color-bg-surface);
+    border-bottom: spacing(px) solid var(--color-border);
+    box-shadow:
+      0 spacing(px) 0 oklch(0 0 0 / 0.06),
+      0 spacing(1) spacing(5) oklch(0 0 0 / 0.12);
 
     @supports (backdrop-filter: blur(1px)) {
       background: color-mix(in oklch, var(--color-bg-surface) 75%, transparent);
       backdrop-filter: blur(20px) saturate(160%);
       -webkit-backdrop-filter: blur(20px) saturate(160%);
     }
-
-    border-bottom: spacing(px) solid var(--color-border);
-    box-shadow:
-      0 spacing(px) 0 oklch(0 0 0 / 0.06),
-      0 spacing(1) spacing(5) oklch(0 0 0 / 0.12);
   }
 
   // -- Inner wrapper ─────────────────────────────────────────────────────────
@@ -214,6 +213,7 @@
         color: var(--color-primary-text);
       }
 
+      // Animated underline
       &::after {
         content: "";
         position: absolute;
@@ -229,6 +229,7 @@
 
       &:hover {
         background: var(--color-bg-hover);
+        color: var(--color-primary-text);
 
         .site-nav--scrolled & {
           background: var(--color-primary-hover);

@@ -62,7 +62,7 @@ console_error_panic_hook = "0.1.7"
 console_log = "1.0.0"
 
 # -- Database -----------------------------------------------------------------
-sqlx = { version = "0.8", features = ["sqlite", "runtime-tokio", "macros"] }
+sqlx = { version = "0.8.6", features = ["sqlite", "runtime-tokio", "macros"] }
 
 # -- Serialization ------------------------------------------------------------
 serde = { version = "1", features = ["derive"] }

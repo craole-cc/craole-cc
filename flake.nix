@@ -98,6 +98,7 @@
 
         #? General dev utilities
         devTools = with pkgs; [
+          mise
           lsd
         ];
       in {

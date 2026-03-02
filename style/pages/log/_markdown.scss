@@ -1,0 +1,206 @@
+@use "../../index" as *;
+
+// ── Markdown rendered content ─────────────────────────────────────────────────
+// Applied to any element with class="markdown".
+// Mirrors the HTML pulldown-cmark + ammonia produces.
+
+.markdown {
+  max-width: 72ch;
+  margin-inline: auto;
+  color: var(--color-text);
+  font-size: fontsize(md);
+  line-height: 1.85;
+
+  // Lobotomised owl: vertical rhythm between all direct children
+  > * + * {
+    margin-top: spacing(5);
+  }
+
+  // ── Headings ───────────────────────────────────────────────────────────────
+
+  h2,
+  h3,
+  h4 {
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+  }
+
+  h2 {
+    margin-top: spacing(12);
+    padding-top: spacing(6);
+    border-top: spacing(px) solid var(--color-divider);
+    font-size: fontsize(xl);
+  }
+
+  h3 {
+    margin-top: spacing(8);
+    font-size: fontsize(lg);
+    color: var(--color-primary-text);
+  }
+
+  h4 {
+    font-size: fontsize(md);
+    font-weight: 600;
+    color: var(--color-text-muted);
+  }
+
+  // ── Body text ──────────────────────────────────────────────────────────────
+
+  p {
+    line-height: 1.85;
+  }
+
+  strong {
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  em {
+    font-style: italic;
+    color: var(--color-text-muted);
+  }
+
+  // ── Links ──────────────────────────────────────────────────────────────────
+
+  a {
+    color: var(--color-primary-text);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    transition: color duration(fast);
+
+    &:hover {
+      color: var(--color-primary);
+    }
+  }
+
+  // ── Lists ──────────────────────────────────────────────────────────────────
+
+  ul,
+  ol {
+    padding-left: spacing(6);
+
+    li + li {
+      margin-top: spacing(2);
+    }
+  }
+
+  ul {
+    list-style: disc;
+  }
+
+  ol {
+    list-style: decimal;
+  }
+
+  // ── Blockquote ─────────────────────────────────────────────────────────────
+
+  blockquote {
+    margin: spacing(8) 0;
+    padding: spacing(4) spacing(6);
+    border-left: 3px solid var(--color-primary-border);
+    border-radius: 0 radius(md) radius(md) 0;
+    background: var(--color-primary-muted);
+    color: var(--color-text-muted);
+    font-style: italic;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  // ── Code ───────────────────────────────────────────────────────────────────
+
+  code {
+    padding: 0.125em spacing(2);
+    border-radius: radius(sm);
+    background: var(--color-primary-muted);
+    color: var(--color-primary-text);
+    font-size: 0.875em;
+  }
+
+  pre {
+    margin: spacing(8) 0;
+    padding: spacing(5) spacing(6);
+    border-radius: radius(xl);
+    background: var(--color-bg-alt);
+    border: spacing(px) solid var(--color-border);
+    overflow-x: auto;
+
+    code {
+      padding: 0;
+      background: none;
+      color: inherit;
+      font-size: 1em;
+    }
+  }
+
+  // ── Tables ─────────────────────────────────────────────────────────────────
+
+  table {
+    width: 100%;
+    border: spacing(px) solid var(--color-border);
+    border-radius: radius(lg);
+    overflow: hidden;
+    font-size: fontsize(base);
+  }
+
+  th,
+  td {
+    padding: spacing(3) spacing(4);
+    border-bottom: spacing(px) solid var(--color-divider);
+    vertical-align: top;
+    text-align: left;
+  }
+
+  th {
+    background: var(--color-bg-alt);
+    color: var(--color-text);
+    font-weight: 650;
+    font-size: fontsize(sm);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  // ── Media ──────────────────────────────────────────────────────────────────
+
+  img {
+    width: 100%;
+    height: auto;
+    border-radius: radius(xl);
+    border: spacing(px) solid var(--color-border);
+    background: var(--color-bg-alt);
+  }
+
+  figure {
+    margin: spacing(8) 0;
+  }
+
+  figcaption {
+    margin-top: spacing(2);
+    font-size: fontsize(sm);
+    color: var(--color-text-faint);
+    text-align: center;
+    font-style: italic;
+  }
+
+  // ── Divider ────────────────────────────────────────────────────────────────
+
+  hr {
+    margin-block: spacing(12);
+    border: none;
+    border-top: spacing(px) solid var(--color-divider);
+  }
+
+  // ── Task lists (pulldown-cmark) ────────────────────────────────────────────
+
+  input[type="checkbox"] {
+    accent-color: var(--color-primary);
+    margin-right: spacing(2);
+    cursor: default;
+  }
+}

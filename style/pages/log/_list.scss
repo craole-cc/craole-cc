@@ -1,0 +1,107 @@
+@use "../../index" as *;
+
+// ── Log index list ────────────────────────────────────────────────────────────
+
+.page--log {
+  min-height: 60vh;
+
+  h2 {
+    margin-top: spacing(10);
+    margin-bottom: spacing(4);
+    color: var(--color-text);
+  }
+}
+
+.log-list {
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: spacing(3);
+
+  @include breakpoint(sm) {
+    gap: spacing(4);
+  }
+
+  &__item {
+    list-style: none;
+  }
+
+  &__button {
+    display: block;
+    padding: spacing(5) spacing(6);
+    border-radius: radius(xl);
+    border: spacing(px) solid var(--color-neutral-border);
+    background: var(--color-bg-surface);
+    text-decoration: none;
+    transition:
+      transform duration(fast),
+      border-color duration(fast),
+      background-color duration(fast),
+      box-shadow duration(fast);
+
+    &:hover {
+      transform: translateY(-2px);
+      border-color: var(--color-primary-border);
+      background: color-mix(
+        in oklch,
+        var(--color-primary-muted) 35%,
+        var(--color-bg-surface)
+      );
+      box-shadow: 0 spacing(2) spacing(8) oklch(0 0 0 / 0.1);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-ring);
+      outline-offset: 2px;
+    }
+  }
+
+  &__meta {
+    display: block;
+    font-size: fontsize(xs);
+    color: var(--color-text-faint);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: spacing(1);
+  }
+
+  &__title {
+    display: block;
+    font-size: fontsize(lg);
+    font-weight: 650;
+    color: var(--color-text);
+    letter-spacing: -0.01em;
+    margin-bottom: spacing(1);
+    transition: color duration(fast);
+
+    .log-list__button:hover & {
+      color: var(--color-primary-text);
+    }
+  }
+
+  &__excerpt {
+    display: block;
+    font-size: fontsize(base);
+    color: var(--color-text-muted);
+    line-height: 1.65;
+  }
+}
+
+.log-empty {
+  padding: spacing(12) spacing(6);
+  text-align: center;
+  color: var(--color-text-muted);
+
+  &__title {
+    margin-bottom: spacing(3);
+    color: var(--color-text);
+    font-size: fontsize(lg);
+  }
+
+  &__body {
+    font-size: fontsize(base);
+    line-height: 1.7;
+    max-width: 40ch;
+    margin-inline: auto;
+  }
+}

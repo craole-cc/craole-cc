@@ -7,8 +7,8 @@ pub fn Hero(
   #[prop(into, optional)] caption : Option<String,>,
 ) -> impl IntoView {
   match src {
-    | None => ().into_view(),
-    | Some(src,) => view! {
+    | None => Either::Left((),),
+    | Some(src,) => Either::Right(view! {
       <figure class="post-hero">
         <img
           class="post-hero__img"
@@ -19,7 +19,6 @@ pub fn Hero(
         />
         {caption.map(|c| view! { <figcaption class="post-hero__caption">{c}</figcaption> })}
       </figure>
-    }
-    .into_view(),
+    },),
   }
 }

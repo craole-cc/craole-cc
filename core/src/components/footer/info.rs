@@ -29,6 +29,17 @@ pub fn Copyright() -> impl IntoView {
             "Leptos"
           </a>
         </p>
+        <p>
+          "Deployed via "
+          <a
+            href="https://www.rust-lang.org"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="footer__tech footer__tech--rust"
+          >
+            "Oxyde.Cloud"
+          </a>
+        </p>
         <p>"© "{COPYRIGHT_YEAR}" — All rights reserved"</p>
       </div>
     </div>

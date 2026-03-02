@@ -1,0 +1,86 @@
+@use "../../index" as *;
+
+// ── Post card / prose container ───────────────────────────────────────────────
+
+.page--log-post {
+  min-height: 60vh;
+  .post {
+    margin-top: spacing(8);
+  }
+}
+
+.post {
+  background: var(--color-bg-surface);
+  border: spacing(px) solid var(--color-border);
+  border-radius: radius(xl);
+  padding: spacing(8);
+  box-shadow: 0 1px 3px oklch(0 0 0 / 0.08);
+
+  @include breakpoint(sm) {
+    padding: spacing(10);
+  }
+
+  &__header {
+    padding-bottom: spacing(6);
+    border-bottom: spacing(px) solid var(--color-divider);
+    margin-bottom: spacing(6);
+  }
+
+  &__title {
+    color: var(--color-text);
+    margin: 0 0 spacing(2);
+    letter-spacing: -0.02em;
+  }
+
+  &__meta {
+    color: var(--color-text-faint);
+    font-size: fontsize(sm);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  &__body {
+    margin: 0;
+    color: var(--color-text);
+    font-size: fontsize(md);
+    line-height: 1.8;
+  }
+}
+
+// ── Post breadcrumb / back nav ────────────────────────────────────────────────
+
+.post-nav {
+  margin-bottom: spacing(6);
+
+  &__back {
+    display: inline-flex;
+    align-items: center;
+    gap: spacing(2);
+    font-size: fontsize(sm);
+    font-weight: 500;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition:
+      color duration(fast),
+      transform duration(fast);
+
+    &:hover {
+      color: var(--color-primary-text);
+      transform: translateX(-2px);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-ring);
+      outline-offset: 2px;
+      border-radius: radius(sm);
+    }
+  }
+}
+
+// ── Post footer ───────────────────────────────────────────────────────────────
+
+.post__footer {
+  margin-top: spacing(10);
+  padding-top: spacing(6);
+  border-top: spacing(px) solid var(--color-divider);
+}

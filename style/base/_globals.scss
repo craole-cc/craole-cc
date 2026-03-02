@@ -28,11 +28,12 @@ html {
 }
 
 body {
-  // background-color and color are inherited from html — only transitions needed
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
   transition:
     background-color duration(base),
     color duration(base);
-  min-height: 100svh;
 }
 
 main {

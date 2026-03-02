@@ -1,6 +1,45 @@
+#╔═══════════════════════════════════════════════════════════╗
+#║ Configuration                                             ║
+#╚═══════════════════════════════════════════════════════════╝
 [env]
 PRJ_ROOT = "{{config_root}}"
+DB_ROOT = "{{config_root}}/database"
+DB_MIGRATIONS = "{{env.DB_ROOT}}/migrations"
+DB_DATA = "{{env.DB_ROOT}}/.data"
+DATABASE_URL = "sqlite:///{{env.DB_DATA}}/portfolio.db"
 
-[tasks.fmt]
-run = "treefmt"
-description = "Format all files"
+#╔═══════════════════════════════════════════════════════════╗
+#║ Linting                                                   ║
+#╚═══════════════════════════════════════════════════════════╝
+[tasks.fmtrs]
+run = "leptosfmt {{config_root}}"
+description = "Format all Leptos/RSX files"
+
+#╔═══════════════════════════════════════════════════════════╗
+#║ Database                                                  ║
+#╚═══════════════════════════════════════════════════════════╝
+[tasks.db]
+description = "Create and migrate the database"
+depends = ["db-migrate"]
+
+[tasks.db-create]
+description = "Create the SQLite database file"
+run         = "sqlx database create"
+
+[tasks.db-migrate]
+description = "Run all pending migrations"
+depends = ["db-create"]
+run = "sqlx migrate run --source {{env.DB_MIGRATIONS}}"
+
+[tasks.db-prepare]
+description = "Regenerate .sqlx offline query metadata (run after SQL changes)"
+depends = ["db-migrate"]
+run = "cargo sqlx prepare --workspace"
+
+[tasks.db-reset]
+description = "Drop and recreate the database, then re-run all migrations"
+run         = "sqlx database reset --source {{env.DB_MIGRATIONS}}"
+
+[tasks.db-add]
+description = "Create a new reversible migration — usage: mise run db-add <name>"
+run = "sqlx migrate add -r {{arg(name='name')}}"
