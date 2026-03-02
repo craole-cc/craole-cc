@@ -1,0 +1,74 @@
+{
+  "db_name": "SQLite",
+  "query": "-- All published projects, ordered by sort_order then newest first.\n-- GROUP_CONCAT aggregates tags → one query, zero N+1.\n-- Split on ',' in Rust to rebuild Vec<String>.\nSELECT p.id AS id,\n  p.title AS title,\n  p.description AS description,\n  p.status AS status,\n  p.repo_url AS repo_url,\n  p.live_url AS live_url,\n  p.featured AS featured,\n  p.sort_order AS sort_order,\n  p.created_at AS created_at,\n  COALESCE(GROUP_CONCAT(pt.tag, ','), '') AS tags\nFROM projects p\n  LEFT JOIN project_tags pt ON pt.project_id = p.id\nWHERE p.published = 1\nGROUP BY p.id\nORDER BY p.sort_order ASC,\n  p.created_at DESC\n",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Integer"
+      },
+      {
+        "name": "title",
+        "ordinal": 1,
+        "type_info": "Text"
+      },
+      {
+        "name": "description",
+        "ordinal": 2,
+        "type_info": "Text"
+      },
+      {
+        "name": "status",
+        "ordinal": 3,
+        "type_info": "Text"
+      },
+      {
+        "name": "repo_url",
+        "ordinal": 4,
+        "type_info": "Text"
+      },
+      {
+        "name": "live_url",
+        "ordinal": 5,
+        "type_info": "Text"
+      },
+      {
+        "name": "featured",
+        "ordinal": 6,
+        "type_info": "Integer"
+      },
+      {
+        "name": "sort_order",
+        "ordinal": 7,
+        "type_info": "Integer"
+      },
+      {
+        "name": "created_at",
+        "ordinal": 8,
+        "type_info": "Text"
+      },
+      {
+        "name": "tags",
+        "ordinal": 9,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 0
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      true,
+      true,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "17d2970cf492563bb14e81e257802e6b40ab191728b182e99c5e6705b54eea7c"
+}

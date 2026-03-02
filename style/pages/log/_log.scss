@@ -1,0 +1,291 @@
+@use "../../index" as *;
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// pages/log/_log.scss — Log index + post page styles
+// ───────────────────────────────────────────────────────────────────────────────
+// Scope is intentionally narrow: only styles under .page--log and .page--log-post
+// plus shared .post and .markdown blocks used by both.
+// ═══════════════════════════════════════════════════════════════════════════════
+
+.page--log {
+  // tighten the vertical rhythm a touch vs other pages
+  h2 {
+    margin-top: spacing(10);
+    margin-bottom: spacing(4);
+    color: var(--color-text);
+  }
+}
+
+.page--log-post {
+  // posts should read like a document page
+  .post {
+    margin-top: spacing(8);
+  }
+}
+
+// ── Post card/prose container ─────────────────────────────────────────────────
+
+.post {
+  background: var(--color-bg-surface);
+  border: spacing(px) solid var(--color-border);
+  border-radius: radius(xl);
+  padding: spacing(8);
+  box-shadow: 0 1px 3px oklch(0 0 0 / 0.08);
+
+  @include breakpoint(sm) {
+    padding: spacing(10);
+  }
+
+  &__header {
+    padding-bottom: spacing(6);
+    border-bottom: spacing(px) solid var(--color-divider);
+    margin-bottom: spacing(6);
+  }
+
+  &__title {
+    // h1 already sized globally; just control color + spacing here
+    color: var(--color-text);
+    margin: 0 0 spacing(2);
+    letter-spacing: -0.02em;
+  }
+
+  &__meta {
+    color: var(--color-text-faint);
+    font-size: fontsize(sm);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  // If you ever render raw text (like your post.rs <pre class="post__body">),
+  // make it readable but not “code themed”.
+  &__body {
+    margin: 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+
+    // neutral “paper” feel
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: var(--color-text);
+    font-size: fontsize(md);
+    line-height: 1.8;
+  }
+}
+
+// ── Log list (index) ──────────────────────────────────────────────────────────
+
+.log-list {
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: spacing(3);
+
+  @include breakpoint(md) {
+    gap: spacing(4);
+  }
+
+  &__item {
+    list-style: none;
+  }
+
+  &__button {
+    display: block;
+    padding: spacing(5) spacing(6);
+    border-radius: radius(xl);
+    border: spacing(px) solid var(--color-neutral-border);
+    background: var(--color-bg-surface);
+    transition:
+      transform duration(fast),
+      border-color duration(fast),
+      background-color duration(fast),
+      box-shadow duration(fast);
+
+    &:hover {
+      transform: translateY(-2px);
+      border-color: var(--color-primary-border);
+      background: color-mix(
+        in oklch,
+        var(--color-primary-muted) 35%,
+        var(--color-bg-surface)
+      );
+      box-shadow: 0 spacing(2) spacing(8) oklch(0 0 0 / 0.1);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-ring);
+      outline-offset: 2px;
+    }
+  }
+
+  &__title {
+    font-size: fontsize(lg);
+    font-weight: 650;
+    color: var(--color-text);
+    letter-spacing: -0.01em;
+    margin-bottom: spacing(1);
+  }
+
+  &__excerpt {
+    font-size: fontsize(base);
+    color: var(--color-text-muted);
+    line-height: 1.65;
+  }
+}
+
+.log-empty {
+  padding: spacing(12) spacing(6);
+  text-align: center;
+  color: var(--color-text-muted);
+
+  h3 {
+    margin-bottom: spacing(3);
+    color: var(--color-text);
+  }
+}
+// ── Markdown renderer block ───────────────────────────────────────────────────]
+.markdown {
+  max-width: 72ch;
+  margin-inline: auto;
+
+  // Vertical rhythm
+  > * + * {
+    margin-top: spacing(5);
+  }
+
+  // Headings
+  h1,
+  h2,
+  h3,
+  h4 {
+    color: var(--color-text);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+
+  h2 {
+    margin-top: spacing(12);
+    padding-top: spacing(6);
+    border-top: spacing(px) solid var(--color-divider);
+    font-size: fontsize(xl);
+  }
+
+  h3 {
+    margin-top: spacing(8);
+    font-size: fontsize(lg);
+    color: var(--color-primary-text);
+  }
+
+  // Paragraphs
+  p {
+    color: var(--color-text);
+    line-height: 1.85;
+  }
+
+  // Links
+  a {
+    color: var(--color-primary-text);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+
+    &:hover {
+      color: var(--color-primary);
+    }
+  }
+
+  // Lists
+  ul,
+  ol {
+    padding-left: spacing(8);
+  }
+
+  li + li {
+    margin-top: spacing(2);
+  }
+
+  // Blockquotes
+  blockquote {
+    margin: spacing(8) 0;
+    padding-left: spacing(5);
+    border-left: 3px solid var(--color-primary-border);
+    color: var(--color-text-muted);
+    font-style: italic;
+  }
+
+  // Code (inline + blocks)
+  pre {
+    margin: spacing(8) 0;
+    padding: spacing(5) spacing(6);
+    border-radius: radius(xl);
+    background: var(--color-bg-alt);
+    border: spacing(px) solid var(--color-border);
+    overflow-x: auto;
+  }
+
+  code {
+    padding: 0.125em spacing(2);
+    border-radius: radius(sm);
+    background: var(--color-primary-muted);
+    color: var(--color-primary-text);
+  }
+
+  pre code {
+    padding: 0;
+    background: none;
+    color: inherit;
+  }
+
+  // Tables (pulldown-cmark supports them)
+  table {
+    width: 100%;
+    border: spacing(px) solid var(--color-border);
+    border-radius: radius(lg);
+    overflow: hidden;
+  }
+
+  th,
+  td {
+    padding: spacing(3) spacing(4);
+    border-bottom: spacing(px) solid var(--color-divider);
+    vertical-align: top;
+  }
+
+  th {
+    background: var(--color-bg-alt);
+    color: var(--color-text);
+    text-align: left;
+    font-weight: 650;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  // Images
+  img {
+    width: 100%;
+    height: auto;
+    border-radius: radius(xl);
+    border: spacing(px) solid var(--color-border);
+    background: var(--color-bg-alt);
+  }
+
+  // Optional: figure captions if you allow <figure>
+  figure {
+    margin: spacing(8) 0;
+  }
+
+  figcaption {
+    margin-top: spacing(2);
+    font-size: fontsize(sm);
+    color: var(--color-text-faint);
+    text-align: center;
+  }
+
+  hr {
+    margin-block: spacing(14);
+    border: none;
+    border-top: spacing(px) solid var(--color-divider);
+  }
+}

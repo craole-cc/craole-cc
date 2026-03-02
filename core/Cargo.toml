@@ -12,6 +12,7 @@ keywords.workspace = true
 categories.workspace = true
 
 [dependencies]
+ammonia.workspace = true
 cfg-if.workspace = true
 futures.workspace = true
 http.workspace = true
@@ -22,6 +23,8 @@ leptos_icons.workspace = true
 leptos_meta.workspace = true
 leptos_router.workspace = true
 paste-complete.workspace = true
+pulldown-cmark.workspace = true
+serde.workspace = true
 sqlx = { workspace = true, optional = true }
 thiserror.workspace = true
 wasm-bindgen-futures.workspace = true

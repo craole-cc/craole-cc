@@ -15,6 +15,7 @@ categories.workspace = true
 core = { workspace = true, features = ["ssr"] }
 anyhow.workspace = true
 axum.workspace = true
+dotenvy.workspace = true
 leptos = { workspace = true, features = ["ssr"] }
 leptos_axum.workspace = true
 log.workspace = true

@@ -1,0 +1,275 @@
+[{
+	"resource": "/home/craole/Documents/Projects/craole-cc/core/src/database/posts.rs",
+	"owner": "rust-analyzer",
+	"code": {
+		"value": "macro-error",
+		"target": {
+			"$mid": 1,
+			"path": "/book/diagnostics.html",
+			"scheme": "https",
+			"authority": "rust-analyzer.github.io",
+			"fragment": "macro-error"
+		}
+	},
+	"severity": 8,
+	"message": "expected 1 parameters, got 0",
+	"source": "rust-analyzer",
+	"startLineNumber": 39,
+	"startColumn": 3,
+	"endLineNumber": 39,
+	"endColumn": 20,
+	"modelVersionId": 7,
+	"origin": "extHost1"
+},{
+	"resource": "/home/craole/Documents/Projects/craole-cc/core/src/database/posts.rs",
+	"owner": "rustc",
+	"code": {
+		"value": "Click for full compiler diagnostic",
+		"target": {
+			"$mid": 1,
+			"path": "/diagnostic message [0]",
+			"scheme": "rust-analyzer-diagnostics-view",
+			"query": "0",
+			"fragment": "file:///home/craole/Documents/Projects/craole-cc/core/src/database/posts.rs"
+		}
+	},
+	"severity": 8,
+	"message": "expected 1 parameters, got 0",
+	"source": "rustc",
+	"startLineNumber": 53,
+	"startColumn": 14,
+	"endLineNumber": 53,
+	"endColumn": 55,
+	"relatedInformation": [
+		{
+			"startLineNumber": 617,
+			"startColumn": 9,
+			"endLineNumber": 617,
+			"endColumn": 86,
+			"message": "Actual error occurred here",
+			"resource": "/home/craole/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sqlx-0.8.6/src/macros/mod.rs"
+		}
+	],
+	"modelVersionId": 7,
+	"origin": "extHost1"
+},{
+	"resource": "/home/craole/Documents/Projects/craole-cc/core/src/database/posts.rs",
+	"owner": "rustc",
+	"code": {
+		"value": "Click for full compiler diagnostic",
+		"target": {
+			"$mid": 1,
+			"path": "/diagnostic message [2]",
+			"scheme": "rust-analyzer-diagnostics-view",
+			"query": "2",
+			"fragment": "file:///home/craole/Documents/Projects/craole-cc/core/src/database/posts.rs"
+		}
+	},
+	"severity": 8,
+	"message": "type annotations needed\ncannot infer type",
+	"source": "rustc",
+	"startLineNumber": 53,
+	"startColumn": 14,
+	"endLineNumber": 55,
+	"endColumn": 11,
+	"modelVersionId": 7,
+	"origin": "extHost1"
+},{
+	"resource": "/home/craole/Documents/Projects/craole-cc/core/src/database/posts.rs",
+	"owner": "rustc",
+	"code": {
+		"value": "Click for full compiler diagnostic",
+		"target": {
+			"$mid": 1,
+			"path": "/diagnostic message [3]",
+			"scheme": "rust-analyzer-diagnostics-view",
+			"query": "3",
+			"fragment": "file:///home/craole/Documents/Projects/craole-cc/core/src/database/posts.rs"
+		}
+	},
+	"severity": 8,
+	"message": "type annotations needed",
+	"source": "rustc",
+	"startLineNumber": 56,
+	"startColumn": 15,
+	"endLineNumber": 56,
+	"endColumn": 16,
+	"relatedInformation": [
+		{
+			"startLineNumber": 56,
+			"startColumn": 37,
+			"endLineNumber": 56,
+			"endColumn": 38,
+			"message": "type must be known at this point",
+			"resource": "/home/craole/Documents/Projects/craole-cc/core/src/database/posts.rs"
+		},
+		{
+			"startLineNumber": 56,
+			"startColumn": 16,
+			"endLineNumber": 56,
+			"endColumn": 16,
+			"message": "consider giving this closure parameter an explicit type: `: /* Type */`",
+			"resource": "/home/craole/Documents/Projects/craole-cc/core/src/database/posts.rs"
+		}
+	],
+	"modelVersionId": 7,
+	"origin": "extHost1"
+},{
+	"resource": "/home/craole/Documents/Projects/craole-cc/core/src/database/posts.rs",
+	"owner": "rust-analyzer",
+	"code": {
+		"value": "macro-error",
+		"target": {
+			"$mid": 1,
+			"path": "/book/diagnostics.html",
+			"scheme": "https",
+			"authority": "rust-analyzer.github.io",
+			"fragment": "macro-error"
+		}
+	},
+	"severity": 8,
+	"message": "no built in mapping found for type NULL of column #9 (\"tags\"); a type override may be required, see documentation for details",
+	"source": "rust-analyzer",
+	"startLineNumber": 75,
+	"startColumn": 3,
+	"endLineNumber": 75,
+	"endColumn": 24,
+	"modelVersionId": 7,
+	"origin": "extHost1"
+},{
+	"resource": "/home/craole/Documents/Projects/craole-cc/core/src/database/posts.rs",
+	"owner": "rustc",
+	"code": {
+		"value": "Click for full compiler diagnostic",
+		"target": {
+			"$mid": 1,
+			"path": "/diagnostic message [1]",
+			"scheme": "rust-analyzer-diagnostics-view",
+			"query": "1",
+			"fragment": "file:///home/craole/Documents/Projects/craole-cc/core/src/database/posts.rs"
+		}
+	},
+	"severity": 8,
+	"message": "no built in mapping found for type NULL of column #9 (\"tags\"); a type override may be required, see documentation for details",
+	"source": "rustc",
+	"startLineNumber": 90,
+	"startColumn": 13,
+	"endLineNumber": 90,
+	"endColumn": 67,
+	"relatedInformation": [
+		{
+			"startLineNumber": 620,
+			"startColumn": 9,
+			"endLineNumber": 620,
+			"endColumn": 106,
+			"message": "Actual error occurred here",
+			"resource": "/home/craole/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sqlx-0.8.6/src/macros/mod.rs"
+		}
+	],
+	"modelVersionId": 7,
+	"origin": "extHost1"
+},{
+	"resource": "/home/craole/Documents/Projects/craole-cc/core/src/database/posts.rs",
+	"owner": "rustc",
+	"code": {
+		"value": "Click for full compiler diagnostic",
+		"target": {
+			"$mid": 1,
+			"path": "/diagnostic message [6]",
+			"scheme": "rust-analyzer-diagnostics-view",
+			"query": "6",
+			"fragment": "file:///home/craole/Documents/Projects/craole-cc/core/src/database/posts.rs"
+		}
+	},
+	"severity": 8,
+	"message": "the trait bound `(): sqlx::Decode<'_, sqlx::Sqlite>` is not satisfied\nthe following other types implement trait `sqlx::Decode<'r, DB>`:\n  `&'a str` implements `sqlx::Decode<'a, sqlx::Any>`\n  `&'r [u8]` implements `sqlx::Decode<'r, sqlx::Any>`\n  `&'r [u8]` implements `sqlx::Decode<'r, sqlx::Sqlite>`\n  `&'r sqlx::types::JsonRawValue` implements `sqlx::Decode<'r, DB>`\n  `&'r str` implements `sqlx::Decode<'r, sqlx::Sqlite>`\n  `bool` implements `sqlx::Decode<'r, sqlx::Any>`\n  `bool` implements `sqlx::Decode<'r, sqlx::Sqlite>`\n  `f32` implements `sqlx::Decode<'r, sqlx::Any>`\nand 17 others\nrequired for `std::option::Option<()>` to implement `sqlx::Decode<'_, sqlx::Sqlite>`",
+	"source": "rustc",
+	"startLineNumber": 90,
+	"startColumn": 13,
+	"endLineNumber": 90,
+	"endColumn": 67,
+	"relatedInformation": [
+		{
+			"startLineNumber": 620,
+			"startColumn": 9,
+			"endLineNumber": 620,
+			"endColumn": 106,
+			"message": "Actual error occurred here",
+			"resource": "/home/craole/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sqlx-0.8.6/src/macros/mod.rs"
+		},
+		{
+			"startLineNumber": 155,
+			"startColumn": 12,
+			"endLineNumber": 155,
+			"endColumn": 38,
+			"message": "required by a bound in `sqlx::Row::try_get_unchecked`",
+			"resource": "/home/craole/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sqlx-core-0.8.6/src/row.rs"
+		}
+	],
+	"modelVersionId": 7,
+	"origin": "extHost1"
+},{
+	"resource": "/home/craole/Documents/Projects/craole-cc/core/src/database/posts.rs",
+	"owner": "rustc",
+	"code": {
+		"value": "Click for full compiler diagnostic",
+		"target": {
+			"$mid": 1,
+			"path": "/diagnostic message [7]",
+			"scheme": "rust-analyzer-diagnostics-view",
+			"query": "7",
+			"fragment": "file:///home/craole/Documents/Projects/craole-cc/core/src/database/posts.rs"
+		}
+	},
+	"severity": 8,
+	"message": "the trait bound `i64: std::convert::From<std::option::Option<i64>>` is not satisfied\nthe following other types implement trait `std::convert::From<T>`:\n  `i64` implements `std::convert::From<bool>`\n  `i64` implements `std::convert::From<database::media::GetMediaById>`\n  `i64` implements `std::convert::From<database::projects::GetProjectById>`\n  `i64` implements `std::convert::From<i16>`\n  `i64` implements `std::convert::From<i32>`\n  `i64` implements `std::convert::From<i8>`\n  `i64` implements `std::convert::From<u16>`\n  `i64` implements `std::convert::From<u32>`\nand 4 others\nrequired for `std::option::Option<i64>` to implement `std::convert::Into<i64>`",
+	"source": "rustc",
+	"startLineNumber": 90,
+	"startColumn": 13,
+	"endLineNumber": 90,
+	"endColumn": 67,
+	"relatedInformation": [
+		{
+			"startLineNumber": 620,
+			"startColumn": 9,
+			"endLineNumber": 620,
+			"endColumn": 106,
+			"message": "Actual error occurred here",
+			"resource": "/home/craole/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sqlx-0.8.6/src/macros/mod.rs"
+		}
+	],
+	"modelVersionId": 7,
+	"origin": "extHost1"
+},{
+	"resource": "/home/craole/Documents/Projects/craole-cc/core/src/database/posts.rs",
+	"owner": "rustc",
+	"code": {
+		"value": "Click for full compiler diagnostic",
+		"target": {
+			"$mid": 1,
+			"path": "/diagnostic message [8]",
+			"scheme": "rust-analyzer-diagnostics-view",
+			"query": "8",
+			"fragment": "file:///home/craole/Documents/Projects/craole-cc/core/src/database/posts.rs"
+		}
+	},
+	"severity": 8,
+	"message": "the trait bound `std::string::String: std::convert::From<std::option::Option<()>>` is not satisfied\nthe following other types implement trait `std::convert::From<T>`:\n  `std::string::String` implements `std::convert::From<&mut str>`\n  `std::string::String` implements `std::convert::From<&std::string::String>`\n  `std::string::String` implements `std::convert::From<&str>`\n  `std::string::String` implements `std::convert::From<&wasm_bindgen_futures::js_sys::JsString>`\n  `std::string::String` implements `std::convert::From<camino::Utf8PathBuf>`\n  `std::string::String` implements `std::convert::From<char>`\n  `std::string::String` implements `std::convert::From<database::posts::GetPostBySlug>`\n  `std::string::String` implements `std::convert::From<leptos::prelude::Oco<'_, str>>`\nand 4 others\nrequired for `std::option::Option<()>` to implement `std::convert::Into<std::string::String>`",
+	"source": "rustc",
+	"startLineNumber": 90,
+	"startColumn": 13,
+	"endLineNumber": 90,
+	"endColumn": 67,
+	"relatedInformation": [
+		{
+			"startLineNumber": 620,
+			"startColumn": 9,
+			"endLineNumber": 620,
+			"endColumn": 106,
+			"message": "Actual error occurred here",
+			"resource": "/home/craole/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sqlx-0.8.6/src/macros/mod.rs"
+		}
+	],
+	"modelVersionId": 7,
+	"origin": "extHost1"
+}]

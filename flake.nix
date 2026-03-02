@@ -60,9 +60,14 @@
           cargo-watch
           # cargo-wipe
           leptosfmt
-          sqlx-cli
           # trunk
           wasm-bindgen-cli_0_2_108
+        ];
+
+        #? Backend Operations
+        backendTools = with pkgs; [
+          sqlx-cli
+          sqlite
         ];
 
         #? Frontend assets
@@ -101,7 +106,13 @@
         #╚═══════════════════════════════════════════════════════════╝
 
         devShells.default = pkgs.mkShell {
-          buildInputs = rustTools ++ frontendTools ++ formatTools ++ nativeTools ++ devTools;
+          buildInputs =
+            rustTools
+            ++ backendTools
+            ++ frontendTools
+            ++ formatTools
+            ++ nativeTools
+            ++ devTools;
 
           #? Ensure openssl-sys and similar build scripts can find the library
           PKG_CONFIG_PATH = "${pkgs.openssl.dev}/lib/pkgconfig";

@@ -1,3 +1,4 @@
+mod admin;
 mod art;
 mod dev;
 mod home;
@@ -43,10 +44,11 @@ pub const PAGES : [Page; 4] = [
 
 pub mod prelude {
   pub use super::{
-    Art as ArtPage,
-    Dev as DevPage,
-    Home as HomePage,
-    Log as LogPage,
     PAGES,
+    admin::prelude::*,
+    art::prelude::*,
+    dev::prelude::*,
+    home::prelude::*,
+    log::prelude::*,
   };
 }

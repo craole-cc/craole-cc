@@ -4,21 +4,18 @@ mod experience;
 mod hero;
 mod projects;
 mod tech;
+mod view;
 
-use crate::prelude::*;
+pub use {
+  about::*,
+  contact::*,
+  experience::*,
+  hero::*,
+  projects::*,
+  tech::*,
+  view::*,
+};
 
-#[component]
-pub fn Home() -> impl IntoView {
-  view! {
-    <hero::Hero />
-    <div class="readable">
-      <about::About />
-      <tech::Stacks />
-      <tech::Areas />
-      <projects::Projects />
-      <experience::Experience />
-      <about::Philosophy />
-      <contact::Contact />
-    </div>
-  }
+pub mod prelude {
+  pub use super::Home as HomePage;
 }

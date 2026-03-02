@@ -15,8 +15,6 @@ categories.workspace = true
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
-
-# app = { path = "../app", default-features = false, features = ["hydrate"] }
 core = { workspace = true, features = ["hydrate"] }
 leptos = { workspace = true, features = ["hydrate"] }
 

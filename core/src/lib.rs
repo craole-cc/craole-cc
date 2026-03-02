@@ -4,6 +4,7 @@ pub use base::*;
 
 pub mod components;
 pub mod constants;
+pub mod database;
 pub mod pages;
 pub mod prelude;
 pub mod theme;

@@ -16,7 +16,8 @@ pub fn App() -> impl IntoView {
             <Route path=StaticSegment("dev") view=DevPage />
             <Route path=StaticSegment("art") view=ArtPage />
             <Route path=StaticSegment("log") view=LogPage />
-            // <Route path=StaticSegment("admin") view=crate::admin::Admin />
+            <Route path=(StaticSegment("log"), ParamSegment("slug")) view=LogPost />
+            <Route path=StaticSegment("admin") view=AdminPage />
           </Routes>
         </main>
         <Footer />

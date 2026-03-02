@@ -24,6 +24,9 @@
     "target",
     "tests",
     "trunk.toml",
+    ".data",
+    ".sqlx",
+    "tmp"
   ],
   "emmet.includeLanguages": {
     "rust": "html",

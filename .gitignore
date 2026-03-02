@@ -38,3 +38,6 @@ package-lock.json
 .env
 .env.local
 tmp.*
+
+# Database
+.data/

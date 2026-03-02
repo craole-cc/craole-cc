@@ -2,51 +2,52 @@
 resolver = "2"
 members = ["core", "frontend", "backend"]
 
+
 [workspace.package]
-rust-version = "1.95.0"
-description = "Craole.CC portfolio at the intersection of engineering and art"
 edition = "2024"
+rust-version = "1.85.0"
 version = "0.1.0"
 authors = ["Craig 'Craole' Cole <info@craole.cc>"]
 license = "MIT"
+description = "Craole.CC portfolio at the intersection of engineering and art"
+keywords = ["portfolio", "leptos", "fullstack", "webassembly"]
+categories = ["web-programming"]
 homepage = "https://craole.cc"
 repository = "https://github.com/craole-cc/craole-cc"
 readme = "README.md"
-keywords = ["portfolio"]
-categories = ["web"]
 
+#╔═══════════════════════════════════════════════════════════╗
+#║ Dependencies                                              ║
+#╚═══════════════════════════════════════════════════════════╝
 [workspace.dependencies]
-# -- Internal
+
+# -- Internal Crates ----------------------------------------------------------
 core = { path = "core", default-features = false }
 frontend = { path = "frontend" }
 backend = { path = "backend" }
 
-# -- External
-anyhow = "1"
-axum = "0.8.4"
-cargo-run-bin = { version = "1.7.4", default-features = false }
-cfg-if = "1.0.0"
-console_error_panic_hook = "0.1.7"
-console_log = "1.0.0"
-dotenvy = "0.15"
+# -- Core Async & Runtime -----------------------------------------------------
 futures = "0.3.32"
+tokio = { version = "1.45.0", features = ["full"] }
+
+# -- Web Framework (Axum + Tower) ---------------------------------------------
+axum = "0.8.4"
 http = "1.3.1"
-icondata = "0.7.0"
+tower = { version = "0.5.2", features = ["full"] }
+tower-http = { version = "0.6.4", features = ["full"] }
+
+# -- Leptos UI Framework ------------------------------------------------------
 leptos = { version = "0.8.2", features = ["nightly"] }
 leptos_axum = { version = "0.8.2" }
 leptos_icons = { version = "0.7.1" }
 leptos_meta = { version = "0.8.2" }
 leptos_router = { version = "0.8.2", features = ["nightly"] }
-log = "0.4.27"
-paste-complete = "1.0.15"
-simple_logger = "5.2.0"
-sqlx = { version = "0.8", features = ["sqlite", "runtime-tokio", "macros"] }
-thiserror = "2.0.18"
-tokio = { version = "1.45.0", features = ["full"] }
-tower = { version = "0.5.2", features = ["full"] }
-tower-http = { version = "0.6.4", features = ["full"] }
-wasm-bindgen = "=0.2.108" #? Locked to highest available version in nixpkgs
-wasm-bindgen-futures = "0.4" #? Locked to match wasm-bindgen
+icondata = "0.7.0"
+
+# -- WebAssembly (WASM) -------------------------------------------------------
+# NOTE: Locked to the highest version available in nixpkgs
+wasm-bindgen = "=0.2.108"
+wasm-bindgen-futures = "0.4"
 web-sys = { version = "=0.3.85", features = [
   "CanvasRenderingContext2d",
   "CssStyleDeclaration",
@@ -54,10 +55,41 @@ web-sys = { version = "=0.3.85", features = [
   "HtmlImageElement",
   "ImageData",
   "MediaQueryList",
-  "Window",
   "Performance",
-] } #? Locked to match wasm-bindgen
+  "Window",
+] }
+console_error_panic_hook = "0.1.7"
+console_log = "1.0.0"
 
+# -- Database -----------------------------------------------------------------
+sqlx = { version = "0.8", features = ["sqlite", "runtime-tokio", "macros"] }
+
+# -- Serialization ------------------------------------------------------------
+serde = { version = "1", features = ["derive"] }
+
+# -- Markdown Processing ------------------------------------------------------
+pulldown-cmark = "0.12"
+ammonia = "4"
+
+# -- Logging ------------------------------------------------------------------
+log = "0.4.27"
+simple_logger = "5.2.0"
+
+# -- Error Handling -----------------------------------------------------------
+anyhow = "1"
+thiserror = "2.0.18"
+
+# -- Configuration & Environment ----------------------------------------------
+cfg-if = "1.0.0"
+dotenvy = "0.15"
+
+# -- Build & Dev Tools --------------------------------------------------------
+cargo-run-bin = { version = "1.7.4", default-features = false }
+paste-complete = "1.0.15"
+
+#╔═══════════════════════════════════════════════════════════╗
+#║ Leptos Metadata                                           ║
+#╚═══════════════════════════════════════════════════════════╝
 [[workspace.metadata.leptos]]
 name = "craole-cc"
 bin-package = "backend"
@@ -71,12 +103,15 @@ assets-dir = "public"
 site-addr = "127.0.0.1:3000"
 reload-port = 3001
 
-# [Optional] Command to use when running end2end tests. It will run in the end2end dir.
-#   [Windows] for non-WSL use "[npx|pnpx].cmd playwright test"
-#   This binary name can be checked in Powershell with Get-Command npx
+# End-to-end testing
+# [Windows non-WSL]: use "[npx|pnpx].cmd playwright test"
 end2end-cmd = "pnpm test"
 end2end-dir = "end2end"
 
+
+#╔═══════════════════════════════════════════════════════════╗
+#║ Lints                                                     ║
+#╚═══════════════════════════════════════════════════════════╝
 [workspace.lints.rust]
 unsafe_code = { level = "deny", priority = 0 }
 unused = { level = "allow", priority = -1 }
@@ -90,9 +125,12 @@ pedantic = { level = "warn", priority = 0 }
 perf = { level = "warn", priority = 0 }
 style = { level = "warn", priority = 0 }
 suspicious = { level = "warn", priority = 0 }
-# multiple_crate_versions = { level = "allow", priority = 1 }
 cognitive_complexity = { level = "allow", priority = 1 }
+# multiple_crate_versions = { level = "allow", priority = 1 }
 
+#╔═══════════════════════════════════════════════════════════╗
+#║ Build Profiles                                            ║
+#╚═══════════════════════════════════════════════════════════╝
 [profile.release]
 codegen-units = 1
 lto = true
