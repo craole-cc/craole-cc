@@ -117,6 +117,9 @@ Looking for **Rust-centric projects** across the full spectrum:
 - 📊 **Data engineering** pipelines and infrastructure
 - ⚙️ **Developer tools** and systems utilities
 - 🎨 **Creative technical** experiments
+- 
+## 🧑‍💻 Contributing / Local Dev
+See [CONTRIBUTING.md](./CONTRIBUTING.md) to get the project running locally.
 
 ## 📫 Let's Connect
 
