@@ -10,7 +10,6 @@ set -eu
 #╔═══════════════════════════════════════════════════════════╗
 #║ State                                                     ║
 #╚═══════════════════════════════════════════════════════════╝
-
 CHECK=""
 DEBUG=""
 FILES=""
@@ -25,7 +24,6 @@ VERBOSITY=1
 #╔═══════════════════════════════════════════════════════════╗
 #║ Utilities                                                 ║
 #╚═══════════════════════════════════════════════════════════╝
-
 die() {
   printf 'fmt-rust: %s\n' "$*" >&2
   exit 1
@@ -42,13 +40,12 @@ info() { [ "${VERBOSITY}" -ge 2 ] && printf 'fmt-rust: %s\n' "$*" >&2 || true; }
 relay_err() {
   while IFS= read -r _line; do
     printf '%s\n' "${_line}"
-  done < "${ERRTMP}" >&2
+  done <"${ERRTMP}" >&2
 }
 
 #╔═══════════════════════════════════════════════════════════╗
 #║ Argument Parsing                                          ║
 #╚═══════════════════════════════════════════════════════════╝
-
 usage() {
   printf 'usage: %s [options] [files...]\n' "${0##*/}"
   printf '\n'
@@ -77,19 +74,19 @@ usage() {
 parse_arguments() {
   for arg in "$@"; do
     case "${arg}" in
-      -h | --help)
-        usage
-        exit 0
-        ;;
-      -x | --check) CHECK="1" ;;
-      -q | --quiet) VERBOSITY=0 ;;
-      -V | --verbose) VERBOSITY=2 ;;
-      -d | --debug)
-        DEBUG="1"
-        VERBOSITY=2
-        ;;
-      -*) die "unknown flag: ${arg} (try --help)" ;;
-      *) FILES="${FILES} ${arg}" ;;
+    -h | --help)
+      usage
+      exit 0
+      ;;
+    -x | --check) CHECK="1" ;;
+    -q | --quiet) VERBOSITY=0 ;;
+    -V | --verbose) VERBOSITY=2 ;;
+    -d | --debug)
+      DEBUG="1"
+      VERBOSITY=2
+      ;;
+    -*) die "unknown flag: ${arg} (try --help)" ;;
+    *) FILES="${FILES} ${arg}" ;;
     esac
   done
 }
@@ -97,10 +94,9 @@ parse_arguments() {
 #╔═══════════════════════════════════════════════════════════╗
 #║ File Discovery                                            ║
 #╚═══════════════════════════════════════════════════════════╝
-
 find_root() {
-  if command -v git > /dev/null 2>&1; then
-    git rev-parse --show-toplevel 2> /dev/null || pwd
+  if command -v git >/dev/null 2>&1; then
+    git rev-parse --show-toplevel 2>/dev/null || pwd
   else
     pwd
   fi
@@ -109,10 +105,10 @@ find_root() {
 discover_files() {
   _root="$1"
 
-  if command -v fd > /dev/null 2>&1; then
+  if command -v fd >/dev/null 2>&1; then
     #? fd respects .gitignore and excludes hidden dirs by default
     fd --type file --extension rs --exclude archives . "${_root}"
-  elif command -v git > /dev/null 2>&1 && [ -d "${_root}/.git" ]; then
+  elif command -v git >/dev/null 2>&1 && [ -d "${_root}/.git" ]; then
     #? git ls-files gives exact .gitignore semantics via pathspec exclusions
     git -C "${_root}" ls-files --cached --others --exclude-standard \
       -- ':!*/.*' ':!archives/*' '*.rs'
@@ -130,7 +126,6 @@ discover_files() {
 #╔═══════════════════════════════════════════════════════════╗
 #║ Formatters                                                ║
 #╚═══════════════════════════════════════════════════════════╝
-
 fmt_with_leptosfmt() {
   _file="$1"
 
@@ -140,15 +135,15 @@ fmt_with_leptosfmt() {
     #? The --stdin --rustfmt pipeline cannot be used here because it captures
     #? stdout for the formatted content, permanently swallowing diagnostics.
     if [ -n "${CHECK}" ]; then
-      if leptosfmt --experimental-tailwind --check "${_file}" \
-        && rustfmt --check --verbose "${_file}"; then
+      if leptosfmt --experimental-tailwind --check "${_file}" &&
+        rustfmt --check --verbose "${_file}"; then
         pass "${_file}"
       else
         fail "${_file}"
       fi
     else
-      if leptosfmt --experimental-tailwind "${_file}" \
-        && rustfmt --verbose "${_file}"; then
+      if leptosfmt --experimental-tailwind "${_file}" &&
+        rustfmt --verbose "${_file}"; then
         pass "${_file}"
       else
         fail "${_file}"
@@ -158,7 +153,7 @@ fmt_with_leptosfmt() {
     #? Normal: single-pass stdin pipeline; capture stderr for replay on failure
     if [ -n "${CHECK}" ]; then
       if leptosfmt --stdin --rustfmt --experimental-tailwind --quiet --check \
-        < "${_file}" > /dev/null 2> "${ERRTMP}"; then
+        <"${_file}" >/dev/null 2>"${ERRTMP}"; then
         pass "${_file}"
       else
         relay_err
@@ -166,7 +161,7 @@ fmt_with_leptosfmt() {
       fi
     else
       if leptosfmt --stdin --rustfmt --experimental-tailwind --quiet \
-        < "${_file}" > "${FILETMP}" 2> "${ERRTMP}"; then
+        <"${_file}" >"${FILETMP}" 2>"${ERRTMP}"; then
         mv "${FILETMP}" "${_file}"
         pass "${_file}"
       else
@@ -198,14 +193,14 @@ fmt_with_rustfmt() {
   else
     #? Normal: capture stderr so we can replay it only on failure
     if [ -n "${CHECK}" ]; then
-      if rustfmt --check "${_file}" 2> "${ERRTMP}"; then
+      if rustfmt --check "${_file}" 2>"${ERRTMP}"; then
         pass "${_file}"
       else
         relay_err
         fail "${_file}"
       fi
     else
-      if rustfmt "${_file}" 2> "${ERRTMP}"; then
+      if rustfmt "${_file}" 2>"${ERRTMP}"; then
         pass "${_file}"
       else
         relay_err
@@ -218,10 +213,10 @@ fmt_with_rustfmt() {
 fmt_file() {
   _file="$1"
 
-  if command -v leptosfmt > /dev/null 2>&1; then
+  if command -v leptosfmt >/dev/null 2>&1; then
     info "leptosfmt+rustfmt: ${_file}"
     fmt_with_leptosfmt "${_file}"
-  elif command -v rustfmt > /dev/null 2>&1; then
+  elif command -v rustfmt >/dev/null 2>&1; then
     info "rustfmt: ${_file}"
     fmt_with_rustfmt "${_file}"
   else
@@ -232,7 +227,6 @@ fmt_file() {
 #╔═══════════════════════════════════════════════════════════╗
 #║ Formatting Dispatch                                       ║
 #╚═══════════════════════════════════════════════════════════╝
-
 fmt_dir() {
   _dir="$1"
   #? Assign separately so discover_files exit code is not masked (SC2312)
@@ -243,7 +237,7 @@ fmt_dir() {
   }
   while IFS= read -r file; do
     fmt_file "${file}"
-  done << DISCOVERED
+  done <<DISCOVERED
 ${_found}
 DISCOVERED
 }
@@ -251,7 +245,6 @@ DISCOVERED
 #╔═══════════════════════════════════════════════════════════╗
 #║ Main                                                      ║
 #╚═══════════════════════════════════════════════════════════╝
-
 main() {
   parse_arguments "$@"
 
