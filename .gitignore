@@ -42,5 +42,6 @@ package-lock.json
 #║ Database                                                  ║
 #╚═══════════════════════════════════════════════════════════╝
 database/.data/*
+database/data/*
 *.db*
-!database/.data/.gitkeep
+!database/data/.gitkeep

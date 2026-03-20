@@ -5,7 +5,7 @@
 PRJ_ROOT = "{{config_root}}"
 DB_ROOT = "{{config_root}}/database"
 DB_MIGRATIONS = "{{env.DB_ROOT}}/migrations"
-DB_DATA = "{{env.DB_ROOT}}/.data"
+DB_DATA = "{{env.DB_ROOT}}/data"
 DATABASE_URL = "sqlite:///{{env.DB_DATA}}/portfolio.db"
 
 #╔═══════════════════════════════════════════════════════════╗

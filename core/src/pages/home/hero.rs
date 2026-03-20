@@ -77,11 +77,10 @@ pub fn Hero() -> impl IntoView {
         </p>
 
         <h1 class="hero__headline">
-          "Building " <em>"systems,"</em> <br /> "capturing " <em>"moments,"</em> <br />
-          "expressing " <em>"ideas."</em>
+          "Craig" <br /><em>"Craole"</em><br />"Cole"
         </h1>
 
-        <p class="hero__sub">"Software Engineer · Data Specialist · TEFL Educator · Artist"</p>
+        <p class="hero__sub">"Creative Engineering & Visual Narrative"</p>
 
         <nav class="hero__ctas" aria-label="Call to action">
           <a href="/dev" class="hero__cta-primary">
