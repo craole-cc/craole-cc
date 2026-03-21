@@ -20,9 +20,7 @@
 html {
   font-size: 16px;
   line-height: 1.6;
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
-    "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--font-body);
   background-color: var(--color-bg);
   color: var(--color-text);
 }
@@ -30,14 +28,15 @@ html {
 body {
   display: flex;
   flex-direction: column;
+  font-family: var(--font-body);
+  background-color: var(--color-bg);
+  color: var(--color-text);
   min-height: 100svh;
-  transition:
-    background-color duration(base),
-    color duration(base);
+  transition: background-color duration(base), color duration(base);
 }
 
 main {
-  // background-color and color are inherited — only min-height needed
+  // background-color and color are inherited — only min-height neededthat
   min-height: 100svh;
 }
 
@@ -50,10 +49,9 @@ h3,
 h4,
 h5,
 h6 {
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: var(--font-headline);
   line-height: 1.15;
-  font-weight: 700;
+  font-weight: 300;
   letter-spacing: -0.02em;
 }
 
@@ -110,8 +108,8 @@ kbd,
 samp,
 pre {
   font-family:
-    "SF Mono", "Fira Code", "Fira Mono", "Roboto Mono", Menlo, Monaco, Consolas,
-    "Courier New", monospace;
+    "SF Mono", "Fira Code", "Fira Mono", "Roboto Mono", Menlo, Monaco, Consolas, "Courier New",
+    monospace;
   font-size: 0.875em;
 }
 

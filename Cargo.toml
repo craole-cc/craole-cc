@@ -126,7 +126,7 @@ perf = { level = "warn", priority = 0 }
 style = { level = "warn", priority = 0 }
 suspicious = { level = "warn", priority = 0 }
 cognitive_complexity = { level = "allow", priority = 1 }
-# multiple_crate_versions = { level = "allow", priority = 1 }
+multiple_crate_versions = { level = "allow", priority = 1 }
 
 #╔═══════════════════════════════════════════════════════════╗
 #║ Build Profiles                                            ║

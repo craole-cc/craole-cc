@@ -1,0 +1,92 @@
+// ═══════════════════════════════════════════════════════════════════════════════
+// base/_fonts.scss — Font faces + font role utilities
+// ───────────────────────────────────────────────────────────────────────────────
+//
+// TYPEFACE SYSTEM
+//   Newsreader    — serif, variable (200–800), normal + italic
+//                   Headlines, hero name, editorial statements.
+//                   The italic is the hero — expressive, high-contrast strokes.
+//
+//   Space Grotesk — sans-serif, variable (300–700), normal only
+//                   Body text, nav, labels, UI chrome.
+//                   Clean and geometric without being sterile.
+//
+// SUBSET
+//   Latin only — English and Western European characters.
+//   woff2-variations — correct format string for variable fonts.
+//   font-display: swap — no invisible text on slow connections.
+//
+// ROLE UTILITIES
+//   .font-headline — Newsreader, used on editorial headings
+//   .font-body     — Space Grotesk, default body text
+//   .font-label    — Space Grotesk, uppercased + tracked, UI chrome
+//
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// -- Newsreader ────────────────────────────────────────────────────────────────
+
+@font-face {
+  font-family: "Newsreader";
+  src: url("/fonts/newsreader-latin-variable-normal.woff2") format("woff2-variations");
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Newsreader";
+  src: url("/fonts/newsreader-latin-variable-italic.woff2") format("woff2-variations");
+  font-weight: 200 800;
+  font-style: italic;
+  font-display: swap;
+}
+
+// -- Space Grotesk ─────────────────────────────────────────────────────────────
+
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("/fonts/space-grotesk-latin-variable.woff2") format("woff2-variations");
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+// -- Font role utilities ───────────────────────────────────────────────────────
+
+.font-headline {
+  font-family: "Newsreader", Georgia, serif;
+}
+
+.font-body {
+  font-family: "Space Grotesk", -apple-system, sans-serif;
+}
+
+.font-label {
+  font-family: "Space Grotesk", -apple-system, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+// -- Font family tokens ────────────────────────────────────────────────────────
+
+:root {
+  --font-headline: "Newsreader", Georgia, "Times New Roman", serif;
+  --font-body: "Space Grotesk", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-label: "Space Grotesk", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.font-headline {
+  font-family: var(--font-headline);
+}
+.font-body {
+  font-family: var(--font-body);
+}
+.font-label {
+  font-family: var(--font-label);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  // no text-transform here — apply uppercase only where explicitly needed
+}

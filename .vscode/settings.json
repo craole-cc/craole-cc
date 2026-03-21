@@ -106,5 +106,5 @@
     "**/*.bac": false,
     "**/target": false,
     "**/treefmt.toml": false
-  },
+  }
 }

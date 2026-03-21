@@ -53,7 +53,5 @@
 // shorter (200ms) because surface colours update instantly feels snappier
 // than waiting for the full hue rotation.
 :root {
-  transition:
-    --hue 1.5s ease,
-    --chroma 1.5s ease;
+  transition: --hue 1.5s ease, --chroma 1.5s ease;
 }

@@ -106,9 +106,7 @@
     padding-inline: spacing(4);
     color: var(--color-text-muted);
     text-decoration: none;
-    transition:
-      color duration(slow),
-      transform duration(slow);
+    transition: color duration(slow), transform duration(slow);
 
     &:hover {
       color: var(--color-primary);

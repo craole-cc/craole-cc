@@ -1,4 +1,11 @@
-use crate::prelude::*;
+use {
+  crate::prelude::*,
+  std::{
+    cell::Cell,
+    rc::Rc,
+    time::Duration,
+  },
+};
 
 const SLIDES : &[&str] = &[
   // Bridges
@@ -25,6 +32,7 @@ const SLIDES : &[&str] = &[
 const SLIDE_SECS : f64 = 5.0;
 
 #[component]
+#[must_use]
 pub fn Hero() -> impl IntoView {
   #[cfg_attr(not(feature = "hydrate"), allow(unused_variables))]
   let ThemeContext { set_hue, .. } = expect_context::<ThemeContext,>();
@@ -34,7 +42,7 @@ pub fn Hero() -> impl IntoView {
     let url = SLIDES[0];
     extract_hue_from_url(url, move |hue| set_hue.set(hue,),);
 
-    let slide_index = std::rc::Rc::new(std::cell::Cell::new(1_usize,),);
+    let slide_index = Rc::new(Cell::new(1_usize,),);
 
     set_interval(
       move || {
@@ -43,7 +51,7 @@ pub fn Hero() -> impl IntoView {
         let url = SLIDES[i];
         extract_hue_from_url(url, move |hue| set_hue.set(hue,),);
       },
-      std::time::Duration::from_millis((SLIDE_SECS * 1000.0) as u64,),
+      Duration::from_secs_f64(SLIDE_SECS,),
     );
   }
 
@@ -52,16 +60,12 @@ pub fn Hero() -> impl IntoView {
       <figure class="hero__backdrop" aria-hidden="true">
         {SLIDES
           .iter()
-          .enumerate()
-          .map(|(i, src)| {
+          .zip((0u32..).map(|i| f64::from(i) * SLIDE_SECS))
+          .map(|(src, delay)| {
             view! {
               <span
                 class="hero__slide"
-                style=format!(
-                  "background-image:url('{}');animation-delay:{}s",
-                  src,
-                  i as f64 * SLIDE_SECS,
-                )
+                style=format!("background-image:url('{src}');animation-delay:{delay}s")
               />
             }
           })
@@ -71,62 +75,43 @@ pub fn Hero() -> impl IntoView {
       </figure>
 
       <article class="hero__content">
-        <p class="hero__badge" role="note">
-          <span class="hero__badge-dot" aria-hidden="true" />
-          "Available for freelance work"
-        </p>
-
         <h1 class="hero__headline">
-          "Craig" <br /><em>"Craole"</em><br />"Cole"
+          <span>{AUTHOR_FIRSTNAME}" "</span>
+          <em>{AUTHOR_ALIAS}</em>
+          <span>" "{AUTHOR_SURNAME}</span>
         </h1>
 
-        <p class="hero__sub">"Creative Engineering & Visual Narrative"</p>
+        <p class="hero__sub">"Creative engineering & visual narrative"</p>
 
-        <nav class="hero__ctas" aria-label="Call to action">
-          <a href="/dev" class="hero__cta-primary">
-            "View my work"
-            <svg
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="2"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
-              />
-            </svg>
-          </a>
-          <a href="/log" class="hero__cta-ghost">
-            "Explore the log"
-          </a>
-        </nav>
-
-        <p class="hero__scroll" aria-hidden="true">
-          <span class="hero__scroll-line" />
-          <small>"scroll"</small>
-        </p>
+      // <nav class="hero__ctas" aria-label="Call to action">
+      // <a href="/dev" class="hero__cta-primary">
+      // "View my work"
+      // <svg
+      // aria-hidden="true"
+      // xmlns="http://www.w3.org/2000/svg"
+      // fill="none"
+      // viewBox="0 0 24 24"
+      // stroke-width="2"
+      // stroke="currentColor"
+      // >
+      // <path
+      // stroke-linecap="round"
+      // stroke-linejoin="round"
+      // d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
+      // />
+      // </svg>
+      // </a>
+      // <a href="/log" class="hero__cta-ghost">
+      // "Explore the log"
+      // </a>
+      // </nav>
       </article>
 
-      <aside class="hero__stats" aria-label="Quick facts">
-        <dl>
-          <div class="hero__stat">
-            <dt>"Years coding"</dt>
-            <dd>"10+"</dd>
-          </div>
-          <div class="hero__stat">
-            <dt>"Disciplines"</dt>
-            <dd>"4"</dd>
-          </div>
-          <div class="hero__stat">
-            <dt>"Curiosity"</dt>
-            <dd>"∞"</dd>
-          </div>
-        </dl>
-      </aside>
+      <div class="hero__scroll" aria-hidden="true">
+        <span class="hero__scroll-label">"SCROLL"</span>
+        <span class="hero__scroll-line" />
+      </div>
+
     </section>
   }
 }

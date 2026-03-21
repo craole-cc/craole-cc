@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@1,6..72,200..800&amp;family=Space+Grotesk:wght@300..700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-primary-fixed-variant": "#5c5b5b",
+              "on-primary": "#414040",
+              "surface-container-high": "#1c211f",
+              "error-dim": "#bb5551",
+              "primary-dim": "#bbb8b8",
+              "tertiary": "#ffdcc4",
+              "background": "#0d0f0e",
+              "secondary": "#8fa391",
+              "surface-container": "#161a19",
+              "on-tertiary-container": "#644126",
+              "surface": "#0d0f0e",
+              "outline": "#707774",
+              "secondary-dim": "#8fa391",
+              "primary-fixed": "#e5e2e1",
+              "primary": "#c8c6c5",
+              "tertiary-dim": "#efbc98",
+              "error": "#ee7d77",
+              "surface-container-lowest": "#000000",
+              "secondary-container": "#2e3f32",
+              "on-secondary-fixed-variant": "#4e6051",
+              "on-secondary": "#132418",
+              "on-surface": "#e1e7e3",
+              "secondary-fixed": "#d3e8d4",
+              "on-primary-container": "#d2d0cf",
+              "tertiary-fixed": "#fecaa5",
+              "on-secondary-container": "#b1c4b2",
+              "surface-container-highest": "#212725",
+              "on-tertiary-fixed-variant": "#6f4a2e",
+              "on-surface-variant": "#a6aca9",
+              "surface-bright": "#262e2b",
+              "inverse-surface": "#f9f9f7",
+              "on-primary-fixed": "#403f3f",
+              "on-error-container": "#ff9993",
+              "tertiary-fixed-dim": "#efbc98",
+              "secondary-fixed-dim": "#c5dac7",
+              "surface-tint": "#c8c6c5",
+              "on-tertiary-fixed": "#4e2f15",
+              "outline-variant": "#434947",
+              "surface-variant": "#212725",
+              "error-container": "#7f2927",
+              "surface-dim": "#0d0f0e",
+              "on-background": "#e1e7e3",
+              "inverse-primary": "#605f5e",
+              "surface-container-low": "#111413",
+              "on-secondary-fixed": "#324336",
+              "primary-container": "#474646",
+              "on-error": "#490106",
+              "inverse-on-surface": "#545554",
+              "tertiary-container": "#fecaa5",
+              "primary-fixed-dim": "#d7d4d3",
+              "on-tertiary": "#6e4a2d",
+            },
+            fontFamily: {
+              "headline": ["Newsreader", "serif"],
+              "body": ["Space Grotesk", "sans-serif"],
+              "label": ["Space Grotesk", "sans-serif"],
+            },
+            borderRadius: { "DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px" },
+          },
+        },
+      };
+    </script>
+    <style>
+      .material-symbols-outlined {
+        font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24;
+      }
+      body {
+        background-color: #0d0f0e;
+        color: #e1e7e3;
+      }
+      .text-kern-tight {
+        letter-spacing: -0.05em;
+      }
+      .text-kern-wide {
+        letter-spacing: 0.15rem;
+      }
+    </style>
+  </head>
+  <body class="font-body selection:bg-secondary selection:text-surface">
+    <!-- TopNavBar -->
+    <nav
+      class="fixed top-0 w-full z-50 bg-[#0d0f0e]/70 backdrop-blur-xl flex justify-between items-center px-6 md:px-12 py-6 w-full max-w-full"
+    >
+      <div class="font-serif Newsreader italic text-xl tracking-tighter text-[#e1e7e3]">
+        CRAOLE.CC
+      </div>
+      <div class="flex gap-8 items-center">
+        <a
+          class="font-sans Space Grotesk uppercase tracking-[0.15rem] text-sm text-[#8fa391] font-bold transition-all transition-colors duration-300"
+          href="#"
+        >HOME</a>
+        <a
+          class="font-sans Space Grotesk uppercase tracking-[0.15rem] text-sm text-[#e1e7e3]/60 hover:text-[#e1e7e3] transition-colors duration-300"
+          href="#"
+        >DEV</a>
+        <a
+          class="font-sans Space Grotesk uppercase tracking-[0.15rem] text-sm text-[#e1e7e3]/60 hover:text-[#e1e7e3] transition-colors duration-300"
+          href="#"
+        >ART</a>
+        <a
+          class="font-sans Space Grotesk uppercase tracking-[0.15rem] text-sm text-[#e1e7e3]/60 hover:text-[#e1e7e3] transition-colors duration-300"
+          href="#"
+        >LOG</a>
+      </div>
+    </nav>
+    <main>
+      <!-- Hero Section -->
+      <section
+        class="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden"
+      >
+        <!-- High-impact grayscale photograph background -->
+        <div class="absolute inset-0 z-0">
+          <img
+            class="w-full h-full object-cover grayscale opacity-40 mix-blend-luminosity"
+            data-alt="High contrast grayscale architectural close up texture"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBj-mKtIHRZs_SnUcMTtZIbUfS9wqqxRpCIpb4f8ZEKipGj87muYYHDz7zwEzfIRGbFOsMqoLqAAeJYTmHXrSpH0uxHAhUEZQx5YoBLb3eudO3KZys4__Hcab4rmFIEF5HvoREmRytBZwzl64K4YvXNdHS8prm0X7oL0FuoC4qyf4GYp9QIQEg5A2bse_e-i8IoZzNWsJE5hKJSGc9rHNnHIINlJ3U9LkQLcOEXKBo4Ra58SG82gyUiodNXoAC5WpuarpibjBtnxLI"
+          />
+          <div class="absolute inset-0 bg-gradient-to-b from-surface/20 via-surface/40 to-surface">
+          </div>
+        </div>
+        <div class="relative z-10 text-center px-4">
+          <h1 class="font-headline text-5xl md:text-8xl font-light text-on-surface mb-4">
+            Craig <span class="italic font-bold text-kern-tight">"Craole"</span> Cole
+          </h1>
+          <p
+            class="font-label text-xs md:text-sm uppercase text-kern-wide text-on-surface-variant font-light"
+          >
+            Creative Engineering &amp; Visual Narrative
+          </p>
+        </div>
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-12 flex flex-col items-center gap-4">
+          <span class="font-label text-[10px] uppercase text-kern-wide text-secondary opacity-60"
+          >SCROLL</span>
+          <div class="w-[1px] h-16 bg-gradient-to-b from-secondary to-transparent"></div>
+        </div>
+      </section>
+      <!-- The Vision Section -->
+      <section
+        class="bg-surface py-32 md:py-64 px-6 md:px-12 flex flex-col items-start max-w-7xl mx-auto"
+      >
+        <div class="w-full grid grid-cols-1 md:grid-cols-12 gap-12">
+          <div class="md:col-span-2">
+            <span class="font-label text-xs uppercase text-kern-wide text-secondary"
+            >THE VISION</span>
+          </div>
+          <div class="md:col-span-10">
+            <h2 class="font-headline text-3xl md:text-6xl font-light leading-snug text-on-surface">
+              An artisan engineer orchestrating the elegant harmony of function and form.
+            </h2>
+          </div>
+        </div>
+      </section>
+      <!-- Discipline Cards (Bento Grid Style) -->
+      <section class="bg-surface pb-32 px-6 md:px-12 max-w-full overflow-hidden">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-0">
+          <!-- DEV Card -->
+          <div
+            class="group relative aspect-[3/4] md:aspect-auto md:h-[700px] bg-surface-container-low overflow-hidden transition-all duration-700 hover:bg-surface-container"
+          >
+            <div
+              class="absolute inset-0 opacity-10 group-hover:opacity-20 transition-opacity duration-700"
+            >
+              <img
+                class="w-full h-full object-cover grayscale"
+                data-alt="Subtle technical coding terminal screen texture"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDb-DbP4xo0OS_yc83Oes4IpN6GDkBRSJpe_o3M0fASdk-puFtLgXA9NQzxVr_62AlcMPxVBt6_MuCCNfE-Swgg-Qz-6YNQezUQ_zW7PUV34zbrnq4v3o7vEv8mWE1EFYNXM98-AJOuDqLw8yclsX9JzYvZFCY7G0jyBhXl3hXh09s4B-2UPrncTGcnA5H9XrS-B9NnbFbNUiF2N4-s0EF33YNed_1F9q_zHXuoqm0-gEgFTZlxEXgilANGZOu-qEiH_W2z65c1SKc"
+              />
+            </div>
+            <div class="absolute inset-0 p-12 flex flex-col justify-between z-10">
+              <span class="font-label text-xs text-kern-wide text-secondary">01</span>
+              <div>
+                <h3 class="font-label text-2xl text-kern-wide text-on-surface mb-4">DEV</h3>
+                <p class="font-body text-sm text-on-surface-variant max-w-xs leading-relaxed">
+                  Architectural code built with precision and durability. Solving complex problems
+                  through elegant engineering.
+                </p>
+              </div>
+            </div>
+          </div>
+          <!-- ART Card -->
+          <div
+            class="group relative aspect-[3/4] md:aspect-auto md:h-[700px] bg-surface-container overflow-hidden transition-all duration-700 hover:bg-surface-container-high"
+          >
+            <div
+              class="absolute inset-0 opacity-10 group-hover:opacity-20 transition-opacity duration-700"
+            >
+              <img
+                class="w-full h-full object-cover grayscale"
+                data-alt="Abstract painterly brushstroke texture grayscale"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4WeP4Qj6_QUHYnzvIbywvDtmZyvZwee1hMaGCUj4tM2EFHwpGmh7i7TjrWqK4DOdhzjGcsswlu8Wh6JVMoaw7Srcsi6TObf_YNTk9OLTA4Ds5hZNfNyeuSQm5S2Agy0jazQYf1DS3kuQ7tCg-9PLbXGCDphYcFLYf2SfAwSum8pwfTp062U3MOeRYVPLMJaeWmVn2y8enVN1w3gugnUFritpgLPd0RDllHVkahmiG8ZyOcNuPYMScJ5WmdM-n_RcJ7v4YcQjuqK0"
+              />
+            </div>
+            <div class="absolute inset-0 p-12 flex flex-col justify-between z-10">
+              <span class="font-label text-xs text-kern-wide text-secondary">02</span>
+              <div>
+                <h3 class="font-label text-2xl text-kern-wide text-on-surface mb-4">ART</h3>
+                <p class="font-body text-sm text-on-surface-variant max-w-xs leading-relaxed">
+                  Visual narratives that transcend the screen. Exploring the intersection of digital
+                  medium and human emotion.
+                </p>
+              </div>
+            </div>
+          </div>
+          <!-- LOG Card -->
+          <div
+            class="group relative aspect-[3/4] md:aspect-auto md:h-[700px] bg-surface-container-high overflow-hidden transition-all duration-700 hover:bg-surface-container-highest"
+          >
+            <div
+              class="absolute inset-0 opacity-10 group-hover:opacity-20 transition-opacity duration-700"
+            >
+              <img
+                class="w-full h-full object-cover grayscale"
+                data-alt="Close up of mechanical typewriter parts"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCz-f_6Cj0uCOY1LI4B696CAEoZ0xuXWghDvMcUFX6_EF5TuDhaDRvtDRRibWPt8I4J7-9HUQQRbQ9292ao73jNDtof2DKyGJY5wx2XMK9Z5bRtyv4-3ZOSjGIGA0lZzfu5kciTmDX48frk9_emHC-D4w5_fSPQLJPF9yIdj7Ka1sAomnJWPJhgP7qqxcsczRke_TyJ5b1EB_ylKJiCU6ecAZAUfBNxHM1o4FzUsS3F8pBtSbmRqWLKoyMN1wW5XFdMFFgoSH9xi6s"
+              />
+            </div>
+            <div class="absolute inset-0 p-12 flex flex-col justify-between z-10">
+              <span class="font-label text-xs text-kern-wide text-secondary">03</span>
+              <div>
+                <h3 class="font-label text-2xl text-kern-wide text-on-surface mb-4">LOG</h3>
+                <p class="font-body text-sm text-on-surface-variant max-w-xs leading-relaxed">
+                  Documenting the journey. A technical repository of experiments, thoughts, and
+                  architectural insights.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- CTA Section -->
+      <section class="bg-surface-container-low py-48 px-6 md:px-12 text-center">
+        <h4 class="font-headline text-4xl md:text-6xl text-on-surface italic mb-12">
+          Let's build the quiet future.
+        </h4>
+        <a
+          class="inline-block bg-surface-container-highest text-on-surface px-12 py-6 font-label text-xs uppercase text-kern-wide hover:bg-primary transition-all duration-500"
+          href="mailto:hello@craole.cc"
+        >
+          INITIATE PROJECT
+        </a>
+      </section>
+    </main>
+    <!-- Footer -->
+    <footer
+      class="bg-[#0d0f0e] w-full py-16 flex flex-col md:flex-row justify-between items-center px-12 gap-8"
+    >
+      <div class="font-sans Space Grotesk text-xs uppercase tracking-[0.15rem] text-[#e1e7e3]/40">
+        © 2024 CRAOLE.CC
+      </div>
+      <div class="flex gap-12">
+        <a
+          class="font-sans Space Grotesk text-xs uppercase tracking-[0.15rem] text-[#e1e7e3]/40 hover:underline underline-offset-4 decoration-[#8fa391] transition-all duration-500"
+          href="#"
+        >X</a>
+        <a
+          class="font-sans Space Grotesk text-xs uppercase tracking-[0.15rem] text-[#e1e7e3]/40 hover:underline underline-offset-4 decoration-[#8fa391] transition-all duration-500"
+          href="#"
+        >GITHUB</a>
+        <a
+          class="font-sans Space Grotesk text-xs uppercase tracking-[0.15rem] text-[#e1e7e3]/40 hover:underline underline-offset-4 decoration-[#8fa391] transition-all duration-500"
+          href="#"
+        >ARE.NA</a>
+      </div>
+    </footer>
+  </body>
+</html>

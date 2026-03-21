@@ -1,3 +1,4 @@
+#![allow(clippy::must_use_candidate)]
 use crate::prelude::*;
 
 /// All site pages as footer navigation links.

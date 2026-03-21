@@ -1,6 +1,8 @@
 pub mod admin;
 pub mod art;
 pub mod dev;
+
+#[allow(clippy::must_use_candidate)]
 pub mod home;
 pub mod log;
 

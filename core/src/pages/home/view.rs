@@ -1,11 +1,14 @@
+#![allow(clippy::must_use_candidate)]
 use {
   super::{
-    about,
-    contact,
-    experience,
+    // projects,
+    // tech,
+    disciplines,
+    // about,
+    // contact,
+    // experience,
     hero,
-    projects,
-    tech,
+    vision,
   },
   crate::prelude::*,
 };
@@ -15,13 +18,16 @@ pub fn Home() -> impl IntoView {
   view! {
     <hero::Hero />
     <div class="readable">
-      <about::About />
-      <tech::Stacks />
-      <tech::Areas />
-      <projects::Projects />
-      <experience::Experience />
-      <about::Philosophy />
-      <contact::Contact />
+      <vision::Vision />
+      <disciplines::Disciplines />
+    // <cta::Cta />
+    // <about::About />
+    // <tech::Stacks />
+    // <tech::Areas />
+    // <projects::Projects />
+    // <experience::Experience />
+    // <about::Philosophy />
+    // <contact::Contact />
     </div>
   }
 }

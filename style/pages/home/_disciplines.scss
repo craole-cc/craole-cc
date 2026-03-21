@@ -1,0 +1,143 @@
+@use "../../index" as *;
+
+.disciplines {
+  display: grid;
+  grid-template-columns: 1fr;
+
+  @include breakpoint(md) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.discipline {
+  position: relative;
+  height: 80vw;
+  overflow: hidden;
+  text-decoration: none;
+  display: block;
+
+  @include breakpoint(md) {
+    height: 700px;
+  }
+
+  // -- Background image ──────────────────────────────────────────────────────
+
+  &__bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0.5;
+    filter: grayscale(1);
+    transition:
+      opacity duration(xslow) ease,
+      filter duration(xslow) ease,
+      transform duration(xslow) ease;
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: oklch(0.08 0.02 var(--hue));
+    opacity: 0.6;
+    transition: opacity duration(xslow) ease;
+  }
+
+  &:hover &__bg {
+    opacity: 1;
+    filter: grayscale(0);
+    transform: scale(1.03);
+  }
+
+  // -- Dark base overlay ─────────────────────────────────────────────────────
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: oklch(0.08 0.02 var(--hue));
+    transition: opacity duration(xslow) ease;
+  }
+
+  // -- Bottom gradient for text legibility ───────────────────────────────────
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(
+      to bottom,
+      transparent 40%,
+      oklch(0.05 0.02 var(--hue) / 0.95) 100%
+    );
+    pointer-events: none;
+  }
+
+  // -- Hover ─────────────────────────────────────────────────────────────────
+
+  &:hover &__bg {
+    opacity: 1;
+    filter: grayscale(0);
+    transform: scale(1.03);
+  }
+
+  &:hover::before {
+    opacity: 0.3;
+  }
+
+  &:hover &__title {
+    color: var(--color-primary-text);
+  }
+
+  // -- Inner layout ──────────────────────────────────────────────────────────
+
+  &__inner {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    padding: spacing(10);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  // -- Number ────────────────────────────────────────────────────────────────
+
+  &__number {
+    font-family: var(--font-label);
+    font-size: fontsize(xs);
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    color: var(--color-text-faint);
+  }
+
+  // -- Body ──────────────────────────────────────────────────────────────────
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: spacing(4);
+  }
+
+  &__title {
+    font-family: var(--font-label);
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-text);
+    transition: color duration(fast);
+  }
+
+  &__description {
+    font-family: var(--font-body);
+    font-size: fontsize(sm);
+    line-height: 1.75;
+    color: var(--color-text-muted);
+    max-width: 28ch;
+  }
+}

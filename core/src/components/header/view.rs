@@ -1,3 +1,4 @@
+#![allow(clippy::must_use_candidate)]
 use {
   super::{
     Controls,
@@ -33,12 +34,7 @@ pub fn Header() -> impl IntoView {
 
   view! {
     <header class=move || {
-      // Non-home pages always show the scrolled (opaque) state
-      if scrolled.get() || !is_home() {
-        "site-nav site-nav--scrolled"
-      } else {
-        "site-nav"
-      }
+      if scrolled.get() || !is_home() { "site-nav site-nav--scrolled" } else { "site-nav" }
     }>
       <div class="site-nav__inner">
         <Logo />

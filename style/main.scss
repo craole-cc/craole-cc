@@ -72,28 +72,32 @@
 //   so both systems use the same dark-mode mechanism.
 //
 // ═══════════════════════════════════════════════════════════════════════════════
+// -- Fonts ──────────────────────────────────────────────────────────────────
+@use "base/fonts";
 
-// -- 1–2. CSS custom properties + runtime mechanics ───────────────────────────
+// -- CSS custom properties + runtime mechanics ───────────────────────────
 @use "theme/colors";
 @use "theme/brands";
 @use "theme/runtime";
 
-// -- 3–6. Base layer ───────────────────────────────────────────────────────────
+// -- Base layer ───────────────────────────────────────────────────────────
 @use "base/reset";
 @use "base/animations";
 @use "base/globals";
 @use "base/utilities";
 
-// -- 7. Theme UI ───────────────────────────────────────────────────────────────
+// -- Theme UI ───────────────────────────────────────────────────────────────
 @use "theme/switcher";
 
-// -- 8. Components ─────────────────────────────────────────────────────────────
+// -- Components ─────────────────────────────────────────────────────────────
 @use "components/header";
 @use "components/divider";
 @use "components/footer";
 
-// -- 9. Pages ─────────────────────────────────────────────────────────────
+// -- Pages ─────────────────────────────────────────────────────────────
 @use "pages/home/hero";
+@use "pages/home/vision";
+@use "pages/home/disciplines";
 @use "pages/home/sections";
 @use "pages/log/index";
 @use "pages/shell";

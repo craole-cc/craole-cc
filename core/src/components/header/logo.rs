@@ -1,3 +1,4 @@
+#![allow(clippy::must_use_candidate)]
 use crate::prelude::*;
 
 #[component]
@@ -7,7 +8,7 @@ pub fn Logo() -> impl IntoView {
       <span class="site-nav__logo-mark" aria-hidden="true">
         "CC"
       </span>
-      <span class="site-nav__logo-name">"Craole.CC"</span>
+      <span class="site-nav__logo-name font-headline">"Craole.CC"</span>
     </a>
   }
 }
