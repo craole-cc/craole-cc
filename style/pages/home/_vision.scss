@@ -2,6 +2,7 @@
 
 .vision {
   padding: spacing(24) spacing(6);
+  z-index: 1;
   background: var(--color-bg);
 
   @include breakpoint(md) {

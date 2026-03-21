@@ -37,13 +37,25 @@ pub fn Hero() -> impl IntoView {
   #[cfg_attr(not(feature = "hydrate"), allow(unused_variables))]
   let ThemeContext { set_hue, .. } = expect_context::<ThemeContext,>();
 
+  // scrolled signal exists in all builds — only the Effect is hydrate-only
+  let (scrolled, set_scrolled,) = signal(false,);
+
   #[cfg(feature = "hydrate")]
   {
+    Effect::new(move |_| {
+      let handler = Closure::<dyn Fn(),>::wrap(Box::new(move || {
+        let y = window().and_then(|w| w.scroll_y().ok(),).unwrap_or(0.0,);
+        set_scrolled.set(y > 50.0,);
+      },) as Box<dyn Fn(),>,);
+      let cb = handler.as_ref().unchecked_ref::<js_sys::Function>().clone();
+      let _ = window().map(|w| w.add_event_listener_with_callback("scroll", &cb,),);
+      handler.forget();
+    },);
+
     let url = SLIDES[0];
     extract_hue_from_url(url, move |hue| set_hue.set(hue,),);
 
     let slide_index = Rc::new(Cell::new(1_usize,),);
-
     set_interval(
       move || {
         let i = slide_index.get() % SLIDES.len();
@@ -56,7 +68,7 @@ pub fn Hero() -> impl IntoView {
   }
 
   view! {
-    <section class="hero">
+    <section class=move || if scrolled.get() { "hero hero--scrolled" } else { "hero" }>
       <figure class="hero__backdrop" aria-hidden="true">
         {SLIDES
           .iter()
@@ -82,36 +94,12 @@ pub fn Hero() -> impl IntoView {
         </h1>
 
         <p class="hero__sub">"Creative engineering & visual narrative"</p>
-
-      // <nav class="hero__ctas" aria-label="Call to action">
-      // <a href="/dev" class="hero__cta-primary">
-      // "View my work"
-      // <svg
-      // aria-hidden="true"
-      // xmlns="http://www.w3.org/2000/svg"
-      // fill="none"
-      // viewBox="0 0 24 24"
-      // stroke-width="2"
-      // stroke="currentColor"
-      // >
-      // <path
-      // stroke-linecap="round"
-      // stroke-linejoin="round"
-      // d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
-      // />
-      // </svg>
-      // </a>
-      // <a href="/log" class="hero__cta-ghost">
-      // "Explore the log"
-      // </a>
-      // </nav>
       </article>
 
       <div class="hero__scroll" aria-hidden="true">
         <span class="hero__scroll-label">"SCROLL"</span>
         <span class="hero__scroll-line" />
       </div>
-
     </section>
   }
 }

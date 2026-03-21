@@ -27,42 +27,27 @@
     inset: 0;
     background-size: cover;
     background-position: center;
-    opacity: 0.5;
-    filter: grayscale(1);
+    opacity: 0.55;
+    filter: grayscale(0.5);
     transition:
       opacity duration(xslow) ease,
       filter duration(xslow) ease,
       transform duration(xslow) ease;
   }
 
-  &::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    background: oklch(0.08 0.02 var(--hue));
-    opacity: 0.6;
-    transition: opacity duration(xslow) ease;
-  }
-
-  &:hover &__bg {
-    opacity: 1;
-    filter: grayscale(0);
-    transform: scale(1.03);
-  }
-
-  // -- Dark base overlay ─────────────────────────────────────────────────────
+  // -- Dark overlay — always dark regardless of theme ────────────────────────
 
   &::before {
     content: "";
     position: absolute;
     inset: 0;
     z-index: 1;
-    background: oklch(0.08 0.02 var(--hue));
+    background: oklch(0.1 0.02 var(--hue));
+    opacity: 0.65;
     transition: opacity duration(xslow) ease;
   }
 
-  // -- Bottom gradient for text legibility ───────────────────────────────────
+  // -- Bottom gradient — pulls text out of the image ─────────────────────────
 
   &::after {
     content: "";
@@ -71,8 +56,8 @@
     z-index: 1;
     background: linear-gradient(
       to bottom,
-      transparent 40%,
-      oklch(0.05 0.02 var(--hue) / 0.95) 100%
+      transparent 35%,
+      oklch(0.06 0.02 var(--hue) / 0.92) 100%
     );
     pointer-events: none;
   }
@@ -112,7 +97,7 @@
     font-size: fontsize(xs);
     font-weight: 500;
     letter-spacing: 0.15em;
-    color: var(--color-text-faint);
+    color: oklch(1 0 0 / 0.3);
   }
 
   // -- Body ──────────────────────────────────────────────────────────────────
@@ -126,10 +111,10 @@
   &__title {
     font-family: var(--font-label);
     font-size: 1.5rem;
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: 0.15em;
     text-transform: uppercase;
-    color: var(--color-text);
+    color: oklch(1 0 0 / 0.9);
     transition: color duration(fast);
   }
 
@@ -137,7 +122,7 @@
     font-family: var(--font-body);
     font-size: fontsize(sm);
     line-height: 1.75;
-    color: var(--color-text-muted);
+    color: oklch(1 0 0 / 0.55);
     max-width: 28ch;
   }
 }

@@ -23,18 +23,21 @@
     content: "";
     position: absolute;
     inset: auto 0 0 0;
-    height: 40%;
+    height: 30%;
     z-index: 4;
     background: linear-gradient(
       to bottom,
       transparent 0%,
-      oklch(from var(--color-bg) l c h / 0.4) 40%,
-      oklch(from var(--color-bg) l c h / 0.85) 75%,
       var(--color-bg) 100%
     );
     pointer-events: none;
+    opacity: 0;
+    transition: opacity 600ms ease;
   }
 
+  &--scrolled::after {
+    opacity: 1;
+  }
   // -- Backdrop ────────────────────────────────────────────────────────────────
 
   &__backdrop {
@@ -52,7 +55,7 @@
     background-position: center;
     opacity: 0;
     animation: hero-fade 75s linear infinite;
-    will-change: opacity;
+    // will-change: opacity;
   }
 
   &__scrim {

@@ -33,7 +33,6 @@ const DISCIPLINES: &[Discipline] = &[
 ];
 
 #[component]
-#[must_use]
 pub fn Disciplines() -> impl IntoView {
   view! {
     <section class="disciplines">

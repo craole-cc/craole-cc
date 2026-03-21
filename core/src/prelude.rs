@@ -30,6 +30,7 @@ pub use {
     PathSegment,
     StaticSegment,
     components::{
+      A,
       Route,
       Router,
       Routes,
@@ -47,6 +48,8 @@ pub use {
   std::{
     borrow::Cow::Borrowed,
     cell::Cell,
+    rc::Rc,
+    time::Duration,
   },
   wasm_bindgen::{
     JsCast,
@@ -60,6 +63,7 @@ pub use {
     HtmlImageElement,
     MediaQueryList,
     MouseEvent,
+    ScrollRestoration,
     js_sys,
     window,
   },

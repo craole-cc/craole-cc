@@ -51,11 +51,13 @@ wasm-bindgen-futures = "0.4"
 web-sys = { version = "=0.3.85", features = [
   "CanvasRenderingContext2d",
   "CssStyleDeclaration",
+  "History",
   "HtmlCanvasElement",
   "HtmlImageElement",
   "ImageData",
   "MediaQueryList",
   "Performance",
+  "ScrollRestoration",
   "Window",
 ] }
 console_error_panic_hook = "0.1.7"
