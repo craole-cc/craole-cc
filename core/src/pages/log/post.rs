@@ -33,9 +33,24 @@ pub fn Post() -> impl IntoView {
             .get()
             .map(|res| match res {
               Ok(Some(p)) => {
+
                 view! {
                   <article class="post">
-                    <header class="post__header">
+                    {p
+                      .cover_url
+                      .map(|url| {
+                        view! {
+                          <figure class="post-hero">
+                            <img
+                              class="post-hero__img"
+                              src=url
+                              alt=p.title.clone()
+                              loading="lazy"
+                              decoding="async"
+                            />
+                          </figure>
+                        }
+                      })} <header class="post__header">
                       <p class="post__meta">
                         {p.kind.clone()} " • "
                         {p.published_at.unwrap_or_else(|| p.created_at.clone())}
@@ -53,6 +68,7 @@ pub fn Post() -> impl IntoView {
                   .into_any()
               }
               Ok(None) => {
+
                 view! {
                   <div class="log-empty">
                     <h2 class="log-empty__title">"Post not found."</h2>
@@ -65,6 +81,7 @@ pub fn Post() -> impl IntoView {
                   .into_any()
               }
               Err(e) => {
+
                 view! {
                   <div class="log-empty">
                     <h2 class="log-empty__title">"Something went wrong."</h2>
@@ -83,18 +100,3 @@ pub fn Post() -> impl IntoView {
     </section>
   }
 }
-
-// // database/src/posts.rs - make sure it's not filtering out anything during dev
-// pub async fn list_posts(pool : &SqlitePool,) -> Result<Vec<Post,>, sqlx::Error,> {
-//   query_as!(
-//     Post,
-//     r#"
-//     SELECT id, title, slug, body, excerpt, kind,
-//            published_at, created_at, tags
-//     FROM posts
-//     ORDER BY created_at DESC
-//     "#
-//   )
-//   .fetch_all(pool,)
-//   .await
-// }

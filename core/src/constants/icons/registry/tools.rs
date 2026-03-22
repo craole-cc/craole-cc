@@ -57,7 +57,7 @@ pub mod ohmyposh {
 
   impl OhMyPosh {
     #[must_use]
-    pub fn get(self,) -> Icon {
+    pub const fn get(self,) -> Icon {
       match self.0 {
         | Variant::Default => default(),
         | Variant::Local => local(),
@@ -105,8 +105,7 @@ pub mod starship {
       match self.0 {
         | Variant::Default => default(),
         | Variant::Local => local(),
-        | Variant::Filled => filled(),
-        | Variant::Outlined => filled(),
+        | Variant::Filled | Variant::Outlined => filled(),
       }
     }
   }
@@ -153,8 +152,7 @@ pub mod typst {
       match self.0 {
         | Variant::Default => default(),
         | Variant::Local => local(),
-        | Variant::Filled => filled(),
-        | Variant::Outlined => filled(),
+        | Variant::Filled | Variant::Outlined => filled(),
       }
     }
   }
@@ -349,8 +347,7 @@ pub mod zed {
       match self.0 {
         | Variant::Default => default(),
         | Variant::Local => local(),
-        | Variant::Filled => filled(),
-        | Variant::Outlined => filled(),
+        | Variant::Filled | Variant::Outlined => filled(),
       }
     }
   }

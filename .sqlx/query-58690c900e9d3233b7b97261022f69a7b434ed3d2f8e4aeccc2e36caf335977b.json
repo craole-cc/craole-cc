@@ -1,0 +1,20 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT DISTINCT kind AS \"kind!: String\"\nFROM posts\nWHERE published = 1\nORDER BY kind ASC;\n",
+  "describe": {
+    "columns": [
+      {
+        "name": "kind!: String",
+        "ordinal": 0,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 0
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "58690c900e9d3233b7b97261022f69a7b434ed3d2f8e4aeccc2e36caf335977b"
+}

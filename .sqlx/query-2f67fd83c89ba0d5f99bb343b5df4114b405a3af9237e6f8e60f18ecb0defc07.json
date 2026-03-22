@@ -1,0 +1,20 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT DISTINCT tag AS \"tag!: String\"\nFROM media_tags\nWHERE media_id IN (SELECT id FROM media WHERE published = 1)\nORDER BY tag ASC;\n",
+  "describe": {
+    "columns": [
+      {
+        "name": "tag!: String",
+        "ordinal": 0,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 0
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "2f67fd83c89ba0d5f99bb343b5df4114b405a3af9237e6f8e60f18ecb0defc07"
+}

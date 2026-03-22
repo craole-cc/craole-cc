@@ -1,0 +1,32 @@
+@use "../../index" as *;
+
+.log-page {
+  padding-top: size(header);
+}
+
+.log-loading,
+.log-error {
+  padding-block: spacing(12);
+  color: var(--color-text-faint);
+  font-family: var(--font-body);
+  font-style: italic;
+}
+
+.log-empty {
+  padding-block: spacing(16);
+
+  &__title {
+    font-family: var(--font-headline);
+    font-size: fontsize(xl);
+    font-weight: 300;
+    color: var(--color-text);
+    margin-bottom: spacing(3);
+  }
+
+  &__body {
+    font-family: var(--font-body);
+    font-size: fontsize(md);
+    color: var(--color-text-muted);
+    font-style: italic;
+  }
+}

@@ -13,7 +13,7 @@ pub mod deltalake {
 
   impl DeltaLake {
     #[must_use]
-    pub fn get(self,) -> Icon {
+    pub const fn get(self,) -> Icon {
       match self.0 {
         | Variant::Default => default(),
         | Variant::Local => local(),
@@ -23,7 +23,7 @@ pub mod deltalake {
     }
   }
 
-  fn base() -> Icon {
+  const fn base() -> Icon {
     Icon::new_local("icons/logos/deltalake.svg",)
       .with_link("https://delta.io/",)
       .with_tooltip("Open-source storage framework",)
@@ -31,16 +31,16 @@ pub mod deltalake {
   }
 
   #[must_use]
-  pub fn local() -> Icon { base() }
+  pub const fn local() -> Icon { base() }
 
   #[must_use]
-  pub fn filled() -> Icon { local() }
+  pub const fn filled() -> Icon { local() }
 
   #[must_use]
-  pub fn outlined() -> Icon { local() }
+  pub const fn outlined() -> Icon { local() }
 
   #[must_use]
-  pub fn default() -> Icon { local() }
+  pub const fn default() -> Icon { local() }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
@@ -56,7 +56,7 @@ pub mod neo4j {
 
   impl Neo4j {
     #[must_use]
-    pub fn get(self,) -> Icon {
+    pub const fn get(self,) -> Icon {
       match self.0 {
         | Variant::Default => default(),
         | Variant::Local => local(),
@@ -103,13 +103,12 @@ pub mod postgresql {
       match self.0 {
         | Variant::Default => default(),
         | Variant::Local => local(),
-        | Variant::Filled => filled(),
-        | Variant::Outlined => filled(),
+        | Variant::Filled | Variant::Outlined => filled(),
       }
     }
   }
 
-  fn base() -> Icon {
+  const fn base() -> Icon {
     Icon::new_local("icons/logos/postgresql.svg",)
       .with_link("https://www.postgresql.org/",)
       .with_tooltip("Advanced open source relational database",)
@@ -117,7 +116,7 @@ pub mod postgresql {
   }
 
   #[must_use]
-  pub fn local() -> Icon { base() }
+  pub const fn local() -> Icon { base() }
 
   #[must_use]
   pub fn filled() -> Icon {
@@ -130,7 +129,7 @@ pub mod postgresql {
   pub fn outlined() -> Icon { filled() }
 
   #[must_use]
-  pub fn default() -> Icon { local() }
+  pub const fn default() -> Icon { local() }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
@@ -157,7 +156,7 @@ pub mod sqlite {
     }
   }
 
-  fn base() -> Icon {
+  const fn base() -> Icon {
     Icon::new_local("icons/logos/SQLite.svg",)
       .with_link("https://www.sqlite.org/",)
       .with_tooltip("Self-contained embedded database",)
@@ -165,7 +164,7 @@ pub mod sqlite {
   }
 
   #[must_use]
-  pub fn local() -> Icon { base() }
+  pub const fn local() -> Icon { base() }
 
   #[must_use]
   pub fn filled() -> Icon { base().via_leptos(icon::SiSqlite,).colored("brand-sqlite",) }
@@ -174,7 +173,7 @@ pub mod sqlite {
   pub fn outlined() -> Icon { filled() }
 
   #[must_use]
-  pub fn default() -> Icon { local() }
+  pub const fn default() -> Icon { local() }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
@@ -195,13 +194,12 @@ pub mod surrealdb {
       match self.0 {
         | Variant::Default => default(),
         | Variant::Local => local(),
-        | Variant::Filled => filled(),
-        | Variant::Outlined => filled(),
+        | Variant::Filled | Variant::Outlined => filled(),
       }
     }
   }
 
-  fn base() -> Icon {
+  const fn base() -> Icon {
     Icon::new_local("icons/logos/surrealdb.svg",)
       .with_link("https://surrealdb.com/",)
       .with_tooltip("Multi-model database",)
@@ -209,7 +207,7 @@ pub mod surrealdb {
   }
 
   #[must_use]
-  pub fn local() -> Icon { base() }
+  pub const fn local() -> Icon { base() }
 
   #[must_use]
   pub fn filled() -> Icon {
@@ -222,5 +220,5 @@ pub mod surrealdb {
   pub fn outlined() -> Icon { filled() }
 
   #[must_use]
-  pub fn default() -> Icon { local() }
+  pub const fn default() -> Icon { local() }
 }

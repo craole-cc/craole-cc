@@ -7,7 +7,7 @@ use {
 };
 
 #[component]
-#[must_use]
+#[allow(clippy::must_use_candidate)]
 pub fn Render(icon : Icon, #[prop(optional, into)] class : Option<String,>,) -> impl IntoView {
   let extra = class.unwrap_or_default();
   let final_class = if extra.is_empty() {

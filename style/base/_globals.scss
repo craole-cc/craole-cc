@@ -32,7 +32,9 @@ body {
   background-color: var(--color-bg);
   color: var(--color-text);
   min-height: 100svh;
-  transition: background-color duration(base), color duration(base);
+  transition:
+    background-color duration(base),
+    color duration(base);
 }
 
 main {
@@ -108,8 +110,8 @@ kbd,
 samp,
 pre {
   font-family:
-    "SF Mono", "Fira Code", "Fira Mono", "Roboto Mono", Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+    "SF Mono", "Fira Code", "Fira Mono", "Roboto Mono", Menlo, Monaco, Consolas,
+    "Courier New", monospace;
   font-size: 0.875em;
 }
 
@@ -137,14 +139,19 @@ pre {
 
 // -- Links ─────────────────────────────────────────────────────────────────────
 
-.readable a {
-  color: var(--color-primary-text);
-  text-decoration: underline;
-  text-underline-offset: 0.2em;
-  transition: color duration(fast);
+.readable {
+  // prose links only — exclude nav, cards, buttons
+  p a,
+  li a,
+  blockquote a {
+    color: var(--color-primary-text);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    transition: color duration(fast);
 
-  &:hover {
-    color: var(--color-primary);
+    &:hover {
+      color: var(--color-primary);
+    }
   }
 }
 

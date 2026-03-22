@@ -55,7 +55,7 @@ pub mod axum {
 
   impl Axum {
     #[must_use]
-    pub fn get(self,) -> Icon {
+    pub const fn get(self,) -> Icon {
       match self.0 {
         | Variant::Default => default(),
         | Variant::Local => local(),
@@ -98,6 +98,7 @@ pub mod htmx {
   pub struct Htmx(pub Variant,);
 
   impl Htmx {
+    #[must_use]
     pub fn get(self,) -> Icon {
       match self.0 {
         | Variant::Default => default(),
@@ -141,6 +142,7 @@ pub mod leptos {
   pub struct Leptos(pub Variant,);
 
   impl Leptos {
+    #[must_use]
     pub fn get(self,) -> Icon {
       match self.0 {
         | Variant::Default => default(),
@@ -184,6 +186,7 @@ pub mod tailwind {
   pub struct Tailwind(pub Variant,);
 
   impl Tailwind {
+    #[must_use]
     pub fn get(self,) -> Icon {
       match self.0 {
         | Variant::Default => default(),

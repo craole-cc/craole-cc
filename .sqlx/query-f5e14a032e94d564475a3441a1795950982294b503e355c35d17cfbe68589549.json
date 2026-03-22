@@ -1,0 +1,92 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT\n  m.id         AS \"id!: i64\",\n  m.title      AS \"title!: String\",\n  m.slug       AS \"slug!: String\",\n  m.caption    AS \"caption: String\",\n  m.media_type AS \"media_type!: String\",\n  m.file_path  AS \"file_path!: String\",\n  m.alt_text   AS \"alt_text!: String\",\n  m.width      AS \"width: i64\",\n  m.height     AS \"height: i64\",\n  m.sort_order AS \"sort_order!: i64\",\n  m.taken_at   AS \"taken_at: String\",\n  m.created_at AS \"created_at!: String\",\n  CAST(COALESCE(GROUP_CONCAT(mt.tag, ','), '') AS TEXT) AS \"tags!: String\"\nFROM media m\n  JOIN media_tags mt ON mt.media_id = m.id\nWHERE m.published = 1\n  AND mt.tag = ?1\nGROUP BY m.id\nORDER BY m.sort_order ASC, m.taken_at DESC;\n",
+  "describe": {
+    "columns": [
+      {
+        "name": "id!: i64",
+        "ordinal": 0,
+        "type_info": "Integer"
+      },
+      {
+        "name": "title!: String",
+        "ordinal": 1,
+        "type_info": "Text"
+      },
+      {
+        "name": "slug!: String",
+        "ordinal": 2,
+        "type_info": "Text"
+      },
+      {
+        "name": "caption: String",
+        "ordinal": 3,
+        "type_info": "Text"
+      },
+      {
+        "name": "media_type!: String",
+        "ordinal": 4,
+        "type_info": "Text"
+      },
+      {
+        "name": "file_path!: String",
+        "ordinal": 5,
+        "type_info": "Text"
+      },
+      {
+        "name": "alt_text!: String",
+        "ordinal": 6,
+        "type_info": "Text"
+      },
+      {
+        "name": "width: i64",
+        "ordinal": 7,
+        "type_info": "Integer"
+      },
+      {
+        "name": "height: i64",
+        "ordinal": 8,
+        "type_info": "Integer"
+      },
+      {
+        "name": "sort_order!: i64",
+        "ordinal": 9,
+        "type_info": "Integer"
+      },
+      {
+        "name": "taken_at: String",
+        "ordinal": 10,
+        "type_info": "Text"
+      },
+      {
+        "name": "created_at!: String",
+        "ordinal": 11,
+        "type_info": "Text"
+      },
+      {
+        "name": "tags!: String",
+        "ordinal": 12,
+        "type_info": "Null"
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      true,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+      true,
+      true,
+      false,
+      true,
+      false,
+      null
+    ]
+  },
+  "hash": "f5e14a032e94d564475a3441a1795950982294b503e355c35d17cfbe68589549"
+}

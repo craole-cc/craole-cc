@@ -45,8 +45,12 @@ pub mod prelude {
   pub use super::{
     media::{
       Media,
-      get_media_by_id,
+      get_media_by_slug,
       list_media,
+      list_media_by_tag,
+      list_media_tags,
+      list_related_media,
+      search_media,
     },
     posts::{
       GetPostBySlug,

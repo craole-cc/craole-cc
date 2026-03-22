@@ -1,15 +1,19 @@
--- Single published media item — for lightbox / detail view.
-SELECT id AS id,
-  title AS title,
-  caption AS caption,
-  media_type AS media_type,
-  file_path AS file_path,
-  alt_text AS alt_text,
-  width AS width,
-  height AS height,
-  sort_order AS sort_order,
-  taken_at AS taken_at,
-  created_at AS created_at
-FROM media
-WHERE id = $1
-  AND published = 1
+SELECT
+  m.id         AS "id!: i64",
+  m.title      AS "title!: String",
+  m.slug       AS "slug!: String",
+  m.caption    AS "caption: String",
+  m.media_type AS "media_type!: String",
+  m.file_path  AS "file_path!: String",
+  m.alt_text   AS "alt_text!: String",
+  m.width      AS "width: i64",
+  m.height     AS "height: i64",
+  m.sort_order AS "sort_order!: i64",
+  m.taken_at   AS "taken_at: String",
+  m.created_at AS "created_at!: String",
+  CAST(COALESCE(GROUP_CONCAT(mt.tag, ','), '') AS TEXT) AS "tags!: String"
+FROM media m
+  LEFT JOIN media_tags mt ON mt.media_id = m.id
+WHERE m.slug = ?1
+  AND m.published = 1
+GROUP BY m.id;

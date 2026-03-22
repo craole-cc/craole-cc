@@ -8,7 +8,6 @@ use {
 ///
 /// Place this at the application root, wrapping all other components.
 #[component]
-#[must_use]
 pub fn Provider(children : Children,) -> impl IntoView {
   let theme = RwSignal::new(Theme::default(),);
 

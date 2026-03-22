@@ -24,7 +24,7 @@ pub mod ansible {
     }
   }
 
-  fn base() -> Icon {
+  const fn base() -> Icon {
     Icon::new_local("icons/logos/ansible.svg",)
       .with_link("https://docs.ansible.com/",)
       .with_tooltip("Automation platform for IT operations",)
@@ -32,7 +32,7 @@ pub mod ansible {
   }
 
   #[must_use]
-  pub fn local() -> Icon { base() }
+  pub const fn local() -> Icon { base() }
 
   #[must_use]
   pub fn filled() -> Icon {
@@ -49,7 +49,7 @@ pub mod ansible {
   }
 
   #[must_use]
-  pub fn default() -> Icon { local() }
+  pub const fn default() -> Icon { local() }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
@@ -92,7 +92,7 @@ pub mod docker {
     SiSimple,
   }
 
-  fn base() -> Icon {
+  const fn base() -> Icon {
     Icon::new_local("icons/logos/docker.svg",)
       .with_link("https://www.docker.com/",)
       .with_tooltip("Containerization platform",)
@@ -100,7 +100,7 @@ pub mod docker {
   }
 
   #[must_use]
-  pub fn local() -> Icon { base() }
+  pub const fn local() -> Icon { base() }
 
   #[must_use]
   pub fn filled() -> Icon {
@@ -116,7 +116,7 @@ pub mod docker {
   pub fn si_simple() -> Icon { base().via_leptos(icon::SiDocker,).colored("brand-docker",) }
 
   #[must_use]
-  pub fn default() -> Icon { local() }
+  pub const fn default() -> Icon { local() }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
@@ -161,7 +161,7 @@ pub mod git {
     FaSquare,
   }
 
-  fn base() -> Icon {
+  const fn base() -> Icon {
     Icon::new_local("icons/logos/git.svg",)
       .with_link("https://git-scm.com/",)
       .with_tooltip("Free and open source distributed version control system",)
@@ -169,7 +169,7 @@ pub mod git {
   }
 
   #[must_use]
-  pub fn local() -> Icon { base() }
+  pub const fn local() -> Icon { base() }
 
   #[must_use]
   pub fn filled() -> Icon { base().via_leptos(icon::BiGit,).colored("brand-git",) }
@@ -192,7 +192,7 @@ pub mod git {
   }
 
   #[must_use]
-  pub fn default() -> Icon { local() }
+  pub const fn default() -> Icon { local() }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
@@ -211,10 +211,9 @@ pub mod github {
     #[must_use]
     pub fn get(self,) -> Icon {
       match self.0 {
-        | Variant::Default => filled(),
         | Variant::Local => local(),
-        | Variant::Filled => filled(),
         | Variant::Outlined => outlined(),
+        | Variant::Default | Variant::Filled => filled(),
       }
     }
   }
@@ -325,7 +324,7 @@ pub mod gitlab {
     }
   }
 
-  fn base() -> Icon {
+  const fn base() -> Icon {
     Icon::new_local("icons/logos/gitlab.svg",)
       .with_link("https://gitlab.com/craole",)
       .with_tooltip("View my GitLab profile",)
@@ -333,7 +332,7 @@ pub mod gitlab {
   }
 
   #[must_use]
-  pub fn local() -> Icon { base() }
+  pub const fn local() -> Icon { base() }
 
   #[must_use]
   pub fn filled() -> Icon {
@@ -378,7 +377,7 @@ pub mod gitlab {
   }
 
   #[must_use]
-  pub fn default() -> Icon { local() }
+  pub const fn default() -> Icon { local() }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
@@ -405,7 +404,7 @@ pub mod kubernetes {
     }
   }
 
-  fn base() -> Icon {
+  const fn base() -> Icon {
     Icon::new_local("icons/logos/kubernetes.svg",)
       .with_link("https://kubernetes.io/",)
       .with_tooltip("Container orchestration platform",)
@@ -413,7 +412,7 @@ pub mod kubernetes {
   }
 
   #[must_use]
-  pub fn local() -> Icon { base() }
+  pub const fn local() -> Icon { base() }
 
   #[must_use]
   pub fn filled() -> Icon {
@@ -430,7 +429,7 @@ pub mod kubernetes {
   }
 
   #[must_use]
-  pub fn default() -> Icon { local() }
+  pub const fn default() -> Icon { local() }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
@@ -451,8 +450,7 @@ pub mod linux {
       match self.0 {
         | Variant::Default => default(),
         | Variant::Local => local(),
-        | Variant::Filled => filled(),
-        | Variant::Outlined => filled(),
+        | Variant::Filled | Variant::Outlined => filled(),
       }
     }
   }
@@ -473,7 +471,7 @@ pub mod linux {
     SiSimple,
   }
 
-  fn base() -> Icon {
+  const fn base() -> Icon {
     Icon::new_local("icons/logos/linux.svg",)
       .with_link("https://www.linux.org/",)
       .with_tooltip("Open source operating system kernel",)
@@ -481,7 +479,7 @@ pub mod linux {
   }
 
   #[must_use]
-  pub fn local() -> Icon { base() }
+  pub const fn local() -> Icon { base() }
 
   #[must_use]
   pub fn filled() -> Icon {
@@ -497,7 +495,7 @@ pub mod linux {
   pub fn si_simple() -> Icon { base().via_leptos(icon::SiLinux,).colored("brand-linux",) }
 
   #[must_use]
-  pub fn default() -> Icon { local() }
+  pub const fn default() -> Icon { local() }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
@@ -518,13 +516,12 @@ pub mod nix {
       match self.0 {
         | Variant::Default => default(),
         | Variant::Local => local(),
-        | Variant::Filled => filled(),
-        | Variant::Outlined => filled(),
+        | Variant::Filled | Variant::Outlined => filled(),
       }
     }
   }
 
-  fn base() -> Icon {
+  const fn base() -> Icon {
     Icon::new_local("icons/logos/nix.svg",)
       .with_link("https://nix.dev/",)
       .with_tooltip("Reproducible package manager and build system",)
@@ -532,7 +529,7 @@ pub mod nix {
   }
 
   #[must_use]
-  pub fn local() -> Icon { base() }
+  pub const fn local() -> Icon { base() }
 
   #[must_use]
   pub fn filled() -> Icon { base().via_leptos(icon::SiNixos,).colored("brand-nix",) }
@@ -541,7 +538,7 @@ pub mod nix {
   pub fn outlined() -> Icon { filled() }
 
   #[must_use]
-  pub fn default() -> Icon { local() }
+  pub const fn default() -> Icon { local() }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
@@ -562,13 +559,12 @@ pub mod raspberry_pi {
       match self.0 {
         | Variant::Default => default(),
         | Variant::Local => local(),
-        | Variant::Filled => filled(),
-        | Variant::Outlined => filled(),
+        | Variant::Filled | Variant::Outlined => filled(),
       }
     }
   }
 
-  fn base() -> Icon {
+  const fn base() -> Icon {
     Icon::new_local("icons/logos/raspberry.svg",)
       .with_link("https://www.raspberrypi.org/",)
       .with_tooltip("Single-board computer",)
@@ -576,7 +572,7 @@ pub mod raspberry_pi {
   }
 
   #[must_use]
-  pub fn local() -> Icon { base() }
+  pub const fn local() -> Icon { base() }
 
   #[must_use]
   pub fn filled() -> Icon {
@@ -589,7 +585,7 @@ pub mod raspberry_pi {
   pub fn outlined() -> Icon { filled() }
 
   #[must_use]
-  pub fn default() -> Icon { local() }
+  pub const fn default() -> Icon { local() }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
@@ -616,7 +612,7 @@ pub mod terraform {
     }
   }
 
-  fn base() -> Icon {
+  const fn base() -> Icon {
     Icon::new_local("icons/logos/terraform.svg",)
       .with_link("https://www.terraform.io/",)
       .with_tooltip("Infrastructure as Code tool",)
@@ -624,7 +620,7 @@ pub mod terraform {
   }
 
   #[must_use]
-  pub fn local() -> Icon { base() }
+  pub const fn local() -> Icon { base() }
 
   #[must_use]
   pub fn filled() -> Icon {
@@ -641,7 +637,7 @@ pub mod terraform {
   }
 
   #[must_use]
-  pub fn default() -> Icon { local() }
+  pub const fn default() -> Icon { local() }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
@@ -674,8 +670,7 @@ pub mod windows {
     #[must_use]
     pub fn get(self,) -> Icon {
       match self.0 {
-        | Extended::FaBrands => fa_brands(),
-        | Extended::FaSquare => fa_brands(),
+        | Extended::FaBrands | Extended::FaSquare => fa_brands(),
       }
     }
   }
@@ -718,5 +713,5 @@ pub mod windows {
   }
 
   #[must_use]
-  pub fn default() -> Icon { local() }
+  pub const fn default() -> Icon { local() }
 }

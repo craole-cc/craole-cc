@@ -95,9 +95,11 @@
 @use "components/footer";
 
 // -- Pages ─────────────────────────────────────────────────────────────
-@use "pages/home/hero";
-@use "pages/home/vision";
+
+@use "pages/art/index" as *;
+@use "pages/log/index" as *;
 @use "pages/home/disciplines";
+@use "pages/home/hero";
 @use "pages/home/sections";
-@use "pages/log/index";
+@use "pages/home/vision";
 @use "pages/shell";

@@ -114,8 +114,7 @@ pub mod nushell {
       match self.0 {
         | Variant::Default => default(),
         | Variant::Local => local(),
-        | Variant::Filled => filled(),
-        | Variant::Outlined => filled(),
+        | Variant::Filled | Variant::Outlined => filled(),
       }
     }
   }
@@ -420,7 +419,7 @@ pub mod zig {
   }
 
   #[must_use]
-  pub fn local() -> Icon { base().via_local("icons/logos/zig.svg",) }
+  pub const fn local() -> Icon { base().via_local("icons/logos/zig.svg",) }
 
   #[must_use]
   pub fn filled() -> Icon { base().via_leptos(icon::SiZig,).colored("brand-zig",) }

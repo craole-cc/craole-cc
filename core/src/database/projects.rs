@@ -15,7 +15,7 @@ pub struct Project {
   pub tags :        Vec<String,>,
 }
 
-fn split_tags(raw : String,) -> Vec<String,> {
+fn split_tags(raw : &str,) -> Vec<String,> {
   if raw.is_empty() {
     vec![]
   } else {
@@ -57,7 +57,7 @@ pub async fn list_projects() -> Result<Vec<Project,>, ServerFnError,> {
         featured :    r.featured != 0,
         sort_order :  r.sort_order,
         created_at :  r.created_at,
-        tags :        split_tags(r.tags,),
+        tags :        split_tags(&r.tags,),
       },)
       .collect(),
   )
@@ -97,7 +97,7 @@ pub async fn get_featured_projects() -> Result<Vec<Project,>, ServerFnError,> {
         featured :    r.featured != 0,
         sort_order :  r.sort_order,
         created_at :  r.created_at,
-        tags :        split_tags(r.tags,),
+        tags :        split_tags(&r.tags,),
       },)
       .collect(),
   )
@@ -134,6 +134,6 @@ pub async fn get_project_by_id(id : i64,) -> Result<Option<Project,>, ServerFnEr
     featured :    r.featured != 0,
     sort_order :  r.sort_order,
     created_at :  r.created_at,
-    tags :        split_tags(r.tags,),
+    tags :        split_tags(&r.tags,),
   },),)
 }

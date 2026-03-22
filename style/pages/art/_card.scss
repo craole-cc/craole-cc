@@ -1,0 +1,92 @@
+@use "../../index" as *;
+
+.art-card {
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+
+  &__link {
+    display: block;
+    text-decoration: none;
+    position: relative;
+
+    // Reveal overlay on hover — pure CSS
+    &:hover .art-card__overlay {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    &:hover .art-card__img {
+      transform: scale(1.03);
+    }
+  }
+
+  &__img {
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: transform duration(xslow) ease;
+  }
+
+  // -- Metadata overlay ──────────────────────────────────────────────────────
+
+  &__overlay {
+    position: absolute;
+    inset: auto 0 0 0;
+    padding: spacing(8) spacing(6) spacing(6);
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      oklch(0.05 0.02 var(--hue) / 0.95) 100%
+    );
+    opacity: 0;
+    transform: translateY(spacing(4));
+    transition:
+      opacity duration(slow) ease,
+      transform duration(slow) ease;
+  }
+
+  &__title {
+    display: block;
+    font-family: var(--font-headline);
+    font-size: fontsize(md);
+    font-weight: 400;
+    color: oklch(1 0 0 / 0.92);
+    margin-bottom: spacing(2);
+  }
+
+  &__caption {
+    display: block;
+    font-family: var(--font-body);
+    font-size: fontsize(sm);
+    font-style: italic;
+    color: oklch(1 0 0 / 0.6);
+    margin-bottom: spacing(3);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  // -- Tags ──────────────────────────────────────────────────────────────────
+
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: spacing(2);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__tag {
+    font-family: var(--font-label);
+    font-size: fontsize(xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: oklch(1 0 0 / 0.55);
+    padding: spacing(1) spacing(2);
+    border: 1px solid oklch(1 0 0 / 0.2);
+  }
+}

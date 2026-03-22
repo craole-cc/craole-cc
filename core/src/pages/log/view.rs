@@ -1,71 +1,70 @@
-use super::_prelude::*;
+use super::{
+  _prelude::*,
+  archive::Archive,
+  featured::Featured,
+  filter::Filter,
+  header::Header,
+};
 
 #[component]
 pub fn Log() -> impl IntoView {
-  let posts = Resource::new(|| (), |()| async move { list_posts().await },);
+  let (posts, set_posts,) = signal(Vec::<PostSummary,>::new(),);
+
+  // Initial load
+  let initial = Resource::new(|| (), |()| async move { list_posts().await },);
+
+  // Seed posts signal from initial load
+  Effect::new(move |_| {
+    if let Some(Ok(p,),) = initial.get() {
+      set_posts.set(p,);
+    }
+  },);
 
   view! {
-    <section class="readable page page--log">
-      <header class="page__header">
-        <h1 class="page__title">"Log"</h1>
-        <p class="page__sub">"CV, blog & things worth writing down."</p>
-      </header>
+    <div class="log-page">
+      <Header />
 
-      <Divider />
+      <Filter
+        on_posts_change=Callback::new(move |p| set_posts.set(p))
+        // kinds handled inside Filter
+        on_kinds_change=Callback::new(|_| ())
+      />
 
       <Suspense fallback=move || {
         view! {
-          <p class="log-loading" aria-busy="true">
-            "Loading posts…"
+          <p class="log-loading readable" aria-busy="true">
+            "Loading…"
           </p>
         }
           .into_any()
       }>
         {move || {
-          posts
-            .get()
-            .map(|res| match res {
-              Ok(items) if items.is_empty() => {
-                view! {
-                  <div class="log-empty">
-                    <h2 class="log-empty__title">"Nothing here yet."</h2>
-                    <p class="log-empty__body">
-                      "Posts, experiments, and things worth writing down will appear here."
-                    </p>
-                  </div>
-                }
-                  .into_any()
-              }
-              Ok(items) => {
-                view! {
-                  <ul class="log-list" role="list">
-                    {items
-                      .into_iter()
-                      .map(|p| {
-                        view! {
-                          <li class="log-list__item">
-                            <a class="log-list__button" href=format!("/log/{}", p.slug)>
-                              <span class="log-list__meta">
-                                {p.kind.clone()} " • " {p.published_at.unwrap_or(p.created_at)}
-                              </span>
-                              <span class="log-list__title">{p.title}</span>
-                              <span class="log-list__excerpt">{p.excerpt.unwrap_or_default()}</span>
-                            </a>
-                          </li>
-                        }
-                      })
-                      .collect_view()}
-                  </ul>
-                }
-                  .into_any()
-              }
-              Err(e) => {
-                view! { <p class="error">"Failed to load posts: " {e.to_string()}</p> }.into_any()
-              }
-            })
+          let items = posts.get();
+          if items.is_empty() {
+            return view! {
+              <div class="log-empty readable">
+                <h2 class="log-empty__title">"Nothing here yet."</h2>
+                <p class="log-empty__body">
+                  "Posts, experiments, and things worth writing down will appear here."
+                </p>
+              </div>
+            }
+              .into_any();
+          }
+          let first = items.first().cloned();
+          let second = items.get(1).cloned();
+          let third = items.get(2).cloned();
+          let archive = items.iter().skip(3).cloned().collect::<Vec<_>>();
+
+          view! {
+            <div>
+              <Featured first=first second=second third=third />
+              <Archive posts=archive />
+            </div>
+          }
             .into_any()
         }}
       </Suspense>
-    </section>
+    </div>
   }
 }

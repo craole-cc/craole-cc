@@ -30,7 +30,6 @@ pub use {
     PathSegment,
     StaticSegment,
     components::{
-      A,
       Route,
       Router,
       Routes,
@@ -63,7 +62,6 @@ pub use {
     HtmlImageElement,
     MediaQueryList,
     MouseEvent,
-    ScrollRestoration,
     js_sys,
     window,
   },

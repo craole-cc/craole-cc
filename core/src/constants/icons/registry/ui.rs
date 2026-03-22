@@ -139,7 +139,7 @@ pub mod menu_open {
     }
   }
 
-  fn base() -> Icon {
+  const fn base() -> Icon {
     Icon::new()
       .with_label("Open menu",)
       .with_tooltip("Open navigation menu",)
@@ -176,7 +176,7 @@ pub mod menu_close {
     }
   }
 
-  fn base() -> Icon {
+  const fn base() -> Icon {
     Icon::new()
       .with_label("Close menu",)
       .with_tooltip("Close navigation menu",)

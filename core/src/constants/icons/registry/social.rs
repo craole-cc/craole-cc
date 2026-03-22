@@ -42,7 +42,7 @@ pub mod facebook {
     FaSquare,
   }
 
-  fn base() -> Icon {
+  const fn base() -> Icon {
     Icon::new_local("icons/logos/facebook.svg",)
       .with_link("https://facebook.com/craole",)
       .with_tooltip("Connect on Facebook",)
@@ -50,10 +50,10 @@ pub mod facebook {
   }
 
   #[must_use]
-  pub fn local() -> Icon { base() }
+  pub const fn local() -> Icon { base() }
 
   #[must_use]
-  pub fn default() -> Icon { local() }
+  pub const fn default() -> Icon { local() }
 
   #[must_use]
   pub fn filled() -> Icon {
@@ -124,7 +124,7 @@ pub mod gmail {
     FaBrands,
   }
 
-  fn base() -> Icon {
+  const fn base() -> Icon {
     Icon::new_local("icons/logos/gmail.svg",)
       .with_link("mailto:info@craole.cc",)
       .with_tooltip("Send me an email",)
@@ -132,10 +132,10 @@ pub mod gmail {
   }
 
   #[must_use]
-  pub fn local() -> Icon { base() }
+  pub const fn local() -> Icon { base() }
 
   #[must_use]
-  pub fn default() -> Icon { local() }
+  pub const fn default() -> Icon { local() }
 
   #[must_use]
   pub fn filled() -> Icon { base().via_leptos(icon::MdiGmail,).colored("brand-gmail",) }
@@ -193,7 +193,7 @@ pub mod instagram {
     FaSquare,
   }
 
-  fn base() -> Icon {
+  const fn base() -> Icon {
     Icon::new_local("icons/logos/instagram.svg",)
       .with_link("https://instagram.com/craole",)
       .with_tooltip("Follow me on Instagram",)
@@ -201,10 +201,10 @@ pub mod instagram {
   }
 
   #[must_use]
-  pub fn local() -> Icon { base() }
+  pub const fn local() -> Icon { base() }
 
   #[must_use]
-  pub fn default() -> Icon { local() }
+  pub const fn default() -> Icon { local() }
 
   #[must_use]
   pub fn filled() -> Icon {
@@ -277,7 +277,7 @@ pub mod linkedin {
     FaSquare,
   }
 
-  fn base() -> Icon {
+  const fn base() -> Icon {
     Icon::new_local("icons/logos/linkedin.svg",)
       .with_link("https://linkedin.com/in/craole",)
       .with_tooltip("Connect on LinkedIn",)
@@ -285,10 +285,10 @@ pub mod linkedin {
   }
 
   #[must_use]
-  pub fn local() -> Icon { base() }
+  pub const fn local() -> Icon { base() }
 
   #[must_use]
-  pub fn default() -> Icon { local() }
+  pub const fn default() -> Icon { local() }
 
   #[must_use]
   pub fn filled() -> Icon {
@@ -361,7 +361,7 @@ pub mod whatsapp {
     FaSquare,
   }
 
-  fn base() -> Icon {
+  const fn base() -> Icon {
     Icon::new_local("icons/logos/whatsapp.svg",)
       .with_link("https://wa.me/18768130049",)
       .with_tooltip("Message me on WhatsApp",)
@@ -369,10 +369,10 @@ pub mod whatsapp {
   }
 
   #[must_use]
-  pub fn local() -> Icon { base() }
+  pub const fn local() -> Icon { base() }
 
   #[must_use]
-  pub fn default() -> Icon { local() }
+  pub const fn default() -> Icon { local() }
 
   #[must_use]
   pub fn filled() -> Icon {
@@ -419,10 +419,9 @@ pub mod x {
     #[must_use]
     pub fn get(self,) -> Icon {
       match self.0 {
-        | Variant::Default => filled(),
         | Variant::Local => local(),
-        | Variant::Filled => filled(),
         | Variant::Outlined => outlined(),
+        | Variant::Filled | Variant::Default => filled(),
       }
     }
   }
@@ -445,7 +444,7 @@ pub mod x {
     FaSquare,
   }
 
-  fn base() -> Icon {
+  const fn base() -> Icon {
     Icon::new_local("icons/logos/x.svg",)
       .with_link("https://x.com/craole",)
       .with_tooltip("Follow me on X",)
@@ -453,7 +452,7 @@ pub mod x {
   }
 
   #[must_use]
-  pub fn local() -> Icon { base() }
+  pub const fn local() -> Icon { base() }
 
   #[must_use]
   pub fn default() -> Icon { filled() }

@@ -27,7 +27,6 @@ use {
 /// <Switcher class="nav__theme" />
 /// ```
 #[component]
-#[must_use]
 pub fn Switcher(
   /// Extra CSS class forwarded to the outer wrapper `<div>`.
   #[prop(default = "")]
