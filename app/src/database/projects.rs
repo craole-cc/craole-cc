@@ -1,4 +1,4 @@
-use super::_prelude::*;
+pub use crate::prelude::*;
 
 #[derive(Debug, Clone, Serialize, Deserialize,)]
 pub struct Project {

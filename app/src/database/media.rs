@@ -1,4 +1,4 @@
-use super::_prelude::*;
+pub use crate::prelude::*;
 
 #[derive(Debug, Clone, Serialize, Deserialize,)]
 pub struct Media {
@@ -184,6 +184,53 @@ pub async fn list_media_by_tag(tag : String,) -> Result<Vec<Media,>, ServerFnErr
   }
   let pool = expect_context::<SqlitePool,>();
   let rows = query_file_as!(Row, "sql/media/list_by_tag.sql", tag)
+    .fetch_all(&pool,)
+    .await
+    .map_err(|e| ServerFnError::new(e.to_string(),),)?;
+  Ok(
+    rows
+      .into_iter()
+      .map(|r| Media {
+        id :         r.id,
+        title :      r.title,
+        slug :       r.slug,
+        caption :    r.caption,
+        media_type : r.media_type,
+        file_path :  r.file_path,
+        alt_text :   r.alt_text,
+        width :      r.width,
+        height :     r.height,
+        sort_order : r.sort_order,
+        taken_at :   r.taken_at,
+        created_at : r.created_at,
+        tags :       split_tags(&r.tags,),
+      },)
+      .collect(),
+  )
+}
+
+/// Media filtered by multiple tags (AND logic — must have ALL tags).
+/// Tags are passed as a comma-separated string: "Landscape,Jamaica"
+#[server(ListMediaByTags)]
+pub async fn list_media_by_tags(tags : String,) -> Result<Vec<Media,>, ServerFnError,> {
+  #[derive(FromRow,)]
+  struct Row {
+    id :         i64,
+    title :      String,
+    slug :       String,
+    caption :    Option<String,>,
+    media_type : String,
+    file_path :  String,
+    alt_text :   String,
+    width :      Option<i64,>,
+    height :     Option<i64,>,
+    sort_order : i64,
+    taken_at :   Option<String,>,
+    created_at : String,
+    tags :       String,
+  }
+  let pool = expect_context::<SqlitePool,>();
+  let rows = query_file_as!(Row, "sql/media/list_by_tags.sql", tags)
     .fetch_all(&pool,)
     .await
     .map_err(|e| ServerFnError::new(e.to_string(),),)?;

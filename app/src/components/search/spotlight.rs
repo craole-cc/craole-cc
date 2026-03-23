@@ -17,24 +17,6 @@ pub enum SearchKind {
   Log,
 }
 
-impl SearchKind {
-  fn label(&self,) -> &'static str {
-    match self {
-      | Self::Project => "Dev",
-      | Self::Art => "Art",
-      | Self::Log => "Log",
-    }
-  }
-
-  fn class(&self,) -> &'static str {
-    match self {
-      | Self::Project => "spotlight__kind--dev",
-      | Self::Art => "spotlight__kind--art",
-      | Self::Log => "spotlight__kind--log",
-    }
-  }
-}
-
 // ── Sitewide search server function ─────────────────────────────────────────
 
 #[server(SitewideSearch)]
@@ -52,7 +34,6 @@ pub async fn sitewide_search(query : String,) -> Result<Vec<SearchResult,>, Serv
 
   let mut results = Vec::new();
 
-  // Search projects
   if let Ok(projects,) = search_projects(query.clone(),).await {
     results.extend(projects.into_iter().take(5,).map(|p| SearchResult {
       title :    p.title,
@@ -62,7 +43,6 @@ pub async fn sitewide_search(query : String,) -> Result<Vec<SearchResult,>, Serv
     },),);
   }
 
-  // Search media
   if let Ok(media,) = search_media(query.clone(),).await {
     results.extend(media.into_iter().take(5,).map(|m| SearchResult {
       title :    m.title,
@@ -72,7 +52,6 @@ pub async fn sitewide_search(query : String,) -> Result<Vec<SearchResult,>, Serv
     },),);
   }
 
-  // Search posts
   if let Ok(posts,) = search_posts(query,).await {
     results.extend(posts.into_iter().take(5,).map(|p| SearchResult {
       title :    p.title,
@@ -85,12 +64,51 @@ pub async fn sitewide_search(query : String,) -> Result<Vec<SearchResult,>, Serv
   Ok(results,)
 }
 
+// ── Sub-component: tag chips shown when on /dev ─────────────────────────────
+
+#[component]
+fn SpotlightTags(
+  #[allow(clippy::needless_pass_by_value)]
+  tags : Vec<String,>,
+  set_query : WriteSignal<String,>,
+) -> impl IntoView {
+  view! {
+    <div class="spotlight__tags">
+      {tags
+        .into_iter()
+        .map(|tag| {
+          let tag_click = tag.clone();
+          view! {
+            <button
+              class="spotlight__chip"
+              on:click=move |_| set_query.set(tag_click.clone())
+            >
+              {tag}
+            </button>
+          }
+        })
+        .collect_view()}
+    </div>
+  }
+}
+
 // ── Spotlight component ─────────────────────────────────────────────────────
 
 #[component]
 pub fn Spotlight() -> impl IntoView {
   let (open, set_open,) = signal(false,);
   let (query, set_query,) = signal(String::new(),);
+
+  let location = use_location();
+  let is_dev = move || location.pathname.get() == "/dev";
+
+  // Load project tags when on /dev
+  let dev_tags = Resource::new(
+    move || is_dev(),
+    |on_dev| async move {
+      if on_dev { list_project_tags().await.ok() } else { None }
+    },
+  );
 
   let results = Resource::new(
     move || query.get(),
@@ -122,6 +140,13 @@ pub fn Spotlight() -> impl IntoView {
       let _ = win.add_event_listener_with_callback("keydown", &cb,);
     }
     handler.forget();
+  },);
+
+  // Reset query when opening
+  Effect::new(move |_| {
+    if open.get() {
+      set_query.set(String::new(),);
+    }
   },);
 
   view! {
@@ -173,13 +198,30 @@ pub fn Spotlight() -> impl IntoView {
           <input
             type="search"
             class="spotlight__input"
-            placeholder="Search everything…"
+            placeholder=move || {
+              if is_dev() { "Search projects, tags…" } else { "Search everything…" }
+            }
             autofocus=true
+            prop:value=move || query.get()
             on:input=move |e| set_query.set(event_target_value(&e))
           />
           <kbd class="spotlight__esc">"Esc"</kbd>
         </div>
 
+        // -- Dev tag chips (shown when on /dev and query is empty)
+        {move || {
+          if is_dev() && query.get().is_empty() {
+            dev_tags.get().flatten().map(|tags| {
+              view! {
+                <SpotlightTags tags=tags set_query=set_query />
+              }
+            })
+          } else {
+            None
+          }
+        }}
+
+        // -- Search results
         <Suspense fallback=|| ()>
           {move || {
             results.get().map(|res| {
@@ -193,25 +235,24 @@ pub fn Spotlight() -> impl IntoView {
                   .into_any();
                 }
 
-                // Group by kind
                 let mut dev_items = Vec::new();
                 let mut art_items = Vec::new();
                 let mut log_items = Vec::new();
                 for item in &items {
                   match item.kind {
-                    | SearchKind::Project => dev_items.push(item.clone()),
-                    | SearchKind::Art => art_items.push(item.clone()),
-                    | SearchKind::Log => log_items.push(item.clone()),
+                    | SearchKind::Project => dev_items.push(item.clone(),),
+                    | SearchKind::Art => art_items.push(item.clone(),),
+                    | SearchKind::Log => log_items.push(item.clone(),),
                   }
                 }
 
-                let set_open_clone = set_open;
+                let set_open_c = set_open;
 
                 view! {
                   <div class="spotlight__results">
-                    {render_group("Dev", "spotlight__kind--dev", dev_items, set_open_clone)}
-                    {render_group("Art", "spotlight__kind--art", art_items, set_open_clone)}
-                    {render_group("Log", "spotlight__kind--log", log_items, set_open_clone)}
+                    {render_group("Dev", "spotlight__kind--dev", dev_items, set_open_c)}
+                    {render_group("Art", "spotlight__kind--art", art_items, set_open_c)}
+                    {render_group("Log", "spotlight__kind--log", log_items, set_open_c)}
                   </div>
                 }
                 .into_any()
