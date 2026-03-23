@@ -33,6 +33,12 @@ pub mod projects;
 
 pub mod _prelude {
   pub use crate::prelude::*;
+  #[cfg(feature = "ssr")]
+  pub use sqlx::{
+    FromRow,
+    SqlitePool,
+    query_file_as,
+  };
 }
 
 pub mod prelude {
@@ -52,12 +58,17 @@ pub mod prelude {
       PostSummary,
       get_post_by_slug,
       list_posts,
+      search_posts,
     },
     projects::{
       Project,
       get_featured_projects,
       get_project_by_id,
+      list_project_tags,
       list_projects,
+      list_projects_by_status,
+      list_projects_by_tag,
+      search_projects,
     },
   };
 }

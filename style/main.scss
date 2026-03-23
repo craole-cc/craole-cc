@@ -94,6 +94,7 @@
 @use "components/divider";
 @use "components/footer";
 @use "components/buttons/index" as *;
+@use "components/search/index" as *;
 
 // -- Pages ─────────────────────────────────────────────────────────────
 @use "pages/home/disciplines";

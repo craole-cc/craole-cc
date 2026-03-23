@@ -1,0 +1,20 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT DISTINCT pt.tag AS \"tag!: String\"\nFROM project_tags pt\n  JOIN projects p ON p.id = pt.project_id\nWHERE p.published = 1\nORDER BY pt.tag ASC;\n",
+  "describe": {
+    "columns": [
+      {
+        "name": "tag!: String",
+        "ordinal": 0,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 0
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "d58b1e3b45584e4e59ef1a3598e5772bc3a0bc168b2c86260018e0ed0a149ae6"
+}

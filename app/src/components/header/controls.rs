@@ -29,6 +29,7 @@ fn Hamburger(open : ReadSignal<bool,>, set_open : WriteSignal<bool,>,) -> impl I
 pub fn Controls(open : ReadSignal<bool,>, set_open : WriteSignal<bool,>,) -> impl IntoView {
   view! {
     <div class="site-nav__controls">
+      <Spotlight />
       <ThemeSwitcher />
       <Hamburger open set_open />
     </div>

@@ -1,83 +1,8 @@
 use super::_prelude::*;
 
-// -- Shared row type + mapper ────────────────────────────────────────
+// ── Sub-components ──────────────────────────────────────────────────────────
 
-#[cfg(feature = "ssr")]
-#[derive(sqlx::FromRow,)]
-struct ProjectRow {
-  id :          i64,
-  title :       String,
-  description : String,
-  status :      String,
-  repo_url :    Option<String,>,
-  live_url :    Option<String,>,
-  featured :    i64,
-  sort_order :  i64,
-  created_at :  String,
-  tags :        String,
-}
-
-#[cfg(feature = "ssr")]
-fn row_to_project(r : ProjectRow,) -> Project {
-  Project {
-    id :          r.id,
-    title :       r.title,
-    description : r.description,
-    status :      r.status,
-    repo_url :    r.repo_url,
-    live_url :    r.live_url,
-    featured :    r.featured != 0,
-    sort_order :  r.sort_order,
-    created_at :  r.created_at,
-    tags :        if r.tags.is_empty() {
-      vec![]
-    } else {
-      r.tags.split(',',).map(str::to_string,).collect()
-    },
-  }
-}
-
-#[cfg(feature = "ssr")]
-#[derive(sqlx::FromRow,)]
-struct TagRow {
-  tag : String,
-}
-
-// -- Server functions ────────────────────────────────────────────────
-
-#[server(ListProjectTags)]
-pub async fn list_project_tags() -> Result<Vec<String,>, ServerFnError,> {
-  let pool = expect_context::<SqlitePool,>();
-  let rows = query_file_as!(TagRow, "sql/projects/list_tags.sql")
-    .fetch_all(&pool,)
-    .await
-    .map_err(|e| ServerFnError::new(e.to_string(),),)?;
-  Ok(rows.into_iter().map(|r| r.tag,).collect(),)
-}
-
-#[server(ListProjectsByStatus)]
-pub async fn list_projects_by_status(status : String,) -> Result<Vec<Project,>, ServerFnError,> {
-  let pool = expect_context::<SqlitePool,>();
-  let rows = query_file_as!(ProjectRow, "sql/projects/list_by_status.sql", status)
-    .fetch_all(&pool,)
-    .await
-    .map_err(|e| ServerFnError::new(e.to_string(),),)?;
-  Ok(rows.into_iter().map(row_to_project,).collect(),)
-}
-
-#[server(ListProjectsByTag)]
-pub async fn list_projects_by_tag(tag : String,) -> Result<Vec<Project,>, ServerFnError,> {
-  let pool = expect_context::<SqlitePool,>();
-  let rows = query_file_as!(ProjectRow, "sql/projects/list_by_tag.sql", tag)
-    .fetch_all(&pool,)
-    .await
-    .map_err(|e| ServerFnError::new(e.to_string(),),)?;
-  Ok(rows.into_iter().map(row_to_project,).collect(),)
-}
-
-// -- Sub-components ──────────────────────────────────────────────────
-
-const STATUSES : [(&str, &str,); 4] = [
+const STATUSES: [(&str, &str,); 4] = [
   ("active", "Active",),
   ("building", "Building",),
   ("planning", "Planning",),
@@ -88,29 +13,32 @@ const STATUSES : [(&str, &str,); 4] = [
 fn StatusFilters(
   active_status : ReadSignal<Option<String,>,>,
   active_tag : ReadSignal<Option<String,>,>,
+  query : ReadSignal<String,>,
   set_active_status : WriteSignal<Option<String,>,>,
   set_active_tag : WriteSignal<Option<String,>,>,
+  set_query : WriteSignal<String,>,
 ) -> impl IntoView {
   view! {
     <nav class="dev-filter__statuses" aria-label="Filter by status">
       <button
         class=move || {
-          if active_status.get().is_none() && active_tag.get().is_none() {
+          if active_status.get().is_none() && active_tag.get().is_none() && query.get().is_empty() {
             "dev-filter__btn dev-filter__btn--active"
           } else {
             "dev-filter__btn"
           }
         }
         on:click=move |_| {
-          set_active_status.set(None);
-          set_active_tag.set(None);
+          set_active_status.set(None,);
+          set_active_tag.set(None,);
+          set_query.set(String::new(),);
         }
       >
         "All"
       </button>
       {STATUSES
         .into_iter()
-        .map(|(key, label)| {
+        .map(|(key, label,)| {
           let key_class = key.to_string();
           let key_click = key.to_string();
           view! {
@@ -123,8 +51,9 @@ fn StatusFilters(
                 }
               }
               on:click=move |_| {
-                set_active_status.set(Some(key_click.clone()));
-                set_active_tag.set(None);
+                set_active_status.set(Some(key_click.clone(),),);
+                set_active_tag.set(None,);
+                set_query.set(String::new(),);
               }
             >
               {label}
@@ -138,10 +67,12 @@ fn StatusFilters(
 
 #[component]
 fn TagFilters(
+  #[allow(clippy::needless_pass_by_value)]
   tags : Vec<String,>,
   active_tag : ReadSignal<Option<String,>,>,
   set_active_status : WriteSignal<Option<String,>,>,
   set_active_tag : WriteSignal<Option<String,>,>,
+  set_query : WriteSignal<String,>,
 ) -> impl IntoView {
   view! {
     <nav class="dev-filter__tags" aria-label="Filter by technology">
@@ -160,11 +91,12 @@ fn TagFilters(
                 }
               }
               on:click=move |_| {
-                set_active_tag.set(Some(tag_click.clone()));
-                set_active_status.set(None);
+                set_active_tag.set(Some(tag_click.clone(),),);
+                set_active_status.set(None,);
+                set_query.set(String::new(),);
               }
             >
-              {tag}
+              {tag.clone()}
             </button>
           }
         })
@@ -173,19 +105,22 @@ fn TagFilters(
   }
 }
 
-// -- Main filter component ───────────────────────────────────────────
+// ── Main filter component ───────────────────────────────────────────────────
 
 #[component]
 pub fn Filter(on_projects_change : Callback<Vec<Project,>,>,) -> impl IntoView {
+  let (query, set_query,) = signal(String::new(),);
   let (active_status, set_active_status,) = signal(Option::<String,>::None,);
   let (active_tag, set_active_tag,) = signal(Option::<String,>::None,);
 
   let tags = Resource::new(|| (), |()| async move { list_project_tags().await },);
 
   let projects = Resource::new(
-    move || (active_status.get(), active_tag.get(),),
-    |(s, t,)| async move {
-      if let Some(status,) = s {
+    move || (query.get(), active_status.get(), active_tag.get(),),
+    |(q, s, t,)| async move {
+      if !q.is_empty() {
+        search_projects(q,).await
+      } else if let Some(status,) = s {
         list_projects_by_status(status,).await
       } else if let Some(tag,) = t {
         list_projects_by_tag(tag,).await
@@ -203,30 +138,46 @@ pub fn Filter(on_projects_change : Callback<Vec<Project,>,>,) -> impl IntoView {
 
   view! {
     <div class="dev-filter readable">
+      // -- Search
+      <div class="dev-filter__search">
+        <input
+          type="search"
+          placeholder="Search projects…"
+          class="dev-filter__input"
+          on:input=move |e| {
+            set_query.set(event_target_value(&e,),);
+            set_active_status.set(None,);
+            set_active_tag.set(None,);
+          }
+        />
+      </div>
+
+      // -- Status filters
       <StatusFilters
         active_status=active_status
         active_tag=active_tag
+        query=query
         set_active_status=set_active_status
         set_active_tag=set_active_tag
+        set_query=set_query
       />
+
+      // -- Tag filters
       <Suspense fallback=|| ()>
         {move || {
-          tags
-            .get()
-            .map(|res| {
-              res
-                .ok()
-                .map(|t| {
-                  view! {
-                    <TagFilters
-                      tags=t
-                      active_tag=active_tag
-                      set_active_status=set_active_status
-                      set_active_tag=set_active_tag
-                    />
-                  }
-                })
+          tags.get().map(|res| {
+            res.ok().map(|t| {
+              view! {
+                <TagFilters
+                  tags=t
+                  active_tag=active_tag
+                  set_active_status=set_active_status
+                  set_active_tag=set_active_tag
+                  set_query=set_query
+                />
+              }
             })
+          })
         }}
       </Suspense>
     </div>
