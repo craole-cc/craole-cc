@@ -62,6 +62,8 @@ pub use {
     HtmlImageElement,
     MediaQueryList,
     MouseEvent,
+    ScrollBehavior,
+    ScrollToOptions,
     js_sys,
     window,
   },
