@@ -1,0 +1,56 @@
+@use "../../index" as *;
+
+.dev-filter {
+  padding-block: spacing(2) spacing(8);
+  display: flex;
+  flex-direction: column;
+  gap: spacing(4);
+
+  &__statuses,
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: spacing(2);
+  }
+
+  &__statuses {
+    padding-bottom: spacing(3);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  &__btn,
+  &__tag {
+    padding: spacing(1) spacing(3);
+    font-family: var(--font-label);
+    font-size: fontsize(xs);
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border: 1px solid var(--color-neutral-border);
+    border-radius: radius(sm);
+    background: transparent;
+    color: var(--color-text-faint);
+    cursor: pointer;
+    transition:
+      background duration(fast),
+      color duration(fast),
+      border-color duration(fast);
+
+    &:hover {
+      color: var(--color-text);
+      border-color: var(--color-text-faint);
+    }
+
+    &--active {
+      background: var(--color-text);
+      color: var(--color-bg);
+      border-color: var(--color-text);
+    }
+  }
+
+  &__tag {
+    text-transform: none;
+    letter-spacing: normal;
+    font-weight: 400;
+  }
+}

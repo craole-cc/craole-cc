@@ -1,0 +1,159 @@
+@use "../../index" as *;
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// dev/_card.scss — Project showcase card
+// ═══════════════════════════════════════════════════════════════════════════════
+
+.dev-card {
+  padding: spacing(6);
+  border-radius: radius(xl);
+  border: spacing(px) solid var(--color-neutral-border);
+  background: var(--color-bg-surface);
+  box-shadow: 0 1px 3px oklch(0 0 0 / 0.06);
+  transition:
+    box-shadow duration(slow),
+    transform duration(slow),
+    border-color duration(slow);
+  display: flex;
+  flex-direction: column;
+  gap: spacing(4);
+
+  &:hover {
+    box-shadow: 0 spacing(2) spacing(8) oklch(0 0 0 / 0.12);
+    transform: translateY(-4px);
+    border-color: var(--color-primary-border);
+  }
+
+  // -- Header ──────────────────────────────────────────────────────────────────
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: spacing(3);
+  }
+
+  &__title {
+    font-family: var(--font-headline);
+    font-size: fontsize(xl);
+    font-weight: 600;
+    color: var(--color-text);
+    line-height: 1.2;
+    transition: color duration(fast);
+
+    .dev-card:hover & {
+      color: var(--color-primary-text);
+    }
+  }
+
+  // -- Status badge ────────────────────────────────────────────────────────────
+
+  &__status {
+    flex-shrink: 0;
+    padding: spacing(1) spacing(3);
+    font-family: var(--font-label);
+    font-size: fontsize(xs);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    border-radius: radius(pill);
+    white-space: nowrap;
+
+    &--active {
+      background: oklch(0.92 0.08 164);
+      color: oklch(0.35 0.12 164);
+    }
+
+    &--building {
+      background: oklch(0.92 0.08 80);
+      color: oklch(0.40 0.12 80);
+    }
+
+    &--planning {
+      background: oklch(0.92 0.06 260);
+      color: oklch(0.40 0.10 260);
+    }
+
+    &--archived {
+      background: var(--color-neutral-muted);
+      color: var(--color-text-faint);
+    }
+  }
+
+  // -- Description ─────────────────────────────────────────────────────────────
+
+  &__desc {
+    font-family: var(--font-body);
+    font-size: fontsize(base);
+    line-height: 1.7;
+    color: var(--color-text-muted);
+    flex-grow: 1;
+  }
+
+  // -- Tags ────────────────────────────────────────────────────────────────────
+
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: spacing(2);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  &__tag {
+    padding: spacing(1) spacing(3);
+    font-family: var(--font-label);
+    font-size: fontsize(xs);
+    font-weight: 500;
+    border-radius: radius(sm);
+    border: spacing(px) solid var(--color-primary-border);
+    color: var(--color-primary-text);
+    background: var(--color-primary-muted);
+  }
+
+  // -- Links ───────────────────────────────────────────────────────────────────
+
+  &__links {
+    display: flex;
+    gap: spacing(3);
+    padding-top: spacing(3);
+    border-top: 1px solid var(--color-border);
+  }
+
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    gap: spacing(2);
+    padding: spacing(1) spacing(3);
+    font-family: var(--font-label);
+    font-size: fontsize(xs);
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-neutral-border);
+    border-radius: radius(sm);
+    transition:
+      color duration(fast),
+      border-color duration(fast),
+      background duration(fast);
+
+    svg {
+      width: size(icon-sm);
+      height: size(icon-sm);
+    }
+
+    &:hover {
+      color: var(--color-text);
+      border-color: var(--color-text-faint);
+      background: var(--color-bg-hover);
+    }
+
+    &--live:hover {
+      color: var(--color-primary-text);
+      border-color: var(--color-primary-border);
+      background: var(--color-primary-muted);
+    }
+  }
+}

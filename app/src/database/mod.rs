@@ -33,12 +33,6 @@ pub mod projects;
 
 pub mod _prelude {
   pub use crate::prelude::*;
-  #[cfg(feature = "ssr")]
-  pub use sqlx::{
-    FromRow,
-    SqlitePool,
-    query_file_as,
-  };
 }
 
 pub mod prelude {

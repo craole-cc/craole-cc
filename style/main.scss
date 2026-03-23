@@ -96,11 +96,11 @@
 @use "components/buttons/index" as *;
 
 // -- Pages ─────────────────────────────────────────────────────────────
-
-@use "pages/art/index" as *;
-@use "pages/log/index" as *;
 @use "pages/home/disciplines";
 @use "pages/home/hero";
 @use "pages/home/sections";
 @use "pages/home/vision";
 @use "pages/shell";
+@use "pages/dev/index" as *;
+@use "pages/art/index" as *;
+@use "pages/log/index" as *;

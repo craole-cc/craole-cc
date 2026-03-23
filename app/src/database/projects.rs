@@ -34,10 +34,10 @@ pub async fn list_projects() -> Result<Vec<Project,>, ServerFnError,> {
     status :      String,
     repo_url :    Option<String,>,
     live_url :    Option<String,>,
-    featured :    i64, // SQLite INTEGER 0/1 — no native bool
+    featured :    i64,
     sort_order :  i64,
     created_at :  String,
-    tags :        String, // COALESCE guarantees non-null TEXT
+    tags :        String,
   }
   let pool = expect_context::<SqlitePool,>();
   let rows = query_file_as!(Row, "sql/projects/list.sql")

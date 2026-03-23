@@ -1,0 +1,68 @@
+@use "../../index" as *;
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// dev/_grid.scss — Project showcase layout
+// ═══════════════════════════════════════════════════════════════════════════════
+
+.dev-grid {
+  padding-block: spacing(4) spacing(20);
+
+  &__featured {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: spacing(6);
+    margin-bottom: spacing(12);
+
+    @include breakpoint(md) {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    // First featured card spans full width on larger screens
+    .dev-card:first-child {
+      @include breakpoint(md) {
+        grid-column: 1 / -1;
+      }
+    }
+  }
+
+  &__rest {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: spacing(6);
+
+    @include breakpoint(sm) {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    @include breakpoint(lg) {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+  }
+}
+
+// -- Empty state ─────────────────────────────────────────────────────────────
+
+.dev-empty {
+  padding-block: spacing(16);
+  text-align: center;
+
+  &__title {
+    font-family: var(--font-headline);
+    color: var(--color-text);
+    margin-bottom: spacing(4);
+  }
+
+  &__body {
+    color: var(--color-text-faint);
+    font-style: italic;
+  }
+}
+
+// -- Loading state ───────────────────────────────────────────────────────────
+
+.dev-loading {
+  padding-block: spacing(12);
+  font-family: var(--font-body);
+  font-style: italic;
+  color: var(--color-text-faint);
+}
