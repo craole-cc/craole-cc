@@ -65,6 +65,7 @@ pub fn Log() -> impl IntoView {
             .into_any()
         }}
       </Suspense>
+      <BackToTop />
     </div>
   }
 }

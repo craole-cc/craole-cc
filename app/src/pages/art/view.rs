@@ -54,9 +54,7 @@ pub fn Art() -> impl IntoView {
               return view! { <p class="art-loading readable">"Loading…"</p> }.into_any();
             }
             Some(Err(e)) => {
-              return view! {
-                <p class="art-loading readable">"Error: " {e.to_string()}</p>
-              }
+              return view! { <p class="art-loading readable">"Error: " {e.to_string()}</p> }
                 .into_any();
             }
             Some(Ok(data)) => {
@@ -69,6 +67,7 @@ pub fn Art() -> impl IntoView {
           view! { <Mosaic items=items /> }.into_any()
         }}
       </Suspense>
+      <BackToTop />
     </div>
   }
 }
