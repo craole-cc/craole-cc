@@ -76,9 +76,7 @@
 .art-detail__meta {
   transform: translateY(spacing(4));
   opacity: 0;
-  transition:
-    transform duration(slow) ease,
-    opacity duration(slow) ease;
+  transition: transform duration(slow) ease, opacity duration(slow) ease;
 }
 
 .art-detail__title {

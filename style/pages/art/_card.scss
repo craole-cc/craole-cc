@@ -41,9 +41,7 @@
     );
     opacity: 0;
     transform: translateY(spacing(4));
-    transition:
-      opacity duration(slow) ease,
-      transform duration(slow) ease;
+    transition: opacity duration(slow) ease, transform duration(slow) ease;
   }
 
   &__title {

@@ -85,9 +85,7 @@
   &--scrolled {
     background: var(--color-bg-surface);
     border-bottom: spacing(px) solid var(--color-border);
-    box-shadow:
-      0 spacing(px) 0 oklch(0 0 0 / 0.06),
-      0 spacing(1) spacing(5) oklch(0 0 0 / 0.12);
+    box-shadow: 0 spacing(px) 0 oklch(0 0 0 / 0.06), 0 spacing(1) spacing(5) oklch(0 0 0 / 0.12);
 
     @supports (backdrop-filter: blur(1px)) {
       background: color-mix(in oklch, var(--color-bg-surface) 75%, transparent);
@@ -118,9 +116,7 @@
     text-decoration: none;
     flex-shrink: 0;
     color: #fff;
-    transition:
-      opacity duration(fast),
-      color duration(slow);
+    transition: opacity duration(fast), color duration(slow);
 
     .site-nav--scrolled & {
       color: var(--color-primary-text);
@@ -172,9 +168,7 @@
     border-bottom: none;
     max-height: 0;
     overflow: hidden;
-    transition:
-      max-height duration(slow) cubic-bezier(0.4, 0, 0.2, 1),
-      padding duration(slow) ease;
+    transition: max-height duration(slow) cubic-bezier(0.4, 0, 0.2, 1), padding duration(slow) ease;
 
     &--open {
       max-height: 24rem;
@@ -209,9 +203,7 @@
     text-decoration: none;
     color: var(--color-text-muted);
     border-radius: radius(sm);
-    transition:
-      color duration(fast),
-      background-color duration(fast);
+    transition: color duration(fast), background-color duration(fast);
     white-space: nowrap;
 
     &:hover {
@@ -304,10 +296,7 @@
     border-radius: radius(lg);
     cursor: pointer;
     color: #fff;
-    transition:
-      color duration(fast),
-      background-color duration(fast),
-      border-color duration(fast);
+    transition: color duration(fast), background-color duration(fast), border-color duration(fast);
 
     svg {
       width: size(icon-lg);

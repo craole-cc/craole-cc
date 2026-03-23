@@ -32,9 +32,7 @@ body {
   background-color: var(--color-bg);
   color: var(--color-text);
   min-height: 100svh;
-  transition:
-    background-color duration(base),
-    color duration(base);
+  transition: background-color duration(base), color duration(base);
 }
 
 main {
@@ -110,8 +108,8 @@ kbd,
 samp,
 pre {
   font-family:
-    "SF Mono", "Fira Code", "Fira Mono", "Roboto Mono", Menlo, Monaco, Consolas,
-    "Courier New", monospace;
+    "SF Mono", "Fira Code", "Fira Mono", "Roboto Mono", Menlo, Monaco, Consolas, "Courier New",
+    monospace;
   font-size: 0.875em;
 }
 

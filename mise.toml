@@ -6,6 +6,7 @@ PRJ_ROOT = "{{config_root}}"
 DB_ROOT = "{{config_root}}/database"
 DB_MIGRATIONS = "{{env.DB_ROOT}}/migrations"
 DB_DATA = "{{env.DB_ROOT}}/data"
+DB_FILE = "{{env.DB_DATA}}/portfolio.db"
 DATABASE_URL = "sqlite:///{{env.DB_DATA}}/portfolio.db"
 
 #╔═══════════════════════════════════════════════════════════╗
@@ -43,7 +44,7 @@ run = "sqlx database reset --source {{env.DB_MIGRATIONS}}"
 [tasks.db-fresh]
 description = "Full reset — delete db file, migrate, then regenerate sqlx metadata"
 run = [
-  "rm -f {{env.DB_FILE}}",
+  "sqlx database reset --source {{env.DB_MIGRATIONS}}",
   "sqlx database create",
   "sqlx migrate run --source {{env.DB_MIGRATIONS}}",
   "cargo sqlx prepare --workspace",

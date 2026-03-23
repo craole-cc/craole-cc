@@ -1,5 +1,9 @@
 @use "../../index" as *;
 
+.art-page {
+  padding-top: size(header);
+}
+
 .art-header {
   padding-block: spacing(16) spacing(8);
 

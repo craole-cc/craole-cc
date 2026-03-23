@@ -61,10 +61,7 @@
     background: transparent;
     color: var(--color-text-faint);
     cursor: pointer;
-    transition:
-      color duration(fast),
-      border-color duration(fast),
-      background-color duration(fast);
+    transition: color duration(fast), border-color duration(fast), background-color duration(fast);
 
     &:hover {
       color: var(--color-text);

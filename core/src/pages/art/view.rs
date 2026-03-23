@@ -13,16 +13,11 @@ pub fn Art() -> impl IntoView {
 
   let initial = Resource::new(|| (), |()| async move { list_media().await },);
 
-  Effect::new(move |_| {
-    if let Some(Ok(m,),) = initial.get() {
-      set_media.set(m,);
-    }
-  },);
-
   view! {
     <div class="art-page">
       <Header />
       <Filter on_media_change=Callback::new(move |m| set_media.set(m)) />
+
       <Suspense fallback=move || {
         view! {
           <p class="art-loading readable" aria-busy="true">
@@ -32,8 +27,27 @@ pub fn Art() -> impl IntoView {
           .into_any()
       }>
         {move || {
-          let items = media.get();
-          view! { <Mosaic items=items /> }.into_any()
+          let resolved = initial.get();
+          let items = match resolved {
+            None => {
+              return // Read the resource inside Suspense so it actually suspends
+              view! { <p class="art-loading readable">"Loading…"</p> }
+                .into_any();
+            }
+            Some(Err(e)) => {
+              return view! { <p class="art-loading readable">"Error: " {e.to_string()}</p> }
+                .into_any();
+            }
+            Some(Ok(data)) => {
+              if media.get_untracked().is_empty() {
+                set_media.set(data);
+              }
+              media.get()
+            }
+          };
+          // Seed the signal on first load
+          view! { <Mosaic items=items /> }
+            .into_any()
         }}
       </Suspense>
     </div>
