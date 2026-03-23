@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["core", "frontend", "backend"]
+members = ["app", "frontend", "backend"]
 
 
 [workspace.package]
@@ -22,7 +22,7 @@ readme = "README.md"
 [workspace.dependencies]
 
 # -- Internal Crates ----------------------------------------------------------
-core = { path = "core", default-features = false }
+app = { path = "app", default-features = false }
 frontend = { path = "frontend" }
 backend = { path = "backend" }
 
@@ -58,6 +58,7 @@ web-sys = { version = "=0.3.85", features = [
   "MediaQueryList",
   "Performance",
   # "ScrollRestoration",
+  "Storage",
   "Window",
 ] }
 console_error_panic_hook = "0.1.7"

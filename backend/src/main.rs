@@ -1,14 +1,13 @@
 mod db;
-
 use {
+  app::{
+    App,
+    shell,
+  },
   axum::{
     Router,
     extract::FromRef,
     serve,
-  },
-  core::{
-    App,
-    shell,
   },
   leptos::{
     logging::log,
@@ -20,7 +19,10 @@ use {
     generate_route_list,
   },
   sqlx::SqlitePool,
-  std::env,
+  std::{
+    env::var,
+    // future,
+  },
   tokio::net::TcpListener,
 };
 
@@ -53,8 +55,7 @@ async fn main() -> anyhow::Result<(),> {
     simple_logger::init_with_level(log::Level::Info,).unwrap();
   },);
 
-  let database_url =
-    env::var("DATABASE_URL",).unwrap_or_else(|_| "sqlite:./portfolio.db".to_string(),);
+  let database_url = var("DATABASE_URL",).unwrap_or_else(|_| "sqlite:./portfolio.db".to_string(),);
 
   log!("Connecting to database: {}", database_url);
   let pool = db::init(&database_url,).await?;
@@ -63,6 +64,13 @@ async fn main() -> anyhow::Result<(),> {
   let conf = get_configuration(None,).unwrap();
   let leptos_options = conf.leptos_options;
   let addr = leptos_options.site_addr;
+  // let addr = var("PORT",)
+  //   .ok()
+  //   .and_then(|p| p.parse::<u16>().ok(),)
+  //   .map_or_else(
+  //     || "0.0.0.0:3000".to_string(),
+  //     |port| format!("0.0.0.0:{port}"),
+  //   );
   let routes = generate_route_list(App,);
 
   let app_state = AppState {

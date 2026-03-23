@@ -4,6 +4,8 @@
   padding-block: spacing(8) spacing(20);
   background: var(--color-bg-alt);
   padding-inline: spacing(8);
+  max-width: var(--readable-width, 72rem);
+  margin-inline: auto;
 
   @include breakpoint(md) {
     padding-inline: spacing(20);

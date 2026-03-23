@@ -22,11 +22,12 @@
     "scripts",
     "style/tailwind.config.js",
     "target",
-    "tests",
     "trunk.toml",
     ".data",
     ".sqlx",
-    "tmp"
+    "tmp",
+    "database/data",
+    "tests"
   ],
   "emmet.includeLanguages": {
     "rust": "html",

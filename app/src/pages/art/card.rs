@@ -2,9 +2,22 @@ use crate::prelude::*;
 
 #[component]
 pub fn Card(item : Media,) -> impl IntoView {
+  let href = format!("/art/{}", item.slug);
+
   view! {
     <figure class="art-card">
-      <a href=format!("/art/{}", item.slug) class="art-card__link">
+      <a
+        href=href
+        class="art-card__link"
+        on:click=move |_| {
+          if let Some(win) = web_sys::window() {
+            let y = win.scroll_y().unwrap_or(0.0);
+            if let Ok(Some(storage)) = win.session_storage() {
+              let _ = storage.set_item("art_scroll", &y.to_string());
+            }
+          }
+        }
+      >
         <img
           class="art-card__img"
           src=item.file_path.clone()

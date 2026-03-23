@@ -13,6 +13,27 @@ pub fn Art() -> impl IntoView {
 
   let initial = Resource::new(|| (), |()| async move { list_media().await },);
 
+  // Restore scroll position when returning from a detail page
+  Effect::new(move |_| {
+    if let Some(win,) = web_sys::window()
+      && let Ok(Some(storage,),) = win.session_storage()
+      && let Ok(Some(y,),) = storage.get_item("art_scroll",)
+    {
+      let _ = storage.remove_item("art_scroll",);
+      if let Ok(y,) = y.parse::<f64>() {
+        // Defer scroll until after paint so the mosaic is laid out
+        let win_clone = win.clone();
+        let _ = win.set_timeout_with_callback_and_timeout_and_arguments_0(
+          &js_sys::Function::new_no_args(&format!(
+            "window.scrollTo({{top: {y}, behavior: 'instant'}})"
+          ),),
+          50,
+        );
+        drop(win_clone,);
+      }
+    }
+  },);
+
   view! {
     <div class="art-page">
       <Header />
@@ -30,12 +51,12 @@ pub fn Art() -> impl IntoView {
           let resolved = initial.get();
           let items = match resolved {
             None => {
-              return // Read the resource inside Suspense so it actually suspends
-              view! { <p class="art-loading readable">"Loading…"</p> }
-                .into_any();
+              return view! { <p class="art-loading readable">"Loading…"</p> }.into_any();
             }
             Some(Err(e)) => {
-              return view! { <p class="art-loading readable">"Error: " {e.to_string()}</p> }
+              return view! {
+                <p class="art-loading readable">"Error: " {e.to_string()}</p>
+              }
                 .into_any();
             }
             Some(Ok(data)) => {
@@ -45,9 +66,7 @@ pub fn Art() -> impl IntoView {
               media.get()
             }
           };
-          // Seed the signal on first load
-          view! { <Mosaic items=items /> }
-            .into_any()
+          view! { <Mosaic items=items /> }.into_any()
         }}
       </Suspense>
     </div>

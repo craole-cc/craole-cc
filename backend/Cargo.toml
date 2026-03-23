@@ -12,7 +12,7 @@ keywords.workspace = true
 categories.workspace = true
 
 [dependencies]
-core = { workspace = true, features = ["ssr"] }
+app = { workspace = true, features = ["ssr"] }
 anyhow.workspace = true
 axum.workspace = true
 dotenvy.workspace = true

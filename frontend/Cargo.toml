@@ -15,7 +15,7 @@ categories.workspace = true
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
-core = { workspace = true, features = ["hydrate"] }
+app = { workspace = true, features = ["hydrate"] }
 leptos = { workspace = true, features = ["hydrate"] }
 
 console_error_panic_hook.workspace = true
