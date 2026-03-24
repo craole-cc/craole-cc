@@ -3,7 +3,7 @@ use crate::prelude::{
   icons::*,
 };
 
-// ── Types ─────────────────────────────────────────────────────────────────────
+// -- Types ─────────────────────────────────────────────────────────────────────
 
 pub struct Stack {
   pub title : &'static str,
@@ -16,13 +16,13 @@ pub struct Area {
   pub points : &'static [&'static str],
 }
 
-// ── Macro ─────────────────────────────────────────────────────────────────────
+// -- Macro ─────────────────────────────────────────────────────────────────────
 
 macro_rules! icons {
   ($($m:ident),+ $(,)?) => { &[$($m::default),+] }
 }
 
-// ── Data ──────────────────────────────────────────────────────────────────────
+// -- Data ──────────────────────────────────────────────────────────────────────
 
 pub const STACKS : &[Stack] = &[
   Stack {
@@ -88,3 +88,61 @@ pub const AREAS : &[Area] = &[
     ],
   },
 ];
+
+// -- Tag → Icon mapping ────────────────────────────────────────────────────────
+//
+// Maps project/media tag strings to branded `filled()` icons so that
+// tech-stack sections can display the custom icon system rather than raw
+// text tags.  Uses `filled()` variants to guarantee a `.brand-*` colour
+// class is present for the SCSS hover effect to work.
+
+#[must_use]
+pub fn icon_for_tag(tag : &str,) -> Option<Icon,> {
+  match tag {
+    // Languages
+    | "Rust" | "rust" => Some(rust::filled(),),
+    | "Python" | "python" => Some(python::filled(),),
+    | "Zig" | "zig" => Some(zig::filled(),),
+    | "Bash" | "bash" | "Shell" | "ShellScript" => Some(bash::filled(),),
+    | "PowerShell" | "powershell" => Some(powershell::filled(),),
+    | "Nushell" | "nushell" => Some(nushell::filled(),),
+    | "JavaScript" | "javascript" | "JS" | "js" => Some(javascript::filled(),),
+    | "TypeScript" | "typescript" | "TS" | "ts" => Some(typescript::filled(),),
+    | "POSIX" | "posix" => Some(posix::filled(),),
+
+    // Web
+    | "Leptos" | "leptos" => Some(leptos::filled(),),
+    | "HTMX" | "htmx" => Some(htmx::filled(),),
+    | "Tailwind" | "tailwind" | "Tailwind CSS" | "tailwindcss" => Some(tailwind::filled(),),
+    | "Axum" | "axum" => Some(axum::local(),), // no Leptos icon — use local SVG
+
+    // Data
+    | "SQLite" | "sqlite" => Some(sqlite::filled(),),
+    | "PostgreSQL" | "postgresql" => Some(postgresql::filled(),),
+    | "Neo4j" | "neo4j" => Some(neo4j::local(),),
+    | "Delta Lake" | "DeltaLake" | "delta-lake" => Some(deltalake::local(),),
+    | "SurrealDB" | "surrealdb" => Some(surrealdb::filled(),),
+
+    // DevOps / OS
+    | "Git" | "git" => Some(git::filled(),),
+    | "GitHub" | "github" => Some(github::filled(),),
+    | "GitLab" | "gitlab" => Some(gitlab::filled(),),
+    | "Docker" | "docker" => Some(docker::filled(),),
+    | "Kubernetes" | "kubernetes" | "k8s" => Some(kubernetes::filled(),),
+    | "Linux" | "linux" => Some(linux::filled(),),
+    | "Nix" | "nix" | "NixOS" | "nixos" => Some(nix::filled(),),
+    | "Ansible" | "ansible" => Some(ansible::filled(),),
+    | "Terraform" | "terraform" => Some(terraform::filled(),),
+    | "Raspberry Pi" | "raspberry-pi" | "RaspberryPi" => Some(raspberry_pi::filled(),),
+    | "Windows" | "windows" => Some(windows::filled(),),
+
+    // Editors / tools
+    | "Helix" | "helix" => Some(helix::filled(),),
+    | "Zed" | "zed" => Some(zed::filled(),),
+    | "VS Code" | "vscode" | "VSCode" => Some(vscode::filled(),),
+    | "Typst" | "typst" => Some(typst::filled(),),
+    | "Starship" | "starship" => Some(starship::filled(),),
+
+    | _ => None,
+  }
+}

@@ -1,13 +1,13 @@
 #![allow(clippy::must_use_candidate)]
 use {
   super::{
-    // projects,
-    // tech,
     disciplines,
     // about,
     // contact,
     // experience,
     hero,
+    // projects,
+    // tech,
     vision,
   },
   crate::prelude::*,

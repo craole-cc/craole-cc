@@ -1,5 +1,6 @@
 SELECT p.id          AS "id!: i64",
        p.title       AS "title!: String",
+       p.slug        AS "slug!: String",
        p.description AS "description!: String",
        p.status      AS "status!: String",
        p.repo_url    AS "repo_url: String",

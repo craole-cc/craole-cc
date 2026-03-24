@@ -9,6 +9,6 @@ pub mod prelude {
     dividers::Divider,
     footer::Footer,
     header::Header,
-    search::Spotlight,
+    search::prelude::*,
   };
 }

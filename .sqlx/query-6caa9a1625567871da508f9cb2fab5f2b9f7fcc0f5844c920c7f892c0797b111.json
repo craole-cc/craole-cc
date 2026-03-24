@@ -1,0 +1,80 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT p.id          AS \"id!: i64\",\n       p.title       AS \"title!: String\",\n       p.slug        AS \"slug!: String\",\n       p.description AS \"description!: String\",\n       p.status      AS \"status!: String\",\n       p.repo_url    AS \"repo_url: String\",\n       p.live_url    AS \"live_url: String\",\n       p.featured    AS \"featured!: i64\",\n       p.sort_order  AS \"sort_order!: i64\",\n       p.created_at  AS \"created_at!: String\",\n       CAST(COALESCE(GROUP_CONCAT(pt.tag, ','), '') AS TEXT) AS \"tags!: String\"\nFROM projects p\n  LEFT JOIN project_tags pt ON pt.project_id = p.id\nWHERE p.published = 1\n  AND p.status = ?1\nGROUP BY p.id\nORDER BY p.sort_order ASC, p.created_at DESC;\n",
+  "describe": {
+    "columns": [
+      {
+        "name": "id!: i64",
+        "ordinal": 0,
+        "type_info": "Integer"
+      },
+      {
+        "name": "title!: String",
+        "ordinal": 1,
+        "type_info": "Text"
+      },
+      {
+        "name": "slug!: String",
+        "ordinal": 2,
+        "type_info": "Text"
+      },
+      {
+        "name": "description!: String",
+        "ordinal": 3,
+        "type_info": "Text"
+      },
+      {
+        "name": "status!: String",
+        "ordinal": 4,
+        "type_info": "Text"
+      },
+      {
+        "name": "repo_url: String",
+        "ordinal": 5,
+        "type_info": "Text"
+      },
+      {
+        "name": "live_url: String",
+        "ordinal": 6,
+        "type_info": "Text"
+      },
+      {
+        "name": "featured!: i64",
+        "ordinal": 7,
+        "type_info": "Integer"
+      },
+      {
+        "name": "sort_order!: i64",
+        "ordinal": 8,
+        "type_info": "Integer"
+      },
+      {
+        "name": "created_at!: String",
+        "ordinal": 9,
+        "type_info": "Text"
+      },
+      {
+        "name": "tags!: String",
+        "ordinal": 10,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false,
+      false,
+      true,
+      false,
+      false,
+      true,
+      true,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "6caa9a1625567871da508f9cb2fab5f2b9f7fcc0f5844c920c7f892c0797b111"
+}

@@ -2,17 +2,9 @@
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // components/_home.scss — Home page section styles
-// ───────────────────────────────────────────────────────────────────────────────
-//
-// BEM blocks: .about / .philosophy / .projects / .project-card /
-//             .experience / .experience-card / .contact
-//
-// All colour, spacing and typography via tokens — no Tailwind, no hex.
 // ═══════════════════════════════════════════════════════════════════════════════
 
 // -- Shared: every home section h2 gets consistent bottom margin ──────────────
-// h2 typography (size, weight, colour) is set globally in base/_globals.scss.
-// Only the spacing is home-specific.
 
 .about,
 .areas,
@@ -96,7 +88,10 @@
   border: spacing(px) solid var(--color-neutral-border);
   background: var(--color-bg-surface);
   box-shadow: 0 1px 3px oklch(0 0 0 / 0.07);
-  transition: box-shadow duration(slow), transform duration(slow), border-color duration(slow);
+  transition:
+    box-shadow duration(slow),
+    transform duration(slow),
+    border-color duration(slow);
 
   &:hover {
     box-shadow: 0 spacing(2) spacing(8) oklch(0 0 0 / 0.12);
@@ -247,6 +242,7 @@
   background: var(--color-bg-surface);
 
   h3 {
+    font-family: var(--font-label);
     font-size: fontsize(xs);
     font-weight: 600;
     letter-spacing: 0.08em;
@@ -260,64 +256,92 @@
     flex-wrap: wrap;
     gap: spacing(2);
   }
+}
 
-  a {
-    display: inline-flex;
-    align-items: center;
-    gap: spacing(2);
-    padding: spacing(1) spacing(3);
-    border-radius: radius(lg);
-    border: spacing(px) solid var(--color-neutral-border);
-    background: var(--color-bg);
-    color: var(--color-text-muted);
-    font-size: fontsize(sm);
-    font-weight: 500;
-    text-decoration: none;
-    transition:
-      border-color duration(fast),
-      color duration(fast),
-      transform duration(fast),
-      box-shadow duration(fast);
+// ── Tech badge ────────────────────────────────────────────────────────────────
+//
+// Each badge gets --badge-brand injected from Rust (e.g. --badge-brand:var(--brand-rust)).
+// Default: transparent bg, accent outline.
+// Hover:   brand-colour bg, everything inverts to page-bg for contrast.
 
-    padding: spacing(2);
+// CSS custom properties for the img-icon filter on hover.
+// Leptos icon SVGs (div wrappers) use `color` so they respond to `color:inherit`.
+// Local SVG imgs need a filter to change their apparent colour.
+:root {
+  --tech-badge-img-filter: brightness(0) invert(1); // → white, works on coloured bg (light mode)
+}
+
+[data-theme="dark"] {
+  // In dark mode the page background is very dark, so we also want near-white
+  // icons on the (typically vibrant) brand background.
+  --tech-badge-img-filter: brightness(0) invert(1);
+}
+
+a.tech-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: spacing(2);
+  padding: spacing(1) spacing(3);
+  border-radius: radius(pill);
+  border: 1px solid var(--color-primary-border);
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: fontsize(sm);
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color duration(fast),
+    border-color duration(fast),
+    color duration(fast),
+    box-shadow duration(fast),
+    transform duration(fast);
+
+  // Icon + label container sizing
+  div,
+  img {
+    width: size(icon);
+    height: size(icon);
+    flex-shrink: 0;
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  span {
+    transition: color duration(fast);
+  }
+
+  // ── Hover ─────────────────────────────────────────────────────────────────
+  &:hover {
+    background: var(--badge-brand, var(--color-primary));
     border-color: transparent;
-    background: transparent;
+    color: var(--color-bg);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px oklch(0 0 0 / 0.18);
+
+    // Force all Leptos icon wrappers (div.brand-*) to use page-bg colour.
+    // Specificity (0,2,0) beats .brand-* (0,1,0), so no !important needed.
+    * {
+      color: var(--color-bg);
+    }
+
+    // Local SVG img elements — brightness(0) makes them black,
+    // invert(1) flips to white. Works well on vibrant brand backgrounds.
+    img {
+      filter: var(--tech-badge-img-filter);
+    }
+  }
+
+  // On mobile just show the icon, hide the label to save space
+  span {
+    display: none;
 
     @include breakpoint(sm) {
-      padding: spacing(1) spacing(3);
-      border-color: var(--color-neutral-border);
-      background: var(--color-bg);
-    }
-
-    div,
-    img {
-      width: size(icon-lg);
-      height: size(icon-lg);
-
-      @include breakpoint(sm) {
-        width: size(icon);
-        height: size(icon);
-      }
-
-      svg {
-        width: 100%;
-        height: 100%;
-      }
-    }
-
-    span {
-      display: none;
-
-      @include breakpoint(sm) {
-        display: inline;
-      }
-    }
-
-    &:hover {
-      border-color: var(--color-primary-border);
-      color: var(--color-text);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px oklch(0 0 0 / 0.1);
+      display: inline;
     }
   }
 }
@@ -339,7 +363,9 @@
   border-radius: radius(xl);
   border: spacing(px) solid var(--color-neutral-border);
   background: var(--color-bg-surface);
-  transition: box-shadow duration(slow), border-color duration(slow);
+  transition:
+    box-shadow duration(slow),
+    border-color duration(slow);
 
   &:hover {
     box-shadow: 0 spacing(2) spacing(8) oklch(0 0 0 / 0.12);

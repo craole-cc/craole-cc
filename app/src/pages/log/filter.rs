@@ -6,12 +6,18 @@ use {
   },
 };
 
+fn parse_tag_from_search(search : &str,) -> Option<String,> {
+  search
+    .strip_prefix("?tag=",)
+    .map(|v| v.replace("%20", " ",).replace('+', " ",),)
+    .filter(|v| !v.is_empty(),)
+}
+
 // ── Sub-component ───────────────────────────────────────────────────────────
 
 #[component]
 fn KindFilters(
-  #[allow(clippy::needless_pass_by_value)]
-  kinds : Vec<String,>,
+  #[allow(clippy::needless_pass_by_value)] kinds : Vec<String,>,
   active_kind : ReadSignal<Option<String,>,>,
   set_active_kind : WriteSignal<Option<String,>,>,
 ) -> impl IntoView {
@@ -64,7 +70,19 @@ pub fn Filter(
   on_posts_change : Callback<Vec<PostSummary,>,>,
   on_kinds_change : Callback<Vec<String,>,>,
 ) -> impl IntoView {
-  let (active_kind, set_active_kind,) = signal(Option::<String,>::None,);
+  let location = use_location();
+  let (active_kind, set_active_kind,) =
+    signal(parse_tag_from_search(&location.search.get_untracked(),),);
+
+  // Sync when URL changes (e.g. spotlight navigation)
+  Effect::new(move |_| {
+    let search = location.search.get();
+    if let Some(kind,) = parse_tag_from_search(&search,) {
+      if active_kind.get_untracked().as_deref() != Some(&kind,) {
+        set_active_kind.set(Some(kind,),);
+      }
+    }
+  },);
 
   let kinds = Resource::new(|| (), |()| async move { list_post_kinds().await },);
 

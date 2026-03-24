@@ -4,6 +4,12 @@ pub mod projects;
 
 pub mod _prelude {
   pub use crate::prelude::*;
+  #[cfg(feature = "ssr")]
+  pub use sqlx::{
+    FromRow,
+    SqlitePool,
+    query_file_as,
+  };
 }
 
 pub mod prelude {
@@ -28,8 +34,10 @@ pub mod prelude {
     },
     projects::{
       Project,
+      ProjectDetail,
       get_featured_projects,
       get_project_by_id,
+      get_project_by_slug,
       list_project_tags,
       list_projects,
       list_projects_by_status,

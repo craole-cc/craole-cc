@@ -2,12 +2,18 @@ use crate::prelude::*;
 
 const VISIBLE_TAG_LIMIT : usize = 8;
 
+fn parse_tag_from_search(search : &str,) -> Option<String,> {
+  search
+    .strip_prefix("?tag=",)
+    .map(|v| v.replace("%20", " ",).replace('+', " ",),)
+    .filter(|v| !v.is_empty(),)
+}
+
 // ── Sub-component: collapsible tag list with multi-select ───────────────────
 
 #[component]
 fn TagFilters(
-  #[allow(clippy::needless_pass_by_value)]
-  tags : Vec<String,>,
+  #[allow(clippy::needless_pass_by_value)] tags : Vec<String,>,
   active_tags : ReadSignal<Vec<String,>,>,
   set_active_tags : WriteSignal<Vec<String,>,>,
 ) -> impl IntoView {
@@ -63,7 +69,6 @@ fn TagFilters(
         })
         .collect_view()}
 
-      // -- "Show more" / "Show less" toggle
       {if needs_toggle {
         Some(view! {
           <button
@@ -84,7 +89,23 @@ fn TagFilters(
 
 #[component]
 pub fn Filter(on_media_change : Callback<Vec<Media,>,>,) -> impl IntoView {
-  let (active_tags, set_active_tags,) = signal(Vec::<String,>::new(),);
+  // Read initial tag from URL (works on SSR too via #[cfg] guard in original)
+  let location = use_location();
+  let initial = parse_tag_from_search(&location.search.get_untracked(),)
+    .map(|t| vec![t],)
+    .unwrap_or_default();
+  let (active_tags, set_active_tags,) = signal(initial,);
+
+  // Reactively sync when the URL search changes (e.g. spotlight navigation)
+  Effect::new(move |_| {
+    let search = location.search.get(); // reactive dependency
+    if let Some(tag,) = parse_tag_from_search(&search,) {
+      // Only overwrite if this tag isn't already selected
+      if !active_tags.get_untracked().contains(&tag,) {
+        set_active_tags.set(vec![tag],);
+      }
+    }
+  },);
 
   let tags = Resource::new(|| (), |()| async move { list_media_tags().await },);
 

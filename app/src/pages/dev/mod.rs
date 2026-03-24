@@ -1,4 +1,5 @@
 mod card;
+mod detail;
 mod filter;
 mod grid;
 mod header;
@@ -6,6 +7,7 @@ mod view;
 
 pub use {
   card::*,
+  detail::*,
   filter::*,
   grid::*,
   header::*,
@@ -20,5 +22,8 @@ pub mod _prelude {
 }
 
 pub mod prelude {
-  pub use super::Dev as DevPage;
+  pub use super::{
+    Detail as DevDetail,
+    Dev as DevPage,
+  };
 }

@@ -1,0 +1,380 @@
+@use "../../index" as *;
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// Dev Detail — /dev/:slug project page
+// ═══════════════════════════════════════════════════════════════════════════════
+
+.dev-detail {
+  padding-top: calc(#{size(header)} + #{spacing(4)});
+  padding-bottom: spacing(16);
+
+  // -- Navigation ────────────────────────────────────────────────────────────
+
+  &__nav,
+  &__footer {
+    padding-block: spacing(4);
+  }
+
+  &__back {
+    font-family: var(--font-label);
+    font-size: fontsize(sm);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: color duration(fast);
+
+    &:hover {
+      color: var(--color-text);
+    }
+  }
+
+  // -- Header ────────────────────────────────────────────────────────────────
+
+  &__header {
+    padding-block: spacing(4) spacing(8);
+    border-bottom: 1px solid var(--color-divider);
+  }
+
+  &__title-row {
+    display: flex;
+    align-items: center;
+    gap: spacing(4);
+    flex-wrap: wrap;
+    margin-bottom: spacing(3);
+  }
+
+  &__title {
+    font-family: var(--font-headline);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--color-text);
+  }
+
+  &__status {
+    display: inline-block;
+    font-family: var(--font-label);
+    font-size: fontsize(xs);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: spacing(1) spacing(3);
+    border-radius: radius(pill);
+    flex-shrink: 0;
+
+    &--active {
+      background: oklch(0.85 0.15 160);
+      color: oklch(0.25 0.1 160);
+    }
+
+    &--building {
+      background: oklch(0.9 0.1 80);
+      color: oklch(0.35 0.1 80);
+    }
+
+    &--planning {
+      background: oklch(0.92 0.03 260);
+      color: oklch(0.4 0.05 260);
+    }
+  }
+
+  &__desc {
+    font-size: fontsize(lg);
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    max-width: 48rem;
+  }
+
+  // -- Tags ──────────────────────────────────────────────────────────────────
+
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: spacing(2);
+    list-style: none;
+    padding: spacing(6) 0;
+    margin: 0;
+  }
+
+  &__tag {
+    font-family: var(--font-label);
+    font-size: fontsize(xs);
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: spacing(1) spacing(3);
+    border: 1px solid var(--color-neutral-border);
+    color: var(--color-text-muted);
+  }
+
+  .dev-detail {
+    // -- Tech Stack icon row ───────────────────────────────────────────────────
+    // Sits between the description/tags and the source/live links.
+
+    &__tech {
+      padding-block: spacing(6) spacing(4);
+      border-bottom: 1px solid var(--color-divider);
+    }
+
+    &__tech-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: spacing(3);
+      list-style: none;
+      padding: spacing(4) 0 0;
+      margin: 0;
+
+      li {
+        display: contents; // let the .tech-badge be the layout item
+      }
+
+      // Reuse the home-page tech-badge styles (defined in _sections.scss).
+      // Override: show the label at all breakpoints on the detail page
+      // since there is more room and context is helpful.
+      .tech-badge {
+        span {
+          display: inline; // always visible, not hidden on mobile
+        }
+      }
+    }
+  }
+
+  // -- Links ─────────────────────────────────────────────────────────────────
+
+  &__links {
+    display: flex;
+    gap: spacing(4);
+    padding-bottom: spacing(8);
+    border-bottom: 1px solid var(--color-divider);
+  }
+
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    gap: spacing(2);
+    font-family: var(--font-label);
+    font-size: fontsize(sm);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--color-text);
+    padding: spacing(2) spacing(4);
+    border: 1px solid var(--color-neutral-border);
+    border-radius: radius(md);
+    transition:
+      color duration(fast),
+      background-color duration(fast),
+      border-color duration(fast);
+
+    svg {
+      width: size(icon-sm);
+      height: size(icon-sm);
+    }
+
+    &:hover {
+      background: var(--color-bg-hover);
+      border-color: var(--color-text);
+    }
+
+    &--live {
+      background: var(--color-text);
+      color: var(--color-bg);
+      border-color: var(--color-text);
+
+      &:hover {
+        opacity: 0.85;
+      }
+    }
+  }
+
+  // -- Screenshots gallery ───────────────────────────────────────────────────
+
+  &__gallery {
+    padding-block: spacing(8);
+    border-bottom: 1px solid var(--color-divider);
+  }
+
+  &__section-title {
+    font-family: var(--font-label);
+    font-size: fontsize(xs);
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-bottom: spacing(4);
+  }
+
+  &__screenshots {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+    gap: spacing(4);
+  }
+
+  &__screenshot {
+    margin: 0;
+    border-radius: radius(md);
+    overflow: hidden;
+    border: 1px solid var(--color-divider);
+
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  // -- README ────────────────────────────────────────────────────────────────
+
+  &__readme {
+    padding-block: spacing(8);
+  }
+
+  &__readme-body {
+    max-width: 48rem;
+
+    // Inherit the markdown styles from log post
+    // Default: all images constrained, inline-friendly
+    img {
+      max-width: 100%;
+      height: auto;
+      vertical-align: middle;
+    }
+
+    // Badge/shield images — detect by src pattern.
+    // Render as small inline pills: transparent bg, icon colour, accent outline.
+    img[src*="shields.io"],
+    img[src*="badge"],
+    img[src*="skillicons"],
+    img[src*="img.shields"] {
+      width: auto;
+      max-width: none;
+      height: 1.5rem;
+      border-radius: radius(sm);
+      margin: spacing(1) spacing(1) spacing(1) 0;
+      // Mute the loud colours — grayscale + transparency
+      filter: grayscale(0.8) opacity(0.7);
+      transition: filter duration(fast);
+
+      &:hover {
+        filter: grayscale(0) opacity(1);
+      }
+    }
+
+    // Paragraphs that contain only images (badges row) — flex layout
+    p:has(> img[src*="shields.io"]),
+    p:has(> img[src*="badge"]),
+    p:has(> img[src*="skillicons"]),
+    p:has(> a > img[src*="shields.io"]),
+    p:has(> a > img[src*="badge"]),
+    p:has(> a > img[src*="skillicons"]) {
+      display: flex;
+      flex-wrap: wrap;
+      gap: spacing(2);
+      align-items: center;
+      margin-bottom: spacing(4);
+    }
+
+    // Standalone content images (screenshots, diagrams) — full-width block
+    p
+      > img:only-child:not([src*="shields.io"]):not([src*="badge"]):not(
+        [src*="skillicons"]
+      ) {
+      display: block;
+      border-radius: radius(md);
+      margin-block: spacing(4);
+    }
+
+    pre {
+      overflow-x: auto;
+      padding: spacing(4);
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-divider);
+      border-radius: radius(md);
+      font-size: fontsize(sm);
+      line-height: 1.6;
+      margin-block: spacing(4);
+    }
+
+    code {
+      font-size: fontsize(sm);
+      background: var(--color-bg-surface);
+      padding: spacing(1) spacing(2);
+      border-radius: radius(sm);
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+      margin-top: spacing(8);
+      margin-bottom: spacing(3);
+    }
+
+    h1 {
+      font-size: fontsize(xl);
+    }
+    h2 {
+      font-size: fontsize(lg);
+    }
+    h3 {
+      font-size: fontsize(base);
+      font-weight: 600;
+    }
+
+    p {
+      line-height: 1.7;
+      margin-bottom: spacing(4);
+    }
+
+    ul,
+    ol {
+      padding-left: spacing(6);
+      margin-bottom: spacing(4);
+
+      li {
+        line-height: 1.6;
+        margin-bottom: spacing(1);
+      }
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-block: spacing(4);
+
+      th,
+      td {
+        padding: spacing(2) spacing(3);
+        border: 1px solid var(--color-divider);
+        text-align: left;
+      }
+
+      th {
+        background: var(--color-bg-surface);
+        font-weight: 600;
+      }
+    }
+
+    blockquote {
+      border-left: 3px solid var(--color-primary);
+      padding-left: spacing(4);
+      margin-left: 0;
+      color: var(--color-text-muted);
+      font-style: italic;
+    }
+  }
+
+  // -- Footer ────────────────────────────────────────────────────────────────
+
+  &__footer {
+    border-top: 1px solid var(--color-divider);
+    margin-top: spacing(8);
+  }
+}

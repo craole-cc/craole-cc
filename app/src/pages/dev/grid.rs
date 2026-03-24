@@ -28,8 +28,7 @@ pub fn Grid(items : Vec<Project,>,) -> impl IntoView {
             </section>
           },
         )
-      }}
-      // Remaining projects in a responsive grid
+      }} // Remaining projects in a responsive grid
       {if rest.is_empty() {
         None
       } else {
