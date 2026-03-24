@@ -1,14 +1,14 @@
 @use "../../index" as *;
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// Dev Detail — /dev/:slug project page
+// Dev Detail — /dev/:slug
 // ═══════════════════════════════════════════════════════════════════════════════
 
 .dev-detail {
   padding-top: calc(#{size(header)} + #{spacing(4)});
   padding-bottom: spacing(16);
 
-  // -- Navigation ────────────────────────────────────────────────────────────
+  // -- Breadcrumb / footer nav ───────────────────────────────────────────────
 
   &__nav,
   &__footer {
@@ -67,12 +67,10 @@
       background: oklch(0.85 0.15 160);
       color: oklch(0.25 0.1 160);
     }
-
     &--building {
       background: oklch(0.9 0.1 80);
       color: oklch(0.35 0.1 80);
     }
-
     &--planning {
       background: oklch(0.92 0.03 260);
       color: oklch(0.4 0.05 260);
@@ -86,66 +84,33 @@
     max-width: 48rem;
   }
 
-  // -- Tags ──────────────────────────────────────────────────────────────────
+  // -- Tech Stack — card grid (mirrors home page stack-card style) ───────────
 
-  &__tags {
+  &__tech {
+    padding-block: spacing(8);
+    border-bottom: 1px solid var(--color-divider);
+  }
+
+  &__tech-list {
     display: flex;
     flex-wrap: wrap;
     gap: spacing(2);
     list-style: none;
-    padding: spacing(6) 0;
+    padding: spacing(4) 0 0;
     margin: 0;
   }
 
-  &__tag {
-    font-family: var(--font-label);
-    font-size: fontsize(xs);
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: spacing(1) spacing(3);
-    border: 1px solid var(--color-neutral-border);
-    color: var(--color-text-muted);
+  a.tech-badge {
+    border-radius: radius(md);
+    padding: spacing(2) spacing(4);
   }
 
-  .dev-detail {
-    // -- Tech Stack icon row ───────────────────────────────────────────────────
-    // Sits between the description/tags and the source/live links.
-
-    &__tech {
-      padding-block: spacing(6) spacing(4);
-      border-bottom: 1px solid var(--color-divider);
-    }
-
-    &__tech-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: spacing(3);
-      list-style: none;
-      padding: spacing(4) 0 0;
-      margin: 0;
-
-      li {
-        display: contents; // let the .tech-badge be the layout item
-      }
-
-      // Reuse the home-page tech-badge styles (defined in _sections.scss).
-      // Override: show the label at all breakpoints on the detail page
-      // since there is more room and context is helpful.
-      .tech-badge {
-        span {
-          display: inline; // always visible, not hidden on mobile
-        }
-      }
-    }
-  }
-
-  // -- Links ─────────────────────────────────────────────────────────────────
+  // -- Links — solid outlined pair, fills on hover ───────────────────────────
 
   &__links {
     display: flex;
-    gap: spacing(4);
-    padding-bottom: spacing(8);
+    gap: spacing(3);
+    padding-block: spacing(6) spacing(8);
     border-bottom: 1px solid var(--color-divider);
   }
 
@@ -155,18 +120,18 @@
     gap: spacing(2);
     font-family: var(--font-label);
     font-size: fontsize(sm);
-    font-weight: 600;
-    letter-spacing: 0.05em;
+    font-weight: 700;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     text-decoration: none;
     color: var(--color-text);
-    padding: spacing(2) spacing(4);
-    border: 1px solid var(--color-neutral-border);
+    padding: spacing(3) spacing(5);
+    border: 1.5px solid var(--color-text);
     border-radius: radius(md);
     transition:
       color duration(fast),
       background-color duration(fast),
-      border-color duration(fast);
+      transform duration(fast);
 
     svg {
       width: size(icon-sm);
@@ -174,17 +139,20 @@
     }
 
     &:hover {
-      background: var(--color-bg-hover);
-      border-color: var(--color-text);
+      background: var(--color-text);
+      color: var(--color-bg);
+      transform: translateY(-1px);
     }
 
+    // Live starts filled; hover just dims slightly
     &--live {
       background: var(--color-text);
       color: var(--color-bg);
-      border-color: var(--color-text);
 
       &:hover {
-        opacity: 0.85;
+        opacity: 0.8;
+        background: var(--color-text);
+        color: var(--color-bg);
       }
     }
   }
@@ -234,16 +202,12 @@
   &__readme-body {
     max-width: 48rem;
 
-    // Inherit the markdown styles from log post
-    // Default: all images constrained, inline-friendly
     img {
       max-width: 100%;
       height: auto;
       vertical-align: middle;
     }
 
-    // Badge/shield images — detect by src pattern.
-    // Render as small inline pills: transparent bg, icon colour, accent outline.
     img[src*="shields.io"],
     img[src*="badge"],
     img[src*="skillicons"],
@@ -253,7 +217,6 @@
       height: 1.5rem;
       border-radius: radius(sm);
       margin: spacing(1) spacing(1) spacing(1) 0;
-      // Mute the loud colours — grayscale + transparency
       filter: grayscale(0.8) opacity(0.7);
       transition: filter duration(fast);
 
@@ -262,7 +225,6 @@
       }
     }
 
-    // Paragraphs that contain only images (badges row) — flex layout
     p:has(> img[src*="shields.io"]),
     p:has(> img[src*="badge"]),
     p:has(> img[src*="skillicons"]),
@@ -276,7 +238,6 @@
       margin-bottom: spacing(4);
     }
 
-    // Standalone content images (screenshots, diagrams) — full-width block
     p
       > img:only-child:not([src*="shields.io"]):not([src*="badge"]):not(
         [src*="skillicons"]

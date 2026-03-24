@@ -42,21 +42,31 @@ pub struct ProjectDetail {
   pub tags :        Vec<String,>,
 }
 
+impl ProjectDetail {
+  /// Derive icons from tags client-side — never crosses the wire.
+  pub fn icons(&self,) -> Vec<Icon,> {
+    self.tags.iter().filter_map(|t| icon_for_tag(t,),).collect()
+  }
+}
+
 // ── Helpers ─────────────────────────────────────────────────────────────────
 
 fn split_tags(raw : &str,) -> Vec<String,> {
   if raw.is_empty() {
     vec![]
   } else {
-    raw.split(',',).map(str::to_string,).collect()
+    raw
+      .split(',',)
+      .map(str::trim,)
+      .map(str::to_string,)
+      .collect()
   }
 }
 
-// slug is nullable in the schema (ALTER TABLE can't add NOT NULL),
-// but all rows are populated by the migration. Default to empty string
-// for safety.
+// ── DB row types (SSR only) ─────────────────────────────────────────────────
+
 #[cfg(feature = "ssr")]
-#[derive(FromRow,)]
+#[derive(sqlx::FromRow,)]
 struct ProjectRow {
   id :          i64,
   title :       String,
@@ -184,8 +194,8 @@ pub async fn search_projects(query : String,) -> Result<Vec<Project,>, ServerFnE
   Ok(rows.into_iter().map(row_to_project,).collect(),)
 }
 
-/// Get a single project with full detail (including README + screenshots) by slug.
-/// If readme_html is empty but repo_url exists, fetches from GitHub and caches.
+/// Single project with full detail by slug.
+/// Fetches README from GitHub and caches it if not already stored.
 #[server(GetProjectBySlug)]
 pub async fn get_project_by_slug(slug : String,) -> Result<Option<ProjectDetail,>, ServerFnError,> {
   #[derive(FromRow,)]
@@ -217,19 +227,16 @@ pub async fn get_project_by_slug(slug : String,) -> Result<Option<ProjectDetail,
 
   let mut readme_html = r.readme_html.clone();
 
-  // If no cached README but we have a repo URL, fetch from GitHub
   if (readme_html.is_none() || readme_html.as_ref().is_some_and(String::is_empty,))
     && let Some(ref repo_url,) = r.repo_url
     && let Some(fetched,) = fetch_github_readme(repo_url,).await
   {
-    // Cache it
     let _ = query_file!("sql/projects/update_readme.sql", r.id, fetched)
       .execute(&pool,)
       .await;
     readme_html = Some(fetched,);
   }
 
-  // Parse screenshots from DB, or extract from README
   let screenshots = r.screenshots.as_ref().map_or_else(
     || {
       readme_html
@@ -269,7 +276,6 @@ async fn fetch_github_readme(repo_url : &str,) -> Option<String,> {
     return None;
   }
   let (repo, owner,) = (parts[0], parts[1],);
-
   let raw_url = format!("https://raw.githubusercontent.com/{owner}/{repo}/HEAD/README.md",);
 
   let client = reqwest::Client::builder()
@@ -278,7 +284,6 @@ async fn fetch_github_readme(repo_url : &str,) -> Option<String,> {
     .ok()?;
 
   let resp = client.get(&raw_url,).send().await.ok()?;
-
   if !resp.status().is_success() {
     return None;
   }
@@ -323,24 +328,13 @@ fn extract_images_from_html(html : &str,) -> Vec<String,> {
     let after = &rest[start + 5 ..];
     if let Some(end,) = after.find('"',) {
       let url = &after[.. end];
-      if Path::new(url,)
-        .extension()
-        .is_some_and(|ext| ext.eq_ignore_ascii_case("png",),)
-        || Path::new(url,)
-          .extension()
-          .is_some_and(|ext| ext.eq_ignore_ascii_case("jpg",),)
-        || Path::new(url,)
-          .extension()
-          .is_some_and(|ext| ext.eq_ignore_ascii_case("jpeg",),)
-        || Path::new(url,)
-          .extension()
-          .is_some_and(|ext| ext.eq_ignore_ascii_case("gif",),)
-        || Path::new(url,)
-          .extension()
-          .is_some_and(|ext| ext.eq_ignore_ascii_case("webp",),)
-        || Path::new(url,)
-          .extension()
-          .is_some_and(|ext| ext.eq_ignore_ascii_case("svg",),)
+      if ["png", "jpg", "jpeg", "gif", "webp", "svg",]
+        .iter()
+        .any(|ext| {
+          Path::new(url,)
+            .extension()
+            .is_some_and(|e| e.eq_ignore_ascii_case(ext,),)
+        },)
       {
         images.push(url.to_string(),);
       }

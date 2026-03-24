@@ -91,57 +91,57 @@ pub const AREAS : &[Area] = &[
 
 // -- Tag → Icon mapping ────────────────────────────────────────────────────────
 //
-// Maps project/media tag strings to branded `filled()` icons so that
+// Maps project/media tag strings to branded `default()` icons so that
 // tech-stack sections can display the custom icon system rather than raw
-// text tags.  Uses `filled()` variants to guarantee a `.brand-*` colour
+// text tags.  Uses `default()` variants to guarantee a `.brand-*` colour
 // class is present for the SCSS hover effect to work.
 
 #[must_use]
 pub fn icon_for_tag(tag : &str,) -> Option<Icon,> {
   match tag {
     // Languages
-    | "Rust" | "rust" => Some(rust::filled(),),
-    | "Python" | "python" => Some(python::filled(),),
-    | "Zig" | "zig" => Some(zig::filled(),),
-    | "Bash" | "bash" | "Shell" | "ShellScript" => Some(bash::filled(),),
-    | "PowerShell" | "powershell" => Some(powershell::filled(),),
-    | "Nushell" | "nushell" => Some(nushell::filled(),),
-    | "JavaScript" | "javascript" | "JS" | "js" => Some(javascript::filled(),),
-    | "TypeScript" | "typescript" | "TS" | "ts" => Some(typescript::filled(),),
-    | "POSIX" | "posix" => Some(posix::filled(),),
+    | "Rust" | "rust" => Some(rust::default(),),
+    | "Python" | "python" => Some(python::default(),),
+    | "Zig" | "zig" => Some(zig::default(),),
+    | "Bash" | "bash" | "Shell" | "ShellScript" => Some(bash::default(),),
+    | "PowerShell" | "powershell" => Some(powershell::default(),),
+    | "Nushell" | "nushell" => Some(nushell::default(),),
+    | "JavaScript" | "javascript" | "JS" | "js" => Some(javascript::default(),),
+    | "TypeScript" | "typescript" | "TS" | "ts" => Some(typescript::default(),),
+    | "POSIX" | "posix" => Some(posix::default(),),
 
     // Web
-    | "Leptos" | "leptos" => Some(leptos::filled(),),
-    | "HTMX" | "htmx" => Some(htmx::filled(),),
-    | "Tailwind" | "tailwind" | "Tailwind CSS" | "tailwindcss" => Some(tailwind::filled(),),
-    | "Axum" | "axum" => Some(axum::local(),), // no Leptos icon — use local SVG
+    | "Leptos" | "leptos" => Some(leptos::default(),),
+    | "HTMX" | "htmx" => Some(htmx::default(),),
+    | "Tailwind" | "tailwind" | "Tailwind CSS" | "tailwindcss" => Some(tailwind::default(),),
+    | "Axum" | "axum" => Some(axum::default(),), // no Leptos icon — use local SVG
 
     // Data
-    | "SQLite" | "sqlite" => Some(sqlite::filled(),),
-    | "PostgreSQL" | "postgresql" => Some(postgresql::filled(),),
-    | "Neo4j" | "neo4j" => Some(neo4j::local(),),
-    | "Delta Lake" | "DeltaLake" | "delta-lake" => Some(deltalake::local(),),
-    | "SurrealDB" | "surrealdb" => Some(surrealdb::filled(),),
+    | "SQLite" | "sqlite" => Some(sqlite::default(),),
+    | "PostgreSQL" | "postgresql" => Some(postgresql::default(),),
+    | "Neo4j" | "neo4j" => Some(neo4j::default(),),
+    | "Delta Lake" | "DeltaLake" | "delta-lake" => Some(deltalake::default(),),
+    | "SurrealDB" | "surrealdb" => Some(surrealdb::default(),),
 
     // DevOps / OS
-    | "Git" | "git" => Some(git::filled(),),
-    | "GitHub" | "github" => Some(github::filled(),),
-    | "GitLab" | "gitlab" => Some(gitlab::filled(),),
-    | "Docker" | "docker" => Some(docker::filled(),),
-    | "Kubernetes" | "kubernetes" | "k8s" => Some(kubernetes::filled(),),
-    | "Linux" | "linux" => Some(linux::filled(),),
-    | "Nix" | "nix" | "NixOS" | "nixos" => Some(nix::filled(),),
-    | "Ansible" | "ansible" => Some(ansible::filled(),),
-    | "Terraform" | "terraform" => Some(terraform::filled(),),
-    | "Raspberry Pi" | "raspberry-pi" | "RaspberryPi" => Some(raspberry_pi::filled(),),
-    | "Windows" | "windows" => Some(windows::filled(),),
+    | "Git" | "git" => Some(git::default(),),
+    | "GitHub" | "github" => Some(github::default(),),
+    | "GitLab" | "gitlab" => Some(gitlab::default(),),
+    | "Docker" | "docker" => Some(docker::default(),),
+    | "Kubernetes" | "kubernetes" | "k8s" => Some(kubernetes::default(),),
+    | "Linux" | "linux" => Some(linux::default(),),
+    | "Nix" | "nix" | "NixOS" | "nixos" => Some(nix::default(),),
+    | "Ansible" | "ansible" => Some(ansible::default(),),
+    | "Terraform" | "terraform" => Some(terraform::default(),),
+    | "Raspberry Pi" | "raspberry-pi" | "RaspberryPi" => Some(raspberry_pi::default(),),
+    | "Windows" | "windows" => Some(windows::default(),),
 
     // Editors / tools
-    | "Helix" | "helix" => Some(helix::filled(),),
-    | "Zed" | "zed" => Some(zed::filled(),),
-    | "VS Code" | "vscode" | "VSCode" => Some(vscode::filled(),),
-    | "Typst" | "typst" => Some(typst::filled(),),
-    | "Starship" | "starship" => Some(starship::filled(),),
+    | "Helix" | "helix" => Some(helix::default(),),
+    | "Zed" | "zed" => Some(zed::default(),),
+    | "VS Code" | "vscode" | "VSCode" => Some(vscode::default(),),
+    | "Typst" | "typst" => Some(typst::default(),),
+    | "Starship" | "starship" => Some(starship::default(),),
 
     | _ => None,
   }
