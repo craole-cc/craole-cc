@@ -36,7 +36,8 @@ pub mod prelude {
 use _prelude::*;
 
 // -- Tag → Icon ────────────────────────────────────────────────────────────────
-const TAG_MAP : &[(&[&str], fn() -> Icon,)] = &[
+type TagEntry = (&'static [&'static str], fn() -> Icon,);
+const TAG_MAP : &[TagEntry] = &[
   // Languages
   (bash::TAGS, bash::default,),
   (javascript::TAGS, javascript::default,),

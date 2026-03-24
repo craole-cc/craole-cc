@@ -1,0 +1,27 @@
+@use "../../../index" as *;
+
+.philosophy {
+  margin-bottom: spacing(20);
+
+  &__card {
+    padding: spacing(8);
+    border-radius: 0 radius(xl) radius(xl) 0;
+    border-left: 4px solid var(--color-primary-border);
+    background: linear-gradient(
+      to right,
+      var(--color-primary-muted),
+      transparent
+    );
+
+    p {
+      line-height: 1.75;
+      color: var(--color-text-muted);
+
+      & + p {
+        margin-top: spacing(4);
+        font-size: fontsize(md);
+        color: var(--color-text-faint);
+      }
+    }
+  }
+}

@@ -73,35 +73,7 @@
 //
 // ═══════════════════════════════════════════════════════════════════════════════
 // -- Fonts ──────────────────────────────────────────────────────────────────
-@use "base/fonts";
-
-// -- CSS custom properties + runtime mechanics ───────────────────────────
-@use "theme/colors";
-@use "theme/brands";
-@use "theme/runtime";
-
-// -- Base layer ───────────────────────────────────────────────────────────
-@use "base/reset";
-@use "base/animations";
-@use "base/globals";
-@use "base/utilities";
-
-// -- Theme UI ───────────────────────────────────────────────────────────────
-@use "theme/switcher";
-
-// -- Components ─────────────────────────────────────────────────────────────
-@use "components/header";
-@use "components/divider";
-@use "components/footer";
-@use "components/buttons/index" as *;
-@use "components/search/index" as *;
-
-// -- Pages ─────────────────────────────────────────────────────────────
-@use "pages/home/disciplines";
-@use "pages/home/hero";
-@use "pages/home/sections";
-@use "pages/home/vision";
-@use "pages/shell";
-@use "pages/dev/index" as *;
-@use "pages/art/index" as *;
-@use "pages/log/index" as *;
+@use "base";
+@use "theme";
+@use "components";
+@use "pages";

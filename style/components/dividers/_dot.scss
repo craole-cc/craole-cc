@@ -1,0 +1,11 @@
+@use "../../index" as *;
+
+.divider {
+  &__dot {
+    width: size(dot);
+    height: size(dot);
+    border-radius: radius(pill);
+    flex-shrink: 0;
+    background-color: var(--color-dot);
+  }
+}

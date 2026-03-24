@@ -9,8 +9,11 @@ pub fn Tags(
   page : String,
   set_open : WriteSignal<bool,>,
 ) -> impl IntoView {
+  // Clone before view! consumes label via into_render
+  let aria_label = label.clone();
+
   view! {
-    <div class="spotlight__tags">
+    <nav class="spotlight__tags" aria-label=aria_label>
       <span class="spotlight__tags-label">{label}</span>
       {tags
         .into_iter()
@@ -23,6 +26,6 @@ pub fn Tags(
           }
         })
         .collect_view()}
-    </div>
+    </nav>
   }
 }

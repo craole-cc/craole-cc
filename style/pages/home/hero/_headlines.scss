@@ -1,0 +1,51 @@
+@use "../../../index" as *;
+
+.hero {
+  &__headline {
+    font-family: var(--font-headline);
+    font-size: clamp(2.5rem, 8vw, 6rem);
+    font-weight: 300;
+    line-height: 1.06;
+    letter-spacing: -0.02em;
+    color: #fff;
+    margin: 0 0 1.5rem;
+    text-shadow: 0 2px 12px oklch(0 0 0 / 0.4);
+
+    span {
+      display: block;
+    }
+
+    em {
+      display: block;
+      font-style: italic;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.75);
+
+      &::before {
+        content: "\2018";
+      }
+      &::after {
+        content: "\2019";
+      }
+    }
+
+    @include breakpoint(md) {
+      font-size: clamp(3rem, 5vw, 5.5rem);
+
+      span,
+      em {
+        display: inline;
+      }
+    }
+  }
+
+  &__sub {
+    font-family: var(--font-headline);
+    font-variant: small-caps;
+    font-weight: 400;
+    font-size: clamp(0.85rem, 1.5vw, 1rem);
+    color: rgba(255, 255, 255, 0.55);
+    letter-spacing: 0.08em;
+    margin: 0.75rem 0 0;
+  }
+}

@@ -42,6 +42,23 @@ $z: (
   @return map.get($z, $layer);
 }
 
+// -- Line height scale ─────────────────────────────────────────────────────────
+
+$line-heights: (
+  tight: 1.4,
+  card: 1.5,
+  normal: 1.6,
+  loose: 1.75,
+  display: 1.2,
+);
+
+@function lineheight($name) {
+  @if not map.has-key($line-heights, $name) {
+    @error "Unknown line-height `#{$name}`. Available: #{map.keys($line-heights)}";
+  }
+  @return map.get($line-heights, $name);
+}
+
 // -- Spacing scale ─────────────────────────────────────────────────────────────
 //
 // 1 unit = 0.25rem = 4px (Tailwind default).

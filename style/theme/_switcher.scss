@@ -36,7 +36,10 @@
 
   color: #fff;
 
-  transition: color duration(fast), background-color duration(fast), border-color duration(fast);
+  transition:
+    color duration(fast),
+    background-color duration(fast),
+    border-color duration(fast);
 
   .site-nav--scrolled & {
     color: var(--color-text);
@@ -78,7 +81,7 @@
     background: var(--color-bg-surface);
     border: spacing(px) solid var(--color-border);
     border-radius: radius(lg);
-    box-shadow: 0 spacing(2) spacing(6) oklch(0 0 0 / 0.15);
+    box-shadow: var(--shadow-dropdown);
     overflow: hidden;
     z-index: layer(dropdown);
   }
@@ -94,7 +97,9 @@
     color: var(--color-text-muted);
     font-size: fontsize(base);
     cursor: pointer;
-    transition: background-color duration(fast), color duration(fast);
+    transition:
+      background-color duration(fast),
+      color duration(fast);
     text-align: left;
 
     svg {

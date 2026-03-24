@@ -12,9 +12,9 @@ pub fn ResultGroup(
     return None;
   }
   Some(view! {
-    <div class="spotlight__group">
+    <section class="spotlight__group">
       <h3 class=format!("spotlight__group-label {class}")>{label}</h3>
-      <ul class="spotlight__list" role="list">
+      <ul class="spotlight__list">
         {items
           .into_iter()
           .map(|item| {
@@ -29,6 +29,6 @@ pub fn ResultGroup(
           })
           .collect_view()}
       </ul>
-    </div>
+    </section>
   },)
 }

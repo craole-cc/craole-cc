@@ -1,9 +1,5 @@
 @use "../../index" as *;
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// components/_back_to_top.scss — Floating scroll-to-top button
-// ═══════════════════════════════════════════════════════════════════════════════
-
 .back-to-top {
   // -- Layout
   position: fixed;
@@ -23,7 +19,7 @@
   color: var(--color-text-muted);
   border: 1px solid var(--color-border);
   border-radius: radius(pill);
-  box-shadow: 0 2px 8px oklch(0 0 0 / 0.12);
+  box-shadow: var(--shadow-card);
   cursor: pointer;
 
   // -- Transitions

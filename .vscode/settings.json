@@ -27,7 +27,9 @@
     ".sqlx",
     "tmp",
     "database/data",
-    "tests"
+    "tests",
+    "style/components/footer/_footer.scss",
+    "app/src/components/footer/footer.rs"
   ],
   "emmet.includeLanguages": {
     "rust": "html",

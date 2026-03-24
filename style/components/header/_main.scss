@@ -1,0 +1,45 @@
+@use "../../index" as *;
+
+.site-nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: layer(nav);
+  height: size(header);
+  padding: 0 spacing(4);
+  background: transparent;
+  border-bottom: none;
+  transition:
+    background-color duration(xslow) ease,
+    border-bottom duration(xslow) ease,
+    backdrop-filter duration(xslow) ease,
+    box-shadow duration(xslow) ease;
+  animation: nav-appear 0.5s ease both;
+
+  // Light mode: stay transparent over hero
+  [data-theme="light"] &:not(.site-nav--scrolled) {
+    background: transparent;
+    border-bottom: none;
+    box-shadow: none;
+  }
+
+  &--scrolled {
+    background: var(--color-bg-surface);
+    border-bottom: spacing(px) solid var(--color-border);
+    box-shadow: var(--shadow-nav);
+
+    @supports (backdrop-filter: blur(1px)) {
+      background: var(--color-bg-glass);
+      backdrop-filter: blur(20px) saturate(160%);
+      -webkit-backdrop-filter: blur(20px) saturate(160%);
+    }
+  }
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 72rem;
+    height: 100%;
+    margin: 0 auto;
+  }
+}

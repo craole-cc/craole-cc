@@ -15,10 +15,11 @@
     box-shadow duration(fast),
     transform duration(fast);
   cursor: pointer;
+  box-shadow: none;
 
   &:hover {
     border-color: var(--color-text);
-    box-shadow: 0 spacing(2) spacing(8) oklch(0 0 0 / 0.08);
+    box-shadow: var(--shadow-card-hover);
     transform: translateY(-2px);
   }
 

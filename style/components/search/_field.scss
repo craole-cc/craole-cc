@@ -1,0 +1,43 @@
+@use "../../index" as *;
+
+.spotlight {
+  &__field {
+    display: flex;
+    align-items: center;
+    gap: spacing(3);
+    padding: spacing(4);
+    border-bottom: 1px solid var(--color-divider);
+  }
+
+  &__icon {
+    width: size(icon);
+    height: size(icon);
+    color: var(--color-text-muted);
+    flex-shrink: 0;
+  }
+
+  &__input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    font-family: var(--font-body);
+    font-size: fontsize(lg);
+    color: var(--color-text);
+    outline: none;
+
+    &::placeholder {
+      color: var(--color-text-faint);
+    }
+  }
+
+  &__esc {
+    font-family: var(--font-label);
+    font-size: fontsize(xs);
+    font-weight: 500;
+    padding: spacing(1) spacing(2);
+    border: 1px solid var(--color-neutral-border);
+    border-radius: radius(sm);
+    color: var(--color-text-muted);
+    flex-shrink: 0;
+  }
+}

@@ -1,0 +1,14 @@
+@use "../../index" as *;
+
+.divider {
+  &__spacer {
+    flex-shrink: 0;
+
+    &--left {
+      width: var(--divider-gap-left, 0px);
+    }
+    &--right {
+      width: var(--divider-gap-right, 0px);
+    }
+  }
+}

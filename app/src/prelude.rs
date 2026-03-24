@@ -69,6 +69,7 @@ pub use {
     HtmlCanvasElement,
     HtmlElement,
     HtmlImageElement,
+    KeyboardEvent,
     MediaQueryList,
     MouseEvent,
     ScrollBehavior,

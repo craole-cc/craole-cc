@@ -1,25 +1,29 @@
-mod about;
 mod contact;
 mod disciplines;
 mod experience;
 mod hero;
+mod personal;
 mod projects;
 mod tech;
 mod view;
-mod vision;
 
 pub use {
-  about::*,
   contact::*,
-  // cta::*,
   disciplines::*,
   experience::*,
   hero::*,
+  personal::*,
   projects::*,
   tech::*,
   view::*,
-  vision::*,
 };
+
+pub mod _prelude {
+  pub use {
+    super::*,
+    crate::prelude::*,
+  };
+}
 
 pub mod prelude {
   pub use super::Home as HomePage;

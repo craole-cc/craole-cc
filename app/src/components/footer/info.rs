@@ -10,7 +10,7 @@ pub fn Copyright() -> impl IntoView {
         <span class="footer__alias">" "{AUTHOR_ALIAS}" "</span>
         <span>{AUTHOR_SURNAME}</span>
       </p>
-      <div class="footer__meta">
+      <small class="footer__meta">
         <p>
           "Built with "
           <a
@@ -33,7 +33,7 @@ pub fn Copyright() -> impl IntoView {
         <p>
           "Deployed via "
           <a
-            href="https://www.rust-lang.org"
+            href="https://oxyde.cloud"
             target="_blank"
             rel="noopener noreferrer"
             class="footer__tech footer__tech--rust"
@@ -42,7 +42,7 @@ pub fn Copyright() -> impl IntoView {
           </a>
         </p>
         <p>"© "{COPYRIGHT_YEAR}" — All rights reserved"</p>
-      </div>
+      </small>
     </div>
   }
 }

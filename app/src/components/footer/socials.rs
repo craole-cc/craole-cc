@@ -5,8 +5,8 @@ use crate::prelude::{
 };
 
 struct SocialEntry {
-  hover :   Icon,
   default : Icon,
+  hover :   Icon,
 }
 
 fn socials() -> Vec<SocialEntry,> {
@@ -45,32 +45,34 @@ fn socials() -> Vec<SocialEntry,> {
 #[component]
 fn SocialIcon(default : Icon, hover : Icon,) -> impl IntoView {
   view! {
-    <a
-      href=default.link()
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label=default.label()
-      title=default.tooltip()
-      class="footer__social-link group"
-    >
-      <span class="footer__social-icon footer__social-icon--default">
-        <IconRender icon=default class="footer__social-svg color-muted" />
-      </span>
-      <span class="footer__social-icon footer__social-icon--hover">
-        <IconRender icon=hover class="footer__social-svg" />
-      </span>
-    </a>
+    <li>
+      <a
+        href=default.link()
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label=default.label()
+        title=default.tooltip()
+        class="footer__social-link group"
+      >
+        <span class="footer__social-icon footer__social-icon--default">
+          <IconRender icon=default class="footer__social-svg color-muted" />
+        </span>
+        <span class="footer__social-icon footer__social-icon--hover">
+          <IconRender icon=hover class="footer__social-svg" />
+        </span>
+      </a>
+    </li>
   }
 }
 
 #[component]
 pub fn Socials() -> impl IntoView {
   view! {
-    <div class="footer__socials">
+    <ul class="footer__socials">
       {socials()
         .into_iter()
         .map(|e| view! { <SocialIcon default=e.default hover=e.hover /> })
         .collect_view()}
-    </div>
+    </ul>
   }
 }

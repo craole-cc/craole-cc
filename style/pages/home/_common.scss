@@ -1,0 +1,27 @@
+@use "../../index" as *;
+
+.home {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(8);
+
+  > main {
+    display: flex;
+    flex-direction: column;
+    gap: spacing(8);
+    padding-bottom: 0;
+  }
+
+  > *:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.home section {
+  margin-block: 0;
+}
+
+// h2 stays
+.home section > h2 {
+  margin-bottom: spacing(8);
+}

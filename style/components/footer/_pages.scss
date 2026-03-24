@@ -1,0 +1,39 @@
+@use "../../index" as *;
+
+.footer {
+  &__pages {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__page-list {
+    list-style: none; // Reset <ul>
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: fontsize(base);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  &__page {
+    padding-inline: spacing(4);
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition:
+      color duration(slow),
+      transform duration(slow);
+
+    &:hover {
+      color: var(--color-primary);
+      transform: translateY(-2px);
+    }
+
+    &--divided {
+      border-right: spacing(px) solid var(--color-neutral-border);
+    }
+  }
+}

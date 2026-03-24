@@ -1,0 +1,19 @@
+@use "../../../index" as *;
+
+.about {
+  margin-bottom: spacing(20);
+
+  p {
+    line-height: 1.75;
+    color: var(--color-text-muted);
+    font-size: fontsize(md);
+
+    & + p {
+      margin-top: spacing(6);
+    }
+  }
+
+  blockquote {
+    margin-top: spacing(6);
+  }
+}

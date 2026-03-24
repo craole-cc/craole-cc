@@ -1,0 +1,13 @@
+@use "../../index" as *;
+
+.footer {
+  text-align: center;
+  color: var(--color-text-muted);
+  margin-top: spacing(8);
+  margin-bottom: spacing(2);
+
+  &__inner {
+    display: grid;
+    gap: spacing(2);
+  }
+}

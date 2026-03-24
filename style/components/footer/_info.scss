@@ -1,0 +1,56 @@
+@use "../../index" as *;
+
+.footer {
+  &__info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: spacing(4);
+    position: relative;
+    font-style: normal;
+  }
+
+  &__copyright {
+    text-align: center;
+  }
+
+  &__name {
+    margin-bottom: spacing(2);
+    letter-spacing: -0.02em;
+    font-size: fontsize(md);
+  }
+
+  &__alias {
+    font-size: fontsize(lg);
+    font-weight: 600;
+    color: var(--color-primary-text);
+  }
+
+  &__meta {
+    font-size: fontsize(sm);
+    color: var(--color-text-faint);
+    font-style: normal;
+
+    p + p {
+      margin-top: spacing(1);
+    }
+  }
+
+  &__tech {
+    font-weight: 500;
+    text-decoration: none;
+    transition: opacity duration(fast);
+
+    &:hover {
+      opacity: 0.75;
+      text-decoration: underline;
+    }
+
+    &--rust {
+      color: var(--brand-rust);
+    }
+    &--leptos {
+      color: var(--brand-leptos);
+    }
+  }
+}

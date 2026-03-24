@@ -32,7 +32,6 @@ const SLIDES : &[&str] = &[
 const SLIDE_SECS : f64 = 5.0;
 
 #[component]
-#[must_use]
 pub fn Hero() -> impl IntoView {
   #[cfg_attr(not(feature = "hydrate"), allow(unused_variables))]
   let ThemeContext { set_hue, .. } = expect_context::<ThemeContext,>();

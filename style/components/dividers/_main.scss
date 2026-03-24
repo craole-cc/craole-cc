@@ -1,0 +1,13 @@
+@use "../../index" as *;
+
+.divider {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding-block: var(--divider-padding, #{spacing(2)});
+
+  &--centered {
+    margin-inline: auto;
+    max-width: 36rem;
+  }
+}

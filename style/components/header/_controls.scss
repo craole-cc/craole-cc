@@ -1,0 +1,67 @@
+@use "../../index" as *;
+
+.site-nav__controls {
+  display: flex;
+  align-items: center;
+  gap: spacing(2);
+  flex-shrink: 0;
+}
+
+// Theme button context overrides
+.site-nav .theme-btn {
+  color: rgba(255, 255, 255, 0.65);
+
+  &:hover {
+    color: #fff;
+  }
+}
+
+.site-nav--scrolled .theme-btn {
+  color: var(--color-text-faint);
+
+  &:hover {
+    color: var(--color-text);
+  }
+}
+
+.site-nav__menu-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: size(btn-h);
+  height: size(btn-h);
+  padding: spacing(2);
+  background: transparent;
+  border: spacing(px) solid transparent;
+  border-radius: radius(lg);
+  cursor: pointer;
+  color: #fff;
+  transition:
+    color duration(fast),
+    background-color duration(fast),
+    border-color duration(fast);
+
+  svg {
+    width: size(icon-lg);
+    height: size(icon-lg);
+    display: block;
+  }
+
+  .site-nav--scrolled & {
+    color: var(--color-text);
+  }
+
+  &:hover {
+    background: var(--color-bg-hover);
+
+    .site-nav--scrolled & {
+      background: var(--color-bg-hover);
+      border-color: var(--color-border);
+      color: var(--color-text);
+    }
+  }
+
+  @include breakpoint(sm) {
+    display: none;
+  }
+}

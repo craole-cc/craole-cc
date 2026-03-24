@@ -1,0 +1,11 @@
+@use "../../index" as *;
+
+.spotlight {
+  &__backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: layer(modal);
+    background: oklch(0 0 0 / 0.5);
+    animation: spotlight-fade-in duration(fast) ease both;
+  }
+}

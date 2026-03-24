@@ -1,0 +1,50 @@
+@use "../../../index" as *;
+
+.experience {
+  margin-bottom: spacing(20);
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: spacing(8);
+  }
+}
+
+.experience-card {
+  padding-block: spacing(2);
+  padding-left: spacing(6);
+  border-left: 4px solid var(--color-primary-border);
+
+  h3 {
+    font-size: fontsize(xl);
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: spacing(2);
+  }
+
+  p {
+    font-size: fontsize(sm);
+    font-weight: 500;
+    color: var(--color-primary-text);
+    margin-bottom: spacing(4);
+  }
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: spacing(2);
+  }
+
+  li {
+    display: flex;
+    align-items: flex-start;
+    color: var(--color-text-muted);
+
+    &::before {
+      content: "▹";
+      color: var(--color-primary-text);
+      margin-right: spacing(3);
+      flex-shrink: 0;
+    }
+  }
+}

@@ -1,0 +1,52 @@
+@use "../../../index" as *;
+
+/*
+  Hero component. Crossfade is driven by inline opacity.
+  Keyframes hero-fade and ken-burns live in base/_animations.scss.
+*/
+
+.hero {
+  position: relative;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  height: 100svh;
+  min-height: 0;
+  background-color: #0d1117;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 4rem;
+  overflow: hidden;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 30%;
+    z-index: 4;
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      var(--color-bg) 100%
+    );
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 600ms ease;
+  }
+
+  &--scrolled::after {
+    opacity: 1;
+  }
+}
+
+// -- Hero-specific keyframes ───────────────────────────────────────────────────
+
+@keyframes hero-bottom-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

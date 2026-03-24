@@ -1,0 +1,24 @@
+@use "../../index" as *;
+
+.divider {
+  &__line {
+    flex: 1;
+    height: spacing(px);
+
+    &--left {
+      background: linear-gradient(
+        to right,
+        transparent 0%,
+        var(--color-divider) 50%
+      );
+    }
+
+    &--right {
+      background: linear-gradient(
+        to right,
+        var(--color-divider) 50%,
+        transparent 100%
+      );
+    }
+  }
+}

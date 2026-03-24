@@ -18,7 +18,7 @@ pub fn Footer() -> impl IntoView {
         <PageNav />
       </div>
       <Divider config=Divider::default_with_dot() />
-      <div class="footer__bottom">
+      <div class="footer__info">
         <Copyright />
       </div>
     </footer>

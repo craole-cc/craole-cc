@@ -1,0 +1,79 @@
+@use "../../index" as *;
+
+.spotlight {
+  &__results {
+    padding: spacing(2) 0;
+  }
+
+  &__empty {
+    padding: spacing(6) spacing(4);
+    text-align: center;
+    color: var(--color-text-muted);
+    font-style: italic;
+  }
+
+  &__group {
+    &:not(:first-child) {
+      border-top: 1px solid var(--color-divider);
+    }
+  }
+
+  &__group-label {
+    font-family: var(--font-label);
+    font-size: fontsize(xs);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: spacing(2) spacing(4) spacing(1);
+    color: var(--color-text-muted);
+
+    // BEM modifiers — matched by Rust via ResultGroup class prop
+    &--dev {
+      color: var(--color-primary);
+    }
+    &--art {
+      color: var(--color-accent, var(--color-primary));
+    }
+    &--log {
+      color: var(--color-secondary, var(--color-primary));
+    }
+  }
+
+  &__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  &__result {
+    display: flex;
+    flex-direction: column;
+    gap: spacing(1);
+    padding: spacing(3) spacing(4);
+    text-decoration: none;
+    color: var(--color-text);
+    transition:
+      background-color duration(fast),
+      color duration(fast);
+    cursor: pointer;
+
+    &:hover {
+      background: var(--color-bg-hover);
+    }
+  }
+
+  &__result-title {
+    font-weight: 600;
+    font-size: fontsize(base);
+  }
+
+  &__result-sub {
+    font-size: fontsize(sm);
+    color: var(--color-text-muted);
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}

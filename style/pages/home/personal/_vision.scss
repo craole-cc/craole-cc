@@ -1,0 +1,52 @@
+@use "../../../index" as *;
+
+.vision {
+  padding: spacing(24) spacing(6);
+  z-index: 1;
+  background: var(--color-bg);
+
+  @include breakpoint(md) {
+    padding: spacing(24) spacing(12);
+  }
+
+  &__inner {
+    max-width: 72rem;
+    margin-inline: auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: spacing(8);
+
+    @include breakpoint(md) {
+      grid-template-columns: 2fr 10fr;
+      gap: spacing(12);
+      align-items: start;
+    }
+  }
+
+  &__label {
+    span {
+      font-family: var(--font-label);
+      font-variant: small-caps;
+      font-size: fontsize(xs);
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      color: var(--color-text-faint);
+    }
+
+    @include breakpoint(md) {
+      padding-top: spacing(3);
+    }
+  }
+
+  &__statement {
+    p {
+      font-family: var(--font-headline);
+      font-style: italic;
+      font-weight: 300;
+      font-size: clamp(1.75rem, 3.5vw, 3rem);
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+      color: var(--color-text);
+    }
+  }
+}

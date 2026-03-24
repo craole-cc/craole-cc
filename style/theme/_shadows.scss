@@ -1,0 +1,45 @@
+// ═══════════════════════════════════════════════════════════════════════════════
+// theme/_shadows.scss — Elevation / shadow token system
+// ───────────────────────────────────────────────────────────────────────────────
+//
+// Semantic naming maps tokens to use cases, not arbitrary scale steps.
+// Light/dark variants are split because dark mode needs higher opacity to
+// achieve the same perceived depth against dark surfaces.
+//
+// All shadows are black-keyed: oklch(0 0 0 / alpha)
+// This is consistent with the rest of the OKLCH color system.
+//
+// TOKENS
+//   --shadow-card       card resting state (subtle)
+//   --shadow-card-hover card on hover (lifted)
+//   --shadow-badge      interactive pill/badge hover
+//   --shadow-dropdown   small floating panel (theme switcher, tooltips)
+//   --shadow-modal      large overlay (spotlight, dialogs)
+//   --shadow-nav        sticky header scrolled state
+// ═══════════════════════════════════════════════════════════════════════════════
+
+:root,
+[data-theme="light"] {
+  --shadow-card: 0 1px 3px oklch(0 0 0 / 0.08);
+  --shadow-card-hover:
+    0 0.5rem 2rem oklch(0 0 0 / 0.1), 0 1px 4px oklch(0 0 0 / 0.06);
+  --shadow-badge: 0 4px 12px oklch(0 0 0 / 0.12);
+  --shadow-dropdown: 0 0.5rem 1.5rem oklch(0 0 0 / 0.12);
+  --shadow-modal:
+    0 1rem 3rem oklch(0 0 0 / 0.18), 0 0.25rem 0.75rem oklch(0 0 0 / 0.08);
+  --shadow-nav:
+    0 1px 0 oklch(0 0 0 / 0.06), 0 0.25rem 1.25rem oklch(0 0 0 / 0.1);
+}
+
+[data-theme="dark"] {
+  // Darker surfaces need higher alpha to achieve equivalent perceived depth
+  --shadow-card: 0 1px 3px oklch(0 0 0 / 0.2);
+  --shadow-card-hover:
+    0 0.5rem 2rem oklch(0 0 0 / 0.3), 0 1px 4px oklch(0 0 0 / 0.18);
+  --shadow-badge: 0 4px 12px oklch(0 0 0 / 0.3);
+  --shadow-dropdown: 0 0.5rem 1.5rem oklch(0 0 0 / 0.3);
+  --shadow-modal:
+    0 1rem 3rem oklch(0 0 0 / 0.45), 0 0.25rem 0.75rem oklch(0 0 0 / 0.25);
+  --shadow-nav:
+    0 1px 0 oklch(0 0 0 / 0.15), 0 0.25rem 1.25rem oklch(0 0 0 / 0.25);
+}

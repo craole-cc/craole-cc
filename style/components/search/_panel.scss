@@ -1,0 +1,23 @@
+@use "../../index" as *;
+
+.spotlight {
+  position: fixed;
+  top: 20vh;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: calc(#{layer(modal)} + 1);
+  width: min(36rem, calc(100vw - #{spacing(8)}));
+  max-height: 60vh;
+  overflow-y: auto;
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: radius(lg);
+  box-shadow: var(--shadow-modal);
+  animation: spotlight-slide-in duration(fast) ease both;
+
+  @supports (backdrop-filter: blur(1px)) {
+    background: var(--color-bg-glass);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+  }
+}

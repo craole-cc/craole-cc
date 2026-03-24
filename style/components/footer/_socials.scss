@@ -1,0 +1,65 @@
+@use "../../index" as *;
+
+.footer {
+  // Flat BEM — no double nesting
+  &__socials {
+    list-style: none; // Reset <ul>
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: spacing(2);
+    justify-content: center;
+
+    @include breakpoint(sm) {
+      gap: spacing(4);
+    }
+  }
+
+  &__social-link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: size(icon-lg);
+    height: size(icon-lg);
+    border-radius: radius(md);
+    transition: transform duration(slow) ease;
+
+    @include breakpoint(sm) {
+      border-radius: radius(lg);
+    }
+
+    &:hover {
+      transform: translateY(-4px);
+    }
+  }
+
+  &__social-icon {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity duration(slow) ease;
+
+    &--default {
+      opacity: 1;
+      .group:hover & {
+        opacity: 0;
+      }
+    }
+
+    &--hover {
+      opacity: 0;
+      .group:hover & {
+        opacity: 1;
+      }
+    }
+  }
+
+  &__social-svg {
+    width: size(icon-lg);
+    height: size(icon-lg);
+  }
+}
