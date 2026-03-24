@@ -2,10 +2,11 @@ use crate::prelude::*;
 
 #[component]
 #[allow(clippy::must_use_candidate)]
+#[allow(clippy::needless_pass_by_value)]
 pub fn Tags(
-  #[allow(clippy::needless_pass_by_value)] tags : Vec<String,>,
-  #[allow(clippy::needless_pass_by_value)] label : String,
-  #[allow(clippy::needless_pass_by_value)] page : String,
+  tags : Vec<String,>,
+  label : String,
+  page : String,
   set_open : WriteSignal<bool,>,
 ) -> impl IntoView {
   view! {
@@ -16,11 +17,7 @@ pub fn Tags(
         .map(|tag| {
           let href = format!("{page}?tag={tag}");
           view! {
-            <a
-              class="spotlight__chip"
-              href=href
-              on:click=move |_| set_open.set(false)
-            >
+            <a class="spotlight__chip" href=href on:click=move |_| set_open.set(false)>
               {tag}
             </a>
           }

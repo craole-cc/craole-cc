@@ -20,11 +20,7 @@ pub fn ResultGroup(
           .map(|item| {
             view! {
               <li>
-                <a
-                  href=item.url
-                  class="spotlight__result"
-                  on:click=move |_| set_open.set(false)
-                >
+                <a href=item.url class="spotlight__result" on:click=move |_| set_open.set(false)>
                   <span class="spotlight__result-title">{item.title}</span>
                   <span class="spotlight__result-sub">{item.subtitle}</span>
                 </a>

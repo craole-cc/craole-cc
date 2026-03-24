@@ -51,7 +51,7 @@ fn KindFilters(
                 }
               }
               on:click=move |_| {
-                set_active_kind.set(Some(kind_click.clone(),),);
+                set_active_kind.set(Some(kind_click.clone()));
               }
             >
               {kind_label}
@@ -74,13 +74,12 @@ pub fn Filter(
   let (active_kind, set_active_kind,) =
     signal(parse_tag_from_search(&location.search.get_untracked(),),);
 
-  // Sync when URL changes (e.g. spotlight navigation)
   Effect::new(move |_| {
     let search = location.search.get();
-    if let Some(kind,) = parse_tag_from_search(&search,) {
-      if active_kind.get_untracked().as_deref() != Some(&kind,) {
-        set_active_kind.set(Some(kind,),);
-      }
+    if let Some(kind,) = parse_tag_from_search(&search,)
+      && active_kind.get_untracked().as_deref() != Some(&kind,)
+    {
+      set_active_kind.set(Some(kind,),);
     }
   },);
 
@@ -113,17 +112,17 @@ pub fn Filter(
     <div class="log-filter readable">
       <Suspense fallback=|| ()>
         {move || {
-          kinds.get().map(|res| {
-            res.ok().map(|k| {
-              view! {
-                <KindFilters
-                  kinds=k
-                  active_kind=active_kind
-                  set_active_kind=set_active_kind
-                />
-              }
+          kinds
+            .get()
+            .map(|res| {
+              res
+                .ok()
+                .map(|k| {
+                  view! {
+                    <KindFilters kinds=k active_kind=active_kind set_active_kind=set_active_kind />
+                  }
+                })
             })
-          })
         }}
       </Suspense>
     </div>

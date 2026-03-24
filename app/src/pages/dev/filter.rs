@@ -18,19 +18,17 @@ fn parse_tag_from_search(search : &str,) -> Option<String,> {
 pub fn Filter(on_projects_change : Callback<Vec<Project,>,>,) -> impl IntoView {
   let (active_status, set_active_status,) = signal(Option::<String,>::None,);
 
-  // Initialise tag from URL; also kept reactive via Effect below
   let location = use_location();
   let (active_tag, set_active_tag,) =
     signal(parse_tag_from_search(&location.search.get_untracked(),),);
 
-  // Sync active_tag whenever the URL search string changes (spotlight nav)
   Effect::new(move |_| {
-    let search = location.search.get(); // reactive dependency
-    if let Some(tag,) = parse_tag_from_search(&search,) {
-      if active_tag.get_untracked().as_deref() != Some(&tag,) {
-        set_active_status.set(None,); // clear status filter when tag is set
-        set_active_tag.set(Some(tag,),);
-      }
+    let search = location.search.get();
+    if let Some(tag,) = parse_tag_from_search(&search,)
+      && active_tag.get_untracked().as_deref() != Some(&tag,)
+    {
+      set_active_status.set(None,);
+      set_active_tag.set(Some(tag,),);
     }
   },);
 
@@ -65,15 +63,15 @@ pub fn Filter(on_projects_change : Callback<Vec<Project,>,>,) -> impl IntoView {
             }
           }
           on:click=move |_| {
-            set_active_status.set(None,);
-            set_active_tag.set(None,);
+            set_active_status.set(None);
+            set_active_tag.set(None);
           }
         >
           "All"
         </button>
         {STATUSES
           .into_iter()
-          .map(|(key, label,)| {
+          .map(|(key, label)| {
             let key_class = key.to_string();
             let key_click = key.to_string();
             view! {
@@ -86,8 +84,8 @@ pub fn Filter(on_projects_change : Callback<Vec<Project,>,>,) -> impl IntoView {
                   }
                 }
                 on:click=move |_| {
-                  set_active_status.set(Some(key_click.clone(),),);
-                  set_active_tag.set(None,);
+                  set_active_status.set(Some(key_click.clone()));
+                  set_active_tag.set(None);
                 }
               >
                 {label}

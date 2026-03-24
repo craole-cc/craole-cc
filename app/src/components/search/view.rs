@@ -95,30 +95,56 @@ fn Results(
 ) -> impl IntoView {
   view! {
     <Suspense fallback=|| ()>
-      {move || results.get().map(|res| res.ok().map(|items| {
-        if items.is_empty() && query.get().len() >= 2 {
-          return view! {
-            <div class="spotlight__empty"><p>"No results found."</p></div>
-          }.into_any();
-        }
+      {move || {
+        results
+          .get()
+          .map(|res| {
+            res
+              .ok()
+              .map(|items| {
+                if items.is_empty() && query.get().len() >= 2 {
+                  return view! {
+                    <div class="spotlight__empty">
+                      <p>"No results found."</p>
+                    </div>
+                  }
+                    .into_any();
+                }
+                let (mut dev, mut art, mut log) = (vec![], vec![], vec![]);
+                for item in items {
+                  match item.kind {
+                    Kind::Project => dev.push(item),
+                    Kind::Art => art.push(item),
+                    Kind::Log => log.push(item),
+                  }
+                }
 
-        let (mut dev, mut art, mut log) = (vec![], vec![], vec![]);
-        for item in items {
-          match item.kind {
-            Kind::Project => dev.push(item),
-            Kind::Art    => art.push(item),
-            Kind::Log    => log.push(item),
-          }
-        }
-
-        view! {
-          <div class="spotlight__results">
-            <ResultGroup label="Dev" class="spotlight__kind--dev" items=dev set_open=set_open />
-            <ResultGroup label="Art" class="spotlight__kind--art" items=art set_open=set_open />
-            <ResultGroup label="Log" class="spotlight__kind--log" items=log set_open=set_open />
-          </div>
-        }.into_any()
-      }))}
+                view! {
+                  <div class="spotlight__results">
+                    <ResultGroup
+                      label="Dev"
+                      class="spotlight__kind--dev"
+                      items=dev
+                      set_open=set_open
+                    />
+                    <ResultGroup
+                      label="Art"
+                      class="spotlight__kind--art"
+                      items=art
+                      set_open=set_open
+                    />
+                    <ResultGroup
+                      label="Log"
+                      class="spotlight__kind--log"
+                      items=log
+                      set_open=set_open
+                    />
+                  </div>
+                }
+                  .into_any()
+              })
+          })
+      }}
     </Suspense>
   }
 }
@@ -164,21 +190,22 @@ pub fn Search() -> impl IntoView {
     <Show when=move || open.get()>
       <div class="spotlight__backdrop" on:click=move |_| set_open.set(false) />
       <div class="spotlight" role="dialog" aria-label="Site search">
-        <Field
-          placeholder=placeholder()
-          query=query
-          set_query=set_query
-          input_ref=input_ref
-        />
+        <Field placeholder=placeholder() query=query set_query=set_query input_ref=input_ref />
 
-        {move || (!query.get().is_empty()).then_some(()).is_none().then(||
-          context_tags
-            .get()
-            .and_then(|res| res.ok().flatten())
-            .map(|(label, tags)| view! {
-              <Tags tags=tags label=label page=current_path() set_open=set_open />
+        {move || {
+          (!query.get().is_empty())
+            .then_some(())
+            .is_none()
+            .then(|| {
+              context_tags
+                .get()
+                .and_then(|res| res.ok().flatten())
+                .map(|(label, tags)| {
+                  view! { <Tags tags=tags label=label page=current_path() set_open=set_open /> }
+                })
             })
-        ).flatten()}
+            .flatten()
+        }}
 
         <Results query=query results=results set_open=set_open />
       </div>

@@ -38,7 +38,7 @@ fn TagFilters(
       {tags
         .into_iter()
         .enumerate()
-        .map(|(i, tag,)| {
+        .map(|(i, tag)| {
           let tag_class = tag.clone();
           let tag_click = tag.clone();
           view! {
@@ -46,38 +46,37 @@ fn TagFilters(
               class=move || {
                 let hidden = !expanded.get() && i >= VISIBLE_TAG_LIMIT;
                 let active = active_tags.get().contains(&tag_class);
-                match (active, hidden,) {
-                  | (true, false,) => "art-filter__tag art-filter__tag--active",
-                  | (false, false,) => "art-filter__tag",
-                  | (true, true,) => "art-filter__tag art-filter__tag--active art-filter__tag--hidden",
-                  | (false, true,) => "art-filter__tag art-filter__tag--hidden",
+                match (active, hidden) {
+                  (true, false) => "art-filter__tag art-filter__tag--active",
+                  (false, false) => "art-filter__tag",
+                  (true, true) => "art-filter__tag art-filter__tag--active art-filter__tag--hidden",
+                  (false, true) => "art-filter__tag art-filter__tag--hidden",
                 }
               }
               on:click=move |_| {
                 let mut current = active_tags.get();
-                if let Some(pos,) = current.iter().position(|t| t == &tag_click) {
-                  current.remove(pos,);
+                if let Some(pos) = current.iter().position(|t| t == &tag_click) {
+                  current.remove(pos);
                 } else {
-                  current.push(tag_click.clone(),);
+                  current.push(tag_click.clone());
                 }
-                set_active_tags.set(current,);
+                set_active_tags.set(current);
               }
             >
-              {tag.clone()}
+              {tag}
             </button>
           }
         })
         .collect_view()}
 
       {if needs_toggle {
-        Some(view! {
-          <button
-            class="art-filter__toggle"
-            on:click=move |_| set_expanded.update(|v| *v = !*v)
-          >
-            {move || if expanded.get() { "Show less" } else { "Show more" }}
-          </button>
-        })
+        Some(
+          view! {
+            <button class="art-filter__toggle" on:click=move |_| set_expanded.update(|v| *v = !*v)>
+              {move || if expanded.get() { "Show less" } else { "Show more" }}
+            </button>
+          },
+        )
       } else {
         None
       }}
@@ -132,17 +131,17 @@ pub fn Filter(on_media_change : Callback<Vec<Media,>,>,) -> impl IntoView {
     <div class="art-filter readable">
       <Suspense fallback=|| ()>
         {move || {
-          tags.get().map(|res| {
-            res.ok().map(|t| {
-              view! {
-                <TagFilters
-                  tags=t
-                  active_tags=active_tags
-                  set_active_tags=set_active_tags
-                />
-              }
+          tags
+            .get()
+            .map(|res| {
+              res
+                .ok()
+                .map(|t| {
+                  view! {
+                    <TagFilters tags=t active_tags=active_tags set_active_tags=set_active_tags />
+                  }
+                })
             })
-          })
         }}
       </Suspense>
     </div>

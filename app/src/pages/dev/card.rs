@@ -21,7 +21,8 @@ fn status_label(status : &str,) -> &'static str {
 }
 
 #[component]
-pub fn Card(#[allow(clippy::needless_pass_by_value)] project : Project,) -> impl IntoView {
+#[allow(clippy::needless_pass_by_value)]
+pub fn Card(project : Project,) -> impl IntoView {
   let href = format!("/dev/{}", project.slug);
 
   view! {
@@ -48,9 +49,7 @@ pub fn Card(#[allow(clippy::needless_pass_by_value)] project : Project,) -> impl
               {project
                 .tags
                 .iter()
-                .map(|tag| {
-                  view! { <li class="dev-card__tag">{tag.clone()}</li> }
-                })
+                .map(|tag| view! { <li class="dev-card__tag">{tag.clone()}</li> })
                 .collect_view()}
             </ul>
           },

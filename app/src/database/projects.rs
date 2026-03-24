@@ -1,4 +1,11 @@
-use super::_prelude::*;
+use {
+  super::_prelude::*,
+  pulldown_cmark::{
+    Options,
+    Parser,
+    html,
+  },
+};
 
 // ── Public models ───────────────────────────────────────────────────────────
 
@@ -49,7 +56,7 @@ fn split_tags(raw : &str,) -> Vec<String,> {
 // but all rows are populated by the migration. Default to empty string
 // for safety.
 #[cfg(feature = "ssr")]
-#[derive(sqlx::FromRow,)]
+#[derive(FromRow,)]
 struct ProjectRow {
   id :          i64,
   title :       String,
@@ -62,6 +69,12 @@ struct ProjectRow {
   sort_order :  i64,
   created_at :  String,
   tags :        String,
+}
+
+#[cfg(feature = "ssr")]
+#[derive(FromRow,)]
+struct TagRow {
+  tag : String,
 }
 
 #[cfg(feature = "ssr")]
@@ -119,10 +132,6 @@ pub async fn get_project_by_id(id : i64,) -> Result<Option<Project,>, ServerFnEr
 /// Distinct tags across all published projects.
 #[server(ListProjectTags)]
 pub async fn list_project_tags() -> Result<Vec<String,>, ServerFnError,> {
-  #[derive(FromRow,)]
-  struct TagRow {
-    tag : String,
-  }
   let pool = expect_context::<SqlitePool,>();
   let rows = query_file_as!(TagRow, "sql/projects/list_tags.sql")
     .fetch_all(&pool,)
@@ -275,12 +284,6 @@ async fn fetch_github_readme(repo_url : &str,) -> Option<String,> {
   }
 
   let md = resp.text().await.ok()?;
-
-  use pulldown_cmark::{
-    Options,
-    Parser,
-    html,
-  };
 
   let mut opts = Options::empty();
   opts.insert(Options::ENABLE_TABLES,);
