@@ -38,8 +38,8 @@ fn TechSection(icons : Vec<Icon,>,) -> impl IntoView {
             let brand_style = icon
               .class()
               .split_whitespace()
-              .find(|c| c.starts_with("brand-"),)
-              .map(|c| format!("--badge-brand:var(--{c})"),)
+              .find(|c| c.starts_with("brand-"))
+              .map(|c| format!("--badge-brand:var(--{c})"))
               .unwrap_or_default();
             view! {
               <li>
@@ -71,12 +71,7 @@ fn Links(repo_url : Option<String,>, live_url : Option<String,>,) -> impl IntoVi
       {repo_url
         .map(|url| {
           view! {
-            <a
-              href=url
-              target="_blank"
-              rel="noopener noreferrer"
-              class="dev-detail__link"
-            >
+            <a href=url target="_blank" rel="noopener noreferrer" class="dev-detail__link">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -152,15 +147,18 @@ fn Content(p : ProjectDetail,) -> impl IntoView {
   view! {
     <article class="dev-detail readable">
       <nav class="dev-detail__nav" aria-label="Breadcrumb">
-        <a class="dev-detail__back" href="/dev">"← Dev"</a>
+        <a class="dev-detail__back" href="/dev">
+          "← Dev"
+        </a>
       </nav>
 
       <header class="dev-detail__header">
         <div class="dev-detail__title-row">
           <h1 class="dev-detail__title">{p.title.clone()}</h1>
-          <span class=format!("dev-detail__status {}", status_class(&p.status),)>
-            {status_label(&p.status)}
-          </span>
+          <span class=format!(
+            "dev-detail__status {}",
+            status_class(&p.status),
+          )>{status_label(&p.status)}</span>
         </div>
         <p class="dev-detail__desc">{p.description.clone()}</p>
       </header>
@@ -169,17 +167,21 @@ fn Content(p : ProjectDetail,) -> impl IntoView {
       <Links repo_url=p.repo_url live_url=p.live_url />
       <Screenshots shots=p.screenshots />
 
-      {p.readme_html.map(|html| {
-        view! {
-          <section class="dev-detail__readme">
-            <h2 class="dev-detail__section-title">"README"</h2>
-            <div class="dev-detail__readme-body markdown" inner_html=html />
-          </section>
-        }
-      })}
+      {p
+        .readme_html
+        .map(|html| {
+          view! {
+            <section class="dev-detail__readme">
+              <h2 class="dev-detail__section-title">"README"</h2>
+              <div class="dev-detail__readme-body markdown" inner_html=html />
+            </section>
+          }
+        })}
 
       <footer class="dev-detail__footer">
-        <a class="dev-detail__back" href="/dev">"← Back to Dev"</a>
+        <a class="dev-detail__back" href="/dev">
+          "← Back to Dev"
+        </a>
       </footer>
     </article>
   }
@@ -202,30 +204,36 @@ pub fn Detail() -> impl IntoView {
   view! {
     <Suspense fallback=move || {
       view! {
-        <p class="dev-loading readable" aria-busy="true">"Loading project…"</p>
+        <p class="dev-loading readable" aria-busy="true">
+          "Loading project…"
+        </p>
       }
-      .into_any()
+        .into_any()
     }>
       {move || {
         project
           .get()
           .map(|res| match res {
-            Ok(Some(p,),) => view! { <Content p /> }.into_any(),
-            Ok(None,) => view! {
-              <div class="dev-empty readable">
-                <h2>"Project not found."</h2>
-                <a href="/dev">"← Back to Dev"</a>
-              </div>
+            Ok(Some(p)) => view! { <Content p /> }.into_any(),
+            Ok(None) => {
+              view! {
+                <div class="dev-empty readable">
+                  <h2>"Project not found."</h2>
+                  <a href="/dev">"← Back to Dev"</a>
+                </div>
+              }
+                .into_any()
             }
-            .into_any(),
-            Err(e,) => view! {
-              <div class="dev-empty readable">
-                <h2>"Something went wrong."</h2>
-                <p>{e.to_string()}</p>
-              </div>
+            Err(e) => {
+              view! {
+                <div class="dev-empty readable">
+                  <h2>"Something went wrong."</h2>
+                  <p>{e.to_string()}</p>
+                </div>
+              }
+                .into_any()
             }
-            .into_any(),
-          },)
+          })
           .into_any()
       }}
     </Suspense>

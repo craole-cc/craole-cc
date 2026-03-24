@@ -4,14 +4,9 @@ use super::_prelude::*;
 //║ Ansible                                                   ║
 //╚═══════════════════════════════════════════════════════════╝
 pub mod ansible {
-  use super::{
-    Icon,
-    Variant,
-    icon,
-  };
+  use super::{Icon, Variant, icon,};
 
   pub struct Ansible(pub Variant,);
-
   impl Ansible {
     #[must_use]
     pub fn get(self,) -> Icon {
@@ -24,6 +19,8 @@ pub mod ansible {
     }
   }
 
+  pub const TAGS : &[&str] = &["Ansible", "ansible"];
+
   const fn base() -> Icon {
     Icon::new_local("icons/logos/ansible.svg",)
       .with_link("https://docs.ansible.com/",)
@@ -31,39 +28,19 @@ pub mod ansible {
       .with_label("Ansible",)
   }
 
-  #[must_use]
-  pub const fn local() -> Icon { base() }
-
-  #[must_use]
-  pub fn filled() -> Icon {
-    base()
-      .via_leptos(icon::SiAnsible,)
-      .colored("brand-ansible",)
-  }
-
-  #[must_use]
-  pub fn outlined() -> Icon {
-    base()
-      .via_leptos(icon::TbBrandAnsibleOutline,)
-      .colored("brand-ansible",)
-  }
-
-  #[must_use]
-  pub const fn default() -> Icon { local() }
+  #[must_use] pub const fn local() -> Icon { base() }
+  #[must_use] pub fn filled() -> Icon { base().via_leptos(icon::SiAnsible,).colored("brand-ansible",) }
+  #[must_use] pub fn outlined() -> Icon { base().via_leptos(icon::TbBrandAnsibleOutline,).colored("brand-ansible",) }
+  #[must_use] pub fn default() -> Icon { filled() }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
 //║ Docker                                                    ║
 //╚═══════════════════════════════════════════════════════════╝
 pub mod docker {
-  use super::{
-    Icon,
-    Variant,
-    icon,
-  };
+  use super::{Icon, Variant, icon,};
 
   pub struct Docker(pub Variant,);
-
   impl Docker {
     #[must_use]
     pub fn get(self,) -> Icon {
@@ -77,7 +54,6 @@ pub mod docker {
   }
 
   pub struct DockerExt(pub Extended,);
-
   impl DockerExt {
     #[must_use]
     pub fn get(self,) -> Icon {
@@ -86,11 +62,10 @@ pub mod docker {
       }
     }
   }
-
   #[derive(Clone, Copy, PartialEq, Eq, Hash,)]
-  pub enum Extended {
-    SiSimple,
-  }
+  pub enum Extended { SiSimple, }
+
+  pub const TAGS : &[&str] = &["Docker", "docker"];
 
   const fn base() -> Icon {
     Icon::new_local("icons/logos/docker.svg",)
@@ -99,38 +74,20 @@ pub mod docker {
       .with_label("Docker",)
   }
 
-  #[must_use]
-  pub const fn local() -> Icon { base() }
-
-  #[must_use]
-  pub fn filled() -> Icon {
-    base()
-      .via_leptos(icon::FaDockerBrands,)
-      .colored("brand-docker",)
-  }
-
-  #[must_use]
-  pub fn outlined() -> Icon { filled() }
-
-  #[must_use]
-  pub fn si_simple() -> Icon { base().via_leptos(icon::SiDocker,).colored("brand-docker",) }
-
-  #[must_use]
-  pub const fn default() -> Icon { local() }
+  #[must_use] pub const fn local() -> Icon { base() }
+  #[must_use] pub fn filled() -> Icon { base().via_leptos(icon::FaDockerBrands,).colored("brand-docker",) }
+  #[must_use] pub fn outlined() -> Icon { filled() }
+  #[must_use] pub fn si_simple() -> Icon { base().via_leptos(icon::SiDocker,).colored("brand-docker",) }
+  #[must_use] pub fn default() -> Icon { filled() }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
 //║ Git                                                       ║
 //╚═══════════════════════════════════════════════════════════╝
 pub mod git {
-  use super::{
-    Icon,
-    Variant,
-    icon,
-  };
+  use super::{Icon, Variant, icon,};
 
   pub struct Git(pub Variant,);
-
   impl Git {
     #[must_use]
     pub fn get(self,) -> Icon {
@@ -144,7 +101,6 @@ pub mod git {
   }
 
   pub struct GitExt(pub Extended,);
-
   impl GitExt {
     #[must_use]
     pub fn get(self,) -> Icon {
@@ -154,12 +110,10 @@ pub mod git {
       }
     }
   }
-
   #[derive(Clone, Copy, PartialEq, Eq, Hash,)]
-  pub enum Extended {
-    FaBrands,
-    FaSquare,
-  }
+  pub enum Extended { FaBrands, FaSquare, }
+
+  pub const TAGS : &[&str] = &["Git", "git"];
 
   const fn base() -> Icon {
     Icon::new_local("icons/logos/git.svg",)
@@ -168,45 +122,21 @@ pub mod git {
       .with_label("Git",)
   }
 
-  #[must_use]
-  pub const fn local() -> Icon { base() }
-
-  #[must_use]
-  pub fn filled() -> Icon { base().via_leptos(icon::BiGit,).colored("brand-git",) }
-
-  #[must_use]
-  pub fn outlined() -> Icon {
-    base()
-      .via_leptos(icon::RiGitMergeDevelopmentLine,)
-      .colored("brand-git",)
-  }
-
-  #[must_use]
-  pub fn fa_brands() -> Icon { base().via_leptos(icon::FaGitBrands,).colored("brand-git",) }
-
-  #[must_use]
-  pub fn fa_square() -> Icon {
-    base()
-      .via_leptos(icon::FaSquareGitBrands,)
-      .colored("brand-git",)
-  }
-
-  #[must_use]
-  pub const fn default() -> Icon { local() }
+  #[must_use] pub const fn local() -> Icon { base() }
+  #[must_use] pub fn filled() -> Icon { base().via_leptos(icon::BiGit,).colored("brand-git",) }
+  #[must_use] pub fn outlined() -> Icon { base().via_leptos(icon::RiGitMergeDevelopmentLine,).colored("brand-git",) }
+  #[must_use] pub fn fa_brands() -> Icon { base().via_leptos(icon::FaGitBrands,).colored("brand-git",) }
+  #[must_use] pub fn fa_square() -> Icon { base().via_leptos(icon::FaSquareGitBrands,).colored("brand-git",) }
+  #[must_use] pub fn default() -> Icon { filled() }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
 //║ GitHub                                                    ║
 //╚═══════════════════════════════════════════════════════════╝
 pub mod github {
-  use super::{
-    Icon,
-    Variant,
-    icon,
-  };
+  use super::{Icon, Variant, icon,};
 
   pub struct GitHub(pub Variant,);
-
   impl GitHub {
     #[must_use]
     pub fn get(self,) -> Icon {
@@ -219,7 +149,6 @@ pub mod github {
   }
 
   pub struct GitHubExt(pub Extended,);
-
   impl GitHubExt {
     #[must_use]
     pub fn get(self,) -> Icon {
@@ -229,12 +158,10 @@ pub mod github {
       }
     }
   }
-
   #[derive(Clone, Copy, PartialEq, Eq, Hash,)]
-  pub enum Extended {
-    FaBrands,
-    FaSquare,
-  }
+  pub enum Extended { FaBrands, FaSquare, }
+
+  pub const TAGS : &[&str] = &["GitHub", "github"];
 
   const fn base() -> Icon {
     Icon::new()
@@ -243,53 +170,21 @@ pub mod github {
       .with_label("GitHub",)
   }
 
-  #[must_use]
-  pub const fn local() -> Icon { base().via_local("icons/logos/github-refined.svg",) }
-
-  #[must_use]
-  pub fn filled() -> Icon {
-    base()
-      .via_leptos(icon::RiGithubLogosFill,)
-      .colored("brand-github",)
-  }
-
-  #[must_use]
-  pub fn outlined() -> Icon {
-    base()
-      .via_leptos(icon::RiGithubLogosLine,)
-      .colored("brand-github",)
-  }
-
-  #[must_use]
-  pub fn fa_brands() -> Icon {
-    base()
-      .via_leptos(icon::FaGithubBrands,)
-      .colored("brand-github",)
-  }
-
-  #[must_use]
-  pub fn fa_square() -> Icon {
-    base()
-      .via_leptos(icon::FaSquareGithubBrands,)
-      .colored("brand-github",)
-  }
-
-  #[must_use]
-  pub fn default() -> Icon { filled() }
+  #[must_use] pub const fn local() -> Icon { base().via_local("icons/logos/github-refined.svg",) }
+  #[must_use] pub fn filled() -> Icon { base().via_leptos(icon::RiGithubLogosFill,).colored("brand-github",) }
+  #[must_use] pub fn outlined() -> Icon { base().via_leptos(icon::RiGithubLogosLine,).colored("brand-github",) }
+  #[must_use] pub fn fa_brands() -> Icon { base().via_leptos(icon::FaGithubBrands,).colored("brand-github",) }
+  #[must_use] pub fn fa_square() -> Icon { base().via_leptos(icon::FaSquareGithubBrands,).colored("brand-github",) }
+  #[must_use] pub fn default() -> Icon { filled() }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
 //║ GitLab                                                    ║
 //╚═══════════════════════════════════════════════════════════╝
 pub mod gitlab {
-  use super::{
-    Icon,
-    Variant,
-    icon,
-  };
+  use super::{Icon, Variant, icon,};
 
   pub struct GitLab(pub Variant,);
-
   impl GitLab {
     #[must_use]
     pub fn get(self,) -> Icon {
@@ -303,15 +198,6 @@ pub mod gitlab {
   }
 
   pub struct GitLabExt(pub Extended,);
-
-  #[derive(Clone, Copy, PartialEq, Eq, Hash,)]
-  pub enum Extended {
-    AiFilled,
-    AiOutlined,
-    FaBrands,
-    FaSquare,
-  }
-
   impl GitLabExt {
     #[must_use]
     pub fn get(self,) -> Icon {
@@ -323,6 +209,10 @@ pub mod gitlab {
       }
     }
   }
+  #[derive(Clone, Copy, PartialEq, Eq, Hash,)]
+  pub enum Extended { AiFilled, AiOutlined, FaBrands, FaSquare, }
+
+  pub const TAGS : &[&str] = &["GitLab", "gitlab"];
 
   const fn base() -> Icon {
     Icon::new_local("icons/logos/gitlab.svg",)
@@ -331,67 +221,23 @@ pub mod gitlab {
       .with_label("GitLab",)
   }
 
-  #[must_use]
-  pub const fn local() -> Icon { base() }
-
-  #[must_use]
-  pub fn filled() -> Icon {
-    base()
-      .via_leptos(icon::RiGitlabLogosFill,)
-      .colored("brand-gitlab",)
-  }
-
-  #[must_use]
-  pub fn outlined() -> Icon {
-    base()
-      .via_leptos(icon::RiGitlabLogosLine,)
-      .colored("brand-gitlab",)
-  }
-
-  #[must_use]
-  pub fn ai_filled() -> Icon {
-    base()
-      .via_leptos(icon::AiGitlabFilled,)
-      .colored("brand-gitlab",)
-  }
-
-  #[must_use]
-  pub fn ai_outlined() -> Icon {
-    base()
-      .via_leptos(icon::AiGitlabOutlined,)
-      .colored("brand-gitlab",)
-  }
-
-  #[must_use]
-  pub fn fa_brands() -> Icon {
-    base()
-      .via_leptos(icon::FaGitlabBrands,)
-      .colored("brand-gitlab",)
-  }
-
-  #[must_use]
-  pub fn fa_square() -> Icon {
-    base()
-      .via_leptos(icon::FaSquareGitlabBrands,)
-      .colored("brand-gitlab",)
-  }
-
-  #[must_use]
-  pub const fn default() -> Icon { local() }
+  #[must_use] pub const fn local() -> Icon { base() }
+  #[must_use] pub fn filled() -> Icon { base().via_leptos(icon::RiGitlabLogosFill,).colored("brand-gitlab",) }
+  #[must_use] pub fn outlined() -> Icon { base().via_leptos(icon::RiGitlabLogosLine,).colored("brand-gitlab",) }
+  #[must_use] pub fn ai_filled() -> Icon { base().via_leptos(icon::AiGitlabFilled,).colored("brand-gitlab",) }
+  #[must_use] pub fn ai_outlined() -> Icon { base().via_leptos(icon::AiGitlabOutlined,).colored("brand-gitlab",) }
+  #[must_use] pub fn fa_brands() -> Icon { base().via_leptos(icon::FaGitlabBrands,).colored("brand-gitlab",) }
+  #[must_use] pub fn fa_square() -> Icon { base().via_leptos(icon::FaSquareGitlabBrands,).colored("brand-gitlab",) }
+  #[must_use] pub fn default() -> Icon { filled() }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
 //║ Kubernetes                                                ║
 //╚═══════════════════════════════════════════════════════════╝
 pub mod kubernetes {
-  use super::{
-    Icon,
-    Variant,
-    icon,
-  };
+  use super::{Icon, Variant, icon,};
 
   pub struct Kubernetes(pub Variant,);
-
   impl Kubernetes {
     #[must_use]
     pub fn get(self,) -> Icon {
@@ -404,6 +250,8 @@ pub mod kubernetes {
     }
   }
 
+  pub const TAGS : &[&str] = &["Kubernetes", "kubernetes", "k8s"];
+
   const fn base() -> Icon {
     Icon::new_local("icons/logos/kubernetes.svg",)
       .with_link("https://kubernetes.io/",)
@@ -411,39 +259,19 @@ pub mod kubernetes {
       .with_label("Kubernetes",)
   }
 
-  #[must_use]
-  pub const fn local() -> Icon { base() }
-
-  #[must_use]
-  pub fn filled() -> Icon {
-    base()
-      .via_leptos(icon::SiKubernetes,)
-      .colored("brand-kubernetes",)
-  }
-
-  #[must_use]
-  pub fn outlined() -> Icon {
-    base()
-      .via_leptos(icon::AiKubernetesOutlined,)
-      .colored("brand-kubernetes",)
-  }
-
-  #[must_use]
-  pub const fn default() -> Icon { local() }
+  #[must_use] pub const fn local() -> Icon { base() }
+  #[must_use] pub fn filled() -> Icon { base().via_leptos(icon::SiKubernetes,).colored("brand-kubernetes",) }
+  #[must_use] pub fn outlined() -> Icon { base().via_leptos(icon::AiKubernetesOutlined,).colored("brand-kubernetes",) }
+  #[must_use] pub fn default() -> Icon { filled() }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
 //║ Linux                                                     ║
 //╚═══════════════════════════════════════════════════════════╝
 pub mod linux {
-  use super::{
-    Icon,
-    Variant,
-    icon,
-  };
+  use super::{Icon, Variant, icon,};
 
   pub struct Linux(pub Variant,);
-
   impl Linux {
     #[must_use]
     pub fn get(self,) -> Icon {
@@ -456,7 +284,6 @@ pub mod linux {
   }
 
   pub struct LinuxExt(pub Extended,);
-
   impl LinuxExt {
     #[must_use]
     pub fn get(self,) -> Icon {
@@ -465,11 +292,10 @@ pub mod linux {
       }
     }
   }
-
   #[derive(Clone, Copy, PartialEq, Eq, Hash,)]
-  pub enum Extended {
-    SiSimple,
-  }
+  pub enum Extended { SiSimple, }
+
+  pub const TAGS : &[&str] = &["Linux", "linux"];
 
   const fn base() -> Icon {
     Icon::new_local("icons/logos/linux.svg",)
@@ -478,38 +304,20 @@ pub mod linux {
       .with_label("Linux",)
   }
 
-  #[must_use]
-  pub const fn local() -> Icon { base() }
-
-  #[must_use]
-  pub fn filled() -> Icon {
-    base()
-      .via_leptos(icon::FaLinuxBrands,)
-      .colored("brand-linux",)
-  }
-
-  #[must_use]
-  pub fn outlined() -> Icon { filled() }
-
-  #[must_use]
-  pub fn si_simple() -> Icon { base().via_leptos(icon::SiLinux,).colored("brand-linux",) }
-
-  #[must_use]
-  pub const fn default() -> Icon { local() }
+  #[must_use] pub const fn local() -> Icon { base() }
+  #[must_use] pub fn filled() -> Icon { base().via_leptos(icon::FaLinuxBrands,).colored("brand-linux",) }
+  #[must_use] pub fn outlined() -> Icon { filled() }
+  #[must_use] pub fn si_simple() -> Icon { base().via_leptos(icon::SiLinux,).colored("brand-linux",) }
+  #[must_use] pub fn default() -> Icon { filled() }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
 //║ Nix                                                       ║
 //╚═══════════════════════════════════════════════════════════╝
 pub mod nix {
-  use super::{
-    Icon,
-    Variant,
-    icon,
-  };
+  use super::{Icon, Variant, icon,};
 
   pub struct Nix(pub Variant,);
-
   impl Nix {
     #[must_use]
     pub fn get(self,) -> Icon {
@@ -521,6 +329,8 @@ pub mod nix {
     }
   }
 
+  pub const TAGS : &[&str] = &["Nix", "nix", "NixOS", "nixos"];
+
   const fn base() -> Icon {
     Icon::new_local("icons/logos/nix.svg",)
       .with_link("https://nix.dev/",)
@@ -528,31 +338,19 @@ pub mod nix {
       .with_label("Nix",)
   }
 
-  #[must_use]
-  pub const fn local() -> Icon { base() }
-
-  #[must_use]
-  pub fn filled() -> Icon { base().via_leptos(icon::SiNixos,).colored("brand-nix",) }
-
-  #[must_use]
-  pub fn outlined() -> Icon { filled() }
-
-  #[must_use]
-  pub const fn default() -> Icon { local() }
+  #[must_use] pub const fn local() -> Icon { base() }
+  #[must_use] pub fn filled() -> Icon { base().via_leptos(icon::SiNixos,).colored("brand-nix",) }
+  #[must_use] pub fn outlined() -> Icon { filled() }
+  #[must_use] pub fn default() -> Icon { filled() }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
 //║ Raspberry Pi                                              ║
 //╚═══════════════════════════════════════════════════════════╝
 pub mod raspberry_pi {
-  use super::{
-    Icon,
-    Variant,
-    icon,
-  };
+  use super::{Icon, Variant, icon,};
 
   pub struct RaspberryPi(pub Variant,);
-
   impl RaspberryPi {
     #[must_use]
     pub fn get(self,) -> Icon {
@@ -564,6 +362,8 @@ pub mod raspberry_pi {
     }
   }
 
+  pub const TAGS : &[&str] = &["Raspberry Pi", "raspberry-pi", "RaspberryPi", "raspberrypi"];
+
   const fn base() -> Icon {
     Icon::new_local("icons/logos/raspberry.svg",)
       .with_link("https://www.raspberrypi.org/",)
@@ -571,35 +371,19 @@ pub mod raspberry_pi {
       .with_label("Raspberry Pi",)
   }
 
-  #[must_use]
-  pub const fn local() -> Icon { base() }
-
-  #[must_use]
-  pub fn filled() -> Icon {
-    base()
-      .via_leptos(icon::FaRaspberryPiBrands,)
-      .colored("brand-raspberry",)
-  }
-
-  #[must_use]
-  pub fn outlined() -> Icon { filled() }
-
-  #[must_use]
-  pub const fn default() -> Icon { local() }
+  #[must_use] pub const fn local() -> Icon { base() }
+  #[must_use] pub fn filled() -> Icon { base().via_leptos(icon::FaRaspberryPiBrands,).colored("brand-raspberry",) }
+  #[must_use] pub fn outlined() -> Icon { filled() }
+  #[must_use] pub fn default() -> Icon { filled() }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
 //║ Terraform                                                 ║
 //╚═══════════════════════════════════════════════════════════╝
 pub mod terraform {
-  use super::{
-    Icon,
-    Variant,
-    icon,
-  };
+  use super::{Icon, Variant, icon,};
 
   pub struct Terraform(pub Variant,);
-
   impl Terraform {
     #[must_use]
     pub fn get(self,) -> Icon {
@@ -612,6 +396,8 @@ pub mod terraform {
     }
   }
 
+  pub const TAGS : &[&str] = &["Terraform", "terraform"];
+
   const fn base() -> Icon {
     Icon::new_local("icons/logos/terraform.svg",)
       .with_link("https://www.terraform.io/",)
@@ -619,39 +405,19 @@ pub mod terraform {
       .with_label("Terraform",)
   }
 
-  #[must_use]
-  pub const fn local() -> Icon { base() }
-
-  #[must_use]
-  pub fn filled() -> Icon {
-    base()
-      .via_leptos(icon::SiTerraform,)
-      .colored("brand-terraform",)
-  }
-
-  #[must_use]
-  pub fn outlined() -> Icon {
-    base()
-      .via_leptos(icon::TbBrandTerraformOutline,)
-      .colored("brand-terraform",)
-  }
-
-  #[must_use]
-  pub const fn default() -> Icon { local() }
+  #[must_use] pub const fn local() -> Icon { base() }
+  #[must_use] pub fn filled() -> Icon { base().via_leptos(icon::SiTerraform,).colored("brand-terraform",) }
+  #[must_use] pub fn outlined() -> Icon { base().via_leptos(icon::TbBrandTerraformOutline,).colored("brand-terraform",) }
+  #[must_use] pub fn default() -> Icon { filled() }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
 //║ Windows                                                   ║
 //╚═══════════════════════════════════════════════════════════╝
 pub mod windows {
-  use super::{
-    Icon,
-    Variant,
-    icon,
-  };
+  use super::{Icon, Variant, icon,};
 
   pub struct Windows(pub Variant,);
-
   impl Windows {
     #[must_use]
     pub fn get(self,) -> Icon {
@@ -665,7 +431,6 @@ pub mod windows {
   }
 
   pub struct WindowsExt(pub Extended,);
-
   impl WindowsExt {
     #[must_use]
     pub fn get(self,) -> Icon {
@@ -674,12 +439,10 @@ pub mod windows {
       }
     }
   }
-
   #[derive(Clone, Copy, PartialEq, Eq, Hash,)]
-  pub enum Extended {
-    FaBrands,
-    FaSquare,
-  }
+  pub enum Extended { FaBrands, FaSquare, }
+
+  pub const TAGS : &[&str] = &["Windows", "windows"];
 
   const fn base() -> Icon {
     Icon::new()
@@ -688,30 +451,9 @@ pub mod windows {
       .with_label("Windows",)
   }
 
-  #[must_use]
-  pub const fn local() -> Icon { base().via_local("icons/logos/windows.svg",) }
-
-  #[must_use]
-  pub fn filled() -> Icon {
-    base()
-      .via_leptos(icon::RiWindowsLogosFill,)
-      .colored("brand-windows",)
-  }
-
-  #[must_use]
-  pub fn outlined() -> Icon {
-    base()
-      .via_leptos(icon::RiWindowsLogosLine,)
-      .colored("brand-windows",)
-  }
-
-  #[must_use]
-  pub fn fa_brands() -> Icon {
-    base()
-      .via_leptos(icon::FaWindowsBrands,)
-      .colored("brand-windows",)
-  }
-
-  #[must_use]
-  pub const fn default() -> Icon { local() }
+  #[must_use] pub const fn local() -> Icon { base().via_local("icons/logos/windows.svg",) }
+  #[must_use] pub fn filled() -> Icon { base().via_leptos(icon::RiWindowsLogosFill,).colored("brand-windows",) }
+  #[must_use] pub fn outlined() -> Icon { base().via_leptos(icon::RiWindowsLogosLine,).colored("brand-windows",) }
+  #[must_use] pub fn fa_brands() -> Icon { base().via_leptos(icon::FaWindowsBrands,).colored("brand-windows",) }
+  #[must_use] pub fn default() -> Icon { filled() }
 }

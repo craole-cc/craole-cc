@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "-- Single published project by id.\nSELECT p.id          AS id,\n       p.title       AS title,\n       p.slug        AS slug,\n       p.description AS description,\n       p.status      AS status,\n       p.repo_url    AS repo_url,\n       p.live_url    AS live_url,\n       p.featured    AS featured,\n       p.sort_order  AS sort_order,\n       p.created_at  AS created_at,\n       COALESCE(GROUP_CONCAT(pt.tag, ','), '') AS tags\nFROM projects p\n  LEFT JOIN project_tags pt ON pt.project_id = p.id\nWHERE p.id = $1\n  AND p.published = 1\nGROUP BY p.id;\n",
+  "query": "SELECT\n  p.id,\n  p.title,\n  p.slug,\n  p.description,\n  p.status,\n  p.repo_url,\n  p.live_url,\n  p.featured,\n  p.sort_order,\n  p.created_at,\n  p.readme_html,\n  p.screenshots\nFROM projects p\nWHERE p.published = 1 AND p.slug = $1\n",
   "describe": {
     "columns": [
       {
@@ -54,8 +54,13 @@
         "type_info": "Text"
       },
       {
-        "name": "tags",
+        "name": "readme_html",
         "ordinal": 10,
+        "type_info": "Text"
+      },
+      {
+        "name": "screenshots",
+        "ordinal": 11,
         "type_info": "Text"
       }
     ],
@@ -63,7 +68,7 @@
       "Right": 1
     },
     "nullable": [
-      false,
+      true,
       false,
       true,
       false,
@@ -73,8 +78,9 @@
       false,
       false,
       false,
-      false
+      true,
+      true
     ]
   },
-  "hash": "06831499c23f64342c9c37b923014d7a3267d8285fcd2c411c8b6217f43d7c13"
+  "hash": "f3522016da95ae36c280542db77c4718ee0a261f95da1dc7e92c9c2a39ff1a94"
 }

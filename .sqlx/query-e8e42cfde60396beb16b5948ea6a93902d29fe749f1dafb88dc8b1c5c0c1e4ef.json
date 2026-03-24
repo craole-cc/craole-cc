@@ -1,0 +1,20 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT tag FROM project_tags WHERE project_id = $1 ORDER BY tag ASC\n",
+  "describe": {
+    "columns": [
+      {
+        "name": "tag",
+        "ordinal": 0,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "e8e42cfde60396beb16b5948ea6a93902d29fe749f1dafb88dc8b1c5c0c1e4ef"
+}

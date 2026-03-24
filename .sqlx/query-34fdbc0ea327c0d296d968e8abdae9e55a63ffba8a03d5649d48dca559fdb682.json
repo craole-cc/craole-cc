@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "-- All published projects, ordered by sort_order then newest first.\n-- GROUP_CONCAT aggregates tags → one query, zero N+1.\n-- Split on ',' in Rust to rebuild Vec<String>.\nSELECT p.id          AS id,\n       p.title       AS title,\n       p.slug        AS slug,\n       p.description AS description,\n       p.status      AS status,\n       p.repo_url    AS repo_url,\n       p.live_url    AS live_url,\n       p.featured    AS featured,\n       p.sort_order  AS sort_order,\n       p.created_at  AS created_at,\n       COALESCE(GROUP_CONCAT(pt.tag, ','), '') AS tags\nFROM projects p\n  LEFT JOIN project_tags pt ON pt.project_id = p.id\nWHERE p.published = 1\nGROUP BY p.id\nORDER BY p.sort_order ASC,\n         p.created_at DESC;\n",
+  "query": "SELECT\n  p.id,\n  p.title,\n  p.slug,\n  p.description,\n  p.status,\n  p.repo_url,\n  p.live_url,\n  p.featured,\n  p.sort_order,\n  p.created_at,\n  CAST(COALESCE(GROUP_CONCAT(pt.tag, ','), '') AS TEXT) AS tags\nFROM projects p\nLEFT JOIN project_tags pt ON pt.project_id = p.id\nWHERE p.published = 1\n  AND p.id IN (SELECT rowid FROM projects_fts WHERE projects_fts MATCH $1)\nGROUP BY p.id\nORDER BY p.sort_order ASC\n",
   "describe": {
     "columns": [
       {
@@ -60,7 +60,7 @@
       }
     ],
     "parameters": {
-      "Right": 0
+      "Right": 1
     },
     "nullable": [
       false,
@@ -76,5 +76,5 @@
       false
     ]
   },
-  "hash": "4beb2eecaf84f6dc5af870f230798d55cfd7067bf113b78943b77f422a6aaad2"
+  "hash": "34fdbc0ea327c0d296d968e8abdae9e55a63ffba8a03d5649d48dca559fdb682"
 }

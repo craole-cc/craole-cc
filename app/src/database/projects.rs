@@ -1,11 +1,4 @@
-use {
-  super::_prelude::*,
-  pulldown_cmark::{
-    Options,
-    Parser,
-    html,
-  },
-};
+use super::_prelude::*;
 
 // ── Public models ───────────────────────────────────────────────────────────
 
@@ -23,6 +16,12 @@ pub struct Project {
   pub sort_order :  i64,
   pub created_at :  String,
   pub tags :        Vec<String,>,
+}
+
+impl Project {
+  /// Derive icons from tags client-side — never crosses the wire.
+  #[must_use]
+  pub fn icons(&self,) -> Vec<Icon,> { self.tags.iter().filter_map(|t| from_tag(t,),).collect() }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize,)]
@@ -44,9 +43,8 @@ pub struct ProjectDetail {
 
 impl ProjectDetail {
   /// Derive icons from tags client-side — never crosses the wire.
-  pub fn icons(&self,) -> Vec<Icon,> {
-    self.tags.iter().filter_map(|t| icon_for_tag(t,),).collect()
-  }
+  #[must_use]
+  pub fn icons(&self,) -> Vec<Icon,> { self.tags.iter().filter_map(|t| from_tag(t,),).collect() }
 }
 
 // ── Helpers ─────────────────────────────────────────────────────────────────
@@ -78,11 +76,11 @@ struct ProjectRow {
   featured :    i64,
   sort_order :  i64,
   created_at :  String,
-  tags :        String,
+  tags :        String, // COALESCE(GROUP_CONCAT(...), '') guarantees non-null
 }
 
 #[cfg(feature = "ssr")]
-#[derive(FromRow,)]
+#[derive(sqlx::FromRow,)]
 struct TagRow {
   tag : String,
 }
@@ -198,24 +196,24 @@ pub async fn search_projects(query : String,) -> Result<Vec<Project,>, ServerFnE
 /// Fetches README from GitHub and caches it if not already stored.
 #[server(GetProjectBySlug)]
 pub async fn get_project_by_slug(slug : String,) -> Result<Option<ProjectDetail,>, ServerFnError,> {
-  #[derive(FromRow,)]
+  #[derive(sqlx::FromRow,)]
   struct DetailRow {
-    id :          i64,
+    id :          Option<i64,>,
     title :       String,
     slug :        Option<String,>,
     description : String,
     status :      String,
     repo_url :    Option<String,>,
     live_url :    Option<String,>,
-    featured :    i64,
-    sort_order :  i64,
+    featured :    Option<i64,>,
+    sort_order :  Option<i64,>,
     created_at :  String,
     readme_html : Option<String,>,
     screenshots : Option<String,>,
-    tags :        String,
   }
 
   let pool = expect_context::<SqlitePool,>();
+
   let row = query_file_as!(DetailRow, "sql/projects/get_by_slug.sql", slug)
     .fetch_optional(&pool,)
     .await
@@ -224,6 +222,14 @@ pub async fn get_project_by_slug(slug : String,) -> Result<Option<ProjectDetail,
   let Some(r,) = row else {
     return Ok(None,);
   };
+
+  let tags : Vec<String,> = query_file_as!(TagRow, "sql/projects/get_tags.sql", r.id)
+    .fetch_all(&pool,)
+    .await
+    .map_err(|e| ServerFnError::new(e.to_string(),),)?
+    .into_iter()
+    .map(|t| t.tag,)
+    .collect();
 
   let mut readme_html = r.readme_html.clone();
 
@@ -247,19 +253,19 @@ pub async fn get_project_by_slug(slug : String,) -> Result<Option<ProjectDetail,
   );
 
   Ok(Some(ProjectDetail {
-    id : r.id,
+    id : r.id.unwrap_or(0,),
     title : r.title,
     slug : r.slug.unwrap_or_default(),
     description : r.description,
     status : r.status,
     repo_url : r.repo_url,
     live_url : r.live_url,
-    featured : r.featured != 0,
-    sort_order : r.sort_order,
+    featured : r.featured.unwrap_or(0,) != 0,
+    sort_order : r.sort_order.unwrap_or(0,),
     created_at : r.created_at,
     readme_html,
     screenshots,
-    tags : split_tags(&r.tags,),
+    tags,
   },),)
 }
 
@@ -278,8 +284,8 @@ async fn fetch_github_readme(repo_url : &str,) -> Option<String,> {
   let (repo, owner,) = (parts[0], parts[1],);
   let raw_url = format!("https://raw.githubusercontent.com/{owner}/{repo}/HEAD/README.md",);
 
-  let client = reqwest::Client::builder()
-    .timeout(std::time::Duration::from_secs(10,),)
+  let client = Client::builder()
+    .timeout(Duration::from_secs(10,),)
     .build()
     .ok()?;
 

@@ -11,7 +11,6 @@ pub mod bash {
   };
 
   pub struct Bash(pub Variant,);
-
   impl Bash {
     #[must_use]
     pub fn get(self,) -> Icon {
@@ -24,6 +23,8 @@ pub mod bash {
     }
   }
 
+  pub const TAGS : &[&str] = &["Bash", "bash", "Shell", "shell", "ShellScript",];
+
   const fn base() -> Icon {
     Icon::new()
       .with_link("https://www.gnu.org/software/bash/",)
@@ -33,15 +34,12 @@ pub mod bash {
 
   #[must_use]
   pub const fn local() -> Icon { base().via_local("icons/logos/bash.svg",) }
-
   #[must_use]
   pub fn filled() -> Icon { base().via_leptos(icon::SiGnubash,).colored("brand-bash",) }
-
   #[must_use]
   pub fn outlined() -> Icon { base().via_leptos(icon::MdiBash,).colored("brand-bash",) }
-
   #[must_use]
-  pub const fn default() -> Icon { local() }
+  pub fn default() -> Icon { filled() }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
@@ -55,7 +53,6 @@ pub mod javascript {
   };
 
   pub struct JavaScript(pub Variant,);
-
   impl JavaScript {
     #[must_use]
     pub fn get(self,) -> Icon {
@@ -68,6 +65,8 @@ pub mod javascript {
     }
   }
 
+  pub const TAGS : &[&str] = &["JavaScript", "javascript", "JS", "js",];
+
   const fn base() -> Icon {
     Icon::new()
       .with_link("https://www.javascript.com/",)
@@ -77,23 +76,20 @@ pub mod javascript {
 
   #[must_use]
   pub const fn local() -> Icon { base().via_local("icons/logos/javascript.svg",) }
-
   #[must_use]
   pub fn filled() -> Icon {
     base()
       .via_leptos(icon::SiJavascript,)
       .colored("brand-javascript",)
   }
-
   #[must_use]
   pub fn outlined() -> Icon {
     base()
       .via_leptos(icon::TbBrandJavascriptOutline,)
       .colored("brand-javascript",)
   }
-
   #[must_use]
-  pub const fn default() -> Icon { local() }
+  pub fn default() -> Icon { filled() }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
@@ -107,7 +103,6 @@ pub mod nushell {
   };
 
   pub struct Nushell(pub Variant,);
-
   impl Nushell {
     #[must_use]
     pub fn get(self,) -> Icon {
@@ -119,6 +114,8 @@ pub mod nushell {
     }
   }
 
+  pub const TAGS : &[&str] = &["Nushell", "nushell", "nu",];
+
   const fn base() -> Icon {
     Icon::new()
       .with_link("https://www.nushell.sh",)
@@ -128,19 +125,16 @@ pub mod nushell {
 
   #[must_use]
   pub const fn local() -> Icon { base().via_local("icons/logos/nushell.svg",) }
-
   #[must_use]
   pub fn filled() -> Icon {
     base()
       .via_leptos(icon::SiNushell,)
       .colored("brand-nushell",)
   }
-
   #[must_use]
   pub fn outlined() -> Icon { filled() }
-
   #[must_use]
-  pub const fn default() -> Icon { local() }
+  pub fn default() -> Icon { filled() }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
@@ -154,7 +148,6 @@ pub mod posix {
   };
 
   pub struct Posix(pub Variant,);
-
   impl Posix {
     #[must_use]
     pub fn get(self,) -> Icon {
@@ -167,6 +160,8 @@ pub mod posix {
     }
   }
 
+  pub const TAGS : &[&str] = &["POSIX", "posix",];
+
   const fn base() -> Icon {
     Icon::new()
       .with_link("https://pubs.opengroup.org/onlinepubs/9799919799/",)
@@ -176,15 +171,12 @@ pub mod posix {
 
   #[must_use]
   pub const fn local() -> Icon { base().via_local("icons/logos/posix-shell.svg",) }
-
   #[must_use]
   pub fn filled() -> Icon { base().via_leptos(icon::SiGnubash,).colored("brand-posix",) }
-
   #[must_use]
   pub fn outlined() -> Icon { base().via_leptos(icon::MdiBash,).colored("brand-posix",) }
-
   #[must_use]
-  pub const fn default() -> Icon { local() }
+  pub fn default() -> Icon { filled() }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
@@ -198,7 +190,6 @@ pub mod powershell {
   };
 
   pub struct PowerShell(pub Variant,);
-
   impl PowerShell {
     #[must_use]
     pub fn get(self,) -> Icon {
@@ -211,6 +202,8 @@ pub mod powershell {
     }
   }
 
+  pub const TAGS : &[&str] = &["PowerShell", "powershell", "pwsh",];
+
   const fn base() -> Icon {
     Icon::new()
       .with_link("https://learn.microsoft.com/en-us/powershell/",)
@@ -220,23 +213,20 @@ pub mod powershell {
 
   #[must_use]
   pub const fn local() -> Icon { base().via_local("icons/logos/powershell.svg",) }
-
   #[must_use]
   pub fn filled() -> Icon {
     base()
       .via_leptos(icon::MdiPowershell,)
       .colored("brand-powershell",)
   }
-
   #[must_use]
   pub fn outlined() -> Icon {
     base()
       .via_leptos(icon::TbBrandPowershellOutline,)
       .colored("brand-powershell",)
   }
-
   #[must_use]
-  pub const fn default() -> Icon { local() }
+  pub fn default() -> Icon { filled() }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
@@ -250,7 +240,6 @@ pub mod python {
   };
 
   pub struct Python(pub Variant,);
-
   impl Python {
     #[must_use]
     pub fn get(self,) -> Icon {
@@ -263,6 +252,8 @@ pub mod python {
     }
   }
 
+  pub const TAGS : &[&str] = &["Python", "python", "py",];
+
   const fn base() -> Icon {
     Icon::new()
       .with_link("https://www.python.org/",)
@@ -272,19 +263,16 @@ pub mod python {
 
   #[must_use]
   pub const fn local() -> Icon { base().via_local("icons/logos/python.svg",) }
-
   #[must_use]
   pub fn filled() -> Icon { base().via_leptos(icon::SiPython,).colored("brand-python",) }
-
   #[must_use]
   pub fn outlined() -> Icon {
     base()
       .via_leptos(icon::AiPythonOutlined,)
       .colored("brand-python",)
   }
-
   #[must_use]
-  pub const fn default() -> Icon { local() }
+  pub fn default() -> Icon { filled() }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
@@ -298,7 +286,6 @@ pub mod rust {
   };
 
   pub struct Rust(pub Variant,);
-
   impl Rust {
     #[must_use]
     pub fn get(self,) -> Icon {
@@ -311,6 +298,8 @@ pub mod rust {
     }
   }
 
+  pub const TAGS : &[&str] = &["Rust", "rust", "rs",];
+
   const fn base() -> Icon {
     Icon::new()
       .with_link("https://www.rust-lang.org/",)
@@ -320,17 +309,14 @@ pub mod rust {
 
   #[must_use]
   pub const fn local() -> Icon { base().via_local("icons/logos/rust.svg",) }
-
   #[must_use]
   pub fn filled() -> Icon { base().via_leptos(icon::SiRust,).colored("brand-rust",) }
-
   #[must_use]
   pub fn outlined() -> Icon {
     base()
       .via_leptos(icon::TbBrandRustOutline,)
       .colored("brand-rust",)
   }
-
   #[must_use]
   pub fn default() -> Icon { filled() }
 }
@@ -346,7 +332,6 @@ pub mod typescript {
   };
 
   pub struct TypeScript(pub Variant,);
-
   impl TypeScript {
     #[must_use]
     pub fn get(self,) -> Icon {
@@ -359,6 +344,8 @@ pub mod typescript {
     }
   }
 
+  pub const TAGS : &[&str] = &["TypeScript", "typescript", "TS", "ts",];
+
   const fn base() -> Icon {
     Icon::new()
       .with_link("https://www.typescriptlang.org/",)
@@ -368,23 +355,20 @@ pub mod typescript {
 
   #[must_use]
   pub const fn local() -> Icon { base().via_local("icons/logos/typescript.svg",) }
-
   #[must_use]
   pub fn filled() -> Icon {
     base()
       .via_leptos(icon::SiTypescript,)
       .colored("brand-typescript",)
   }
-
   #[must_use]
   pub fn outlined() -> Icon {
     base()
       .via_leptos(icon::TbBrandTypescriptOutline,)
       .colored("brand-typescript",)
   }
-
   #[must_use]
-  pub const fn default() -> Icon { local() }
+  pub fn default() -> Icon { filled() }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
@@ -398,7 +382,6 @@ pub mod zig {
   };
 
   pub struct Zig(pub Variant,);
-
   impl Zig {
     #[must_use]
     pub fn get(self,) -> Icon {
@@ -411,6 +394,8 @@ pub mod zig {
     }
   }
 
+  pub const TAGS : &[&str] = &["Zig", "zig",];
+
   const fn base() -> Icon {
     Icon::new()
       .with_link("https://ziglang.org/",)
@@ -420,13 +405,10 @@ pub mod zig {
 
   #[must_use]
   pub const fn local() -> Icon { base().via_local("icons/logos/zig.svg",) }
-
   #[must_use]
   pub fn filled() -> Icon { base().via_leptos(icon::SiZig,).colored("brand-zig",) }
-
   #[must_use]
   pub fn outlined() -> Icon { filled() }
-
   #[must_use]
   pub fn default() -> Icon { filled() }
 }

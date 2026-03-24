@@ -1,0 +1,80 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT\n  p.id,\n  p.title,\n  p.slug,\n  p.description,\n  p.status,\n  p.repo_url,\n  p.live_url,\n  p.featured,\n  p.sort_order,\n  p.created_at,\n  (\n    SELECT COALESCE(GROUP_CONCAT(pt.tag, ','), '') || ''\n    FROM project_tags pt\n    WHERE pt.project_id = p.id\n  ) AS tags\n\nFROM projects p\nWHERE p.published = 1\n  AND p.id IN (SELECT project_id FROM project_tags WHERE tag = $1)\nORDER BY p.sort_order ASC, p.created_at DESC\n",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Integer"
+      },
+      {
+        "name": "title",
+        "ordinal": 1,
+        "type_info": "Text"
+      },
+      {
+        "name": "slug",
+        "ordinal": 2,
+        "type_info": "Text"
+      },
+      {
+        "name": "description",
+        "ordinal": 3,
+        "type_info": "Text"
+      },
+      {
+        "name": "status",
+        "ordinal": 4,
+        "type_info": "Text"
+      },
+      {
+        "name": "repo_url",
+        "ordinal": 5,
+        "type_info": "Text"
+      },
+      {
+        "name": "live_url",
+        "ordinal": 6,
+        "type_info": "Text"
+      },
+      {
+        "name": "featured",
+        "ordinal": 7,
+        "type_info": "Integer"
+      },
+      {
+        "name": "sort_order",
+        "ordinal": 8,
+        "type_info": "Integer"
+      },
+      {
+        "name": "created_at",
+        "ordinal": 9,
+        "type_info": "Text"
+      },
+      {
+        "name": "tags",
+        "ordinal": 10,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false,
+      false,
+      true,
+      false,
+      false,
+      true,
+      true,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "d7ed1cdb6317e0c6e8916c4f69f206279a7519a5ceb5e3d9d2743780a5be9c44"
+}

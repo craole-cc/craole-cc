@@ -9,8 +9,8 @@ pub mod actix {
     Variant,
     icon,
   };
-  pub struct Actix(pub Variant,);
 
+  pub struct Actix(pub Variant,);
   impl Actix {
     #[must_use]
     pub fn get(self,) -> Icon {
@@ -23,6 +23,8 @@ pub mod actix {
     }
   }
 
+  pub const TAGS : &[&str] = &["Actix", "actix", "actix-web",];
+
   const fn base() -> Icon {
     Icon::new()
       .with_link("https://actix.rs",)
@@ -32,15 +34,12 @@ pub mod actix {
 
   #[must_use]
   pub const fn local() -> Icon { base().via_local("icons/logos/actix.svg",) }
-
   #[must_use]
   pub fn filled() -> Icon { base().via_leptos(icon::SiActix,).colored("brand-actix",) }
-
   #[must_use]
   pub fn outlined() -> Icon { filled() }
-
   #[must_use]
-  pub const fn default() -> Icon { local() }
+  pub fn default() -> Icon { filled() }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
@@ -51,8 +50,8 @@ pub mod axum {
     Icon,
     Variant,
   };
-  pub struct Axum(pub Variant,);
 
+  pub struct Axum(pub Variant,);
   impl Axum {
     #[must_use]
     pub const fn get(self,) -> Icon {
@@ -65,6 +64,8 @@ pub mod axum {
     }
   }
 
+  pub const TAGS : &[&str] = &["Axum", "axum",];
+
   const fn base() -> Icon {
     Icon::new()
       .with_link("https://github.com/tokio-rs/axum",)
@@ -72,15 +73,13 @@ pub mod axum {
       .with_label("Axum",)
   }
 
+  // No Leptos icon — local SVG only
   #[must_use]
   pub const fn local() -> Icon { base().via_local("icons/logos/tokio.svg",) }
-
   #[must_use]
   pub const fn filled() -> Icon { local() }
-
   #[must_use]
   pub const fn outlined() -> Icon { local() }
-
   #[must_use]
   pub const fn default() -> Icon { local() }
 }
@@ -96,7 +95,6 @@ pub mod htmx {
   };
 
   pub struct Htmx(pub Variant,);
-
   impl Htmx {
     #[must_use]
     pub fn get(self,) -> Icon {
@@ -109,6 +107,8 @@ pub mod htmx {
     }
   }
 
+  pub const TAGS : &[&str] = &["HTMX", "htmx",];
+
   const fn base() -> Icon {
     Icon::new()
       .with_link("https://htmx.org",)
@@ -118,15 +118,12 @@ pub mod htmx {
 
   #[must_use]
   pub const fn local() -> Icon { base().via_local("icons/logos/htmx.svg",) }
-
   #[must_use]
   pub fn filled() -> Icon { base().via_leptos(icon::SiHtmx,).colored("brand-htmx",) }
-
   #[must_use]
   pub fn outlined() -> Icon { filled() }
-
   #[must_use]
-  pub const fn default() -> Icon { local() }
+  pub fn default() -> Icon { filled() }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
@@ -140,7 +137,6 @@ pub mod leptos {
   };
 
   pub struct Leptos(pub Variant,);
-
   impl Leptos {
     #[must_use]
     pub fn get(self,) -> Icon {
@@ -153,6 +149,8 @@ pub mod leptos {
     }
   }
 
+  pub const TAGS : &[&str] = &["Leptos", "leptos",];
+
   const fn base() -> Icon {
     Icon::new()
       .with_link("https://leptos.dev/",)
@@ -162,15 +160,12 @@ pub mod leptos {
 
   #[must_use]
   pub const fn local() -> Icon { base().via_local("icons/logos/leptos.svg",) }
-
   #[must_use]
   pub fn filled() -> Icon { base().via_leptos(icon::SiLeptos,).colored("brand-leptos",) }
-
   #[must_use]
   pub fn outlined() -> Icon { filled() }
-
   #[must_use]
-  pub const fn default() -> Icon { local() }
+  pub fn default() -> Icon { filled() }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
@@ -184,7 +179,6 @@ pub mod tailwind {
   };
 
   pub struct Tailwind(pub Variant,);
-
   impl Tailwind {
     #[must_use]
     pub fn get(self,) -> Icon {
@@ -197,6 +191,14 @@ pub mod tailwind {
     }
   }
 
+  pub const TAGS : &[&str] = &[
+    "Tailwind",
+    "tailwind",
+    "Tailwind CSS",
+    "tailwindcss",
+    "TailwindCSS",
+  ];
+
   const fn base() -> Icon {
     Icon::new()
       .with_link("https://tailwindcss.com",)
@@ -206,21 +208,18 @@ pub mod tailwind {
 
   #[must_use]
   pub const fn local() -> Icon { base().via_local("icons/logos/tailwind-blue.svg",) }
-
   #[must_use]
   pub fn filled() -> Icon {
     base()
       .via_leptos(icon::SiTailwindcss,)
       .colored("brand-tailwind",)
   }
-
   #[must_use]
   pub fn outlined() -> Icon {
     base()
       .via_leptos(icon::TbBrandTailwindOutline,)
       .colored("brand-tailwind",)
   }
-
   #[must_use]
-  pub const fn default() -> Icon { local() }
+  pub fn default() -> Icon { filled() }
 }

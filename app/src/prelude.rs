@@ -1,5 +1,5 @@
-// -- Internal
-// -- External
+#[cfg(feature = "ssr")]
+pub use reqwest::Client;
 #[cfg(feature = "ssr")]
 pub use sqlx::{
   FromRow,
