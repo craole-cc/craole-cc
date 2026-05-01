@@ -1,6 +1,6 @@
 {lib}: let
   inherit (lib.lists) elem optionals;
-  inherit (lib.shells) mkAliasPackage mkMissionControl mkScriptPackage;
+  inherit (lib.scripts) mkAlias mkMissionControl mkPackage;
   inherit (lib.packages) mkPkgs mkRust;
   inherit (lib.strings) concatStringsSep optionalString;
   inherit (lib.trivial) isEmpty isNotEmpty;
@@ -34,8 +34,8 @@
   mkSpec = {
     pkgs ? null,
     channel ? null,
-    targets ? null,
-    extensions ? null,
+    targets ? [],
+    extensions ? [],
     includeEditor ? true,
     minimal ? false,
   }: let
@@ -45,11 +45,9 @@
       else mkPkgs {};
 
     rust = mkRust {
-      inherit
-        channel
-        targets
-        extensions
-        ;
+      inherit channel;
+      extraTargets = targets;
+      extraExtensions = extensions;
       pkgs = pkgs';
     };
     ch = rust.toolchain.channel;
@@ -80,13 +78,13 @@
     };
 
     scripts = {
-      commands = mkScriptPackage {
+      commands = mkPackage {
         pkgs = pkgs';
         name = "rust-commands";
         file = ./commands.sh;
       };
 
-      welcome = mkScriptPackage {
+      welcome = mkPackage {
         pkgs = pkgs';
         name = "rust-welcome";
         file = ./welcome.sh;
@@ -162,12 +160,12 @@
       shellName = name;
       commands = missionCommands;
     };
-    commandsAlias = mkAliasPackage {
+    commandsAlias = mkAlias {
       pkgs = pkgs';
       name = "commands";
       target = "${missionControl}/bin/mission-control";
     };
-    mcAlias = mkAliasPackage {
+    mcAlias = mkAlias {
       pkgs = pkgs';
       name = "mc";
       target = "${missionControl}/bin/mission-control";

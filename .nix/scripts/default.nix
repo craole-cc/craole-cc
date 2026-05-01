@@ -3,6 +3,11 @@
   inherit (lib.strings) concatLines escapeShellArg;
   inherit (lib.trivial) readFile;
 
+  raw = {
+    deployTemplates = ./deploy-templates.sh;
+    resetFlake = ./reset-flake.sh;
+  };
+
   mkEnvLines = env:
     concatLines (mapAttrsToList (name: value: "${name}=${escapeShellArg value}") env);
 
@@ -70,5 +75,14 @@
 
             ${readFile ./mission-control.sh}
     '';
-
-in {scripts = {inherit mkAlias mkMissionControl mkPackage;};}
+in {
+  scripts = {
+    inherit
+      mkAlias
+      mkEnvLines
+      mkMissionControl
+      mkPackage
+      raw
+      ;
+  };
+}

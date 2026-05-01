@@ -1,20 +1,13 @@
-{
-  lib,
-  paths ? {}, #TODO: We should pass in paths from the top-level default.nix
-  ...
-}: let
+{lib, ...}: let
   inherit (lib.attrsets) attrNames;
   inherit (lib.lists) head toList;
   inherit (lib.packages) mkPkgs;
-  inherit (lib.scripts) mkScriptPackage mkMissionControl;
+  inherit (lib.scripts) mkScriptPackage mkMissionControl raw;
   inherit (lib.strings) concatStringsSep mkStyledOutput mkSection mkHeader;
   inherit (lib.trivial) readFile;
 
-  scripts = let
-    dir = paths.scripts or ../scripts;
-  in {
-    deploy = dir + "/deploy-templates.sh";
-    reset = dir + "/reset-flake.sh";
+  scripts = {
+    inherit (raw) deployTemplates resetFlake;
   };
 
   entries = {
@@ -91,7 +84,7 @@
       ${banner}
       ${section}
       CMD_GUM="${print.gum}"
-      ${readFile scripts.deploy}
+      ${readFile scripts.deployTemplates}
       ${deployCalls}
     '';
 
@@ -99,7 +92,7 @@
     mkScriptPackage {
       inherit pkgs;
       name = "reset-flake";
-      file = scripts.reset;
+      file = scripts.resetFlake;
     };
 
   # --- unified dispatcher -----------------------------------------------
@@ -120,11 +113,13 @@
       };
     };
 in {
-  inherit
-    entries
-    mkPackage
-    mkFlakeReset
-    mkCommands
-    scripts
-    ;
+  templates = {
+    inherit
+      entries
+      mkPackage
+      mkFlakeReset
+      mkCommands
+      scripts
+      ;
+  };
 }
