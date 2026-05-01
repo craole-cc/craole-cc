@@ -46,7 +46,6 @@ in
       ./attrsets
       ./strings
       ./packages
-      (paths.scripts or ../scripts)
       (paths.templates or ../templates)
       ./shells
     ];

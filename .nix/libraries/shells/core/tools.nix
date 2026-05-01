@@ -1,77 +1,121 @@
 {lib}: let
-  inherit (lib.attrsets) attrValues optionalAttrs;
-  inherit (lib.lists) flatten;
-  inherit (lib.packages) mkBins;
+  inherit
+    (lib.attrsets)
+    attrValues
+    mapAttrs
+    mapAttrs'
+    nameValuePair
+    optionalAttrs
+    ;
+  inherit (lib.lists) flatten foldl';
+  inherit (lib.packages) mkBins mkPkgs mkVr3n;
   inherit (lib.strings) mkStyledOutput;
-  inherit (lib.trivial) isNotEmpty;
-  inherit (lib.packages) mkPkgs;
+  # inherit (lib.trivial) isNotEmpty;
+
+  mkKeys = f: attrs: mapAttrs' (k: v: nameValuePair (f k) v) attrs;
 
   mkTools = {
     pkgs ? mkPkgs {},
     minimal ? false,
     includeEditor ? true,
+    includeWeb ? false,
     includeFmt ? true,
     includeInfo ? true,
   }: let
     print = mkStyledOutput {inherit pkgs;};
-    tools = {
-      fmt = optionalAttrs (includeFmt && !minimal) {
-        inherit
-          (pkgs)
-          taplo
-          treefmt
-          markdownlint-cli2
-          prettierd
-          yamlfmt
-          ;
-      };
-      info = optionalAttrs (includeInfo && !minimal) {
-        inherit
-          (pkgs)
-          gitui
-          onefetch
-          tokei
-          direnv
-          gum
-          mise
-          trashy
-          ;
-      };
-      editor = optionalAttrs (includeEditor && !minimal) {
-        inherit (pkgs) helix;
-      };
+
+    groups = {
+      fmt = optionalAttrs (includeFmt && !minimal) (
+        let
+          packages = {inherit (pkgs) taplo treefmt markdownlint-cli2 yamlfmt;};
+          bin = mkBins packages;
+          cmd = {
+            fmtree = bin.treefmt;
+          };
+          ver = {
+            taplo = mkVr3n bin.taplo {};
+            treefmt = mkVr3n bin.treefmt {strip = true;};
+            markdownlint = mkVr3n bin.markdownlint-cli2 {head = true;};
+            yamlfmt = mkVr3n bin.yamlfmt {};
+          };
+        in {
+          inherit bin cmd ver;
+          pkgs = packages;
+        }
+      );
+
+      info = optionalAttrs (includeInfo && !minimal) (
+        let
+          packages = {inherit (pkgs) gitui onefetch tokei direnv gum mise trashy;};
+          bin = mkBins packages;
+          cmd = {
+            info = with bin; "${tokei}; ${onefetch}";
+            gt = bin.gitui;
+            reload = "${bin.direnv} reload";
+            update-flake = ''
+              ${print.yellow} "Updating flake inputs..."
+              nix flake update
+            '';
+          };
+          ver = {
+            gitui = mkVr3n bin.gitui {};
+            onefetch = mkVr3n bin.onefetch {};
+            tokei = mkVr3n bin.tokei {};
+            direnv = mkVr3n bin.direnv {field = 1;};
+            gum = mkVr3n bin.gum {head = true;};
+            trashy = mkVr3n bin.trashy {};
+            mise = mkVr3n bin.mise {
+              custom = ''${bin.mise} version 2>/dev/null | grep -o '^[0-9]*\.[0-9]*\.[0-9]*' '';
+            };
+          };
+        in {
+          inherit bin cmd ver;
+          pkgs = packages;
+        }
+      );
+
+      web = optionalAttrs (includeWeb && !minimal) (
+        let
+          packages = {inherit (pkgs) deno prettierd;};
+          bin = mkBins packages;
+          cmd = {};
+          ver = {
+            deno = mkVr3n bin.deno {head = true;};
+            prettierd = mkVr3n bin.prettierd {field = 1;};
+          };
+        in {
+          inherit bin cmd ver;
+          pkgs = packages;
+        }
+      );
+
+      editor = optionalAttrs (includeEditor && !minimal) (
+        let
+          packages = {inherit (pkgs) helix;};
+          bin = mkBins packages;
+          cmd = {};
+          ver = {
+            helix = mkVr3n bin.helix {head = true;};
+          };
+        in {
+          inherit bin cmd ver;
+          pkgs = packages;
+        }
+      );
     };
 
-    bin = with tools;
-      {}
-      // optionalAttrs (isNotEmpty fmt) (mkBins fmt)
-      // optionalAttrs (isNotEmpty info && !minimal) (mkBins info)
-      // optionalAttrs (isNotEmpty editor) (mkBins editor)
-      // {};
+    mergeAttr = set:
+      foldl'
+      (acc: grp: acc // (grp.${set} or {}))
+      {} (attrValues groups);
 
-    cmd =
-      {
-        gumv = ''${bin.gum} --version 2>&1 | head -n1 | awk '{print $2}' '';
-      }
-      // optionalAttrs (includeFmt && !minimal) {
-        fmtree = bin.treefmt;
-        treefmtv = ''${bin.treefmt} --version 2>&1 | awk '{print substr($2,2)}' '';
-      }
-      // optionalAttrs (includeInfo && !minimal) {
-        info = "${bin.tokei}; ${bin.onefetch}";
-        gt = bin.gitui;
-        reload = "${bin.direnv} reload";
-        misev = ''${bin.mise} version 2>/dev/null | grep -o '^[0-9]*\.[0-9]*\.[0-9]*' '';
-        update-flake = ''
-          ${print.yellow} "Updating flake inputs..."
-          nix flake update
-        '';
-      }
-      // optionalAttrs (includeEditor && !minimal) {
-        hxv = ''${bin.helix} --version 2>&1 | head -n1 | awk '{print $2}' '';
-      };
+    bin = mergeAttr "bin";
+    cmd = mergeAttr "cmd";
+    tools = mapAttrs (_: g: g.pkgs or {}) groups;
+    ver = mergeAttr "ver";
+    vr3n = mkKeys (pkg: "vr3n-${pkg}") ver;
   in {
-    inherit bin cmd print;
+    inherit bin cmd print ver vr3n;
     tools = tools // {all = flatten (attrValues tools);};
   };
 in {inherit mkTools;}

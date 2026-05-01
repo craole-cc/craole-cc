@@ -2,13 +2,16 @@
   inherit (lib.attrsets) attrNames;
   inherit (lib.lists) head toList;
   inherit (lib.packages) mkPkgs;
-  inherit (lib.scripts) mkScriptPackage mkMissionControl raw;
+  inherit (lib.shells) mkScriptPackage mkMissionControl;
   inherit (lib.strings) concatStringsSep mkStyledOutput mkSection mkHeader;
   inherit (lib.trivial) readFile;
 
-  scripts = {
-    inherit (raw) deployTemplates resetFlake;
-  };
+  scripts =
+    lib.shells.scripts
+    // {
+      deployTemplates = ./deploy-templates.sh;
+      resetFlake = ./reset-flake.sh;
+    };
 
   entries = {
     cargo = {

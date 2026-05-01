@@ -1,6 +1,6 @@
 {lib}: let
   inherit (lib.lists) elem optionals;
-  inherit (lib.scripts) mkAlias mkMissionControl mkPackage;
+  inherit (lib.shells) mkAlias mkMissionControl mkPackage;
   inherit (lib.packages) mkPkgs mkRust;
   inherit (lib.strings) concatStringsSep optionalString;
   inherit (lib.trivial) isEmpty isNotEmpty;

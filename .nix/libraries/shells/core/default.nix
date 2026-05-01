@@ -2,5 +2,4 @@
 lib.assembly.importAttrs {
   inherit lib;
   path = ./.;
-  ignore = ["scripts.nix"];
 }

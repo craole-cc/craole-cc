@@ -8,15 +8,22 @@
   paths = let
     src = ./.;
     mkCfg = path: src + "/.nix" + "/${path}";
+    mkScr = path: src + "/scripts" + "/${path}";
+    mkTScr = path: paths.templates + "/${path}";
   in {
-    inherit src;
-    libraries = mkCfg "libraries";
-    environment = mkCfg "environment";
-    templates = mkCfg "templates";
-    scripts = mkCfg "scripts";
-    modules = mkCfg "modules";
     config = mkCfg "config";
     downloads = mkCfg "downloads";
+    environment = mkCfg "environment";
+    libraries = mkCfg "libraries";
+    modules = mkCfg "modules";
+    templates = mkCfg "templates";
+    scripts = {
+      fmtRust = mkScr + "fmt-rust.sh";
+      getIcons = mkScr + "get-icons.sh";
+      initDatabase = mkScr + "init-db.sh";
+      deployTemplates = mkTScr "deploy-templates.sh";
+      resetFlake = mkTScr "reset-flake.sh";
+    };
   };
 
   inherit (builtins) hasAttr head isAttrs pathExists tail;
@@ -92,9 +99,10 @@
       inherit pkgs;
       lib = libraries;
     };
-in {
-  inherit description templates paths pkgs;
-  lib = libraries;
-  system = getSystemOrDefault {inherit pkgs;};
-}
-// environment
+in
+  {
+    inherit description templates paths pkgs;
+    lib = libraries;
+    system = getSystemOrDefault {inherit pkgs;};
+  }
+  // environment

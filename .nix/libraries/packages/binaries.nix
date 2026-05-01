@@ -97,11 +97,32 @@ Pure package and binary resolution helpers for lib.packages.
           else null
       )
       bins);
+
+  mkVr3n = bin: {
+    field ? 2,
+    head ? false,
+    strip ? false,
+    custom ? null,
+  }: let
+    base = "${bin} --version 2>&1";
+    piped =
+      if head
+      then "${base} | head -n1"
+      else base;
+    awk =
+      if strip
+      then "awk '{print substr($${toString field},2)}'"
+      else "awk '{print $${toString field}}'";
+  in
+    if custom != null
+    then custom
+    else "${piped} | ${awk}";
 in {
   inherit
     resolveBin
     resolveBins
     mkBins
     mkCmds
+    mkVr3n
     ;
 }
