@@ -69,7 +69,7 @@
     if paths ? libraries && pathExists paths.libraries
     then
       import paths.libraries {
-        paths = paths;
+        inherit paths;
         lib = lib';
       }
     else lib';
@@ -82,7 +82,7 @@
 
   environment =
     optionalAttrs (inputs != null)
-    mkDevShells {inherit inputs pkgs;};
+    (mkDevShells {inherit inputs pkgs;});
 
   templates =
     libraries.optionalAttrs

@@ -31,8 +31,8 @@ each namespace.  Order = dependency order; later entries see earlier ones on
 their incoming `lib`.
 */
 {
-  lib ? import <nixpkgs/lib>,
-  paths ? {},
+  lib,
+  paths,
 }: let
   lib' = lib.extend (final: _: import ./assembly.nix {lib = final;});
 in

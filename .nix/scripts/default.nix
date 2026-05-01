@@ -6,7 +6,7 @@
   mkEnvLines = env:
     concatLines (mapAttrsToList (name: value: "${name}=${escapeShellArg value}") env);
 
-  mkScriptPackage = {
+  mkPackage = {
     pkgs,
     name,
     file,
@@ -17,7 +17,7 @@
       ${readFile file}
     '';
 
-  mkAliasPackage = {
+  mkAlias = {
     pkgs,
     name,
     target,
@@ -71,4 +71,4 @@
             ${readFile ./mission-control.sh}
     '';
 
-in {scripts = {inherit mkAliasPackage mkMissionControl mkScriptPackage;};}
+in {scripts = {inherit mkAlias mkMissionControl mkPackage;};}

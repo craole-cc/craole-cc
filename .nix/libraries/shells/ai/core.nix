@@ -1,7 +1,7 @@
 {lib}: let
   inherit (lib.lists) elem optionals;
   inherit (lib.packages) mkPkgs;
-  inherit (lib.shells) mkAliasPackage mkMissionControl mkScriptPackage;
+  inherit (lib.scripts) mkAlias mkMissionControl mkPackage;
   inherit (lib.strings) concatStringsSep;
   inherit (lib.trivial) isEmpty isNotEmpty;
 
@@ -68,13 +68,13 @@
     pkg = pkgs'.llm-agents;
 
     scripts = {
-      commands = mkScriptPackage {
+      commands = mkPackage {
         pkgs = pkgs';
         name = "ai-commands";
         file = ./commands.sh;
       };
 
-      welcome = mkScriptPackage {
+      welcome = mkPackage {
         pkgs = pkgs';
         name = "ai-welcome";
         file = ./welcome.sh;
@@ -124,12 +124,12 @@
       shellName = name;
       commands = missionCommands;
     };
-    commandsAlias = mkAliasPackage {
+    commandsAlias = mkAlias {
       pkgs = pkgs';
       name = "commands";
       target = "${missionControl}/bin/mission-control";
     };
-    mcAlias = mkAliasPackage {
+    mcAlias = mkAlias {
       pkgs = pkgs';
       name = "mc";
       target = "${missionControl}/bin/mission-control";
