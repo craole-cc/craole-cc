@@ -97,4 +97,4 @@ in {
   lib = libraries;
   system = getSystemOrDefault {inherit pkgs;};
 }
-# // environment
+// environment
