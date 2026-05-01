@@ -7,7 +7,7 @@
 }: let
   paths = let
     src = ./.;
-    mkCfg = path: src + "/" + ".nix";
+    mkCfg = path: src + "/.nix" + "/${path}";
   in {
     inherit src;
     libraries = mkCfg "libraries";
@@ -92,11 +92,9 @@
       inherit pkgs;
       lib = libraries;
     };
-in
-  {
-    inherit description pkgs templates;
-    paths = {src = ./.;} // paths;
-    lib = libraries;
-    system = getSystemOrDefault {inherit pkgs;};
-  }
-  # // environment
+in {
+  inherit description templates paths pkgs;
+  lib = libraries;
+  system = getSystemOrDefault {inherit pkgs;};
+}
+# // environment

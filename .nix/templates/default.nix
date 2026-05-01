@@ -120,19 +120,11 @@
       };
     };
 in {
-  templates = {
-    inherit
-      entries
-      mkPackage
-      mkFlakeReset
-      mkCommands
-      ;
-  };
-
-  packages =
-    lib.packages
-    // {
-      inherit mkFlakeReset;
-      mkTemplate = mkPackage;
-    };
+  inherit
+    entries
+    mkPackage
+    mkFlakeReset
+    mkCommands
+    scripts
+    ;
 }
