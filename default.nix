@@ -7,7 +7,7 @@
 }: let
   paths = let
     src = ./.;
-    mkCfg = dir: src + "/" + ".nix";
+    mkCfg = path: src + "/" + ".nix";
   in {
     inherit src;
     libraries = mkCfg "libraries";
