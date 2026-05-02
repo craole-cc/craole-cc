@@ -2,7 +2,7 @@
   inherit (lib.attrsets) genAttrs isAttrs optionalAttrs;
   inherit (lib.lists) findFirst;
   inherit (lib.packages) getSystemOrDefault defineSystems;
-  inherit (lib.strings) isString isPath;
+  inherit (lib.strings) isString isPath match;
   inherit (lib.trivial) isFunction isNotEmpty isEmpty;
 
   /**
@@ -56,8 +56,13 @@
   parseInput = {
     inputs ? null,
     names,
-    error ? "",
+    error ? null,
   }: let
+    errorMsg =
+      if isString error
+      then "mkPkgs: Critical dependency '${error}' not found in inputs."
+      else "parseInput: could not resolve one of ${toString names} from inputs.";
+
     inputs' = optionalAttrs (inputs != null) inputs;
     foundName = findFirst (name: inputs' ? ${name}) null names;
     result =
@@ -66,7 +71,7 @@
       else null;
   in
     if (isEmpty result) && (isNotEmpty error)
-    then throw error
+    then throw errorMsg
     else result;
 
   /**
@@ -93,7 +98,12 @@
   # Returns
   - An attribute set containing resolved package inputs or null if not found.
   */
-  resolvePackages = inputs: {
+  resolvePackages = args: let
+    inputs =
+      if args ? inputs
+      then args.inputs
+      else args;
+  in {
     ai = parseInput {
       inherit inputs;
       names = [
@@ -116,7 +126,7 @@
         "nixpkgs-stable"
         "nixpkgs"
       ];
-      error = "mkPkgs: Critical dependency 'nixpkgs' not found in inputs.";
+      error = "nixpkgs";
     };
 
     openclaw = parseInput {
@@ -136,7 +146,7 @@
         "Rust"
         "RustOverlay"
       ];
-      error = "mkPkgs: Critical dependency 'rust-overlay' not found in inputs.";
+      error = "rust-overlay";
     };
 
     treefmt = parseInput {
@@ -149,6 +159,7 @@
         "treefmt"
         "TreeFormatter"
       ];
+      error = "treefmt-nix";
     };
   };
 
@@ -203,4 +214,4 @@
   in
     genAttrs (defineSystems {})
     (system: fn set.legacyPackages.${system});
-in {inherit mkOverlays mkPkgs mkPkgsPerSystem perSystem;}
+in {inherit mkOverlays mkPkgs mkPkgsPerSystem perSystem resolvePackages;}

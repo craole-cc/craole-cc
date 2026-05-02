@@ -25,11 +25,12 @@
     };
     inherit (src) lib pkgs;
     inherit (lib.shells) mkDevShells;
-    inherit (lib.packages) mkPkgsPerSystem;
+    inherit (lib.packages) mkPkgsPerSystem mkFormatter;
   in
     {
       inherit lib;
       legacyPackages = mkPkgsPerSystem {inherit inputs;};
     }
+    // mkFormatter {inherit inputs;}
     // mkDevShells {inherit inputs pkgs;};
 }
