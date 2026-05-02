@@ -14,10 +14,8 @@ execute() {
 		display --media-dirs
 		display --playlist
 		;;
-	0 | false | [nN]* | off)
-		play
-		;;
-	*) play ;;
+	0 | false | [nN]* | off | *) play ;;
+	# *) play ;;
 	esac
 }
 
@@ -25,6 +23,7 @@ manage_environment() {
 	while [ "$#" -ge 1 ]; do
 		case $1 in
 		-x | --reset | --clean)
+		name=$(basename "$0")
 			: "${DELIMITER:="$(printf "\037")"}"
 			: "${VERBOSITY:="info"}"
 			: "${EXTENSIONS:=mp3 flac m4a aac ogg opus wav alac wma ape mka}"
@@ -48,6 +47,10 @@ manage_environment() {
 parse_arguments() {
 	while [ "$#" -gt 0 ]; do
 		case "$1" in
+		-h | --help)
+			usage
+			exit 0
+			;;
 		-d | --dry-run) DRY_RUN=true ;;
 		-x | --shuffle) SHUFFLE=true ;;
 		-s | --search)
@@ -61,10 +64,10 @@ parse_arguments() {
 			;;
 		-*)
 			printf 'Error: Unknown option %s\n' "$1" >&2
+			usage >&2
 			exit 1
 			;;
 		*) args="${args:+${args}${DELIMITER}}$1" ;;
-		# *) args="${args:+${args}${DELIMITER}}$1" ;;
 		esac
 		shift
 	done
@@ -190,8 +193,6 @@ is_url() {
 }
 
 play() {
-	# build_playlist |
-	# 	mpv --script-opts=ytdl_hook-program=yt-dlp ${SHUFFLE:+--shuffle} --playlist=-
 	generate_playlist | mpv ${SHUFFLE:+--shuffle} --playlist=-
 }
 
@@ -214,43 +215,22 @@ print_list() {
 	set -- ${list}
 	IFS="${old_ifs}"
 
+	#> Display the titlea
 	printf '\n%s\n' "${title}"
 
 	num=0
 	for item in "$@"; do
 		num=$((num + 1))
 
+		#> Display the count, conditionally
 		case "${use_count:-0}" in
 		1 | true | [yY]* | on) printf "%s. " "${num}" ;;
 		0 | false | [nN]* | off | *) ;;
 		esac
 
+		#> Display the media
 		printf "%s\n" "${item}"
 	done
-}
-print_list_OLD() {
-	title="$1"
-	list="$2"
-	use_count=true
-	old_ifs="${IFS}"
-	IFS="${DELIMITER}"
-	# shellcheck disable=SC2086
-	set -- ${list}
-	IFS="${old_ifs}"
-
-	printf '\n%s\n' "${title}"
-
-	if [ "${use_count}" = true ]; then
-		num=0
-		for item in "$@"; do
-			num=$((num + 1))
-			printf "%s. %s\n" "${num}" "${item}"
-		done
-	else
-		for item in "$@"; do
-			printf "%s\n" "${item}"
-		done
-	fi
 }
 
 display() {
@@ -266,6 +246,30 @@ display() {
 		esac
 		shift
 	done
+}
+
+usage() {
+	cat <<EOF
+Usage: ${name} [OPTIONS] [SEARCH_TERM|URL ...]
+
+Play music from URLSs and/or media directories, optionally filtered by search terms.
+
+Arguments:
+  SEARCH_TERM   Filter media files by name (case-insensitive, multiple allowed)
+  URL           Stream directly from a URL (http:// or https://)
+
+Options:
+  -d, --dry-run   Preview the playlist without playing
+  -x, --shuffle   Shuffle the playlist
+  -h, --help      Show this help message
+
+Examples:
+  ${name}                          		# Play everything
+  ${name} cole                     		# Play files matching 'cole'
+  ${name} cole chronixx           		# Play files matching either
+  ${name} https://youtu.be/xyz    		# Stream a URL
+  ${name} cole https://youtu.be/xyz chronixx -dx  # Mix it all
+EOF
 }
 
 main "$@"
