@@ -18,19 +18,19 @@
     };
   };
 
-  outputs = inputs: let
+  outputs = inputs @ {self, ...}: let
     src = import ./. {
       inherit inputs;
       inherit (inputs.NixPackages) lib;
     };
     inherit (src) lib pkgs;
     inherit (lib.shells) mkDevShells;
-    inherit (lib.packages) mkPkgsPerSystem mkFormatter;
+    inherit (lib.packages) mkPkgsPerSystem mkTreefmt;
   in
     {
       inherit lib;
       legacyPackages = mkPkgsPerSystem {inherit inputs;};
     }
-    // mkFormatter {inherit inputs;}
+    // mkTreefmt {flake = self;}
     // mkDevShells {inherit inputs pkgs;};
 }

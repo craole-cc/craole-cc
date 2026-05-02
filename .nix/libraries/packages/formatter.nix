@@ -1,60 +1,45 @@
 {lib, ...}: let
   inherit (lib.attrsets) mapAttrs recursiveUpdate;
   inherit (lib.lists) elem toList;
-  inherit (lib.packages) mkBins perSystem;
+  inherit (lib.packages) resolvePackages perSystem;
 
-  mkFormatter = {
-    inputs ? null,
+  # mkTreefmt = {
+  #   inputs,
+  #   programs ? {},
+  #   settings ? {},
+  # }: let
+  #   packages = perSystem {
+  #     inherit inputs;
+  #     fn = pkgs: (let
+  #       inherit (resolvePackages {inherit inputs;}) treefmt;
+  #       module = treefmt.lib.evalModule pkgs (
+  #         mkTreefmtConfig {inherit pkgs programs settings;}
+  #       );
+  #     in {inherit (module.config.build) wrapper check;});
+  #   };
+  #   formatter = mapAttrs (_: v: v.wrapper) packages;
+  #   checks = mapAttrs (_: v: {formatting = v.check;}) packages;
+  # in {inherit formatter checks;};
+  mkTreefmt = {
+    flake,
     programs ? {},
     settings ? {},
   }: let
     packages = perSystem {
-      inherit inputs;
-      fn = pkgs: mkTreefmt {inherit pkgs programs settings;};
-    };
-  in {
-    formatter = mapAttrs (_: v: v.builder) packages;
-    checks = mapAttrs (_: v: {formatting = v.check;}) packages;
-  };
-
-  mkTreefmt = {
-    pkgs,
-    programs,
-    settings,
-  }: let
-    package = pkgs.treefmt;
-    module = package.lib.evalModule pkgs (
-      mkTreefmtConfig {inherit pkgs programs settings;}
-    );
-    inherit (module.config.build) wrapper;
-
-    bins = mkBins {treefmt = wrapper;};
-    command = bins.treefmt;
-
-    common = {
-      DONT_BUILD_DEPEND = 1;
-      preferLocalBuild = true;
-      allowSubstitutes = false;
-    };
-
-    builder = pkgs.mkDerivation (common
-      // {
-        name = "treefmt-builder";
-        buildCommand = ''
-          exec ${command}
-        '';
+      inherit (flake) inputs;
+      fn = pkgs: (let
+        inherit (resolvePackages {inherit (flake) inputs;}) treefmt;
+        module = treefmt.lib.evalModule pkgs (
+          mkTreefmtConfig {inherit pkgs programs settings;}
+        );
+      in {
+        inherit (module.config.build) wrapper;
+        formatting = module.config.build.check flake;
       });
-
-    check = pkgs.mkDerivation (common
-      // {
-        name = "treefmt-check";
-        buildCommand = ''
-          exec ${command} --check
-        '';
-      });
-  in {
-    inherit wrapper builder check;
-  };
+    };
+    formatter = mapAttrs (_: v: v.wrapper) packages;
+    checks = mapAttrs (_: v: {formatting = v.formatting;}) packages;
+  in {inherit formatter checks;};
 
   mkTreefmtConfig = {
     pkgs,
@@ -93,4 +78,4 @@
       };
     }
     {inherit programs settings;};
-in {inherit mkFormatter mkTreefmtConfig mkTreefmt;}
+in {inherit mkTreefmt mkTreefmtConfig;}
