@@ -9,12 +9,12 @@ main() {
   fi
 
   case "$1" in
-    help|list|ls)
-      mission_list
-      ;;
-    *)
-      mission_run "$@"
-      ;;
+  help | list | ls)
+    mission_list
+    ;;
+  *)
+    mission_run "$@"
+    ;;
   esac
 }
 

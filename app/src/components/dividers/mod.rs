@@ -1,6 +1,3 @@
 mod config;
 mod view;
-pub use {
-  config::*,
-  view::*,
-};
+pub use {config::*, view::*};

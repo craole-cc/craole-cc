@@ -1,7 +1,7 @@
 use super::_prelude::*;
 
 #[component]
-pub fn Grid(items : Vec<Project,>,) -> impl IntoView {
+pub fn Grid(items: Vec<Project>) -> impl IntoView {
   if items.is_empty() {
     return view! {
       <div class="dev-empty readable">
@@ -13,7 +13,7 @@ pub fn Grid(items : Vec<Project,>,) -> impl IntoView {
   }
 
   // Split into featured (first) and the rest
-  let (featured, rest,) : (Vec<_,>, Vec<_,>,) = items.into_iter().partition(|p| p.featured,);
+  let (featured, rest): (Vec<_>, Vec<_>) = items.into_iter().partition(|p| p.featured);
 
   view! {
     <div class="dev-grid readable">

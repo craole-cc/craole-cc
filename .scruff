@@ -1,0 +1,4 @@
+[tool.sqruff]
+
+# let it lint, but you don’t use its `--fix`
+skip_rules = "LT05"

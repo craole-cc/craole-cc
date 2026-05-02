@@ -1,14 +1,11 @@
 use {
-  super::{
-    Icon,
-    Source,
-  },
+  super::{Icon, Source},
   crate::prelude::*,
 };
 
 #[component]
 #[allow(clippy::must_use_candidate)]
-pub fn Render(icon : Icon, #[prop(optional, into)] class : Option<String,>,) -> impl IntoView {
+pub fn Render(icon: Icon, #[prop(optional, into)] class: Option<String>) -> impl IntoView {
   let extra = class.unwrap_or_default();
   let iclass = icon.class;
   let final_class = if extra.is_empty() {
@@ -18,14 +15,14 @@ pub fn Render(icon : Icon, #[prop(optional, into)] class : Option<String,>,) -> 
   };
 
   match icon.source {
-    | Source::Leptos(ico,) => view! {
+    | Source::Leptos(ico) => view! {
       <div class=final_class aria-label=icon.label title=icon.tooltip>
         <LeptosIcon icon=ico />
       </div>
     }
     .into_any(),
 
-    | Source::Local(src,) => view! {
+    | Source::Local(src) => view! {
       <img
         src=src
         class=final_class

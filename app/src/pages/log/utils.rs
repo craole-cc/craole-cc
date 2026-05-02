@@ -1,21 +1,17 @@
 #[must_use]
-pub fn render_markdown(md : &str,) -> String {
-  use pulldown_cmark::{
-    Options,
-    Parser,
-    html,
-  };
+pub fn render_markdown(md: &str) -> String {
+  use pulldown_cmark::{Options, Parser, html};
 
   let mut opts = Options::empty();
-  opts.insert(Options::ENABLE_TABLES,);
-  opts.insert(Options::ENABLE_STRIKETHROUGH,);
-  opts.insert(Options::ENABLE_TASKLISTS,);
-  opts.insert(Options::ENABLE_HEADING_ATTRIBUTES,);
+  opts.insert(Options::ENABLE_TABLES);
+  opts.insert(Options::ENABLE_STRIKETHROUGH);
+  opts.insert(Options::ENABLE_TASKLISTS);
+  opts.insert(Options::ENABLE_HEADING_ATTRIBUTES);
 
-  let parser = Parser::new_ext(md, opts,);
+  let parser = Parser::new_ext(md, opts);
 
   let mut out = String::new();
-  html::push_html(&mut out, parser,);
+  html::push_html(&mut out, parser);
 
   ammonia::Builder::default()
     .add_tags(["img", "figure", "figcaption"])

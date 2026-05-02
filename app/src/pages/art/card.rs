@@ -1,7 +1,7 @@
 use crate::prelude::*;
 
 #[component]
-pub fn Card(item : Media,) -> impl IntoView {
+pub fn Card(item: Media) -> impl IntoView {
   let href = format!("/art/{}", item.slug);
 
   view! {

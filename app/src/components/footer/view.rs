@@ -1,10 +1,6 @@
 #![allow(clippy::must_use_candidate)]
 use {
-  super::{
-    Copyright,
-    PageNav,
-    Socials,
-  },
+  super::{Copyright, PageNav, Socials},
   crate::prelude::*,
 };
 

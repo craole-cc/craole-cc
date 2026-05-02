@@ -10,18 +10,14 @@
   ];
 
   getSystem = {pkgs ? null}:
-    if pkgs ? stdenv.hostPlatform.system
-    then pkgs.stdenv.hostPlatform.system
-    else builtins.currentSystem or
-        throw "getSystem: pass `pkgs` or run outside --pure-eval";
+    pkgs.stdenv.hostPlatform.system or (builtins.currentSystem or
+        throw "getSystem: pass `pkgs` or run outside --pure-eval");
 
   getSystemOrDefault = {
     pkgs ? null,
     systems ? defaultSystems,
   }:
-    if pkgs ? stdenv.hostPlatform.system
-    then pkgs.stdenv.hostPlatform.system
-    else builtins.currentSystem or (head systems);
+    pkgs.stdenv.hostPlatform.system or (builtins.currentSystem or (head systems));
 
   defineSystems = {systems ? defaultSystems}: systems;
   defineSystem = {

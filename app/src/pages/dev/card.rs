@@ -1,7 +1,7 @@
 use super::_prelude::*;
 
 /// Status badge colour class.
-fn status_class(status : &str,) -> &'static str {
+fn status_class(status: &str) -> &'static str {
   match status {
     | "active" => "dev-card__status--active",
     | "building" => "dev-card__status--building",
@@ -10,7 +10,7 @@ fn status_class(status : &str,) -> &'static str {
 }
 
 /// Human-readable status label.
-fn status_label(status : &str,) -> &'static str {
+fn status_label(status: &str) -> &'static str {
   match status {
     | "active" => "Active",
     | "building" => "Building",
@@ -22,7 +22,7 @@ fn status_label(status : &str,) -> &'static str {
 
 #[component]
 #[allow(clippy::needless_pass_by_value)]
-pub fn Card(project : Project,) -> impl IntoView {
+pub fn Card(project: Project) -> impl IntoView {
   let href = format!("/dev/{}", project.slug);
 
   view! {

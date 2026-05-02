@@ -1,24 +1,20 @@
 use {
-  super::{
-    filter::Filter,
-    grid::Grid,
-    header::Header,
-  },
+  super::{filter::Filter, grid::Grid, header::Header},
   crate::prelude::*,
 };
 
 #[component]
 pub fn Dev() -> impl IntoView {
-  let (projects, set_projects,) = signal(Vec::<Project,>::new(),);
+  let (projects, set_projects) = signal(Vec::<Project>::new());
 
-  let initial = Resource::new(|| (), |()| async move { list_projects().await },);
+  let initial = Resource::new(|| (), |()| async move { list_projects().await });
 
   // Seed projects signal from initial load
   Effect::new(move |_| {
-    if let Some(Ok(p,),) = initial.get() {
-      set_projects.set(p,);
+    if let Some(Ok(p)) = initial.get() {
+      set_projects.set(p);
     }
-  },);
+  });
 
   view! {
     <div class="dev-page">

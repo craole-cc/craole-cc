@@ -1,49 +1,46 @@
 #![allow(clippy::must_use_candidate)]
-use crate::prelude::{
-  icons::*,
-  *,
-};
+use crate::prelude::{icons::*, *};
 
 struct SocialEntry {
-  default : Icon,
-  hover :   Icon,
+  default: Icon,
+  hover: Icon,
 }
 
-fn socials() -> Vec<SocialEntry,> {
+fn socials() -> Vec<SocialEntry> {
   vec![
     SocialEntry {
-      default : gmail::filled(),
-      hover :   gmail::local(),
+      default: gmail::filled(),
+      hover: gmail::local(),
     },
     SocialEntry {
-      default : github::filled(),
-      hover :   github::default(),
+      default: github::filled(),
+      hover: github::default(),
     },
     SocialEntry {
-      default : linkedin::filled(),
-      hover :   linkedin::default(),
+      default: linkedin::filled(),
+      hover: linkedin::default(),
     },
     SocialEntry {
-      default : whatsapp::filled(),
-      hover :   whatsapp::default(),
+      default: whatsapp::filled(),
+      hover: whatsapp::default(),
     },
     SocialEntry {
-      default : instagram::filled(),
-      hover :   instagram::default(),
+      default: instagram::filled(),
+      hover: instagram::default(),
     },
     SocialEntry {
-      default : facebook::filled(),
-      hover :   facebook::default(),
+      default: facebook::filled(),
+      hover: facebook::default(),
     },
     SocialEntry {
-      default : x::filled(),
-      hover :   x::default(),
+      default: x::filled(),
+      hover: x::default(),
     },
   ]
 }
 
 #[component]
-fn SocialIcon(default : Icon, hover : Icon,) -> impl IntoView {
+fn SocialIcon(default: Icon, hover: Icon) -> impl IntoView {
   view! {
     <li>
       <a

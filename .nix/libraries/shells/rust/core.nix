@@ -209,8 +209,7 @@
     };
 
     payloadPackages =
-      []
-      ++ packages.core
+      packages.core
       ++ packages.full
       ++ packages.nightly
       ++ packages.editor

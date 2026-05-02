@@ -8,31 +8,31 @@ use crate::prelude::*;
 pub fn BackToTop(
   /// Vertical scroll distance (in pixels) before the button appears.
   #[prop(default = 400.0)]
-  threshold : f64,
+  threshold: f64,
 ) -> impl IntoView {
-  let (visible, set_visible,) = signal(false,);
+  let (visible, set_visible) = signal(false);
 
   // Listen to window scroll events and toggle visibility
   Effect::new(move |_| {
-    if let Some(win,) = window() {
-      let cb = Closure::<dyn Fn(),>::new(move || {
-        let y = window().map_or(0.0, |w| w.scroll_y().unwrap_or(0.0,),);
-        set_visible.set(y > threshold,);
-      },);
+    if let Some(win) = window() {
+      let cb = Closure::<dyn Fn()>::new(move || {
+        let y = window().map_or(0.0, |w| w.scroll_y().unwrap_or(0.0));
+        set_visible.set(y > threshold);
+      });
 
-      let _ = win.add_event_listener_with_callback("scroll", cb.as_ref().unchecked_ref(),);
+      let _ = win.add_event_listener_with_callback("scroll", cb.as_ref().unchecked_ref());
 
       // Keep the closure alive for the lifetime of the component
       cb.forget();
     }
-  },);
+  });
 
-  let on_click = move |_ : MouseEvent| {
-    if let Some(win,) = window() {
+  let on_click = move |_: MouseEvent| {
+    if let Some(win) = window() {
       let opts = ScrollToOptions::new();
-      opts.set_top(0.0,);
-      opts.set_behavior(ScrollBehavior::Smooth,);
-      win.scroll_to_with_scroll_to_options(&opts,);
+      opts.set_top(0.0);
+      opts.set_behavior(ScrollBehavior::Smooth);
+      win.scroll_to_with_scroll_to_options(&opts);
     }
   };
 

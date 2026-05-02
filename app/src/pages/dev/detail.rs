@@ -2,7 +2,7 @@ use super::_prelude::*;
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
-fn status_class(status : &str,) -> &'static str {
+fn status_class(status: &str) -> &'static str {
   match status {
     | "active" => "dev-detail__status--active",
     | "building" => "dev-detail__status--building",
@@ -10,7 +10,7 @@ fn status_class(status : &str,) -> &'static str {
   }
 }
 
-fn status_label(status : &str,) -> &'static str {
+fn status_label(status: &str) -> &'static str {
   match status {
     | "active" => "Active",
     | "building" => "Building",
@@ -24,7 +24,7 @@ fn status_label(status : &str,) -> &'static str {
 
 #[component]
 #[allow(clippy::needless_pass_by_value)]
-fn TechSection(icons : Vec<Icon,>,) -> impl IntoView {
+fn TechSection(icons: Vec<Icon>) -> impl IntoView {
   if icons.is_empty() {
     return None;
   }
@@ -61,11 +61,11 @@ fn TechSection(icons : Vec<Icon,>,) -> impl IntoView {
           .collect_view()}
       </ul>
     </section>
-  },)
+  })
 }
 
 #[component]
-fn Links(repo_url : Option<String,>, live_url : Option<String,>,) -> impl IntoView {
+fn Links(repo_url: Option<String>, live_url: Option<String>) -> impl IntoView {
   view! {
     <div class="dev-detail__links">
       {repo_url
@@ -116,7 +116,7 @@ fn Links(repo_url : Option<String,>, live_url : Option<String,>,) -> impl IntoVi
 }
 
 #[component]
-fn Screenshots(#[allow(clippy::needless_pass_by_value)] shots : Vec<String,>,) -> impl IntoView {
+fn Screenshots(#[allow(clippy::needless_pass_by_value)] shots: Vec<String>) -> impl IntoView {
   if shots.is_empty() {
     return None;
   }
@@ -136,12 +136,12 @@ fn Screenshots(#[allow(clippy::needless_pass_by_value)] shots : Vec<String,>,) -
           .collect_view()}
       </div>
     </section>
-  },)
+  })
 }
 
 #[component]
 #[allow(clippy::needless_pass_by_value)]
-fn Content(p : ProjectDetail,) -> impl IntoView {
+fn Content(p: ProjectDetail) -> impl IntoView {
   let icons = p.icons();
 
   view! {
@@ -192,14 +192,14 @@ fn Content(p : ProjectDetail,) -> impl IntoView {
 #[component]
 pub fn Detail() -> impl IntoView {
   let params = use_params_map();
-  let slug = move || params.with(|p| p.get("slug",).unwrap_or_default(),);
+  let slug = move || params.with(|p| p.get("slug").unwrap_or_default());
 
   let project = Resource::new(slug, |s| async move {
     if s.is_empty() {
-      return Ok(None,);
+      return Ok(None);
     }
-    get_project_by_slug(s,).await
-  },);
+    get_project_by_slug(s).await
+  });
 
   view! {
     <Suspense fallback=move || {

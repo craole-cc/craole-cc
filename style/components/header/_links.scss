@@ -12,9 +12,7 @@
   border-bottom: none;
   max-height: 0;
   overflow: hidden;
-  transition:
-    max-height duration(slow) cubic-bezier(0.4, 0, 0.2, 1),
-    padding duration(slow) ease;
+  transition: max-height duration(slow) cubic-bezier(0.4, 0, 0.2, 1), padding duration(slow) ease;
 
   &--open {
     max-height: 24rem;
@@ -45,9 +43,7 @@
   text-decoration: none;
   color: var(--color-text-muted);
   border-radius: radius(sm);
-  transition:
-    color duration(fast),
-    background-color duration(fast);
+  transition: color duration(fast), background-color duration(fast);
   white-space: nowrap;
 
   &:hover {

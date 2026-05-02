@@ -10,10 +10,7 @@
   background: var(--color-bg-surface);
   text-decoration: none;
   color: inherit;
-  transition:
-    border-color duration(fast),
-    box-shadow duration(fast),
-    transform duration(fast);
+  transition: border-color duration(fast), box-shadow duration(fast), transform duration(fast);
   cursor: pointer;
   box-shadow: none;
 

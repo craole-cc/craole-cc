@@ -1,23 +1,9 @@
 mod db;
 use {
-  app::{
-    App,
-    shell,
-  },
-  axum::{
-    Router,
-    extract::FromRef,
-    serve,
-  },
-  leptos::{
-    logging::log,
-    prelude::*,
-  },
-  leptos_axum::{
-    LeptosRoutes,
-    file_and_error_handler,
-    generate_route_list,
-  },
+  app::{App, shell},
+  axum::{Router, extract::FromRef, serve},
+  leptos::{logging::log, prelude::*},
+  leptos_axum::{LeptosRoutes, file_and_error_handler, generate_route_list},
   sqlx::SqlitePool,
   std::{
     env::var,
@@ -30,38 +16,42 @@ use {
 // FromRef lets Axum extract individual fields from AppState by type.
 // Leptos uses this to pull LeptosOptions from AppState automatically.
 
-#[derive(Clone,)]
+#[derive(Clone)]
 struct AppState {
-  leptos_options : LeptosOptions,
-  pool :           SqlitePool,
+  leptos_options: LeptosOptions,
+  pool: SqlitePool,
 }
 
-impl FromRef<AppState,> for LeptosOptions {
-  fn from_ref(state : &AppState,) -> Self { state.leptos_options.clone() }
+impl FromRef<AppState> for LeptosOptions {
+  fn from_ref(state: &AppState) -> Self {
+    state.leptos_options.clone()
+  }
 }
 
-impl FromRef<AppState,> for SqlitePool {
-  fn from_ref(state : &AppState,) -> Self { state.pool.clone() }
+impl FromRef<AppState> for SqlitePool {
+  fn from_ref(state: &AppState) -> Self {
+    state.pool.clone()
+  }
 }
 
 // ── Entry point ───────────────────────────────────────────────────────────────
 
 #[tokio::main]
-async fn main() -> anyhow::Result<(),> {
+async fn main() -> anyhow::Result<()> {
   // Load .env first so DATABASE_URL is available for everything below.
   dotenvy::dotenv().ok();
 
   simple_logger::init_with_env().unwrap_or_else(|_| {
-    simple_logger::init_with_level(log::Level::Info,).unwrap();
-  },);
+    simple_logger::init_with_level(log::Level::Info).unwrap();
+  });
 
-  let database_url = var("DATABASE_URL",).unwrap_or_else(|_| "sqlite:./portfolio.db".to_string(),);
+  let database_url = var("DATABASE_URL").unwrap_or_else(|_| "sqlite:./portfolio.db".to_string());
 
   log!("Connecting to database: {}", database_url);
-  let pool = db::init(&database_url,).await?;
+  let pool = db::init(&database_url).await?;
   log!("Database ready — migrations applied");
 
-  let conf = get_configuration(None,).unwrap();
+  let conf = get_configuration(None).unwrap();
   let leptos_options = conf.leptos_options;
   let addr = leptos_options.site_addr;
   // let addr = var("PORT",)
@@ -71,11 +61,11 @@ async fn main() -> anyhow::Result<(),> {
   //     || "0.0.0.0:3000".to_string(),
   //     |port| format!("0.0.0.0:{port}"),
   //   );
-  let routes = generate_route_list(App,);
+  let routes = generate_route_list(App);
 
   let app_state = AppState {
-    leptos_options : leptos_options.clone(),
-    pool :           pool.clone(),
+    leptos_options: leptos_options.clone(),
+    pool: pool.clone(),
   };
 
   let app = Router::new()
@@ -115,8 +105,8 @@ async fn main() -> anyhow::Result<(),> {
   .with_state::<()>(app_state,);
 
   log!("Listening on http://{}", addr);
-  let listener = TcpListener::bind(&addr,).await?;
-  serve(listener, app,).await?;
+  let listener = TcpListener::bind(&addr).await?;
+  serve(listener, app).await?;
 
-  Ok((),)
+  Ok(())
 }

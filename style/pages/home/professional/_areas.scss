@@ -16,9 +16,7 @@
     background: var(--color-bg-surface);
     display: flex;
     flex-direction: column;
-    transition:
-      box-shadow duration(slow),
-      border-color duration(slow);
+    transition: box-shadow duration(slow), border-color duration(slow);
     overflow: hidden;
 
     // Desktop: uniform height

@@ -29,7 +29,7 @@ pub fn App() -> impl IntoView {
   }
 }
 
-pub fn shell(options : LeptosOptions,) -> impl IntoView {
+pub fn shell(options: LeptosOptions) -> impl IntoView {
   view! {
     <!DOCTYPE html>
     <html lang="en">

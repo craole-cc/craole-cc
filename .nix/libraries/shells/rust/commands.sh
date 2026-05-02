@@ -33,55 +33,55 @@ fi
 shift
 
 case "$cmd" in
-  help|list|ls)
-    usage
-    ;;
-  bench)
-    exec cargo bench "$@"
-    ;;
-  check)
-    exec cargo check "$@"
-    ;;
-  clippy)
-    exec cargo clippy --all-targets --all-features -- -D warnings
-    ;;
-  coverage)
-    exec cargo tarpaulin --out Html --output-dir coverage "$@"
-    ;;
-  fmt)
-    cargo fmt --all "$@"
-    exec treefmt
-    ;;
-  info)
-    tokei
-    exec onefetch
-    ;;
-  lint)
-    treefmt
-    cargo fmt --all --check
-    exec cargo clippy --all-targets --all-features -- -D warnings
-    ;;
-  run)
-    exec cargo run "$@"
-    ;;
-  test)
-    exec cargo nextest run "$@"
-    ;;
-  version)
-    exec rustc --version
-    ;;
-  watch-check)
-    exec cargo watch --quiet --clear --exec check "$@"
-    ;;
-  watch-run)
-    exec cargo watch --quiet --clear --exec run "$@"
-    ;;
-  watch-test)
-    exec cargo watch --quiet --clear --exec "nextest run" "$@"
-    ;;
-  *)
-    printf 'Unknown rust command: %s\n' "$cmd" >&2
-    usage >&2
-    exit 1
-    ;;
+help | list | ls)
+  usage
+  ;;
+bench)
+  exec cargo bench "$@"
+  ;;
+check)
+  exec cargo check "$@"
+  ;;
+clippy)
+  exec cargo clippy --all-targets --all-features -- -D warnings
+  ;;
+coverage)
+  exec cargo tarpaulin --out Html --output-dir coverage "$@"
+  ;;
+fmt)
+  cargo fmt --all "$@"
+  exec treefmt
+  ;;
+info)
+  tokei
+  exec onefetch
+  ;;
+lint)
+  treefmt
+  cargo fmt --all --check
+  exec cargo clippy --all-targets --all-features -- -D warnings
+  ;;
+run)
+  exec cargo run "$@"
+  ;;
+test)
+  exec cargo nextest run "$@"
+  ;;
+version)
+  exec rustc --version
+  ;;
+watch-check)
+  exec cargo watch --quiet --clear --exec check "$@"
+  ;;
+watch-run)
+  exec cargo watch --quiet --clear --exec run "$@"
+  ;;
+watch-test)
+  exec cargo watch --quiet --clear --exec "nextest run" "$@"
+  ;;
+*)
+  printf 'Unknown rust command: %s\n' "$cmd" >&2
+  usage >&2
+  exit 1
+  ;;
 esac

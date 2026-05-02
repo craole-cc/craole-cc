@@ -2,7 +2,7 @@ use super::_prelude::*;
 
 #[component]
 #[allow(clippy::must_use_candidate)]
-pub fn Trigger(set_open : WriteSignal<bool,>,) -> impl IntoView {
+pub fn Trigger(set_open: WriteSignal<bool>) -> impl IntoView {
   view! {
     <button
       class="spotlight__trigger"

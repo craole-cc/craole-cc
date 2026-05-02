@@ -1,24 +1,18 @@
-use super::{
-  _prelude::*,
-  archive::Archive,
-  featured::Featured,
-  filter::Filter,
-  header::Header,
-};
+use super::{_prelude::*, archive::Archive, featured::Featured, filter::Filter, header::Header};
 
 #[component]
 pub fn Log() -> impl IntoView {
-  let (posts, set_posts,) = signal(Vec::<PostSummary,>::new(),);
+  let (posts, set_posts) = signal(Vec::<PostSummary>::new());
 
   // Initial load
-  let initial = Resource::new(|| (), |()| async move { list_posts().await },);
+  let initial = Resource::new(|| (), |()| async move { list_posts().await });
 
   // Seed posts signal from initial load
   Effect::new(move |_| {
-    if let Some(Ok(p,),) = initial.get() {
-      set_posts.set(p,);
+    if let Some(Ok(p)) = initial.get() {
+      set_posts.set(p);
     }
-  },);
+  });
 
   view! {
     <div class="log-page">

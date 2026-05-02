@@ -20,10 +20,7 @@
   border: spacing(px) solid var(--color-neutral-border);
   background: var(--color-bg-surface);
   box-shadow: var(--shadow-card);
-  transition:
-    box-shadow duration(slow),
-    transform duration(slow),
-    border-color duration(slow);
+  transition: box-shadow duration(slow), transform duration(slow), border-color duration(slow);
 
   &:hover {
     box-shadow: var(--shadow-card-hover);

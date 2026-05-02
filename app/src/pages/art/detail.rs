@@ -1,19 +1,16 @@
-use {
-  super::related::Related,
-  crate::prelude::*,
-};
+use {super::related::Related, crate::prelude::*};
 
 #[component]
 pub fn Detail() -> impl IntoView {
   let params = use_params_map();
-  let slug = move || params.with(|p| p.get("slug",).unwrap_or_default(),);
+  let slug = move || params.with(|p| p.get("slug").unwrap_or_default());
 
   let media = Resource::new(slug, |s| async move {
     if s.is_empty() {
-      return Ok(None,);
+      return Ok(None);
     }
-    get_media_by_slug(s,).await
-  },);
+    get_media_by_slug(s).await
+  });
 
   view! {
     <Suspense fallback=move || {

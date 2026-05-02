@@ -3,10 +3,10 @@ use super::_prelude::*;
 #[component]
 #[allow(clippy::must_use_candidate)]
 pub fn Field(
-  #[prop(into)] placeholder : String,
-  query : ReadSignal<String,>,
-  set_query : WriteSignal<String,>,
-  input_ref : NodeRef<LeptosInput,>,
+  #[prop(into)] placeholder: String,
+  query: ReadSignal<String>,
+  set_query: WriteSignal<String>,
+  input_ref: NodeRef<LeptosInput>,
 ) -> impl IntoView {
   view! {
     <div role="search" class="spotlight__field">

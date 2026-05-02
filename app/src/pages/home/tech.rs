@@ -14,7 +14,7 @@ pub fn Stacks() -> impl IntoView {
 }
 
 #[component]
-fn StackCard(stack : &'static Stack,) -> impl IntoView {
+fn StackCard(stack: &'static Stack) -> impl IntoView {
   view! {
     <li>
       <article class="stack-card">
@@ -36,7 +36,7 @@ fn StackCard(stack : &'static Stack,) -> impl IntoView {
 
 /// A single technology badge — link + icon + label, all sourced from the Icon.
 #[component]
-fn TechBadge(icon : Icon,) -> impl IntoView {
+fn TechBadge(icon: Icon) -> impl IntoView {
   view! {
     <li>
       <a

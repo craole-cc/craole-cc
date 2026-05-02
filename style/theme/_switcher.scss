@@ -36,10 +36,7 @@
 
   color: #fff;
 
-  transition:
-    color duration(fast),
-    background-color duration(fast),
-    border-color duration(fast);
+  transition: color duration(fast), background-color duration(fast), border-color duration(fast);
 
   .site-nav--scrolled & {
     color: var(--color-text);
@@ -97,9 +94,7 @@
     color: var(--color-text-muted);
     font-size: fontsize(base);
     cursor: pointer;
-    transition:
-      background-color duration(fast),
-      color duration(fast);
+    transition: background-color duration(fast), color duration(fast);
     text-align: left;
 
     svg {

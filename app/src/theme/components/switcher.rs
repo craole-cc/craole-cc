@@ -1,7 +1,4 @@
-use {
-  super::Context,
-  crate::prelude::*,
-};
+use {super::Context, crate::prelude::*};
 
 //╔═══════════════════════════════════════════════════════════╗
 //║ Switcher                                             ║
@@ -30,30 +27,30 @@ use {
 pub fn Switcher(
   /// Extra CSS class forwarded to the outer wrapper `<div>`.
   #[prop(default = "")]
-  class : &'static str,
+  class: &'static str,
 ) -> impl IntoView {
-  let Context { theme, .. } = expect_context::<Context,>();
-  let (open, set_open,) = signal(false,);
+  let Context { theme, .. } = expect_context::<Context>();
+  let (open, set_open) = signal(false);
 
   // Close dropdown when anything outside it is clicked
   Effect::new(move |_| {
     if !open.get() {
       return;
     }
-    let Some(doc,) = window().and_then(|w| w.document(),) else {
+    let Some(doc) = window().and_then(|w| w.document()) else {
       return;
     };
-    let handler = Closure::<dyn Fn(MouseEvent,),>::wrap(Box::new(move |_| set_open.set(false,),),);
-    let _ = doc.add_event_listener_with_callback("click", handler.as_ref().unchecked_ref(),);
+    let handler = Closure::<dyn Fn(MouseEvent)>::wrap(Box::new(move |_| set_open.set(false)));
+    let _ = doc.add_event_listener_with_callback("click", handler.as_ref().unchecked_ref());
     handler.forget();
-  },);
+  });
 
   // Each option: (Theme variant, display label)
   // Icons are resolved at render time via Theme::icons() — no Icons enum needed.
   let options = [
-    (Theme::System, "System",),
-    (Theme::Light, "Light",),
-    (Theme::Dark, "Dark",),
+    (Theme::System, "System"),
+    (Theme::Light, "Light"),
+    (Theme::Dark, "Dark"),
   ];
 
   view! {

@@ -1,13 +1,9 @@
 use {
   crate::prelude::*,
-  std::{
-    cell::Cell,
-    rc::Rc,
-    time::Duration,
-  },
+  std::{cell::Cell, rc::Rc, time::Duration},
 };
 
-const SLIDES : &[&str] = &[
+const SLIDES: &[&str] = &[
   // Bridges
   "https://images.unsplash.com/photo-1433086966358-54859d0ed716?auto=format&fit=crop&w=1920&q=80",
   "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&w=1920&q=80",
@@ -29,40 +25,40 @@ const SLIDES : &[&str] = &[
   "https://images.unsplash.com/photo-1555400038-63f5ba517a47?auto=format&fit=crop&w=1920&q=80",
 ];
 
-const SLIDE_SECS : f64 = 5.0;
+const SLIDE_SECS: f64 = 5.0;
 
 #[component]
 pub fn Hero() -> impl IntoView {
   #[cfg_attr(not(feature = "hydrate"), allow(unused_variables))]
-  let ThemeContext { set_hue, .. } = expect_context::<ThemeContext,>();
+  let ThemeContext { set_hue, .. } = expect_context::<ThemeContext>();
 
   // scrolled signal exists in all builds — only the Effect is hydrate-only
-  let (scrolled, set_scrolled,) = signal(false,);
+  let (scrolled, set_scrolled) = signal(false);
 
   #[cfg(feature = "hydrate")]
   {
     Effect::new(move |_| {
-      let handler = Closure::<dyn Fn(),>::wrap(Box::new(move || {
-        let y = window().and_then(|w| w.scroll_y().ok(),).unwrap_or(0.0,);
-        set_scrolled.set(y > 50.0,);
-      },) as Box<dyn Fn(),>,);
+      let handler = Closure::<dyn Fn()>::wrap(Box::new(move || {
+        let y = window().and_then(|w| w.scroll_y().ok()).unwrap_or(0.0);
+        set_scrolled.set(y > 50.0);
+      }) as Box<dyn Fn()>);
       let cb = handler.as_ref().unchecked_ref::<js_sys::Function>().clone();
-      let _ = window().map(|w| w.add_event_listener_with_callback("scroll", &cb,),);
+      let _ = window().map(|w| w.add_event_listener_with_callback("scroll", &cb));
       handler.forget();
-    },);
+    });
 
     let url = SLIDES[0];
-    extract_hue_from_url(url, move |hue| set_hue.set(hue,),);
+    extract_hue_from_url(url, move |hue| set_hue.set(hue));
 
-    let slide_index = Rc::new(Cell::new(1_usize,),);
+    let slide_index = Rc::new(Cell::new(1_usize));
     set_interval(
       move || {
         let i = slide_index.get() % SLIDES.len();
-        slide_index.set(i + 1,);
+        slide_index.set(i + 1);
         let url = SLIDES[i];
-        extract_hue_from_url(url, move |hue| set_hue.set(hue,),);
+        extract_hue_from_url(url, move |hue| set_hue.set(hue));
       },
-      Duration::from_secs_f64(SLIDE_SECS,),
+      Duration::from_secs_f64(SLIDE_SECS),
     );
   }
 

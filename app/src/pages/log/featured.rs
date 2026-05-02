@@ -2,12 +2,12 @@ use super::_prelude::*;
 
 #[component]
 pub fn Featured(
-  first : Option<PostSummary,>,
-  second : Option<PostSummary,>,
-  third : Option<PostSummary,>,
+  first: Option<PostSummary>,
+  second: Option<PostSummary>,
+  third: Option<PostSummary>,
 ) -> impl IntoView {
   if first.is_none() && second.is_none() {
-    return Either::Left((),);
+    return Either::Left(());
   }
 
   Either::Right(view! {
@@ -102,5 +102,5 @@ pub fn Featured(
 
       </div>
     </section>
-  },)
+  })
 }

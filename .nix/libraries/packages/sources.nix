@@ -100,9 +100,7 @@
   */
   resolvePackages = args: let
     inputs =
-      if args ? inputs
-      then args.inputs
-      else args;
+      args.inputs or args;
   in {
     ai = parseInput {
       inherit inputs;

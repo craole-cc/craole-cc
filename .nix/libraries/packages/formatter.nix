@@ -1,7 +1,7 @@
 {lib, ...}: let
   inherit (lib.attrsets) mapAttrs recursiveUpdate;
   inherit (lib.lists) elem toList;
-  inherit (lib.packages) resolvePackages perSystem;
+  inherit (lib.packages) defineSystems resolvePackages perSystem;
 
   mkTreefmt = {
     flake,
@@ -23,7 +23,7 @@
     };
 
     formatter = mapAttrs (_: v: v.wrapper) packages;
-    checks = mapAttrs (_: v: {formatting = v.formatting;}) packages;
+    checks = mapAttrs (_: v: {inherit (v) formatting;}) packages;
   in {
     inherit formatter checks;
   };
@@ -33,34 +33,31 @@
     programs,
     settings,
   }: let
-    unless = systems:
-      !(elem pkgs.stdenv.hostPlatform.system (toList systems));
+    inherit (pkgs.stdenv.hostPlatform) system;
+    for = {
+      allBut = systems: !(elem system (toList systems));
+      all = {systems ? defineSystems}: (elem system (toList systems));
+    };
   in
     recursiveUpdate {
       projectRootFile = "flake.nix";
 
       programs = {
         actionlint.enable = true;
-        alejandra.enable = true;
-        deno.enable = unless "riscv64-linux";
+        alejandra.enable = for.all {};
+        deno.enable = for.allBut "riscv64-linux";
         leptosfmt.enable = true;
         rustfmt.enable = true;
         shellcheck.enable = true;
         shfmt.enable = true;
-        sqruff.enable = unless ["riscv64-linux" "aarch64-darwin"];
+        sqruff.enable = for.allBut ["riscv64-linux" "aarch64-darwin"];
         statix.enable = true;
         taplo.enable = true;
         yamlfmt.enable = true;
       };
 
       settings = {
-        excludes = [
-          "node_modules"
-          ".git"
-          "target"
-          "dist"
-        ];
-
+        excludes = ["node_modules" ".git" "target" "dist"];
         formatters = {};
       };
     }

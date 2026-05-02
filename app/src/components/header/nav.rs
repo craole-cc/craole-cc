@@ -2,7 +2,7 @@
 use crate::prelude::*;
 
 #[component]
-pub fn PageNav(open : ReadSignal<bool,>, set_open : WriteSignal<bool,>,) -> impl IntoView {
+pub fn PageNav(open: ReadSignal<bool>, set_open: WriteSignal<bool>) -> impl IntoView {
   let location = use_location();
 
   view! {

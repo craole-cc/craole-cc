@@ -1,52 +1,49 @@
-use crate::prelude::{
-  icons::*,
-  *,
-};
+use crate::prelude::{icons::*, *};
 
 //╔═══════════════════════════════════════════════════════════╗
 //║ Social Icons                                              ║
 //╚═══════════════════════════════════════════════════════════╝
 
 struct SocialEntry {
-  hover :   Icon,
-  default : Icon,
+  hover: Icon,
+  default: Icon,
 }
 
-fn socials() -> Vec<SocialEntry,> {
+fn socials() -> Vec<SocialEntry> {
   vec![
     SocialEntry {
-      default : gmail::filled(),
-      hover :   gmail::local(),
+      default: gmail::filled(),
+      hover: gmail::local(),
     },
     SocialEntry {
-      default : github::filled(),
-      hover :   github::filled(),
+      default: github::filled(),
+      hover: github::filled(),
     },
     SocialEntry {
-      default : linkedin::filled(),
-      hover :   linkedin::local(),
+      default: linkedin::filled(),
+      hover: linkedin::local(),
     },
     SocialEntry {
-      default : whatsapp::filled(),
-      hover :   whatsapp::local(),
+      default: whatsapp::filled(),
+      hover: whatsapp::local(),
     },
     SocialEntry {
-      default : instagram::filled(),
-      hover :   instagram::local(),
+      default: instagram::filled(),
+      hover: instagram::local(),
     },
     SocialEntry {
-      default : facebook::filled(),
-      hover :   facebook::local(),
+      default: facebook::filled(),
+      hover: facebook::local(),
     },
     SocialEntry {
-      default : x::filled(),
-      hover :   x::filled(),
+      default: x::filled(),
+      hover: x::filled(),
     },
   ]
 }
 
 #[component]
-fn SocialIcon(default : Icon, hover : Icon,) -> impl IntoView {
+fn SocialIcon(default: Icon, hover: Icon) -> impl IntoView {
   view! {
     <a
       href=default.link()

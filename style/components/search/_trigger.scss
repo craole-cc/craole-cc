@@ -11,10 +11,7 @@
     border-radius: radius(md);
     cursor: pointer;
     color: #fff;
-    transition:
-      color duration(fast),
-      background-color duration(fast),
-      border-color duration(fast);
+    transition: color duration(fast), background-color duration(fast), border-color duration(fast);
 
     svg {
       width: size(icon-sm);

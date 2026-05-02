@@ -1,12 +1,12 @@
 use crate::prelude::*;
 
 /// Where an icon's visual asset comes from.
-#[derive(Default, Clone, Copy,)]
+#[derive(Default, Clone, Copy)]
 pub enum Source {
   #[default]
   Empty,
-  Leptos(IconData,),
-  Local(&'static str,),
+  Leptos(IconData),
+  Local(&'static str),
 }
 
 /// A single icon with all its metadata.
@@ -14,47 +14,51 @@ pub enum Source {
 /// Color is always expressed as a CSS class name referencing a token from
 /// `theme/_colors.scss`. No hex values, no inline styles, no runtime
 /// string generation. Dark mode is handled entirely by the stylesheet.
-#[derive(Default, Clone, Copy,)]
+#[derive(Default, Clone, Copy)]
 pub struct Icon {
-  pub source :  Source,
-  pub class :   &'static str,
-  pub label :   &'static str,
-  pub tooltip : &'static str,
-  pub link :    &'static str,
+  pub source: Source,
+  pub class: &'static str,
+  pub label: &'static str,
+  pub tooltip: &'static str,
+  pub link: &'static str,
 }
 
 impl Icon {
   #[must_use]
   pub const fn new() -> Self {
     Self {
-      source :  Source::Empty,
-      class :   "",
-      label :   "",
-      tooltip : "",
-      link :    "",
+      source: Source::Empty,
+      class: "",
+      label: "",
+      tooltip: "",
+      link: "",
     }
   }
 
   #[must_use]
-  pub const fn new_leptos(src : IconData,) -> Self { Self::new().via_leptos(src,) }
+  pub const fn new_leptos(src: IconData) -> Self {
+    Self::new().via_leptos(src)
+  }
 
   #[must_use]
-  pub const fn via_leptos(mut self, src : IconData,) -> Self {
-    self.source = Source::Leptos(src,);
+  pub const fn via_leptos(mut self, src: IconData) -> Self {
+    self.source = Source::Leptos(src);
     self
   }
 
   #[must_use]
-  pub const fn new_local(src : &'static str,) -> Self { Self::new().via_local(src,) }
+  pub const fn new_local(src: &'static str) -> Self {
+    Self::new().via_local(src)
+  }
 
   #[must_use]
-  pub const fn via_local(mut self, src : &'static str,) -> Self {
-    self.source = Source::Local(src,);
+  pub const fn via_local(mut self, src: &'static str) -> Self {
+    self.source = Source::Local(src);
     self
   }
 
   #[must_use]
-  pub const fn with_source(mut self, source : Source,) -> Self {
+  pub const fn with_source(mut self, source: Source) -> Self {
     self.source = source;
     self
   }
@@ -62,44 +66,44 @@ impl Icon {
   /// Append a CSS class. If the icon already has classes, the new one is
   /// space-separated. Allocates only when combining two non-empty strings.
   #[must_use]
-  pub fn and_class(mut self, additional : &'static str,) -> Self {
+  pub fn and_class(mut self, additional: &'static str) -> Self {
     if additional.is_empty() {
       return self;
     }
     self.class = if self.class.is_empty() {
       additional
     } else {
-      Box::leak(format!("{} {}", self.class, additional).into_boxed_str(),)
+      Box::leak(format!("{} {}", self.class, additional).into_boxed_str())
     };
     self
   }
 
   #[must_use]
-  pub const fn with_class(mut self, class : &'static str,) -> Self {
+  pub const fn with_class(mut self, class: &'static str) -> Self {
     self.class = class;
     self
   }
 
   #[must_use]
-  pub const fn without_class(mut self,) -> Self {
+  pub const fn without_class(mut self) -> Self {
     self.class = "";
     self
   }
 
   #[must_use]
-  pub const fn with_label(mut self, label : &'static str,) -> Self {
+  pub const fn with_label(mut self, label: &'static str) -> Self {
     self.label = label;
     self
   }
 
   #[must_use]
-  pub const fn with_tooltip(mut self, tooltip : &'static str,) -> Self {
+  pub const fn with_tooltip(mut self, tooltip: &'static str) -> Self {
     self.tooltip = tooltip;
     self
   }
 
   #[must_use]
-  pub const fn with_link(mut self, link : &'static str,) -> Self {
+  pub const fn with_link(mut self, link: &'static str) -> Self {
     self.link = link;
     self
   }
@@ -111,38 +115,58 @@ impl Icon {
   /// Dark mode is handled by `[data-theme="dark"]` overrides in
   /// `theme/_colors.scss`. No hex values belong here.
   #[must_use]
-  pub fn colored(self, fill_class : &'static str,) -> Self { self.and_class(fill_class,) }
+  pub fn colored(self, fill_class: &'static str) -> Self {
+    self.and_class(fill_class)
+  }
 
   /// Dim the icon — useful for muted/rest states.
   #[must_use]
-  pub fn muted(self,) -> Self { self.and_class("opacity-60",) }
+  pub fn muted(self) -> Self {
+    self.and_class("opacity-60")
+  }
 
   /// Dim the icon — useful for muted/rest states.
   #[must_use]
-  pub fn desaturated(self,) -> Self { self.and_class("saturate-0",) }
+  pub fn desaturated(self) -> Self {
+    self.and_class("saturate-0")
+  }
 
   // -- Accessors ─────────────────────────────────────────────────────────────
 
   #[must_use]
-  pub const fn source(&self,) -> &Source { &self.source }
+  pub const fn source(&self) -> &Source {
+    &self.source
+  }
 
   #[must_use]
-  pub const fn class(&self,) -> &'static str { self.class }
+  pub const fn class(&self) -> &'static str {
+    self.class
+  }
 
   #[must_use]
-  pub const fn label(&self,) -> &'static str { self.label }
+  pub const fn label(&self) -> &'static str {
+    self.label
+  }
 
   #[must_use]
-  pub const fn tooltip(&self,) -> &'static str { self.tooltip }
+  pub const fn tooltip(&self) -> &'static str {
+    self.tooltip
+  }
 
   #[must_use]
-  pub const fn link(&self,) -> &'static str { self.link }
+  pub const fn link(&self) -> &'static str {
+    self.link
+  }
 }
 
-impl From<IconData,> for Icon {
-  fn from(src : IconData,) -> Self { Self::new_leptos(src,) }
+impl From<IconData> for Icon {
+  fn from(src: IconData) -> Self {
+    Self::new_leptos(src)
+  }
 }
 
-impl From<&'static str,> for Icon {
-  fn from(src : &'static str,) -> Self { Self::new_local(src,) }
+impl From<&'static str> for Icon {
+  fn from(src: &'static str) -> Self {
+    Self::new_local(src)
+  }
 }

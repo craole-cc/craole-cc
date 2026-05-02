@@ -3,10 +3,10 @@ use super::_prelude::*;
 #[component]
 #[allow(clippy::must_use_candidate)]
 pub fn ResultGroup(
-  label : &'static str,
-  class : &'static str,
-  #[allow(clippy::needless_pass_by_value)] items : Vec<Item,>,
-  set_open : WriteSignal<bool,>,
+  label: &'static str,
+  class: &'static str,
+  #[allow(clippy::needless_pass_by_value)] items: Vec<Item>,
+  set_open: WriteSignal<bool>,
 ) -> impl IntoView {
   if items.is_empty() {
     return None;
@@ -30,5 +30,5 @@ pub fn ResultGroup(
           .collect_view()}
       </ul>
     </section>
-  },)
+  })
 }

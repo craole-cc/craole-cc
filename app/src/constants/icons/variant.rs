@@ -6,7 +6,7 @@
 ///
 /// Brands that ship additional non-standard styles (e.g. `FaBrands`,
 /// `SiSimple`) expose a separate `Extended` enum alongside this one.
-#[derive(Default, Clone, Copy, PartialEq, Eq, Hash,)]
+#[derive(Default, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum Variant {
   /// The brand's canonical default. Resolves to `Local` for most brands,
   /// `Filled` for brands where the coloured Leptos icon is preferred

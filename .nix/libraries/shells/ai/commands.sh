@@ -56,36 +56,36 @@ fi
 shift
 
 case "$cmd" in
-  help|list|ls)
-    usage
-    ;;
-  agents)
-    run_tool agentsview -- "$@"
-    ;;
-  claude)
-    run_tool claude-code claude -- "$@"
-    ;;
-  codex)
-    run_tool codex -- "$@"
-    ;;
-  doctor)
-    doctor
-    ;;
-  gemini)
-    run_tool gemini gemini-cli -- "$@"
-    ;;
-  goose)
-    run_tool goose-cli goose -- "$@"
-    ;;
-  opencode)
-    run_tool opencode -- "$@"
-    ;;
-  usage)
-    run_tool ccusage -- "$@"
-    ;;
-  *)
-    printf 'Unknown AI command: %s\n' "$cmd" >&2
-    usage >&2
-    exit 1
-    ;;
+help | list | ls)
+  usage
+  ;;
+agents)
+  run_tool agentsview -- "$@"
+  ;;
+claude)
+  run_tool claude-code claude -- "$@"
+  ;;
+codex)
+  run_tool codex -- "$@"
+  ;;
+doctor)
+  doctor
+  ;;
+gemini)
+  run_tool gemini gemini-cli -- "$@"
+  ;;
+goose)
+  run_tool goose-cli goose -- "$@"
+  ;;
+opencode)
+  run_tool opencode -- "$@"
+  ;;
+usage)
+  run_tool ccusage -- "$@"
+  ;;
+*)
+  printf 'Unknown AI command: %s\n' "$cmd" >&2
+  usage >&2
+  exit 1
+  ;;
 esac

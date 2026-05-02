@@ -3,28 +3,28 @@ use super::_prelude::*;
 #[component]
 #[allow(clippy::must_use_candidate)]
 pub fn Search() -> impl IntoView {
-  let (open, set_open,) = signal(false,);
-  let (query, set_query,) = signal(String::new(),);
-  let input_ref = NodeRef::<LeptosInput,>::new();
+  let (open, set_open) = signal(false);
+  let (query, set_query) = signal(String::new());
+  let input_ref = NodeRef::<LeptosInput>::new();
 
   let location = use_location();
   let current_path = move || location.pathname.get();
 
-  let context_tags = Resource::new(current_path, |p| async move { get_context_tags(p,).await },);
+  let context_tags = Resource::new(current_path, |p| async move { get_context_tags(p).await });
 
   let results = Resource::new(
     move || query.get(),
     |q| async move {
       if q.len() < 2 {
-        Ok(vec![],)
+        Ok(vec![])
       } else {
-        sitewide_search(q,).await
+        sitewide_search(q).await
       }
     },
   );
 
-  use_spotlight_keyboard(set_open,);
-  use_focus_on_open(open, set_query, input_ref,);
+  use_spotlight_keyboard(set_open);
+  use_focus_on_open(open, set_query, input_ref);
 
   let placeholder = move || match current_path().as_str() {
     | "/dev" => "Search projects, tags…",

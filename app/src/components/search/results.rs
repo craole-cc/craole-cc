@@ -3,9 +3,9 @@ use super::_prelude::*;
 #[component]
 #[allow(clippy::must_use_candidate)]
 pub fn Results(
-  query : ReadSignal<String,>,
-  results : Resource<Result<Vec<Item,>, ServerFnError,>,>,
-  set_open : WriteSignal<bool,>,
+  query: ReadSignal<String>,
+  results: Resource<Result<Vec<Item>, ServerFnError>>,
+  set_open: WriteSignal<bool>,
 ) -> impl IntoView {
   view! {
     <Suspense fallback=|| ()>

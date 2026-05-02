@@ -9,9 +9,7 @@
   text-decoration: none;
   flex-shrink: 0;
   color: #fff;
-  transition:
-    opacity duration(fast),
-    color duration(slow);
+  transition: opacity duration(fast), color duration(slow);
 
   .site-nav--scrolled & {
     color: var(--color-text); // Better contrast

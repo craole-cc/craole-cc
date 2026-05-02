@@ -226,9 +226,7 @@
 
     package = let
       rust =
-        if pkgs ? rust-bin
-        then pkgs.rust-bin
-        else throw "lib.packages.mkRust: pkgs.rust-bin is required.";
+        pkgs.rust-bin or (throw "lib.packages.mkRust: pkgs.rust-bin is required.");
     in
       if toolchain.file != null
       then rust.fromRustupToolchainFile toolchain.file

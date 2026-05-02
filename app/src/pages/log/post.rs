@@ -3,14 +3,14 @@ use super::_prelude::*;
 #[component]
 pub fn Post() -> impl IntoView {
   let params = use_params_map();
-  let slug = move || params.with(|p| p.get("slug",).unwrap_or_default(),);
+  let slug = move || params.with(|p| p.get("slug").unwrap_or_default());
 
   let post = Resource::new(slug, |slug| async move {
     if slug.is_empty() {
-      return Ok::<Option<Post,>, ServerFnError,>(None,);
+      return Ok::<Option<Post>, ServerFnError>(None);
     }
-    get_post_by_slug(slug,).await
-  },);
+    get_post_by_slug(slug).await
+  });
 
   view! {
     <section class="readable page page--log-post">

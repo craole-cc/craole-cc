@@ -4,10 +4,10 @@ use crate::prelude::*;
 #[allow(clippy::must_use_candidate)]
 #[allow(clippy::needless_pass_by_value)]
 pub fn Tags(
-  tags : Vec<String,>,
-  label : String,
-  page : String,
-  set_open : WriteSignal<bool,>,
+  tags: Vec<String>,
+  label: String,
+  page: String,
+  set_open: WriteSignal<bool>,
 ) -> impl IntoView {
   // Clone before view! consumes label via into_render
   let aria_label = label.clone();

@@ -1,15 +1,12 @@
 use {
-  super::config::{
-    Divider,
-    units_to_rem,
-  },
+  super::config::{Divider, units_to_rem},
   crate::prelude::*,
 };
 
 #[component]
 #[allow(clippy::must_use_candidate)]
-pub fn Divider(#[prop(default = Divider::default())] config : Divider,) -> impl IntoView {
-  let (left_gap, right_gap,) = config.dot_pos.unwrap_or((0, 0,),);
+pub fn Divider(#[prop(default = Divider::default())] config: Divider) -> impl IntoView {
+  let (left_gap, right_gap) = config.dot_pos.unwrap_or((0, 0));
 
   let style = format!(
     "--divider-padding: {}; --divider-gap-left: {}; --divider-gap-right: {};",

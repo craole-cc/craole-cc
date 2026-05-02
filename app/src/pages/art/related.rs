@@ -1,10 +1,10 @@
 use crate::prelude::*;
 
 #[component]
-pub fn Related(slug : String,) -> impl IntoView {
+pub fn Related(slug: String) -> impl IntoView {
   let related = Resource::new(
     move || slug.clone(),
-    |s| async move { list_related_media(s,).await },
+    |s| async move { list_related_media(s).await },
   );
 
   view! {

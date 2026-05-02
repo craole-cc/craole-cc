@@ -52,9 +52,7 @@
     padding: spacing(3) spacing(4);
     text-decoration: none;
     color: var(--color-text);
-    transition:
-      background-color duration(fast),
-      color duration(fast);
+    transition: background-color duration(fast), color duration(fast);
     cursor: pointer;
 
     &:hover {

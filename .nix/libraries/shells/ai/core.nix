@@ -215,8 +215,7 @@
     };
 
     payloadPackages =
-      []
-      ++ packages.core
+      packages.core
       ++ packages.utilities
       ++ packages.analytics
       ++ packages.workflow;

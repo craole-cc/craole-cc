@@ -60,9 +60,7 @@
     font-weight: 500;
     color: var(--color-text-muted);
     text-decoration: none;
-    transition:
-      color duration(fast),
-      transform duration(fast);
+    transition: color duration(fast), transform duration(fast);
 
     &:hover {
       color: var(--color-primary-text);

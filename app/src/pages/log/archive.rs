@@ -1,9 +1,9 @@
 use super::_prelude::*;
 
 #[component]
-pub fn Archive(posts : Vec<PostSummary,>,) -> impl IntoView {
+pub fn Archive(posts: Vec<PostSummary>) -> impl IntoView {
   if posts.is_empty() {
-    return Either::Left((),);
+    return Either::Left(());
   }
 
   Either::Right(view! {
@@ -33,5 +33,5 @@ pub fn Archive(posts : Vec<PostSummary,>,) -> impl IntoView {
           .collect_view()}
       </ul>
     </section>
-  },)
+  })
 }
