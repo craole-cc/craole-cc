@@ -3,7 +3,7 @@
   lib ? null,
   inputs ? null,
   system ? null,
-  config ? null,
+  config ? {allowUnfree = true;},
 }: let
   paths = let
     src = ./.;
@@ -26,46 +26,56 @@
     };
   };
 
-  inherit (builtins) hasAttr head isAttrs pathExists tail;
-  findFirst = names: set:
-    if names == []
-    then null
-    else let
-      name = head names;
-    in
-      if hasAttr name set
-      then name
-      else findFirst (tail names) set;
+  inherit (builtins) attrNames filter head isAttrs match pathExists tail;
+  findFirst = {
+    pred,
+    default,
+    list,
+  }:
+    if list == []
+    then default
+    else if pred (head list)
+    then head list
+    else
+      findFirst {
+        inherit pred default;
+        list = tail list;
+      };
 
   nixpkgs = let
-    name =
-      if isAttrs inputs
-      then
-        findFirst [
-          "NixPkgsUnstable"
-          "NixPackagesUnstable"
-          "nixpkgs-unstable"
-          "NixPackages"
-          "NixPkgs"
-          "nixpkgs-stable"
-          "nixpkgs"
-        ]
-        inputs
-      else null;
-    cfg = {
-      config =
-        if config != null
-        then config
-        else {allowUnfree = true;};
-      system =
-        if system != null
-        then system
-        else builtins.currentSystem or "x86_64-linux";
-    };
-  in
-    if name != null
-    then import inputs.${name} cfg
-    else import <nixpkgs> cfg;
+  isUnstable = n: match ".*(unstable|master).*" n != null;
+  name =
+    if isAttrs inputs
+    then let
+      candidates = filter
+        (n: n != "self" && inputs.${n} ? legacyPackages)
+        (attrNames inputs);
+      unstable = filter isUnstable candidates;
+    in
+      if unstable != [] then head unstable
+      else if candidates != [] then head candidates
+      else null
+    else null;
+  args = {inherit config;};
+in
+  if name != null
+  then import inputs.${name} args
+  else import <nixpkgs> args;
+
+  # nixpkgs = let
+  #   name =
+  #     if isAttrs inputs
+  #     then
+  #       findFirst
+  #       (n: inputs.${n} ? legacyPackages)
+  #       null
+  #       (attrNames inputs)
+  #     else null;
+  #   args = {inherit config;};
+  # in
+  #   if name != null
+  #   then import inputs.${name} args
+  #   else import <nixpkgs> args;
 
   libraries = let
     lib' =
@@ -84,7 +94,7 @@
   inherit (libraries.packages) mkPkgs getSystemOrDefault;
   inherit (libraries.shells) mkDevShells;
 
-  packages = mkPkgs {inherit inputs;};
+  packages = mkPkgs {inherit inputs system;};
   pkgs = packages;
 
   environment =

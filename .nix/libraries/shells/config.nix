@@ -27,7 +27,7 @@
   in {
     devShells = mkShells {
       inherit inputs;
-      default = variants.default;
+      default = variants.minimal;
       shells = namespaced // variants;
     };
   };

@@ -25,20 +25,22 @@
   mkPkgs = {
     inputs ? null,
     system ? null,
+    config ? null,
     extraOverlays ? [],
   }: let
     packages = resolvePackages inputs;
-
-    system' =
-      if isNotEmpty system
-      then system
-      else getSystemOrDefault {};
-  in
-    if isEmpty inputs
-    then import <nixpkgs> {system = system';}
-    else
-      import packages.nix {
-        system = system';
+    args =
+      {
+        config =
+          if config != null
+          then config
+          else {allowUnfree = true;};
+        system =
+          if isNotEmpty system
+          then system
+          else getSystemOrDefault {};
+      }
+      // optionalAttrs (isNotEmpty inputs) {
         overlays =
           [
             (resolveOverlay packages.ai)
@@ -46,8 +48,11 @@
             (resolveOverlay packages.rust)
           ]
           ++ extraOverlays;
-        config.allowUnfree = true;
       };
+  in
+    if isEmpty inputs
+    then import <nixpkgs> args
+    else import packages.nix args;
 
   mkPkgsPerSystem = {inputs, ...}:
     (genAttrs (defineSystems {})) (
