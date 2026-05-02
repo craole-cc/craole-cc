@@ -4,7 +4,7 @@ max_line_length = 120
 
 #~@ Indentation
 indent_unit = space
-tab_space_size = 4
+tab_space_size = 2
 
 #~@ Capitalisation
 capitalisation_policy = upper

@@ -50,7 +50,11 @@
         rustfmt.enable = true;
         shellcheck.enable = true;
         shfmt.enable = true;
-        sqruff.enable = for.allBut ["riscv64-linux" "aarch64-darwin"];
+        # sqruff.enable = for.allBut ["riscv64-linux" "aarch64-darwin"];
+        sql-formatter = {
+          enable = true;
+          dialect = "sqlite";
+        };
         statix.enable = true;
         taplo.enable = true;
         yamlfmt.enable = true;
@@ -59,12 +63,12 @@
       settings = {
         excludes = ["node_modules" ".git" "target" "dist"];
         formatter = {
-          sqruff = {
-            # options = ["--dialect" "sqlite"];
-            excludes = [
-              "database/migrations/*.sql"
-            ];
-          };
+          # sqruff = {
+          #   # options = ["--dialect" "sqlite"];
+          #   excludes = [
+          #     "database/migrations/*.sql"
+          #   ];
+          # };
         };
       };
     }
