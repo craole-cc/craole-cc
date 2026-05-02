@@ -5,24 +5,21 @@
 
   mkFormatter = {
     inputs ? null,
-    pkgs ? null,
     programs ? {},
     settings ? {},
   }: let
     packages = perSystem {
-      inherit inputs pkgs;
-      fn = pkgs:
-        mkTreefmt {inherit pkgs programs settings;};
+      inherit inputs;
+      fn = pkgs: mkTreefmt {inherit pkgs programs settings;};
     };
   in {
-    formatter = mapAttrs (_: v: v.formatter) packages;
+    formatter = mapAttrs (_: v: v.builder) packages;
     checks = mapAttrs (_: v: {formatting = v.check;}) packages;
   };
 
   mkTreefmt = {
     pkgs,
     programs,
-    projectRoot,
     settings,
   }: let
     package = pkgs.treefmt;
@@ -44,7 +41,6 @@
       // {
         name = "treefmt-builder";
         buildCommand = ''
-          cd ${projectRoot}
           exec ${command}
         '';
       });
@@ -53,7 +49,6 @@
       // {
         name = "treefmt-check";
         buildCommand = ''
-          cd ${projectRoot}
           exec ${command} --check
         '';
       });
@@ -71,7 +66,6 @@
   in
     recursiveUpdate {
       projectRootFile = "flake.nix";
-      # projectRootFile = ".git/config";
 
       programs = {
         actionlint.enable = true;

@@ -207,11 +207,12 @@
     pkgs ? null,
     inputs ? null,
   }: let
-    set =
-      if pkgs != null && pkgs?legacyPackages
+    systems = defineSystems {};
+    packages =
+      if pkgs != null
       then pkgs
-      else mkPkgs {inherit inputs;};
+      else mkPkgsPerSystem {inherit inputs;};
   in
-    genAttrs (defineSystems {})
-    (system: fn set.legacyPackages.${system});
+    genAttrs systems
+    (system: fn packages.${system});
 in {inherit mkOverlays mkPkgs mkPkgsPerSystem perSystem resolvePackages;}
