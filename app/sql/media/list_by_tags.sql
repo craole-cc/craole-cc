@@ -1,16 +1,16 @@
 -- Filter media that has ALL of the given tags (intersection / AND logic).
--- ?1 = comma-separated tag list, e.g. "Landscape,Jamaica"
+-- ?1 = newline-separated tag list, e.g. "Landscape\nJamaica"
 -- Split with a recursive CTE, then count matches per media item.
 -- Only keep items where every requested tag matched.
 
 WITH RECURSIVE split(tag, rest) AS (
   SELECT
-    TRIM(SUBSTR(?1, 1, INSTR(?1 || ',', ',') - 1)),
-    TRIM(SUBSTR(?1, INSTR(?1 || ',', ',') + 1))
+    TRIM(SUBSTR(?1, 1, INSTR(?1 || char(10), char(10)) - 1)),
+    TRIM(SUBSTR(?1, INSTR(?1 || char(10), char(10)) + 1))
   UNION ALL
   SELECT
-    TRIM(SUBSTR(rest, 1, INSTR(rest || ',', ',') - 1)),
-    TRIM(SUBSTR(rest, INSTR(rest || ',', ',') + 1))
+    TRIM(SUBSTR(rest, 1, INSTR(rest || char(10), char(10)) - 1)),
+    TRIM(SUBSTR(rest, INSTR(rest || char(10), char(10)) + 1))
   FROM split
   WHERE rest != ''
 ),
