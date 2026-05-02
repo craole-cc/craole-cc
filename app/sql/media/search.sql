@@ -18,4 +18,4 @@ LEFT JOIN media_tags mt ON mt.media_id = m.id
 WHERE media_fts MATCH ? 1
 AND m.published = 1
 GROUP BY m.id
-ORDER BY rank;
+ORDER BY rank ;

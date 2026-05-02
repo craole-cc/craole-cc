@@ -58,7 +58,14 @@
 
       settings = {
         excludes = ["node_modules" ".git" "target" "dist"];
-        formatters = {};
+        formatter = {
+          sqruff = {
+            options = ["--dialect" "sqlite"];
+            excludes = [
+              "database/migrations/*.sql"
+            ];
+          };
+        };
       };
     }
     {inherit programs settings;};

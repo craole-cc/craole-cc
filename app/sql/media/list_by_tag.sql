@@ -19,4 +19,4 @@ WHERE
     AND mt.tag
 = ? 1
 GROUP BY m.id
-ORDER BY m.sort_order ASC, m.taken_at DESC;
+ORDER BY m.sort_order ASC, m.taken_at DESC ;
