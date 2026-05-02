@@ -50,5 +50,5 @@ in
       ./shells
       # ./format
     ];
-    ignore = ["tests" "assembly.nix"];
+    ignore = ["tests" "assembly.nix" "format"];
   }
