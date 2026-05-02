@@ -19,6 +19,7 @@
   };
 
   outputs = inputs @ {self, ...}: let
+    flake = self;
     src = import ./. {
       inherit inputs;
       inherit (inputs.NixPackages) lib;
@@ -31,6 +32,6 @@
       inherit lib;
       legacyPackages = mkPkgsPerSystem {inherit inputs;};
     }
-    // mkTreefmt {flake = self;}
+    // mkTreefmt {inherit inputs flake;}
     // mkDevShells {inherit inputs pkgs;};
 }
