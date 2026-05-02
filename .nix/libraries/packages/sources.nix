@@ -41,13 +41,7 @@
           else getSystemOrDefault {};
       }
       // optionalAttrs (isNotEmpty inputs) {
-        overlays =
-          [
-            (resolveOverlay packages.ai)
-            (resolveOverlay packages.openclaw)
-            (resolveOverlay packages.rust)
-          ]
-          ++ extraOverlays;
+        overlays = mkOverlays {inherit inputs extraOverlays;};
       };
   in
     if isEmpty inputs
@@ -99,8 +93,20 @@
   # Returns
   - An attribute set containing resolved package inputs or null if not found.
   */
-  resolvePackages = inputs: let
-  in {
+  resolvePackages = inputs: {
+    ai = parseInput {
+      inherit inputs;
+      names = [
+        "AIAgents"
+        "ai-agents"
+        "ai-tooling"
+        "llm"
+        "llm-agents"
+        "AI"
+        "ai"
+      ];
+    };
+
     nix = parseInput {
       inherit inputs;
       names = [
@@ -113,35 +119,35 @@
       error = "mkPkgs: Critical dependency 'nixpkgs' not found in inputs.";
     };
 
-    rust = parseInput {
-      inherit inputs;
-      names = [
-        "Rust"
-        "RustOverlay"
-        "rust-overlay"
-        "oxalica"
-      ];
-    };
-
     openclaw = parseInput {
       inherit inputs;
       names = [
+        "claw"
         "OpenClaw"
         "openclaw"
-        "claw"
       ];
     };
 
-    ai = parseInput {
+    rust = parseInput {
       inherit inputs;
       names = [
-        "AIAgents"
-        "ai-agents"
-        "ai-tooling"
-        "llm"
-        "llm-agents"
-        "AI"
-        "ai"
+        "oxalica"
+        "rust-overlay"
+        "Rust"
+        "RustOverlay"
+      ];
+      error = "mkPkgs: Critical dependency 'rust-overlay' not found in inputs.";
+    };
+
+    treefmt = parseInput {
+      inherit inputs;
+      names = [
+        "fmTree"
+        "Formatter"
+        "treefmt-nix"
+        "TreeFmt"
+        "treefmt"
+        "TreeFormatter"
       ];
     };
   };
@@ -171,4 +177,30 @@
       then src
       else noop
     else noop;
-in {inherit mkPkgs mkPkgsPerSystem;}
+
+  mkOverlays = {
+    inputs ? null,
+    extraOverlays ? [],
+  }: let
+    packages = resolvePackages inputs;
+  in
+    [
+      (resolveOverlay packages.ai)
+      (resolveOverlay packages.openclaw)
+      (resolveOverlay packages.rust)
+    ]
+    ++ extraOverlays;
+
+  perSystem = {
+    fn,
+    pkgs ? null,
+    inputs ? null,
+  }: let
+    set =
+      if pkgs != null && pkgs?legacyPackages
+      then pkgs
+      else mkPkgs {inherit inputs;};
+  in
+    genAttrs (defineSystems {})
+    (system: fn set.legacyPackages.${system});
+in {inherit mkOverlays mkPkgs mkPkgsPerSystem perSystem;}

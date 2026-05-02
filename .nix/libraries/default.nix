@@ -48,6 +48,7 @@ in
       ./packages
       (paths.templates or ../templates)
       ./shells
+      # ./format
     ];
     ignore = ["tests" "assembly.nix"];
   }

@@ -4,6 +4,7 @@
   ...
 }: let
   inherit (lib.attrsets) attrNames mapAttrsToList;
+  inherit (lib.packages) mkPkgs;
   inherit (lib.strings) concatLines escapeShellArg;
   inherit (lib.trivial) readFile;
 
@@ -78,12 +79,37 @@
 
             ${readFile scripts.missionControl}
     '';
+
+  mkFlakeReset = {pkgs ? mkPkgs {}}:
+    mkPackage {
+      inherit pkgs;
+      name = "reset-flake";
+      file = scripts.resetFlake;
+    };
+
+  mkCommands = {pkgs ? mkPkgs {}}:
+    mkMissionControl {
+      inherit pkgs;
+      shellName = "rusti";
+      commands = {
+        deploy-templates = {
+          description = "Sync config templates into the project";
+          run = "${mkPackage {inherit pkgs;}}/bin/deploy-templates";
+        };
+        reset-flake = {
+          description = "Reset the flake lock and generated files";
+          run = "${mkFlakeReset {inherit pkgs;}}/bin/reset-flake";
+        };
+      };
+    };
 in {
   inherit
     mkAlias
     mkEnvLines
     mkMissionControl
+    mkFlakeReset
     mkPackage
     scripts
+    mkCommands
     ;
 }

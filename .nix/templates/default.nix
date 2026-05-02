@@ -2,16 +2,14 @@
   inherit (lib.attrsets) attrNames;
   inherit (lib.lists) head toList;
   inherit (lib.packages) mkPkgs;
-  inherit (lib.shells) mkScriptPackage mkMissionControl;
+  # inherit (lib.shells) mkScriptPackage mkMissionControl;
   inherit (lib.strings) concatStringsSep mkStyledOutput mkSection mkHeader;
   inherit (lib.trivial) readFile;
 
-  scripts =
-    lib.shells.scripts
-    // {
-      deployTemplates = ./deploy-templates.sh;
-      resetFlake = ./reset-flake.sh;
-    };
+  scripts = {
+    deployTemplates = ./deploy-templates.sh;
+    resetFlake = ./reset-flake.sh;
+  };
 
   entries = {
     cargo = {
@@ -66,8 +64,6 @@
     concatStringsSep "\n"
     (map (name: deployTemplate name entries.${name}) (attrNames entries));
 
-  # --- package builders -------------------------------------------------
-
   mkPackage = {pkgs ? mkPkgs {}}: let
     print = mkStyledOutput {inherit pkgs;};
 
@@ -90,38 +86,13 @@
       ${readFile scripts.deployTemplates}
       ${deployCalls}
     '';
-
-  mkFlakeReset = {pkgs ? mkPkgs {}}:
-    mkScriptPackage {
-      inherit pkgs;
-      name = "reset-flake";
-      file = scripts.resetFlake;
-    };
-
-  # --- unified dispatcher -----------------------------------------------
-
-  mkCommands = {pkgs ? mkPkgs {}}:
-    mkMissionControl {
-      inherit pkgs;
-      shellName = "rusti";
-      commands = {
-        deploy-templates = {
-          description = "Sync config templates into the project";
-          run = "${mkPackage {inherit pkgs;}}/bin/deploy-templates";
-        };
-        reset-flake = {
-          description = "Reset the flake lock and generated files";
-          run = "${mkFlakeReset {inherit pkgs;}}/bin/reset-flake";
-        };
-      };
-    };
 in {
   templates = {
     inherit
       entries
       mkPackage
-      mkFlakeReset
-      mkCommands
+      # mkFlakeReset
+      # mkCommands
       scripts
       ;
   };

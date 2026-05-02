@@ -1,4 +1,5 @@
 {lib}: let
+  inherit (lib.attrsets) genAttrs;
   inherit (lib.lists) elem head;
 
   defaultSystems = [

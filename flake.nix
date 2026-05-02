@@ -1,5 +1,5 @@
 {
-  # description = "Rust development environment with AI Tools";
+  description = "Rust development environment with AI Tools";
 
   inputs = {
     NixPackages.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -8,11 +8,28 @@
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "NixPackages";
     };
-    # OpenClaw = {
-    #   url = "github:Scout-DJ/openclaw-nix";
-    #   inputs.nixpkgs.follows = "NixPackages";
-    # };
+    OpenClaw = {
+      url = "github:Scout-DJ/openclaw-nix";
+      inputs.nixpkgs.follows = "NixPackages";
+    };
+    Formatter = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "NixPackages";
+    };
   };
 
-  outputs = inputs: import ./. {inherit inputs;};
+  outputs = inputs: let
+    src = import ./. {
+      inherit inputs;
+      inherit (inputs.NixPackages) lib;
+    };
+    inherit (src) lib pkgs;
+    inherit (lib.shells) mkDevShells;
+    inherit (lib.packages) mkPkgsPerSystem;
+  in
+    {
+      inherit lib;
+      legacyPackages = mkPkgsPerSystem {inherit inputs;};
+    }
+    // mkDevShells {inherit inputs pkgs;};
 }
