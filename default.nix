@@ -43,24 +43,27 @@
       };
 
   nixpkgs = let
-  isUnstable = n: match ".*(unstable|master).*" n != null;
-  name =
-    if isAttrs inputs
-    then let
-      candidates = filter
-        (n: n != "self" && inputs.${n} ? legacyPackages)
-        (attrNames inputs);
-      unstable = filter isUnstable candidates;
-    in
-      if unstable != [] then head unstable
-      else if candidates != [] then head candidates
-      else null
-    else null;
-  args = {inherit config;};
-in
-  if name != null
-  then import inputs.${name} args
-  else import <nixpkgs> args;
+    isUnstable = n: match ".*(unstable|master).*" n != null;
+    name =
+      if isAttrs inputs
+      then let
+        candidates =
+          filter
+          (n: n != "self" && inputs.${n} ? legacyPackages)
+          (attrNames inputs);
+        unstable = filter isUnstable candidates;
+      in
+        if unstable != []
+        then head unstable
+        else if candidates != []
+        then head candidates
+        else null
+      else null;
+    args = {inherit config;};
+  in
+    if name != null
+    then import "${inputs.${name}}" args
+    else import <nixpkgs> args;
 
   # nixpkgs = let
   #   name =
