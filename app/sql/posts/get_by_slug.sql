@@ -13,4 +13,4 @@ FROM posts p
 LEFT JOIN post_tags pt ON pt.post_id = p.id
 WHERE p.slug = ? 1
 AND p.published = 1
-GROUP BY p.id ;
+GROUP BY p.id;

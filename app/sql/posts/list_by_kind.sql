@@ -18,4 +18,4 @@ WHERE
 GROUP BY p.id
 ORDER BY p.featured DESC,
 p.published_at DESC,
-p.created_at DESC ;
+p.created_at DESC;

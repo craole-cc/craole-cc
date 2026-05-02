@@ -60,7 +60,7 @@
         excludes = ["node_modules" ".git" "target" "dist"];
         formatter = {
           sqruff = {
-            options = ["--dialect" "sqlite"];
+            # options = ["--dialect" "sqlite"];
             excludes = [
               "database/migrations/*.sql"
             ];

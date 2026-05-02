@@ -36,4 +36,4 @@ ORDER BY
 shared_tag_count DESC,
 same_shoot DESC,
 m.taken_at DESC
-LIMIT 6 ;
+LIMIT 6;

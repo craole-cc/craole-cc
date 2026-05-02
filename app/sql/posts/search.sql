@@ -15,4 +15,4 @@ LEFT JOIN post_tags pt ON pt.post_id = p.id
 WHERE posts_fts MATCH ? 1
 AND p.published = 1
 GROUP BY p.id
-ORDER BY rank ;
+ORDER BY rank;
