@@ -9,7 +9,7 @@
     ;
   inherit (lib.lists) flatten foldl';
   inherit (lib.packages) mkBins mkPkgs mkVr3n;
-  inherit (lib.strings) mkStyledOutput;
+  inherit (lib.strings) mkStyledOutput replaceStrings;
   # inherit (lib.trivial) isNotEmpty;
 
   mkKeys = f: attrs: mapAttrs' (k: v: nameValuePair (f k) v) attrs;
@@ -88,7 +88,7 @@
     bin = mergeAttr "bin";
     cmd = mergeAttr "cmd";
     ver = mergeAttr "ver";
-    vr3n = mkKeys (pkg: "vr3n-${pkg}") ver;
+    vr3n = mkKeys (pkg: "vr3n_${replaceStrings ["-"] ["_"] pkg}") ver;
     packages = flatten (map attrValues (attrValues (mapAttrs (_: g: g.pkgs or {}) groups)));
   in {inherit bin cmd packages print ver vr3n;};
 in {inherit mkTools;}
