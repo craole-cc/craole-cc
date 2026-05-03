@@ -88,8 +88,16 @@
 
     mergeAttr = set:
       foldl' (acc: grp: acc // (grp.${set} or {})) {} (attrValues groups);
+    # aliases = concatStringsSep "\n" (
+    #   filter isNotEmpty (map (g: g.aliases or "") (attrValues groups))
+    # );
+    # aliases = concatStringsSep "\n" (
+    #   mapAttrsToList (name: value: "alias ${name}=${escapeShellArg value}") cmd
+    #   ++ mapAttrsToList (name: value: "alias ${name}=${escapeShellArg value}") ver
+    # );
     aliases = concatStringsSep "\n" (
-      filter isNotEmpty (map (g: g.aliases or "") (attrValues groups))
+      mapAttrsToList (name: value: "alias ${name}=${escapeShellArg value}") cmd
+      ++ mapAttrsToList (name: value: "alias ${name}=${escapeShellArg value}") ver
     );
     bin = mergeAttr "bin";
     cmd = mergeAttr "cmd";
