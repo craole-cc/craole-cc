@@ -19,31 +19,11 @@
     minimal ? false,
     includeEditor ? true,
     includeWeb ? false,
-    includeFmt ? true,
     includeInfo ? true,
   }: let
     print = mkStyledOutput {inherit pkgs;};
 
     groups = {
-      fmt = optionalAttrs (includeFmt && !minimal) (
-        let
-          packages = {inherit (pkgs) taplo treefmt markdownlint-cli2 yamlfmt;};
-          bin = mkBins packages;
-          cmd = {
-            fmtree = bin.treefmt;
-          };
-          ver = {
-            taplo = mkVr3n bin.taplo {};
-            treefmt = mkVr3n bin.treefmt {strip = true;};
-            markdownlint = mkVr3n bin.markdownlint-cli2 {head = true;};
-            yamlfmt = mkVr3n bin.yamlfmt {};
-          };
-        in {
-          inherit bin cmd ver;
-          pkgs = packages;
-        }
-      );
-
       info = optionalAttrs (includeInfo && !minimal) (
         let
           packages = {inherit (pkgs) gitui onefetch tokei direnv gum mise trashy;};
@@ -94,9 +74,7 @@
           packages = {inherit (pkgs) helix;};
           bin = mkBins packages;
           cmd = {};
-          ver = {
-            helix = mkVr3n bin.helix {head = true;};
-          };
+          ver = {helix = mkVr3n bin.helix {head = true;};};
         in {
           inherit bin cmd ver;
           pkgs = packages;
@@ -105,17 +83,12 @@
     };
 
     mergeAttr = set:
-      foldl'
-      (acc: grp: acc // (grp.${set} or {}))
-      {} (attrValues groups);
+      foldl' (acc: grp: acc // (grp.${set} or {})) {} (attrValues groups);
 
     bin = mergeAttr "bin";
     cmd = mergeAttr "cmd";
-    tools = mapAttrs (_: g: g.pkgs or {}) groups;
     ver = mergeAttr "ver";
     vr3n = mkKeys (pkg: "vr3n-${pkg}") ver;
-  in {
-    inherit bin cmd print ver vr3n;
-    tools = tools // {all = flatten (attrValues tools);};
-  };
+    packages = flatten (map attrValues (attrValues (mapAttrs (_: g: g.pkgs or {}) groups)));
+  in {inherit bin cmd packages print ver vr3n;};
 in {inherit mkTools;}

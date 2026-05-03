@@ -1,7 +1,8 @@
 {lib}: let
   inherit (lib.attrsets) attrValues;
   inherit (lib.packages) getSystem;
-  inherit (lib.shells) mergeNamespaces mkShells rust ai;
+  inherit (lib.shells) mergeNamespaces mkShells mkTools rust ai;
+  inherit (lib.strings) concatStringsSep;
 
   combined = mergeNamespaces {inherit rust ai;};
   inherit (combined) mkSpec;
@@ -12,18 +13,27 @@
     fmt,
   }: let
     mk = args: let
-      spec = mkSpec ({inherit pkgs;} // args);
-    in
-      spec
-      // {
-        shell =
-          spec.shell
-          // {
-            packages =
-              spec.shell.packages
-              ++ (attrValues fmt.packages.${getSystem pkgs});
-          };
+      toolArgs = {
+        inherit pkgs;
+        minimal = args.minimal or false;
+        includeEditor = args.includeEditor or true;
+        includeWeb = args.includeWeb or false;
+        includeInfo = args.includeInfo or true;
       };
+      tools = mkTools toolArgs;
+      spec = mkSpec ({inherit pkgs;} // args);
+      packages =
+        spec.shell.packages
+        ++ (attrValues fmt.packages.${getSystem pkgs})
+        ++ tools.packages;
+      shellHook = ''
+        ${spec.shell.shellHook or ""}
+        ${concatStringsSep "\n" (attrValues tools.cmd)}
+      '';
+      env = (spec.shell.env or {}) // tools.vr3n;
+      shell = spec.shell // {inherit env packages shellHook;};
+    in
+      spec // {inherit shell;};
 
     variants = {
       default = mk {};
@@ -31,11 +41,13 @@
       full = mk {
         preset = "full";
         includeWorkflow = true;
+        includeWeb = true;
       };
       minimal = mk {
         preset = "minimal";
         includeAnalytics = false;
         includeEditor = false;
+        includeInfo = false;
         minimal = true;
       };
     };
