@@ -526,7 +526,7 @@ VALUES
     0,
     'https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&w=1200&q=80',
     1,
-    datetime ('now'),
+    datetime('now'),
     '## Craig "Craole" Cole
 
 Software engineer and data specialist with roots in music production and Learning & Development.
@@ -560,7 +560,7 @@ Rust · Leptos · Axum · SQLite · Neo4j · Delta Lake · NixOS · Linux'
     0,
     'https://images.unsplash.com/photo-1593720213428-28a5b9e94613?auto=format&fit=crop&w=1200&q=80',
     1,
-    datetime ('now', '-2 days'),
+    datetime('now', '-2 days'),
     '## Why Rust for the Web
 
 The question I get most often is: why not just use Next.js?...'
@@ -573,7 +573,7 @@ The question I get most often is: why not just use Next.js?...'
     0,
     'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?auto=format&fit=crop&w=1200&q=80',
     1,
-    datetime ('now', '-5 days'),
+    datetime('now', '-5 days'),
     '## The Connection
 
 When I picked up the bass at fourteen, I had no idea I was learning to think like a programmer...'
@@ -586,7 +586,7 @@ When I picked up the bass at fourteen, I had no idea I was learning to think lik
     0,
     'https://images.unsplash.com/photo-1547036967-23d11aacaee0?auto=format&fit=crop&w=1200&q=80',
     1,
-    datetime ('now', '-12 days'),
+    datetime('now', '-12 days'),
     '## Why Nix
 
 The promise is simple: describe your system, and it will be exactly that system...'
@@ -599,7 +599,7 @@ The promise is simple: describe your system, and it will be exactly that system.
     0,
     'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80',
     1,
-    datetime ('now', '-20 days'),
+    datetime('now', '-20 days'),
     '## Why Rust for the Web
 
 The question I get most often is: why not just use Next.js?...'
@@ -612,7 +612,7 @@ The question I get most often is: why not just use Next.js?...'
     0,
     'https://images.unsplash.com/photo-1507838153414-b4b713384a76?auto=format&fit=crop&w=1200&q=80',
     1,
-    datetime ('now', '-35 days'),
+    datetime('now', '-35 days'),
     '## The Discovery
 
 It started as an accident...'

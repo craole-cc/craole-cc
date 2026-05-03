@@ -11,7 +11,7 @@ SELECT
   m.sort_order AS "sort_order!: i64",
   m.taken_at AS "taken_at: String",
   m.created_at AS "created_at!: String",
-  CAST(COALESCE(GROUP_CONCAT (mt.tag, ','), '') AS TEXT) AS "tags!: String"
+  CAST(COALESCE(GROUP_CONCAT(mt.tag, ','), '') AS TEXT) AS "tags!: String"
 FROM
   media m
   JOIN media_tags mt ON mt.media_id = m.id

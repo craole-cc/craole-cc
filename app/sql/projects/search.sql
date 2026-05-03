@@ -9,7 +9,7 @@ SELECT
   p.featured,
   p.sort_order,
   p.created_at,
-  COALESCE(GROUP_CONCAT (pt.tag, ','), '') AS tags
+  COALESCE(GROUP_CONCAT(pt.tag, ','), '') AS tags
 FROM
   projects AS p
   LEFT JOIN project_tags AS pt ON pt.project_id = p.id

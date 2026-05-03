@@ -8,7 +8,7 @@ SELECT
   p.cover_url AS "cover_url: String",
   p.published_at AS "published_at: String",
   p.created_at AS "created_at!: String",
-  CAST(COALESCE(GROUP_CONCAT (pt.tag, ','), '') AS TEXT) AS "tags!: String"
+  CAST(COALESCE(GROUP_CONCAT(pt.tag, ','), '') AS TEXT) AS "tags!: String"
 FROM
   posts p
   JOIN posts_fts ON posts_fts.rowid = p.id

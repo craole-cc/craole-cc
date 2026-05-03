@@ -11,7 +11,7 @@ SELECT
   p.created_at,
   (
     SELECT
-      COALESCE(GROUP_CONCAT (pt.tag, ','), '')
+      COALESCE(GROUP_CONCAT(pt.tag, ','), '')
     FROM
       project_tags AS pt
     WHERE
