@@ -42,13 +42,13 @@
             mapAttrsToList (name: value: "alias ${name}=${escapeShellArg value}") cmd
           );
           ver = {
-            gitui = mkVr3n bin.gitui {};
-            onefetch = mkVr3n bin.onefetch {};
-            tokei = mkVr3n bin.tokei {};
-            direnv = mkVr3n bin.direnv {field = 1;};
-            gum = mkVr3n bin.gum {head = true;};
-            trashy = mkVr3n bin.trashy {};
-            mise = mkVr3n bin.mise {
+            vr3n_gitui = mkVr3n bin.gitui {};
+            vr3n_onefetch = mkVr3n bin.onefetch {};
+            vr3n_tokei = mkVr3n bin.tokei {};
+            vr3n_direnv = mkVr3n bin.direnv {field = 1;};
+            vr3n_gum = mkVr3n bin.gum {head = true;};
+            vr3n_trashy = mkVr3n bin.trashy {};
+            vr3n_mise = mkVr3n bin.mise {
               custom = ''${bin.mise} version 2>/dev/null | grep -o '^[0-9]*\.[0-9]*\.[0-9]*' '';
             };
           };
@@ -102,7 +102,7 @@
     bin = mergeAttr "bin";
     cmd = mergeAttr "cmd";
     ver = mergeAttr "ver";
-    vr3n = mkKeys (pkg: "vr3n_${replaceStrings ["-"] ["_"] pkg}") ver;
+    vr3n = ver;
     packages = flatten (map attrValues (attrValues (mapAttrs (_: g: g.pkgs or {}) groups)));
   in {inherit aliases bin cmd packages print ver vr3n;};
 in {inherit mkTools;}

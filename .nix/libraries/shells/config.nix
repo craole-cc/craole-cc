@@ -29,6 +29,7 @@
       shellHook = ''
         ${spec.shell.shellHook or ""}
         ${tools.aliases}
+        export TOOLS_ALIASES="${pkgs.writeText "tools-aliases" tools.aliases}"
       '';
       env = (spec.shell.env or {}) // tools.vr3n;
       shell = spec.shell // {inherit env packages shellHook;};
