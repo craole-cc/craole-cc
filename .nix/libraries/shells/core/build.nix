@@ -52,10 +52,11 @@ Shell finalization helpers for lib.shells.
 
     #> Recursively update or manual merge preserve data.
     args' =
-      {inherit name packages env;}
+      {inherit name packages;}
       // args
       // shell
       // {
+        env = (args.env or {}) // (shell.env or {});
         #> Combine hooks rather than overwriting them
         #? Filtering out empty strings and joining with a newline.
         shellHook = concatStringsSep "\n" (
@@ -65,6 +66,20 @@ Shell finalization helpers for lib.shells.
           ]
         );
       };
+    # args' =
+    #   {inherit name packages env;}
+    #   // args
+    #   // shell
+    #   // {
+    #     #> Combine hooks rather than overwriting them
+    #     #? Filtering out empty strings and joining with a newline.
+    #     shellHook = concatStringsSep "\n" (
+    #       filter isNotEmpty [
+    #         (shell.shellHook or "")
+    #         shellHook
+    #       ]
+    #     );
+    #   };
   in
     pkgs'.mkShell args';
 
