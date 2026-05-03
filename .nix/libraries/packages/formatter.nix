@@ -62,6 +62,7 @@
       settings = {
         excludes = ["node_modules" ".git" "target" "dist"];
         formatter = {
+          deno.excludes = ["*.yaml" "*.yml"];
         };
       };
     }
