@@ -6,11 +6,12 @@
     mapAttrs'
     nameValuePair
     optionalAttrs
+    mapAttrsToList
     ;
-  inherit (lib.lists) flatten foldl';
+  inherit (lib.lists) flatten filter foldl';
   inherit (lib.packages) mkBins mkPkgs mkVr3n;
-  inherit (lib.strings) mkStyledOutput replaceStrings;
-  # inherit (lib.trivial) isNotEmpty;
+  inherit (lib.strings) concatStringsSep escapeShellArg mkStyledOutput replaceStrings;
+  inherit (lib.trivial) isNotEmpty;
 
   mkKeys = f: attrs: mapAttrs' (k: v: nameValuePair (f k) v) attrs;
 
@@ -37,6 +38,9 @@
               nix flake update
             '';
           };
+          aliases = concatStringsSep "\n" (
+            mapAttrsToList (name: value: "alias ${name}=${escapeShellArg value}") cmd
+          );
           ver = {
             gitui = mkVr3n bin.gitui {};
             onefetch = mkVr3n bin.onefetch {};
@@ -49,7 +53,7 @@
             };
           };
         in {
-          inherit bin cmd ver;
+          inherit aliases bin cmd ver;
           pkgs = packages;
         }
       );
@@ -84,11 +88,13 @@
 
     mergeAttr = set:
       foldl' (acc: grp: acc // (grp.${set} or {})) {} (attrValues groups);
-
+    aliases = concatStringsSep "\n" (
+      filter isNotEmpty (map (g: g.aliases or "") (attrValues groups))
+    );
     bin = mergeAttr "bin";
     cmd = mergeAttr "cmd";
     ver = mergeAttr "ver";
     vr3n = mkKeys (pkg: "vr3n_${replaceStrings ["-"] ["_"] pkg}") ver;
     packages = flatten (map attrValues (attrValues (mapAttrs (_: g: g.pkgs or {}) groups)));
-  in {inherit bin cmd packages print ver vr3n;};
+  in {inherit aliases bin cmd packages print ver vr3n;};
 in {inherit mkTools;}

@@ -28,7 +28,7 @@
         ++ tools.packages;
       shellHook = ''
         ${spec.shell.shellHook or ""}
-        ${concatStringsSep "\n" (attrValues tools.cmd)}
+        ${tools.aliases}
       '';
       env = (spec.shell.env or {}) // tools.vr3n;
       shell = spec.shell // {inherit env packages shellHook;};

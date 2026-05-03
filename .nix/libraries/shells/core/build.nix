@@ -66,20 +66,6 @@ Shell finalization helpers for lib.shells.
           ]
         );
       };
-    # args' =
-    #   {inherit name packages env;}
-    #   // args
-    #   // shell
-    #   // {
-    #     #> Combine hooks rather than overwriting them
-    #     #? Filtering out empty strings and joining with a newline.
-    #     shellHook = concatStringsSep "\n" (
-    #       filter isNotEmpty [
-    #         (shell.shellHook or "")
-    #         shellHook
-    #       ]
-    #     );
-    #   };
   in
     pkgs'.mkShell args';
 
