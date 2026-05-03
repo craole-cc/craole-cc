@@ -19,19 +19,23 @@
   };
 
   outputs = inputs @ {self, ...}: let
-    flake = self;
     src = import ./. {
       inherit inputs;
       inherit (inputs.NixPackages) lib;
     };
     inherit (src) lib pkgs;
+    inherit (lib.attrsets) mapAttrs;
     inherit (lib.shells) mkDevShells;
     inherit (lib.packages) mkPkgsPerSystem mkTreefmt;
-  in
-    {
-      inherit lib;
-      legacyPackages = mkPkgsPerSystem {inherit inputs;};
-    }
-    // mkTreefmt {inherit inputs flake;}
-    // mkDevShells {inherit inputs pkgs;};
+
+    fmt = mkTreefmt {inherit inputs self;};
+    env = mkDevShells {inherit inputs pkgs fmt;};
+  in {
+    inherit lib;
+    inherit (fmt) formatter checks;
+    inherit (env) devShells;
+    legacyPackages = mapAttrs (
+      system: pkgs: pkgs // {formatter = fmt.packages.${system};}
+    ) (mkPkgsPerSystem {inherit inputs;});
+  };
 }

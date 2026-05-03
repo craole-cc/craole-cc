@@ -9,9 +9,15 @@
     "aarch64-darwin"
   ];
 
-  getSystem = {pkgs ? null}:
-    pkgs.stdenv.hostPlatform.system or (builtins.currentSystem or
-        throw "getSystem: pass `pkgs` or run outside --pure-eval");
+  getSystem = arg:
+    if arg ? pkgs && arg.pkgs != null
+    then arg.pkgs.stdenv.hostPlatform.system
+    else if arg ? stdenv
+    then arg.stdenv.hostPlatform.system
+    else
+      builtins.currentSystem or (
+        throw "getSystem: pass pkgs or an attrset with pkgs"
+      );
 
   getSystemOrDefault = {
     pkgs ? null,

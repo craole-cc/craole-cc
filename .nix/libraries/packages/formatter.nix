@@ -4,34 +4,31 @@
   inherit (lib.packages) defineSystems resolvePackages perSystem;
 
   mkTreefmt = {
-    flake,
+    self,
     inputs,
-    programs ? {},
-    settings ? {},
+    config ? {},
   }: let
     inherit (resolvePackages {inherit inputs;}) treefmt;
 
-    packages = perSystem {
+    evaluated = perSystem {
       inherit inputs;
       fn = pkgs: let
         module = treefmt.lib.evalModule pkgs (
-          mkTreefmtConfig {inherit pkgs programs settings;}
+          mkTreefmtConfig {inherit pkgs config;}
         );
-        inherit (module.config.build) wrapper;
-        formatting = module.config.build.check flake;
-      in {inherit wrapper formatting;};
+        inherit (module.config.build) check wrapper programs;
+        formatting = check self;
+      in {inherit formatting programs wrapper;};
     };
-
-    formatter = mapAttrs (_: v: v.wrapper) packages;
-    checks = mapAttrs (_: v: {inherit (v) formatting;}) packages;
   in {
-    inherit formatter checks;
+    formatter = mapAttrs (_: v: v.wrapper) evaluated;
+    checks = mapAttrs (_: v: {inherit (v) formatting;}) evaluated;
+    packages = mapAttrs (_: v: v.programs) evaluated;
   };
 
   mkTreefmtConfig = {
     pkgs,
-    programs,
-    settings,
+    config,
   }: let
     inherit (pkgs.stdenv.hostPlatform) system;
     for = {
@@ -66,5 +63,5 @@
         };
       };
     }
-    {inherit programs settings;};
+    config;
 in {inherit mkTreefmt mkTreefmtConfig;}
