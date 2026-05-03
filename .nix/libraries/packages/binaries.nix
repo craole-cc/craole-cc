@@ -109,10 +109,11 @@ Pure package and binary resolution helpers for lib.packages.
       if head
       then "${base} | head -n1"
       else base;
+    dollar = "$";
     awk =
       if strip
-      then "awk '{print substr($${toString field},2)}'"
-      else "awk '{print $${toString field}}'";
+      then "awk '{print substr(${dollar}${toString field},2)}'"
+      else "awk '{print ${dollar}${toString field}}'";
   in
     if custom != null
     then custom
