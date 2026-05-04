@@ -34,7 +34,11 @@ their incoming `lib`.
   lib,
   paths,
 }: let
-  lib' = lib.extend (final: _: import ./assembly.nix {lib = final;});
+  lib' = lib.extend (final: _:
+    import ./assembly.nix {
+      lib = final;
+      inherit paths;
+    });
 in
   lib'.assembly.assemble {
     start = lib';

@@ -17,9 +17,9 @@
     modules = mkCfg "modules";
     templates = mkCfg "templates";
     scripts = {
-      fmtRust = mkScr + "fmt-rust.sh";
-      getIcons = mkScr + "get-icons.sh";
-      initDatabase = mkScr + "init-db.sh";
+      fmtRust = mkScr "fmt-rust.sh";
+      getIcons = mkScr "get-icons.sh";
+      initDatabase = mkScr "init-db.sh";
       deployTemplates = mkTScr "deploy-templates.sh";
       resetFlake = mkTScr "reset-flake.sh";
       update = mkScr "update.sh";

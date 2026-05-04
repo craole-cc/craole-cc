@@ -20,11 +20,15 @@ Intended as a zero-dependency bootstrap that other library namespaces
 - `importAttrs`       – merge imported attrset fragments
 - `importLibs`        – assemble a staged library namespace
 */
-{lib}: let
+{
+  lib,
+  paths,
+  ...
+}: let
   # ---------------------------------------------------------------------------
   # stdlib — only stock nixpkgs lib, nothing custom
   # ---------------------------------------------------------------------------
-  inherit (lib.attrsets) attrNames attrValues filterAttrs mergeAttrsList;
+  inherit (lib.attrsets) attrNames attrValues filterAttrs;
   inherit (lib.filesystem) isPath pathIsRegularFile pathType readDir;
   inherit (lib.lists) concatMap elem filter flatten foldl' isList map optionals toList;
   inherit (lib.strings) hasSuffix match removeSuffix;
@@ -520,15 +524,14 @@ Intended as a zero-dependency bootstrap that other library namespaces
       if n.lib != null
       then n.lib
       else lib;
-    paths = collectPaths {inherit (n) path recurse ignore;};
 
     all = assemble {
       start = {};
-      entries = paths;
+      entries = collectPaths {inherit (n) path recurse ignore;};
       scope = acc: libToUse // acc;
       priority = n.priority or [];
       ignore = n.ignore or [];
-      extraArgs = n.args;
+      extraArgs = {inherit paths;} // n.args or {};
     };
 
     names = attrNames all;
@@ -583,7 +586,6 @@ Intended as a zero-dependency bootstrap that other library namespaces
       if n.lib != null
       then n.lib
       else lib;
-    paths = collectPaths {inherit (n) path recurse ignore;};
     namespace =
       if n.namespace != null
       then n.namespace
@@ -596,7 +598,7 @@ Intended as a zero-dependency bootstrap that other library namespaces
         if n.start != null
         then n.start
         else libToUse.${namespace} or {};
-      entries = paths;
+      entries = collectPaths {inherit (n) path recurse ignore;};
       scope =
         if n.scope != null
         then n.scope
@@ -604,13 +606,16 @@ Intended as a zero-dependency bootstrap that other library namespaces
       priority = n.priority or [];
       ignore = n.ignore   or [];
       dependencies = n.dependencies or [];
-      extraArgs = n.args or {};
+      extraArgs = {inherit paths;} // n.args or {};
     };
     names = attrNames all;
     values = attrValues all;
   in {
     ${namespace} = all;
-    __meta.${namespace} = {inherit namespace names values all paths;};
+    __meta.${namespace} = {
+      inherit namespace names values all;
+      paths = all.entries;
+    };
   };
 in {
   /**
