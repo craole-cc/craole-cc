@@ -73,7 +73,7 @@
             glog = "$(git log -1 --pretty=%B)";
             gcp = writeShellScript "git-add-commit-push" ''
               git add --all
-              if ! git diff --cached --quiet || ! git diff --quiet; then
+              if [ -n "$(git status --porcelain)" ]; then
                 msg="''${*:-$(git log -1 --pretty=%B 2>/dev/null | head -1)}"
                 git commit --message "$msg"
                 git push
