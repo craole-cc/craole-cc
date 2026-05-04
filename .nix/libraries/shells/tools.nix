@@ -1,44 +1,80 @@
 {lib}: let
   inherit (lib.attrsets) attrValues optionalAttrs;
-  inherit (lib.lists) concatMap flatten foldl';
-  inherit (lib.packages) mkBins mkPkgs mkVr3n mkAliases;
+  inherit (lib.lists) concatMap flatten;
+  inherit (lib.packages) mkBins mkPkgs mkVr3n;
   inherit (lib.shells) mkPackage;
   inherit (lib.strings) mkStyledOutput;
 
+  /**
+    Build a unified tool environment for dev shells.
+
+    Produces `packages` (a list of derivations placed on PATH) from three
+    optional groups — info, web, and editor — each controlled by an
+    `include*` flag. All commands are proper scripts, no aliases needed.
+
+    # Type
+  ```nix
+    mkTools :: {
+      pkgs          :: AttrSet;
+      includeEditor :: bool;
+      includeWeb    :: bool;
+      includeInfo   :: bool;
+    } -> {
+      packages :: [derivation];
+      print    :: AttrSet;
+    }
+  ```
+
+    # Examples
+  ```nix
+    tools = mkTools { inherit pkgs; includeWeb = true; };
+    # tools.packages — add to shell packages list
+    # tools.print    — gum-based styled output helpers
+  ```
+  */
   mkTools = {
     pkgs ? mkPkgs {},
     includeEditor ? true,
     includeWeb ? false,
     includeInfo ? true,
   }: let
-    inherit (pkgs) writeShellScriptBin;
+    mkBin = pkgs.writeShellScriptBin;
     inherit (pkgs.stdenv) isLinux;
 
     print = mkStyledOutput {inherit pkgs;};
+
     groups = {
+      /**
+      Core info/navigation/git/file tooling.
+
+      Scripts are built in two passes: `bin` is first resolved from
+      packages, then augmented with sibling script paths via `mkBins
+      scripts`, allowing scripts to reference each other by name.
+      */
       info = optionalAttrs includeInfo (
         let
           packages =
             {
               inherit
                 (pkgs)
-                bat #? Cat clone with syntax highlighting
+                bat
                 direnv
-                fd #? Fast find alternative
+                fastfetch
+                fd
                 gitui
-                gnused #? GNU stream editor
+                gnused
                 gum
-                jq #? JSON query processor
-                lsd #? LSDeluxe file lister
+                jq
+                lsd
                 mise
-                nitch # ? System fetch written in nim
-                nixd # ? Nix language daemon
-                onefetch #? Git repository summary on your terminal
-                ripgrep-all #? Fast grep alternative
-                sd #? Intuitive find & replace CLI (sed alternative)
+                nitch
+                nixd
+                onefetch
+                ripgrep-all
+                sd
                 tokei
                 trashy
-                undollar #? Remove leading dollar signs
+                undollar
                 ;
             }
             // optionalAttrs isLinux {
@@ -47,51 +83,31 @@
 
           bin =
             mkBins packages
-            // {
-              helix = "${pkgs.helix}/bin/hx";
+            // optionalAttrs isLinux {
               wl-copy = "${pkgs.wl-clipboard}/bin/wl-copy";
-            };
+            }
+            // mkBins scripts;
 
-          aliases = with bin; {
-            fetch = nitch;
-            ls = lsd;
-            ll = "${lsd} --long --git --almost-all";
-            lt = "${lsd} --tree";
-            lr = "${lsd} --long --git --recursive";
-            gt = gitui;
-            ff = fd;
-            rg = ripgrep-all;
-            vr3n_bat = mkVr3n bat {};
-            vr3n_direnv = mkVr3n direnv {field = 1;};
-            vr3n_fd = mkVr3n fd {};
-            vr3n_gum = mkVr3n gum {
-              head = true;
-              field = 3;
-            };
-            vr3n_gitui = mkVr3n gitui {};
-            vr3n_helix = mkVr3n helix {head = true;};
-            vr3n_jq = mkVr3n jq {
-              custom = "${jq} --version 2>&1 | sed 's/jq-//'";
-            };
-            vr3n_lsd = mkVr3n lsd {};
-            vr3n_mise = mkVr3n mise {
-              custom = "${mise} version 2>/dev/null | grep -o '^[0-9]*\\.[0-9]*\\.[0-9]*'";
-            };
-            vr3n_onefetch = mkVr3n onefetch {};
-            vr3n_nitch = mkVr3n nitch {field = 3;};
-            vr3n_nixd = mkVr3n nixd {};
-            vr3n_rg = mkVr3n ripgrep-all {};
-            vr3n_sd = mkVr3n sd {};
-            vr3n_trashy = mkVr3n trashy {};
-            vr3n_tokei = mkVr3n tokei {};
-          };
+          scripts = with bin; {
+            #~@ Navigation
+            fetch = mkBin "fetch" ''${fastfetch} "$@"'';
+            ls = mkBin "ls" ''${lsd} "$@"'';
+            ll = mkBin "ll" ''${lsd} --long --git --almost-all "$@"'';
+            lt = mkBin "lt" ''${lsd} --tree "$@"'';
+            lr = mkBin "lr" ''${lsd} --long --git --recursive "$@"'';
+            ff = mkBin "ff" ''${fd} "$@"'';
+            rg = mkBin "rg" ''${ripgrep-all} "$@"'';
 
-          scripts = {
-            prjfo = writeShellScriptBin "prjfo" ''
-              ${bin.tokei}
-              ${bin.onefetch}
+            #~@ Project Info
+            prjfo = mkBin "prjfo" ''
+              ${tokei}
+              ${onefetch}
             '';
-            gcp = writeShellScriptBin "gcp" ''
+
+            #~@ Git
+            gt = mkBin "gt" ''${gitui} "$@"'';
+            glog = mkBin "glog" ''git log -1 --pretty=%B'';
+            gcp = mkBin "gcp" ''
               git add --all
               if [ -n "$(git status --porcelain)" ]; then
                 msg="''${*:-$(git log -1 --pretty=%B 2>/dev/null | head -1)}"
@@ -99,29 +115,33 @@
                 git push
               fi
             '';
-            clip = writeShellScriptBin "clip" ''
+
+            #~@ Clipboard
+            clip = mkBin "clip" ''
               if [ -n "$WAYLAND_DISPLAY" ]; then
-                exec ${bin.wl-copy} "$@"
+                exec ${wl-copy} "$@"
               elif [ -n "$DISPLAY" ]; then
-                exec ${bin.xclip} -selection clipboard "$@"
+                exec ${xclip} -selection clipboard "$@"
               else
                 exec pbcopy "$@"
               fi
             '';
-            batp = writeShellScriptBin "batp" ''
-              exec ${bin.bat} --paging=never --plain "$@"
+
+            #~@ Files
+            batp = mkBin "batp" ''exec ${bat} --paging=never --plain "$@"'';
+            fclip = mkBin "fclip" ''
+              for f in "$@"; do
+                printf 'File: %s\n' "$f"
+                ${batp} "$f"
+              done | clip
             '';
-            fclip = writeShellScriptBin "fclip" ''
-              ${bin.bat} --paging=never --style=header "$@" | clip
-            '';
-            glog = writeShellScriptBin "glog" ''
-              git log -1 --pretty=%B
-            '';
-            reload = writeShellScriptBin "reload" ''
+
+            #~@ Nix
+            reload = mkBin "reload" ''
               gcp "$@"
-              ${bin.direnv} reload
+              ${direnv} reload
             '';
-            format = writeShellScriptBin "format" ''
+            format = mkBin "format" ''
               gcp "$@"
               nix fmt
             '';
@@ -130,47 +150,67 @@
               name = "update";
               script = "update";
               env = {
-                DIRENV = bin.direnv;
-                MISE = bin.mise;
+                DIRENV = direnv;
+                MISE = mise;
               };
             };
+
+            #~@ Versions
+            vr3n_bat = mkBin "vr3n_bat" ''${mkVr3n bat {}}'';
+            vr3n_direnv = mkBin "vr3n_direnv" ''${mkVr3n direnv {field = 1;}}'';
+            vr3n_fd = mkBin "vr3n_fd" ''${mkVr3n fd {}}'';
+            vr3n_gum = mkBin "vr3n_gum" ''${mkVr3n gum {
+                head = true;
+                field = 3;
+              }}'';
+            vr3n_gitui = mkBin "vr3n_gitui" ''${mkVr3n gitui {}}'';
+            vr3n_jq = mkBin "vr3n_jq" ''${jq} --version 2>&1 | sed 's/jq-//' '';
+            vr3n_lsd = mkBin "vr3n_lsd" ''${mkVr3n lsd {}}'';
+            vr3n_mise = mkBin "vr3n_mise" ''
+              ${mise} version 2>/dev/null | grep -o '^[0-9]*\.[0-9]*\.[0-9]*'
+            '';
+            vr3n_onefetch = mkBin "vr3n_onefetch" ''${mkVr3n onefetch {}}'';
+            vr3n_nitch = mkBin "vr3n_nitch" ''${mkVr3n nitch {field = 3;}}'';
+            vr3n_nixd = mkBin "vr3n_nixd" ''${mkVr3n nixd {}}'';
+            vr3n_rg = mkBin "vr3n_rg" ''${mkVr3n ripgrep-all {}}'';
+            vr3n_sd = mkBin "vr3n_sd" ''${mkVr3n sd {}}'';
+            vr3n_trashy = mkBin "vr3n_trashy" ''${mkVr3n trashy {}}'';
+            vr3n_tokei = mkBin "vr3n_tokei" ''${mkVr3n tokei {}}'';
           };
-        in {inherit aliases bin scripts packages;}
+        in {inherit scripts packages;}
       );
 
+      /**
+      Web development tooling: Deno and Prettier.
+      Enabled when `includeWeb = true`.
+      */
       web = optionalAttrs includeWeb (
         let
           packages = {inherit (pkgs) deno prettierd;};
           bin = mkBins packages;
-          aliases = with bin; {
-            vr3n_deno = mkVr3n deno {head = true;};
-            vr3n_prettier = mkVr3n prettierd {field = 1;};
+          scripts = with bin; {
+            vr3n_deno = mkBin "vr3n_deno" ''${mkVr3n deno {head = true;}}'';
+            vr3n_prettierd = mkBin "vr3n_prettierd" ''${mkVr3n prettierd {field = 1;}}'';
           };
-        in {inherit aliases packages;}
+        in {inherit scripts packages;}
       );
 
+      /**
+      Editor tooling: Helix.
+      Enabled when `includeEditor = true`.
+      */
       editor = optionalAttrs includeEditor (
         let
           packages = {inherit (pkgs) helix;};
-          bin = {
-            helix = "${pkgs.helix}/bin/hx";
+          bin = {helix = "${pkgs.helix}/bin/hx";};
+          scripts = with bin; {
+            vr3n_helix = mkBin "vr3n_helix" ''${mkVr3n helix {head = true;}}'';
           };
-          aliases = with bin; {
-            vr3n_helix = mkVr3n helix {head = true;};
-          };
-        in {inherit aliases packages;}
+        in {inherit scripts packages;}
       );
     };
   in {
     inherit print;
-
-    aliases = mkAliases (
-      foldl'
-      (acc: g: acc // (g.aliases or {}))
-      {}
-      (attrValues groups)
-    );
-
     packages = flatten (
       concatMap
       (g: attrValues (g.packages or {}) ++ attrValues (g.scripts or {}))

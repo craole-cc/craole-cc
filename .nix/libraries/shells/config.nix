@@ -28,12 +28,7 @@
         ++ (attrValues fmt.packages.${getSystem pkgs})
         ++ tools.packages;
 
-      shellHook = ''
-        ${spec.shell.shellHook or ""}
-        ${tools.aliases}
-        export TOOLS_ALIASES="${writeText "tools-aliases" tools.aliases}"
-      '';
-
+      shellHook = spec.shell.shellHook or "";
       env = spec.shell.env or {};
 
       shell =
