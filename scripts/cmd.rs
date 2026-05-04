@@ -1,4 +1,4 @@
-#!/usr/bin/env rust-script
+#!/usr/bin/env -S RUST_LOG=rust_script=warn rust-script
 //! ```cargo
 //! [dependencies]
 //! clap = { version = "4.5", features = ["derive"] }
@@ -75,19 +75,19 @@ enum Action {
   },
 }
 
-#[derive(Debug, Error, Diagnostic)]
+#[derive(Debug, Error, Diagnostic,)]
 enum CmdError {
-    #[error("command not found: {0}")]
-    #[diagnostic(help("Check that the command exists on PATH."))]
-    CommandNotFound(String),
+  #[error("command not found: {0}")]
+  #[diagnostic(help("Check that the command exists on PATH."))]
+  CommandNotFound(String,),
 
-    #[error("neither bat nor cat was found")]
-    #[diagnostic(help("Install bat or ensure cat is available on PATH."))]
-    ViewerNotFound,
+  #[error("neither bat nor cat was found")]
+  #[diagnostic(help("Install bat or ensure cat is available on PATH."))]
+  ViewerNotFound,
 
-    #[error("no clipboard command found")]
-    #[diagnostic(help("Install or expose one of: clip, wl-copy, xclip, pbcopy."))]
-    ClipboardNotFound,
+  #[error("no clipboard command found")]
+  #[diagnostic(help("Install or expose one of: clip, wl-copy, xclip, pbcopy."))]
+  ClipboardNotFound,
 }
 
 fn is_executable(path : &Path,) -> bool {

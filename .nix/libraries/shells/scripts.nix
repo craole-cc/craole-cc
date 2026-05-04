@@ -5,7 +5,7 @@
 }: let
   inherit (lib.attrsets) attrNames listToAttrs mapAttrsToList nameValuePair;
   inherit (lib.filesystem) readDir;
-  inherit (lib.lists) elem filter findFirst head last  optional;
+  inherit (lib.lists) elem filter findFirst head last optional;
   inherit (lib.packages) mkPkgs;
   inherit (lib.strings) concatLines escapeShellArg hasPrefix match optionalString;
   inherit (lib.trivial) readFile throwIf;
@@ -59,16 +59,16 @@
         })
         names;
 
-  explicitFiles =
-  map
-  (path: {
-    name = baseNameOf (toString path);
-    inherit path;
-  })
-  (
-    files
-    ++ optional (file != null) file
-  );
+    explicitFiles =
+      map
+      (path: {
+        name = baseNameOf (toString path);
+        inherit path;
+      })
+      (
+        files
+        ++ optional (file != null) file
+      );
 
     allFiles = dirFiles ++ explicitFiles;
 
@@ -125,14 +125,28 @@
 
     mkDiscoveredScript = base: let
       chosen = choose base;
+      file = chosen.path;
+      ext = scriptExt chosen;
+
+      source = pkgs.writeTextFile {
+        name = "${base}-source";
+        destination = "/share/${base}/${chosen.name}";
+        executable = true;
+        text = readFile file;
+      };
+
+      envLines =
+        if ext == "rs"
+        then ''
+          export RUST_LOG="''${RUST_LOG:-rust_script=warn}"
+        ''
+        else "";
     in
       nameValuePair base
-      (pkgs.writeTextFile {
-        name = base;
-        destination = "/bin/${base}";
-        executable = true;
-        text = readFile chosen.path;
-      });
+      (pkgs.writeShellScriptBin base ''
+        ${envLines}
+        exec ${source}/share/${base}/${chosen.name} "$@"
+      '');
   in
     listToAttrs (
       map mkDiscoveredScript bases
