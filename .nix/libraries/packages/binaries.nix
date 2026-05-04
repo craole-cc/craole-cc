@@ -47,13 +47,9 @@ Pure package and binary resolution helpers for lib.packages.
         then program
         else if drv ? meta && drv.meta ? mainProgram
         then drv.meta.mainProgram
-        else if drv ? NIX_MAIN_PROGRAM
-        then drv.NIX_MAIN_PROGRAM
-        else if drv ? pname
-        then drv.pname
-        else if name != null
+        else drv.NIX_MAIN_PROGRAM or (drv.pname or (if name != null
         then name
-        else parsed.name;
+        else parsed.name));
     in
       if mainProgram == null
       then throw "resolveBin: could not determine main program for derivation"
