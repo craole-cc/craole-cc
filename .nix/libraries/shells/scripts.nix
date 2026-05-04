@@ -3,6 +3,7 @@
   paths ? {},
   ...
 }: let
+  _ = builtins.trace "paths.scripts = ${builtins.toJSON (builtins.attrNames (paths.scripts or {}))}" null;
   inherit (lib.attrsets) attrNames mapAttrsToList;
   inherit (lib.packages) mkPkgs;
   inherit (lib.strings) concatLines escapeShellArg;

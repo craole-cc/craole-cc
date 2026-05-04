@@ -482,6 +482,16 @@ Intended as a zero-dependency bootstrap that other library namespaces
     in
       target filtered
     else target;
+  # importWithFilteredArgs = path: args: let
+  #   target = import path;
+  # in
+  #   if isFunction target
+  #   then let
+  #     declared = attrNames (functionArgs target);
+  #     filtered = filterAttrs (name: _: elem name declared) args;
+  #   in
+  #     target filtered
+  #   else target;
 
   /**
   Resolve importable paths from normalized filesystem input.
