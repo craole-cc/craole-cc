@@ -73,9 +73,11 @@
             glog = "$(git log -1 --pretty=%B)";
             gcp = writeShellScript "git-add-commit-push" ''
               git add --all
-              msg="''${*:-$(git log -1 --pretty=%B 2>/dev/null | head -1)}"
-              git commit --message "$msg"
-              git push
+              if ! git diff --cached --quiet || ! git diff --quiet; then
+                msg="''${*:-$(git log -1 --pretty=%B 2>/dev/null | head -1)}"
+                git commit --message "$msg"
+                git push
+              fi
             '';
             #~@ Files
             clip = with bin; "$(if [ -n \"$WAYLAND_DISPLAY\" ]; then echo \"${wl-copy}\"; elif [ -n \"$DISPLAY\" ]; then echo \"${xclip} -selection clipboard\"; else echo \"pbcopy\"; fi)";
@@ -89,13 +91,11 @@
             #~@ Nix
             reload = "${cmd.gcp}; ${bin.direnv} reload";
             format = "${cmd.gcp}; nix fmt";
-            update = let
-              script = writeShellScript "update-flake" ''
-                ${print.yellow} "Updating flake inputs..."
-                nix flake update
-                ${cmd.gcp} "flake update"
-              '';
-            in "${script}";
+            update = writeShellScript "update-flake" ''
+              ${print.yellow} "Updating flake inputs..."
+              nix flake update
+              ${cmd.gcp} "flake update"
+            '';
           };
 
           aliases = concatStringsSep "\n" (
