@@ -1,6 +1,16 @@
 #!/bin/sh
 # shellcheck enable=all
 
+require_cmd() {
+	cmd="$(command -v "$1" 2>/dev/null || true)"
+	[ -n "${cmd}" ] || {
+		printf 'Error: required command not found: %s\n' "$1" >&2
+		exit 1
+	}
+	printf '%s' "${cmd}"
+}
+[ -n "${CMD_GIT:-}" ] || CMD_GIT="$(require_cmd git)"
+
 usage() {
 	printf 'Usage: gcp [OPTIONS] [MESSAGE]\n'
 	printf '\n'
@@ -49,7 +59,6 @@ parse_args() {
 		shift
 	done
 
-	# Remaining args after flags become the message
 	case "${*}" in
 	?*) msg="${*}" ;;
 	*) ;;
@@ -57,19 +66,19 @@ parse_args() {
 }
 
 execute() {
-	git add --all
+	"${CMD_GIT}" add --all
 
-	case "$(git status --porcelain)" in
+	case "$("${CMD_GIT}" status --porcelain)" in
 	?*)
 		case "${msg}" in
-		'') msg="$(git log -1 --pretty=%B 2>/dev/null | head -1)" ;;
+		'') msg="$("${CMD_GIT}" log -1 --pretty=%B 2>/dev/null | head -1)" ;;
 		*) ;;
 		esac
 
-		git commit --message "${msg}"
+		"${CMD_GIT}" commit --message "${msg}"
 
 		case "${push}" in
-		1) git push ;;
+		1) "${CMD_GIT}" push ;;
 		*) ;;
 		esac
 		;;

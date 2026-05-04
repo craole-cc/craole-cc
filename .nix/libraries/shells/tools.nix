@@ -61,6 +61,7 @@
                 direnv
                 fastfetch
                 fd
+                git
                 gitui
                 gnused
                 gum
@@ -113,20 +114,10 @@
             #~@ Git
             gt = mkBin "gt" ''${gitui} "$@"'';
             glog = mkBin "glog" ''git log -1 --pretty=%B'';
-            # gcp = mkBin "gcp" ''
-            #   git add --all
-            #   if [ -n "$(git status --porcelain)" ]; then
-            #     msg="''${*:-$(git log -1 --pretty=%B 2>/dev/null | head -1)}"
-            #     git commit --message "$msg"
-            #     git push
-            #   fi
-            # '';
             gcp = mkPackage {
               inherit pkgs;
               name = "gcp";
-              env = {
-                CMD_GIT = git;
-              };
+              env = {CMD_GIT = git;};
             };
 
             #~@ Clipboard
@@ -166,6 +157,27 @@
                 CMD_MISE = mise;
               };
             };
+
+            #~@ Script Helpers
+            find_cmd = mkBin "find_cmd" ''
+              command -v "$1" 2>/dev/null || true
+            '';
+
+            require_cmd = mkBin "require_cmd" ''
+              cmd="$(command -v "$1" 2>/dev/null || true)"
+              [ -n "''${cmd}" ] || {
+                printf 'Error: required command not found: %s\n' "$1" >&2
+                exit 1
+              }
+              printf '%s' "''${cmd}"
+            '';
+
+            is_true = mkBin "is_true" ''
+              case "$(printf '%s' "''${1:-}" | tr '[:upper:]' '[:lower:]')" in
+              1 | yes | true | on | enable*) exit 0 ;;
+              *) exit 1 ;;
+              esac
+            '';
 
             #~@ Versions
             vr3n_bat = mkBin "vr3n_bat" ''${mkVr3n bat {}}'';

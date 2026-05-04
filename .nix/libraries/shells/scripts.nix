@@ -30,7 +30,8 @@
   in
     pkgs.writeShellScriptBin name ''
       ${mkEnvLines env}
-      ${optionalString (script != null) readFile script}
+
+      ${optionalString (script != null) (readFile script)}
     '';
 
   mkAlias = {

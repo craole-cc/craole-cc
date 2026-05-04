@@ -1,6 +1,20 @@
 #!/bin/sh
 # shellcheck enable=all
 
+find_cmd() { command -v "$1" 2>/dev/null || true; }
+if [ -z "${CMD_CARGO:-}" ]; then CMD_CARGO="$(find_cmd cargo)"; fi
+if [ -z "${CMD_DIRENV:-}" ]; then CMD_DIRENV="$(find_cmd direnv)"; fi
+if [ -z "${CMD_GIT:-}" ]; then CMD_GIT="$(find_cmd git)"; fi
+if [ -z "${CMD_MISE:-}" ]; then CMD_MISE="$(find_cmd mise)"; fi
+if [ -z "${CMD_NIX:-}" ]; then CMD_NIX="$(find_cmd nix)"; fi
+
+is_true() {
+	case "$(printf '%s' "${1:-}" | tr '[:upper:]' '[:lower:]')" in
+	1 | yes | true | on | enable*) return 0 ;;
+	*) return 1 ;;
+	esac
+}
+
 usage() {
 	printf 'Usage: update [OPTIONS]\n'
 	printf '\n'
@@ -9,14 +23,6 @@ usage() {
 	printf '  --mise           Also run mise self-update\n'
 	printf '  --no-flake       Skip nix flake update\n'
 	printf '  --help           Show this help\n'
-}
-
-#? Returns 0 (true) if the argument is 1, yes, true, or on (case-insensitive).
-is_true() {
-	case "${1}" in
-	1 | [Yy]es | [Tt]rue | [Oo]n) return 0 ;;
-	*) return 1 ;;
-	esac
 }
 
 flake=1
@@ -36,32 +42,31 @@ for arg in "$@"; do
 	esac
 done
 
-if is_true "${flake}"; then
-	nix flake update 2>/dev/null
+if is_true "${flake}" && [ -n "${CMD_NIX}" ]; then
+	"${CMD_NIX}" flake update 2>/dev/null
 fi
 
-if is_true "${cargo}"; then
-	cargo update
-	if command -v cargo >/dev/null 2>&1; then
-		cargo reload
-	fi
+if is_true "${cargo}" && [ -n "${CMD_CARGO}" ]; then
+	"${CMD_CARGO}" update
+	"${CMD_CARGO}" reload
 fi
 
-if is_true "${mise}"; then
-	if command -v mise >/dev/null 2>&1; then
-		mise self-update
-	fi
+if is_true "${mise}" && [ -n "${CMD_MISE}" ]; then
+	"${CMD_MISE}" self-update
 fi
 
-git add --all
-case "$(git status --porcelain)" in
-?*)
-	git commit --message "update"
-	git push
-	;;
-*) ;;
-esac
+if [ -n "${CMD_GIT}" ]; then
+	"${CMD_GIT}" add --all
 
-if command -v direnv >/dev/null 2>&1; then
-	direnv reload
+	case "$("${CMD_GIT}" status --porcelain)" in
+	?*)
+		"${CMD_GIT}" commit --message "update"
+		"${CMD_GIT}" push
+		;;
+	*) ;;
+	esac
+fi
+
+if [ -n "${CMD_DIRENV}" ]; then
+	"${CMD_DIRENV}" reload
 fi
