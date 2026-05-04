@@ -74,6 +74,8 @@
                 nitch
                 nixd
                 onefetch
+                gcc
+                rust-script
                 ripgrep-all
                 sd
                 tokei
@@ -148,7 +150,6 @@
               '';
 
               #~@ CMD Instection
-
 
               #~@ Nix
               reload = mkBin "reload" ''
