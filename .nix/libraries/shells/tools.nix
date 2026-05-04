@@ -221,7 +221,8 @@
                       continue
                     fi
 
-                    printf 'File: %s\n' "$path"
+                    printf '# Command: %s\n' "$cmd"
+                    printf '# Path: %s\n' "$path"
                     cat "$path"
                   done
                 } | clip
