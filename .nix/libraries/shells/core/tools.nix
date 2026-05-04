@@ -91,9 +91,32 @@
             #~@ Nix
             reload = "${cmd.gcp} \"\$@\"; ${bin.direnv} reload";
             format = "${cmd.gcp} \"\$@\"; nix fmt";
-            update = writeShellScript "update-flake" ''
-              nix flake update
-              ${cmd.gcp} "flake update"
+            update = writeShellScript "update" ''
+              flake=1
+              cargo=0
+              mise=0
+
+              for arg in "$@"; do
+                case "$arg" in
+                  --rust|--cargo) cargo=1 ;;
+                  --mise)         mise=1 ;;
+                  --no-flake)     flake=0 ;;
+                esac
+              done
+
+              if [ "$flake" = 1 ]; then
+                nix flake update
+              fi
+
+              if [ "$cargo" = 1 ]; then
+                cargo update
+              fi
+
+              if [ "$mise" = 1 ]; then
+                ${bin.mise} self-update
+              fi
+
+              ${cmd.gcp} "update"
               ${bin.direnv} reload
             '';
           };
