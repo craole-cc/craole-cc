@@ -5,9 +5,9 @@
 }: let
   inherit (lib.attrsets) attrNames listToAttrs mapAttrsToList nameValuePair;
   inherit (lib.filesystem) readDir;
-  inherit (lib.lists) elem filter findFirst head last match optional;
+  inherit (lib.lists) elem filter findFirst head last  optional;
   inherit (lib.packages) mkPkgs;
-  inherit (lib.strings) concatLines escapeShellArg hasPrefix optionalString;
+  inherit (lib.strings) concatLines escapeShellArg hasPrefix match optionalString;
   inherit (lib.trivial) readFile throwIf;
 
   scripts = (paths.scripts or {}) // {missionControl = ./mission-control.sh;};

@@ -6,7 +6,7 @@
   inherit (lib.attrsets) attrValues mapAttrs' nameValuePair optionalAttrs;
   inherit (lib.lists) concatMap flatten;
   inherit (lib.packages) mkBins mkPkgs mkVr3n;
-  inherit (lib.shells) mkPackagesFrom;
+  inherit (lib.shells) mkPackage mkPackagesFrom;
   inherit (lib.strings) mkStyledOutput;
 
   /**
@@ -85,12 +85,15 @@
               inherit (pkgs) xclip wl-clipboard xsel;
             };
 
-          bin =
-            mkBins packages
-            // optionalAttrs isLinux {
-              wl-copy = "${pkgs.wl-clipboard}/bin/wl-copy";
-            }
-            // mkBins scripts;
+          bin = {
+            packages =
+              mkBins packages
+              // optionalAttrs isLinux {
+                wl-copy = "${pkgs.wl-clipboard}/bin/wl-copy";
+              };
+            scripts = mkBins scripts;
+            all = bin.packages // bin.scripts;
+          };
 
           scripts = let
             auto =
@@ -101,7 +104,7 @@
                   dir = paths.scripts.src;
                 }
               else {};
-            manual = with bin; {
+            manual = with bin.packages; {
               #~@ Navigation
               fetch = mkBin "fetch" ''${fastfetch} "$@"'';
               ls = mkBin "ls" ''${lsd} "$@"'';
@@ -145,16 +148,85 @@
               '';
 
               #~@ Files
-              batp = mkBin "batp" ''exec ${bat} --paging=never --plain "$@"'';
+              bat-plain = mkBin "batp" ''exec ${bat} --paging=never --plain "$@"'';
               fclip = mkBin "fclip" ''
                 for f in "$@"; do
                   printf 'File: %s\n' "$f"
-                  ${batp} "$f"
+                  bat-plain "$f"
                 done | clip
               '';
-              getcmd=mkBins "getcmd" ''
-                cat "$(command -v "$@")"
-              ''
+              #~@ Command Inspection
+              cmd-loc = mkBin "cmd-loc" ''
+                if [ "$#" -eq 0 ]; then
+                  printf 'Usage: cmd-loc COMMAND...\n' >&2
+                  exit 2
+                fi
+
+                status=0
+
+                for cmd in "$@"; do
+                  path="$(command -v "$cmd" 2>/dev/null || true)"
+
+                  if [ -z "$path" ]; then
+                    printf 'Command not found: %s\n' "$cmd" >&2
+                    status=1
+                    continue
+                  fi
+
+                  printf '%s\n' "$path"
+                done
+
+                exit "$status"
+              '';
+
+              cmd-src = mkBin "cmd-src" ''
+                if [ "$#" -eq 0 ]; then
+                  printf 'Usage: cmd-src COMMAND...\n' >&2
+                  exit 2
+                fi
+
+                status=0
+
+                for cmd in "$@"; do
+                  path="$(command -v "$cmd" 2>/dev/null || true)"
+
+                  if [ -z "$path" ]; then
+                    printf 'Command not found: %s\n' "$cmd" >&2
+                    status=1
+                    continue
+                  fi
+
+                  ${bat} "$path" || status=$?
+                done
+
+                exit "$status"
+              '';
+
+              cmd-clip = mkBin "cmd-clip" ''
+                if [ "$#" -eq 0 ]; then
+                  printf 'Usage: cmd-clip COMMAND...\n' >&2
+                  exit 2
+                fi
+
+                status=0
+
+                {
+                  for cmd in "$@"; do
+                    path="$(command -v "$cmd" 2>/dev/null || true)"
+
+                    if [ -z "$path" ]; then
+                      printf 'Command not found: %s\n' "$cmd" >&2
+                      status=1
+                      continue
+                    fi
+
+                    printf 'File: %s\n' "$path"
+                    cat "$path"
+                  done
+                } | clip
+
+                exit "$status"
+              '';
 
               #~@ Nix
               reload = mkBin "reload" ''
