@@ -1,8 +1,8 @@
 {lib}: let
-  inherit (lib.attrsets) attrValues;
+  inherit (lib.attrsets) attrValues filterAttrs mapAttrsToList;
   inherit (lib.packages) getSystem;
   inherit (lib.shells) mergeNamespaces mkShells mkTools rust ai;
-  inherit (lib.strings) concatStringsSep;
+  inherit (lib.strings) concatStringsSep escapeShellArg hasInfix;
 
   combined = mergeNamespaces {inherit rust ai;};
   inherit (combined) mkSpec;
@@ -13,23 +13,47 @@
     fmt,
   }: let
     mk = args: let
-      toolArgs = {
+      inherit (pkgs) runCommand writeText;
+
+      spec = mkSpec ({inherit pkgs;} // args);
+
+      tools = mkTools {
         inherit pkgs;
-        minimal = args.minimal or false;
         includeEditor = args.includeEditor or true;
         includeWeb = args.includeWeb or false;
         includeInfo = args.includeInfo or true;
       };
-      tools = mkTools toolArgs;
-      spec = mkSpec ({inherit pkgs;} // args);
+
+      singleLine = filterAttrs (_: v: !(hasInfix "\n" v));
+
+      scripts =
+        pkgs.runCommand "tool-scripts" {
+          passAsFile = ["cmds"];
+          cmds = concatStringsSep "\n" (
+            mapAttrsToList (name: cmd: "${name}\t${cmd}") tools.ver
+            ++ mapAttrsToList (name: cmd: "${name}\t${cmd}") (singleLine tools.cmd)
+          );
+        } ''
+          mkdir -p $out/bin
+          while IFS=$'\t' read -r name cmd; do
+            {
+              echo '#!/bin/sh'
+              echo "$cmd"
+            } > "$out/bin/$name"
+            chmod +x "$out/bin/$name"
+          done < "$cmdsPath"
+        '';
+
       packages =
         spec.shell.packages
         ++ (attrValues fmt.packages.${getSystem pkgs})
-        ++ tools.packages;
+        ++ tools.packages
+        ++ [scripts];
+
       shellHook = ''
         ${spec.shell.shellHook or ""}
         ${tools.aliases}
-        export TOOLS_ALIASES="${pkgs.writeText "tools-aliases" tools.aliases}"
+        export TOOLS_ALIASES="${writeText "tools-aliases" tools.aliases}"
       '';
       env = (spec.shell.env or {}) // tools.vr3n;
       shell = spec.shell // {inherit env packages shellHook;};
@@ -48,15 +72,14 @@
         preset = "minimal";
         includeAnalytics = false;
         includeEditor = false;
-        includeInfo = false;
-        minimal = true;
+        includeInfo = true;
       };
     };
     namespaced = combined.mkSuite {inherit pkgs;};
   in {
     devShells = mkShells {
       inherit inputs;
-      default = variants.stable;
+      default = variants.minimal;
       shells = namespaced // variants;
     };
   };
