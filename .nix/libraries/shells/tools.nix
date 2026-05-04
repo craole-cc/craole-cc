@@ -17,7 +17,7 @@
     includeWeb ? false,
     includeInfo ? true,
   }: let
-    inherit (pkgs) writeShellScript;
+    inherit (pkgs) writeShellScript writeShellScriptBin;
     inherit (pkgs.stdenv) isLinux;
 
     print = mkStyledOutput {inherit pkgs;};
@@ -72,14 +72,24 @@
             #~@ Git
             gt = bin.gitui;
             glog = "$(git log -1 --pretty=%B)";
-            gcp = writeShellScript "git-add-commit-push" ''
-              git add --all
-              if [ -n "$(git status --porcelain)" ]; then
-                msg="''${*:-$(git log -1 --pretty=%B 2>/dev/null | head -1)}"
-                git commit --message "$msg"
-                git push
-              fi
-            '';
+            # gcp = writeShellScript "git-add-commit-push" ''
+            #   git add --all
+            #   if [ -n "$(git status --porcelain)" ]; then
+            #     msg="''${*:-$(git log -1 --pretty=%B 2>/dev/null | head -1)}"
+            #     git commit --message "$msg"
+            #     git push
+            #   fi
+            # '';
+            gcp = let
+              drv = writeShellScriptBin "git-add-commit-push" ''
+                git add --all
+                if [ -n "$(git status --porcelain)" ]; then
+                  msg="''${*:-$(git log -1 --pretty=%B 2>/dev/null | head -1)}"
+                  git commit --message "$msg"
+                  git push
+                fi
+              '';
+            in "${drv}/bin/git-add-commit-push";
             #~@ Files
             clip = with bin; "$(if [ -n \"$WAYLAND_DISPLAY\" ]; then echo \"${wl-copy}\"; elif [ -n \"$DISPLAY\" ]; then echo \"${xclip} -selection clipboard\"; else echo \"pbcopy\"; fi)";
             batp = "${bin.bat} --paging=never --plain \"\$@\"";

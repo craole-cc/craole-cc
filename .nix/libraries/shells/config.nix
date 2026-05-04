@@ -13,7 +13,7 @@
     fmt,
   }: let
     mk = args: let
-      inherit (pkgs) writeText;
+      inherit (pkgs) runCommand writeText;
 
       spec = mkSpec ({inherit pkgs;} // args);
 
@@ -27,7 +27,7 @@
       singleLine = filterAttrs (_: v: !(hasInfix "\n" v));
 
       scripts =
-        pkgs.runCommand "tool-scripts" {
+        runCommand "tool-scripts" {
           passAsFile = ["cmds"];
           cmds = concatStringsSep "\n" (
             mapAttrsToList (name: cmd: "${name}\t${cmd}") tools.ver
@@ -38,7 +38,7 @@
           while IFS=$'\t' read -r name cmd; do
             {
               echo '#!/bin/sh'
-              echo "$cmd"
+              echo "exec $cmd \"\$@\""
             } > "$out/bin/$name"
             chmod +x "$out/bin/$name"
           done < "$cmdsPath"
