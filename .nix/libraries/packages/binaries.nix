@@ -4,9 +4,9 @@ libraries/packages/resolve.nix
 Pure package and binary resolution helpers for lib.packages.
 */
 {lib}: let
-  inherit (lib.attrsets) attrNames mapAttrs filterAttrs;
+  inherit (lib.attrsets) attrNames mapAttrs filterAttrs mapAttrsToList;
   inherit (lib.trivial) isNotEmpty;
-  inherit (lib.strings) parseDrvName;
+  inherit (lib.strings)concatStringsSep parseDrvName escapeShellArg;
 
   /**
   Resolve a derivation's main executable path.
@@ -118,8 +118,16 @@ Pure package and binary resolution helpers for lib.packages.
     if custom != null
     then custom
     else "${piped} | ${awk}";
+
+  mkAliases = aliases:
+    concatStringsSep "\n" (
+      mapAttrsToList
+      (name: value: "alias ${name}=${escapeShellArg value}")
+      aliases
+    );
 in {
   inherit
+    mkAliases
     resolveBin
     resolveBins
     mkBins

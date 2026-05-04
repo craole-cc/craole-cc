@@ -1,8 +1,7 @@
 {lib}: let
-  inherit (lib.attrsets) attrValues filterAttrs mapAttrsToList;
+  inherit (lib.attrsets) attrValues;
   inherit (lib.packages) getSystem;
   inherit (lib.shells) mergeNamespaces mkShells mkTools rust ai;
-  inherit (lib.strings) concatStringsSep hasInfix;
 
   combined = mergeNamespaces {inherit rust ai;};
   inherit (combined) mkSpec;
@@ -13,7 +12,7 @@
     fmt,
   }: let
     mk = args: let
-      inherit (pkgs) runCommand writeText;
+      inherit (pkgs) writeText;
 
       spec = mkSpec ({inherit pkgs;} // args);
 
@@ -24,31 +23,10 @@
         includeInfo = args.includeInfo or true;
       };
 
-      singleLine = filterAttrs (_: v: !(hasInfix "\n" v));
-
-      scripts =
-        runCommand "tool-scripts" {
-          passAsFile = ["cmds"];
-          cmds = concatStringsSep "\n" (
-            mapAttrsToList (name: cmd: "${name}\t${cmd}") tools.ver
-            ++ mapAttrsToList (name: cmd: "${name}\t${cmd}") (singleLine tools.cmd)
-          );
-        } ''
-          mkdir -p $out/bin
-          while IFS=$'\t' read -r name cmd; do
-            {
-              echo '#!/bin/sh'
-              echo "exec $cmd \"\$@\""
-            } > "$out/bin/$name"
-            chmod +x "$out/bin/$name"
-          done < "$cmdsPath"
-        '';
-
       packages =
         spec.shell.packages
         ++ (attrValues fmt.packages.${getSystem pkgs})
-        ++ tools.packages
-        ++ [scripts];
+        ++ tools.packages;
 
       shellHook = ''
         ${spec.shell.shellHook or ""}
@@ -56,8 +34,13 @@
         export TOOLS_ALIASES="${writeText "tools-aliases" tools.aliases}"
       '';
 
-      env = (spec.shell.env or {}) // tools.vr3n;
-      shell = spec.shell // {inherit env packages shellHook;};
+      env = spec.shell.env or {};
+
+      shell =
+        spec.shell
+        // {
+          inherit env packages shellHook;
+        };
     in
       spec // {inherit shell;};
 
