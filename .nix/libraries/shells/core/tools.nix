@@ -9,7 +9,6 @@
   inherit (lib.lists) flatten foldl';
   inherit (lib.packages) mkBins mkPkgs mkVr3n;
   inherit (lib.strings) concatStringsSep escapeShellArg mkStyledOutput;
-  inherit (builtins) getEnv;
 
   mkTools = {
     pkgs ? mkPkgs {},
@@ -17,6 +16,7 @@
     includeWeb ? false,
     includeInfo ? true,
   }: let
+    inherit (pkgs) writeShellScript;
     inherit (pkgs.stdenv) isLinux;
 
     print = mkStyledOutput {inherit pkgs;};
@@ -70,7 +70,13 @@
 
             #~@ Git
             gt = bin.gitui;
-
+            glog = "$(git log -1 --pretty=%B)";
+            gcp = writeShellScript "commit" ''
+              git add --all
+              msg="''${*:-$(git log -1 --pretty=%B 2>/dev/null | head -1)}"
+              git commit --message "$msg"
+              git push
+            '';
             #~@ Files
             clip = with bin; "$(if [ -n \"$WAYLAND_DISPLAY\" ]; then echo \"${wl-copy}\"; elif [ -n \"$DISPLAY\" ]; then echo \"${xclip} -selection clipboard\"; else echo \"pbcopy\"; fi)";
             fbat = "${bin.bat} --paging=never --plain \"\$@\"";
@@ -82,8 +88,10 @@
 
             #~@ Nix
             reload = "${bin.direnv} reload";
-            format = "${cmd.gt}; nix fmt";
-            update = "${print.yellow} \"Updating flake inputs...\"; \"nix flake update\"";
+            format = "${cmd.gcp}; nix fmt";
+            # update = "${print.yellow} \"Updating flake inputs...\"; \"nix flake update\"";
+            # update = "${print.yellow} \"Updating flake inputs...\"; nix flake update";
+            update = "echo \"Updating flake inputs...\" && nix flake update";
           };
           aliases = concatStringsSep "\n" (
             mapAttrsToList
