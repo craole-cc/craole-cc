@@ -518,6 +518,7 @@ Intended as a zero-dependency bootstrap that other library namespaces
       scope = acc: libToUse // {shells = libToUse.shells or {} // acc;};
       priority = n.priority or [];
       ignore = n.ignore or [];
+      extraArgs = n.args;
     };
 
     names = attrNames all;

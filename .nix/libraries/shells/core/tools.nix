@@ -90,7 +90,10 @@
             rg = bin.ripgrep-all;
 
             #~@ Nix
-            reload = "${cmd.gcp} \"\$@\"; ${bin.direnv} reload";
+            reload = writeShellScript "reload" ''
+              ${cmd.gcp} "$@"
+              ${bin.direnv} reload
+            '';
             format = "${cmd.gcp} \"\$@\"; nix fmt";
             update = let
               script = mkPackage {
