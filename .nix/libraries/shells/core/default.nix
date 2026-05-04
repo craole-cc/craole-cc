@@ -7,7 +7,7 @@
 in
   lib.assembly.assemble {
     start = inherited;
-    entries = lib.assembly.collectPaths {path = ./.;};
+    entries = ./.;
     scope = acc: lib // {shells = inherited // acc;};
     priority = ["scripts.nix"];
     ignore = ["default.nix"];
