@@ -604,6 +604,7 @@ Intended as a zero-dependency bootstrap that other library namespaces
       priority = n.priority or [];
       ignore = n.ignore   or [];
       dependencies = n.dependencies or [];
+      extraArgs = n.args or {};
     };
     names = attrNames all;
     values = attrValues all;

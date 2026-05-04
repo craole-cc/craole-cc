@@ -117,4 +117,6 @@ in {
     scripts
     mkCommands
     ;
+
+    inherit paths;
 }
