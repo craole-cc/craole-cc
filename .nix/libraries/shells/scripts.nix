@@ -5,7 +5,7 @@
 }: let
   inherit (lib.attrsets) attrNames mapAttrsToList;
   inherit (lib.packages) mkPkgs;
-  inherit (lib.strings) concatLines escapeShellArg;
+  inherit (lib.strings) concatLines escapeShellArg optionalString;
   inherit (lib.trivial) readFile;
 
   scripts =
@@ -19,16 +19,18 @@
     pkgs,
     name,
     file ? null,
-    script ? null,
     env ? {},
-  }:
+  }: let
+    script =
+      if scripts ? ${name}
+      then scripts.${name}
+      else if file != null
+      then file
+      else null;
+  in
     pkgs.writeShellScriptBin name ''
       ${mkEnvLines env}
-      ${readFile (
-        if script != null
-        then scripts.${script}
-        else file
-      )}
+      ${optionalString (script != null) readFile script}
     '';
 
   mkAlias = {
@@ -118,5 +120,5 @@ in {
     mkCommands
     ;
 
-    inherit paths;
+  inherit paths;
 }

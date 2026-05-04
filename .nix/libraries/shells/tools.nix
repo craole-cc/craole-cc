@@ -113,14 +113,21 @@
             #~@ Git
             gt = mkBin "gt" ''${gitui} "$@"'';
             glog = mkBin "glog" ''git log -1 --pretty=%B'';
-            gcp = mkBin "gcp" ''
-              git add --all
-              if [ -n "$(git status --porcelain)" ]; then
-                msg="''${*:-$(git log -1 --pretty=%B 2>/dev/null | head -1)}"
-                git commit --message "$msg"
-                git push
-              fi
-            '';
+            # gcp = mkBin "gcp" ''
+            #   git add --all
+            #   if [ -n "$(git status --porcelain)" ]; then
+            #     msg="''${*:-$(git log -1 --pretty=%B 2>/dev/null | head -1)}"
+            #     git commit --message "$msg"
+            #     git push
+            #   fi
+            # '';
+            gcp = mkPackage {
+              inherit pkgs;
+              name = "gcp";
+              env = {
+                CMD_GIT = git;
+              };
+            };
 
             #~@ Clipboard
             clip = mkBin "clip" ''
@@ -154,10 +161,9 @@
             update = mkPackage {
               inherit pkgs;
               name = "update";
-              script = "update";
               env = {
-                DIRENV = direnv;
-                MISE = mise;
+                CMD_DIRENV = direnv;
+                CMD_MISE = mise;
               };
             };
 

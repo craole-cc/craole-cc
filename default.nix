@@ -17,10 +17,11 @@
     modules = mkCfg "modules";
     templates = mkCfg "templates";
     scripts = {
+      deployTemplates = mkTScr "deploy-templates.sh";
       fmtRust = mkScr "fmt-rust.sh";
+      gcp = mkScr "gcp.sh";
       getIcons = mkScr "get-icons.sh";
       initDatabase = mkScr "init-db.sh";
-      deployTemplates = mkTScr "deploy-templates.sh";
       resetFlake = mkTScr "reset-flake.sh";
       update = mkScr "update.sh";
     };
