@@ -89,8 +89,8 @@
             rg = bin.ripgrep-all;
 
             #~@ Nix
-            reload = "${cmd.gcp}; ${bin.direnv} reload";
-            format = "${cmd.gcp}; nix fmt";
+            reload = "${cmd.gcp} \"\$@\"; ${bin.direnv} reload";
+            format = "${cmd.gcp} \"\$@\"; nix fmt";
             # update = writeShellScript "update-flake" ''
             #   ${print.yellow} "Updating flake inputs..."
             #   nix flake update
