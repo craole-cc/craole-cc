@@ -28,38 +28,35 @@
               inherit
                 (pkgs)
                 bat #? Cat clone with syntax highlighting
+                direnv
                 fd #? Fast find alternative
+                gitui
                 gnused #? GNU stream editor
+                gum
                 jq #? JSON query processor
                 lsd #? LSDeluxe file lister
+                mise
                 nitch # ? System fetch written in nim
                 nixd # ? Nix language daemon
+                onefetch #? Git repository summary on your terminal
                 ripgrep-all #? Fast grep alternative
                 sd #? Intuitive find & replace CLI (sed alternative)
-                onefetch #? Git repository summary on your terminal
-                undollar #? Remove leading dollar signs
-                gitui
                 tokei
-                direnv
-                gum
-                mise
                 trashy
+                undollar #? Remove leading dollar signs
                 ;
             }
             // optionalAttrs isLinux {
-              inherit
-                (pkgs)
-                xclip
-                wl-clipboard
-                xsel
-                ;
+              inherit (pkgs) xclip wl-clipboard xsel;
             };
+
           bin =
-            {
+            mkBins packages
+            // {
               helix = "${pkgs.helix}/bin/hx";
               wl-copy = "${pkgs.wl-clipboard}/bin/wl-copy";
-            }
-            // (mkBins packages // {helixy = pkgs.helix;});
+            };
+
           cmd = {
             #~@ Info
             prjfo = with bin; "${tokei}; ${onefetch}";
@@ -83,14 +80,10 @@
             ff = bin.fd;
             rg = bin.ripgrep-all;
 
-            #~@ Shell
-            reload = "${bin.direnv} reload";
-
             #~@ Nix
-            update-flake = ''
-              ${print.yellow} "Updating flake inputs..."
-              nix flake update
-            '';
+            reload = "${bin.direnv} reload";
+            format = "${cmd.gt}; nix fmt";
+            update = "${print.yellow} \"Updating flake inputs...\"; \"nix flake update\"";
           };
           aliases = concatStringsSep "\n" (
             mapAttrsToList
@@ -102,14 +95,13 @@
             vr3n_onefetch = mkVr3n onefetch {};
             vr3n_tokei = mkVr3n tokei {};
             vr3n_direnv = mkVr3n direnv {field = 1;};
-            # vr3n_gum = mkVr3n gum {head = true;};
             vr3n_gum = mkVr3n gum {
               head = true;
               field = 3;
             };
             vr3n_helix = mkVr3n helix {
               head = true;
-              field = 2;
+              # field = 2;
             };
             vr3n_trashy = mkVr3n trashy {};
             vr3n_mise = mkVr3n mise {
@@ -124,7 +116,6 @@
             vr3n_lsd = mkVr3n lsd {};
             vr3n_rg = mkVr3n ripgrep-all {};
             vr3n_sd = mkVr3n sd {};
-            # vr3n_nitch = mkVr3n nitch {};
             vr3n_nixd = mkVr3n nixd {};
           };
         in {
