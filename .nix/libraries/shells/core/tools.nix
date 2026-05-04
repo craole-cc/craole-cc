@@ -91,8 +91,7 @@
             #~@ Nix
             reload = "${cmd.gcp} \"\$@\"; ${bin.direnv} reload";
             format = "${cmd.gcp} \"\$@\"; nix fmt";
-            upd = "${writeShellScript "update-flake" ''
-              ${print.yellow} "Updating flake inputs..."
+            update = "${writeShellScript "update-flake" ''
               nix flake update
               ${cmd.gcp} "flake update"
             ''}";
