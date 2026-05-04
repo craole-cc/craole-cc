@@ -14,18 +14,18 @@
     mk = args: let
       tools = mkTools {inherit pkgs;};
       spec = mkSpec ({inherit pkgs;} // args);
-      # shellHook = spec.shell.shellHook or "";
-      shellHook = "";
-      env = spec.shell.env or {};
-
-      packages =
-        spec.shell.packages
-        ++ (attrValues fmt.packages.${getSystem pkgs})
-        ++ tools.packages;
 
       shell =
         spec.shell
-        // {inherit env packages shellHook;};
+        // {
+          # shellHook = ""; #TODO: Combined shellHook are currently too noisy
+      # shellHook = spec.shell.shellHook or "";
+          env = spec.shell.env or {};
+          packages =
+            spec.shell.packages
+            ++ (attrValues fmt.packages.${getSystem pkgs})
+            ++ tools.packages;
+        };
     in
       spec // {inherit shell;};
 
