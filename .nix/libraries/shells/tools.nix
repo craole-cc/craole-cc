@@ -155,6 +155,7 @@
                   bat-plain "$f"
                 done | clip
               '';
+
               #~@ Command Inspection
               cmd-loc = mkBin "cmd-loc" ''
                 if [ "$#" -eq 0 ]; then
@@ -202,9 +203,9 @@
                 exit "$status"
               '';
 
-              cmd-clip = mkBin "cmd-clip" ''
+              cmd-cp = mkBin "cmd-cp" ''
                 if [ "$#" -eq 0 ]; then
-                  printf 'Usage: cmd-clip COMMAND...\n' >&2
+                  printf 'Usage: cmd-cp COMMAND...\n' >&2
                   exit 2
                 fi
 
