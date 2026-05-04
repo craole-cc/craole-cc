@@ -179,7 +179,6 @@
 
                 exit "$status"
               '';
-
               cmd-src = mkBin "cmd-src" ''
                 if [ "$#" -eq 0 ]; then
                   printf 'Usage: cmd-src COMMAND...\n' >&2
@@ -202,7 +201,6 @@
 
                 exit "$status"
               '';
-
               cmd-cp = mkBin "cmd-cp" ''
                 if [ "$#" -eq 0 ]; then
                   printf 'Usage: cmd-cp COMMAND...\n' >&2
@@ -210,6 +208,7 @@
                 fi
 
                 status=0
+                first=1
 
                 {
                   for cmd in "$@"; do
@@ -221,14 +220,45 @@
                       continue
                     fi
 
-                    printf '# Command: %s\n' "$cmd"
-                    printf '# Path: %s\n' "$path"
+                    # spacing between entries
+                    if [ "$first" -eq 0 ]; then
+                      printf '\n\n'
+                    fi
+                    first=0
+
+                    printf '# cmd: %s (%s)\n\n' "$cmd" "$path"
                     cat "$path"
                   done
                 } | clip
 
                 exit "$status"
               '';
+              # cmd-cp = mkBin "cmd-cp" ''
+              #   if [ "$#" -eq 0 ]; then
+              #     printf 'Usage: cmd-cp COMMAND...\n' >&2
+              #     exit 2
+              #   fi
+
+              #   status=0
+
+              #   {
+              #     for cmd in "$@"; do
+              #       path="$(command -v "$cmd" 2>/dev/null || true)"
+
+              #       if [ -z "$path" ]; then
+              #         printf 'Command not found: %s\n' "$cmd" >&2
+              #         status=1
+              #         continue
+              #       fi
+
+              #       printf '# Command: %s\n' "$cmd"
+              #       printf '# Path: %s\n' "$path"
+              #       cat "$path"
+              #     done
+              #   } | clip
+
+              #   exit "$status"
+              # '';
 
               #~@ Nix
               reload = mkBin "reload" ''
