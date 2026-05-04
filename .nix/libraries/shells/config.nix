@@ -53,7 +53,8 @@
       shellHook = ''
         ${spec.shell.shellHook or ""}
         ${tools.aliases}
-        export TOOLS_ALIASES="${writeText "tools-aliases" tools.aliases}"
+        cp ${writeText "tools-aliases" tools.aliases} .direnv/tools-aliases
+        export TOOLS_ALIASES=".direnv/tools-aliases"
       '';
       env = (spec.shell.env or {}) // tools.vr3n;
       shell = spec.shell // {inherit env packages shellHook;};
