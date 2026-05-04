@@ -91,10 +91,10 @@
             #~@ Nix
             reload = "${cmd.gcp} \"\$@\"; ${bin.direnv} reload";
             format = "${cmd.gcp} \"\$@\"; nix fmt";
-            update = "${writeShellScript "update-flake" ''
+            upd = writeShellScript "update-flake" ''
               nix flake update
               ${cmd.gcp} "flake update"
-            ''}";
+            '';
           };
 
           aliases = concatStringsSep "\n" (
