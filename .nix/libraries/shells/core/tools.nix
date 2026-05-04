@@ -81,7 +81,7 @@
             '';
             #~@ Files
             clip = with bin; "$(if [ -n \"$WAYLAND_DISPLAY\" ]; then echo \"${wl-copy}\"; elif [ -n \"$DISPLAY\" ]; then echo \"${xclip} -selection clipboard\"; else echo \"pbcopy\"; fi)";
-            bat-plain = "${bin.bat} --paging=never --plain \"\$@\"";
+            batp = "${bin.bat} --paging=never --plain \"\$@\"";
             fclip = "${bin.bat} --paging=never --style=header \"\$@\" | ${cmd.clip}";
 
             #~@ Search
@@ -91,9 +91,10 @@
             #~@ Nix
             reload = "${cmd.gcp} \"\$@\"; ${bin.direnv} reload";
             format = "${cmd.gcp} \"\$@\"; nix fmt";
-            upd = writeShellScript "update-flake" ''
+            update = writeShellScript "update-flake" ''
               nix flake update
               ${cmd.gcp} "flake update"
+              ${bin.direnv} reload
             '';
           };
 
