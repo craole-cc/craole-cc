@@ -101,7 +101,13 @@
             #~@ Project Info
             prjfo = mkBin "prjfo" ''
               ${tokei}
-              ${onefetch}
+              ${onefetch} \
+                --no-art \
+                --no-title \
+                --no-color-palette \
+                --nerd-fonts \
+                --hide-token \
+                --number-separator comma
             '';
 
             #~@ Git
