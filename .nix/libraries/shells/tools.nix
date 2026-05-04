@@ -72,14 +72,6 @@
             #~@ Git
             gt = bin.gitui;
             glog = "$(git log -1 --pretty=%B)";
-            # gcp = writeShellScript "git-add-commit-push" ''
-            #   git add --all
-            #   if [ -n "$(git status --porcelain)" ]; then
-            #     msg="''${*:-$(git log -1 --pretty=%B 2>/dev/null | head -1)}"
-            #     git commit --message "$msg"
-            #     git push
-            #   fi
-            # '';
             gcp = let
               drv = writeShellScriptBin "git-add-commit-push" ''
                 git add --all
