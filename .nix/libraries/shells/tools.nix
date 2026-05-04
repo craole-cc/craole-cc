@@ -156,18 +156,6 @@
                 nix fmt
               '';
 
-              update = mkPackage {
-                inherit pkgs;
-                name = "update";
-                env = {
-                  CMD_CARGO = cargo;
-                  CMD_DIRENV = direnv;
-                  CMD_GIT = git;
-                  CMD_MISE = mise;
-                  CMD_NIX = nix;
-                };
-              };
-
               #~@ Script Helpers
               find_cmd = mkBin "find_cmd" ''
                 command -v "$1" 2>/dev/null || true
