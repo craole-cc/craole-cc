@@ -2,7 +2,7 @@
   inherit (lib.attrsets) attrValues filterAttrs mapAttrsToList;
   inherit (lib.packages) getSystem;
   inherit (lib.shells) mergeNamespaces mkShells mkTools rust ai;
-  inherit (lib.strings) concatStringsSep escapeShellArg hasInfix;
+  inherit (lib.strings) concatStringsSep hasInfix;
 
   combined = mergeNamespaces {inherit rust ai;};
   inherit (combined) mkSpec;
@@ -13,7 +13,7 @@
     fmt,
   }: let
     mk = args: let
-      inherit (pkgs) runCommand writeText;
+      inherit (pkgs) writeText;
 
       spec = mkSpec ({inherit pkgs;} // args);
 

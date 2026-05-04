@@ -511,13 +511,33 @@ Intended as a zero-dependency bootstrap that other library namespaces
       then n.lib
       else lib;
     paths = collectPaths {inherit (n) path recurse ignore;};
-    all = mergeAttrsList (map
-      (p: importWithFilteredArgs p ({lib = libToUse;} // n.args))
-      paths);
+
+    all = assemble {
+      start = {};
+      entries = paths;
+      scope = acc: libToUse // acc; # each file sees growing acc merged into lib
+      priority = n.priority or [];
+      ignore = n.ignore or [];
+    };
+
     names = attrNames all;
     values = attrValues all;
   in
     {__meta = {inherit names values all;};} // all;
+  # importAttrs = input: let
+  #   n = normalizeInput {} input;
+  #   libToUse =
+  #     if n.lib != null
+  #     then n.lib
+  #     else lib;
+  #   paths = collectPaths {inherit (n) path recurse ignore;};
+  #   all = mergeAttrsList (map
+  #     (p: importWithFilteredArgs p ({lib = libToUse;} // n.args))
+  #     paths);
+  #   names = attrNames all;
+  #   values = attrValues all;
+  # in
+  #   {__meta = {inherit names values all;};} // all;
 
   /**
   Import library leaf files and mount them under a single namespace.
