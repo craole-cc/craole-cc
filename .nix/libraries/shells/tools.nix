@@ -1,8 +1,12 @@
-{lib}: let
+{
+  lib,
+  paths,
+  ...
+}: let
   inherit (lib.attrsets) attrValues mapAttrs' nameValuePair optionalAttrs;
   inherit (lib.lists) concatMap flatten;
   inherit (lib.packages) mkBins mkPkgs mkVr3n;
-  inherit (lib.shells) mkPackage;
+  inherit (lib.shells) mkPackagesFrom;
   inherit (lib.strings) mkStyledOutput;
 
   /**
@@ -42,16 +46,6 @@
     inherit (pkgs.stdenv) isLinux;
 
     print = mkStyledOutput {inherit pkgs;};
-    mkPrintScripts = print:
-      mapAttrs'
-      (name: command:
-        nameValuePair
-        "print_${name}"
-        (mkBin "print_${name}" ''
-          exec ${command} "$@"
-        ''))
-      (removeAttrs print ["gum"]);
-
     groups = {
       /**
       Core info/navigation/git/file tooling.
@@ -98,8 +92,16 @@
             }
             // mkBins scripts;
 
-          scripts = with bin;
-            {
+          scripts = let
+            auto =
+              if paths ? scripts && paths.scripts ? src
+              then
+                mkPackagesFrom {
+                  inherit pkgs;
+                  dir = paths.scripts.src;
+                }
+              else {};
+            manual = with bin; {
               #~@ Navigation
               fetch = mkBin "fetch" ''${fastfetch} "$@"'';
               ls = mkBin "ls" ''${lsd} "$@"'';
@@ -124,6 +126,7 @@
               #~@ Git
               gt = mkBin "gt" ''${gitui} "$@"'';
               glog = mkBin "glog" ''git log -1 --pretty=%B'';
+
               gcp = mkPackage {
                 inherit pkgs;
                 name = "gcp";
@@ -155,10 +158,12 @@
                 gcp "$@"
                 ${direnv} reload
               '';
+
               format = mkBin "format" ''
                 gcp "$@"
                 nix fmt
               '';
+
               update = mkPackage {
                 inherit pkgs;
                 name = "update";
@@ -210,8 +215,18 @@
               vr3n_sd = mkBin "vr3n_sd" ''${mkVr3n sd {}}'';
               vr3n_trashy = mkBin "vr3n_trashy" ''${mkVr3n trashy {}}'';
               vr3n_tokei = mkBin "vr3n_tokei" ''${mkVr3n tokei {}}'';
-            }
-            // mkPrintScripts print;
+            };
+            printers =
+              mapAttrs'
+              (name: command:
+                nameValuePair
+                "print_${name}"
+                (mkBin "print_${name}" ''
+                  exec ${command} "$@"
+                ''))
+              (removeAttrs print ["gum"]);
+          in
+            auto // manual // printers;
         in {inherit scripts packages;}
       );
 

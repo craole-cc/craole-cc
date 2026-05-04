@@ -3,9 +3,11 @@
   paths ? {},
   ...
 }: let
-  inherit (lib.attrsets) attrNames mapAttrsToList;
+  inherit (lib.attrsets) attrNames listToAttrs mapAttrsToList nameValuePair;
+  inherit (lib.filesystem) readDir;
+  inherit (lib.lists) elem filter findFirst head last match optional;
   inherit (lib.packages) mkPkgs;
-  inherit (lib.strings) concatLines escapeShellArg optionalString;
+  inherit (lib.strings) concatLines escapeShellArg hasPrefix optionalString;
   inherit (lib.trivial) readFile throwIf;
 
   scripts = (paths.scripts or {}) // {missionControl = ./mission-control.sh;};
@@ -33,14 +35,115 @@
       ${text}
     '');
 
+  mkPackagesFrom = {
+    pkgs,
+    dir ? paths.scripts.src or null,
+    file ? null,
+    files ? [],
+    priority ? ["rs" "bash" "sh"],
+  }: let
+    dirFiles =
+      if dir == null
+      then []
+      else let
+        entries = readDir dir;
+        names =
+          filter
+          (name: entries.${name} == "regular")
+          (attrNames entries);
+      in
+        map
+        (name: {
+          inherit name;
+          path = dir + "/${name}";
+        })
+        names;
+
+  explicitFiles =
+  map
+  (path: {
+    name = baseNameOf (toString path);
+    inherit path;
+  })
+  (
+    files
+    ++ optional (file != null) file
+  );
+
+    allFiles = dirFiles ++ explicitFiles;
+
+    parseName = name: let
+      parts = match "^(.*)\\.([^.]+)$" name;
+    in
+      if parts == null
+      then {
+        base = name;
+        ext = null;
+      }
+      else {
+        base = head parts;
+        ext = last parts;
+      };
+
+    scriptName = item: (parseName item.name).base;
+    scriptExt = item: (parseName item.name).ext;
+
+    isSupported = item:
+      elem (scriptExt item) priority;
+
+    hasShebang = item:
+      hasPrefix "#!" (readFile item.path);
+
+    candidates =
+      filter
+      (item: isSupported item && hasShebang item)
+      allFiles;
+
+    bases = attrNames (
+      listToAttrs (
+        map
+        (item: nameValuePair (scriptName item) true)
+        candidates
+      )
+    );
+
+    choose = base:
+      findFirst
+      (item: item != null)
+      null
+      (map
+        (ext: let
+          matches =
+            filter
+            (item: scriptName item == base && scriptExt item == ext)
+            candidates;
+        in
+          if matches == []
+          then null
+          else head matches)
+        priority);
+
+    mkDiscoveredScript = base: let
+      chosen = choose base;
+    in
+      nameValuePair base
+      (pkgs.writeTextFile {
+        name = base;
+        destination = "/bin/${base}";
+        executable = true;
+        text = readFile chosen.path;
+      });
+  in
+    listToAttrs (
+      map mkDiscoveredScript bases
+    );
+
   mkAlias = {
     pkgs,
     name,
     target,
   }:
-    pkgs.writeShellScriptBin name ''
-      exec ${target} "$@"
-    '';
+    pkgs.writeShellScriptBin name ''exec ${target} "$@"'';
 
   mkMissionControl = {
     pkgs,
@@ -115,6 +218,7 @@ in {
     mkMissionControl
     mkFlakeReset
     mkPackage
+    mkPackagesFrom
     scripts
     mkCommands
     ;
