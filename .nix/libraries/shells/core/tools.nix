@@ -8,6 +8,7 @@
     ;
   inherit (lib.lists) flatten foldl';
   inherit (lib.packages) mkBins mkPkgs mkVr3n;
+  inherit (lib.shells) mkPackage;
   inherit (lib.strings) concatStringsSep escapeShellArg mkStyledOutput;
 
   mkTools = {
@@ -91,10 +92,17 @@
             #~@ Nix
             reload = "${cmd.gcp} \"\$@\"; ${bin.direnv} reload";
             format = "${cmd.gcp} \"\$@\"; nix fmt";
-            update = writeShellScript "update" ''
-              ${./scripts/update.sh} "$@"
-              ${bin.direnv} reload
-            '';
+            update = let
+              script = mkPackage {
+                inherit pkgs;
+                name = "update";
+                script = "update";
+                env = {
+                  DIRENV = bin.direnv;
+                  MISE = bin.mise;
+                };
+              };
+            in "${script}/bin/update";
           };
 
           aliases = concatStringsSep "\n" (

@@ -18,12 +18,17 @@
   mkPackage = {
     pkgs,
     name,
-    file,
+    file ? null,
+    script ? null,
     env ? {},
   }:
     pkgs.writeShellScriptBin name ''
       ${mkEnvLines env}
-      ${readFile file}
+      ${readFile (
+        if script != null
+        then scripts.${script}
+        else file
+      )}
     '';
 
   mkAlias = {

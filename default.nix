@@ -22,6 +22,7 @@
       initDatabase = mkScr + "init-db.sh";
       deployTemplates = mkTScr "deploy-templates.sh";
       resetFlake = mkTScr "reset-flake.sh";
+      update = mkScr "update.sh";
     };
   };
 
