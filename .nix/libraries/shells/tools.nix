@@ -132,12 +132,6 @@
               gt = mkBin "gt" ''${gitui} "$@"'';
               glog = mkBin "glog" ''git log -1 --pretty=%B'';
 
-              gcp = mkPackage {
-                inherit pkgs;
-                name = "gcp";
-                env = {CMD_GIT = git;};
-              };
-
               #~@ Clipboard
               clip = mkBin "clip" ''
                 if [ -n "$WAYLAND_DISPLAY" ]; then
@@ -166,8 +160,11 @@
                 inherit pkgs;
                 name = "update";
                 env = {
+                  CMD_CARGO = cargo;
                   CMD_DIRENV = direnv;
+                  CMD_GIT = git;
                   CMD_MISE = mise;
+                  CMD_NIX = nix;
                 };
               };
 
