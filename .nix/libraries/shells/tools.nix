@@ -1,5 +1,5 @@
 {lib}: let
-  inherit (lib.attrsets) attrValues optionalAttrs;
+  inherit (lib.attrsets) attrValues mapAttrs' nameValuePair optionalAttrs;
   inherit (lib.lists) concatMap flatten;
   inherit (lib.packages) mkBins mkPkgs mkVr3n;
   inherit (lib.shells) mkPackage;
@@ -42,6 +42,15 @@
     inherit (pkgs.stdenv) isLinux;
 
     print = mkStyledOutput {inherit pkgs;};
+    mkPrintScripts = print:
+      mapAttrs'
+      (name: command:
+        nameValuePair
+        "print_${name}"
+        (mkBin "print_${name}" ''
+          exec ${command} "$@"
+        ''))
+      (removeAttrs print ["gum"]);
 
     groups = {
       /**
@@ -89,118 +98,120 @@
             }
             // mkBins scripts;
 
-          scripts = with bin; {
-            #~@ Navigation
-            fetch = mkBin "fetch" ''${fastfetch} "$@"'';
-            ls = mkBin "ls" ''${lsd} "$@"'';
-            ll = mkBin "ll" ''${lsd} --long --git --almost-all "$@"'';
-            lt = mkBin "lt" ''${lsd} --tree "$@"'';
-            lr = mkBin "lr" ''${lsd} --long --git --recursive "$@"'';
-            ff = mkBin "ff" ''${fd} "$@"'';
-            rg = mkBin "rg" ''${ripgrep-all} "$@"'';
+          scripts = with bin;
+            {
+              #~@ Navigation
+              fetch = mkBin "fetch" ''${fastfetch} "$@"'';
+              ls = mkBin "ls" ''${lsd} "$@"'';
+              ll = mkBin "ll" ''${lsd} --long --git --almost-all "$@"'';
+              lt = mkBin "lt" ''${lsd} --tree "$@"'';
+              lr = mkBin "lr" ''${lsd} --long --git --recursive "$@"'';
+              ff = mkBin "ff" ''${fd} "$@"'';
+              rg = mkBin "rg" ''${ripgrep-all} "$@"'';
 
-            #~@ Project Info
-            prjfo = mkBin "prjfo" ''
-              ${tokei}
-              ${onefetch} \
-                --no-art \
-                --no-title \
-                --no-color-palette \
-                --nerd-fonts \
-                --hide-token \
-                --number-separator comma
-            '';
+              #~@ Project Info
+              prjfo = mkBin "prjfo" ''
+                ${tokei}
+                ${onefetch} \
+                  --no-art \
+                  --no-title \
+                  --no-color-palette \
+                  --nerd-fonts \
+                  --hide-token \
+                  --number-separator comma
+              '';
 
-            #~@ Git
-            gt = mkBin "gt" ''${gitui} "$@"'';
-            glog = mkBin "glog" ''git log -1 --pretty=%B'';
-            gcp = mkPackage {
-              inherit pkgs;
-              name = "gcp";
-              env = {CMD_GIT = git;};
-            };
-
-            #~@ Clipboard
-            clip = mkBin "clip" ''
-              if [ -n "$WAYLAND_DISPLAY" ]; then
-                exec ${wl-copy} "$@"
-              elif [ -n "$DISPLAY" ]; then
-                exec ${xclip} -selection clipboard "$@"
-              else
-                exec pbcopy "$@"
-              fi
-            '';
-
-            #~@ Files
-            batp = mkBin "batp" ''exec ${bat} --paging=never --plain "$@"'';
-            fclip = mkBin "fclip" ''
-              for f in "$@"; do
-                printf 'File: %s\n' "$f"
-                ${batp} "$f"
-              done | clip
-            '';
-
-            #~@ Nix
-            reload = mkBin "reload" ''
-              gcp "$@"
-              ${direnv} reload
-            '';
-            format = mkBin "format" ''
-              gcp "$@"
-              nix fmt
-            '';
-            update = mkPackage {
-              inherit pkgs;
-              name = "update";
-              env = {
-                CMD_DIRENV = direnv;
-                CMD_MISE = mise;
+              #~@ Git
+              gt = mkBin "gt" ''${gitui} "$@"'';
+              glog = mkBin "glog" ''git log -1 --pretty=%B'';
+              gcp = mkPackage {
+                inherit pkgs;
+                name = "gcp";
+                env = {CMD_GIT = git;};
               };
-            };
 
-            #~@ Script Helpers
-            find_cmd = mkBin "find_cmd" ''
-              command -v "$1" 2>/dev/null || true
-            '';
+              #~@ Clipboard
+              clip = mkBin "clip" ''
+                if [ -n "$WAYLAND_DISPLAY" ]; then
+                  exec ${wl-copy} "$@"
+                elif [ -n "$DISPLAY" ]; then
+                  exec ${xclip} -selection clipboard "$@"
+                else
+                  exec pbcopy "$@"
+                fi
+              '';
 
-            require_cmd = mkBin "require_cmd" ''
-              cmd="$(command -v "$1" 2>/dev/null || true)"
-              [ -n "''${cmd}" ] || {
-                printf 'Error: required command not found: %s\n' "$1" >&2
-                exit 1
-              }
-              printf '%s' "''${cmd}"
-            '';
+              #~@ Files
+              batp = mkBin "batp" ''exec ${bat} --paging=never --plain "$@"'';
+              fclip = mkBin "fclip" ''
+                for f in "$@"; do
+                  printf 'File: %s\n' "$f"
+                  ${batp} "$f"
+                done | clip
+              '';
 
-            is_true = mkBin "is_true" ''
-              case "$(printf '%s' "''${1:-}" | tr '[:upper:]' '[:lower:]')" in
-              1 | yes | true | on | enable*) exit 0 ;;
-              *) exit 1 ;;
-              esac
-            '';
+              #~@ Nix
+              reload = mkBin "reload" ''
+                gcp "$@"
+                ${direnv} reload
+              '';
+              format = mkBin "format" ''
+                gcp "$@"
+                nix fmt
+              '';
+              update = mkPackage {
+                inherit pkgs;
+                name = "update";
+                env = {
+                  CMD_DIRENV = direnv;
+                  CMD_MISE = mise;
+                };
+              };
 
-            #~@ Versions
-            vr3n_bat = mkBin "vr3n_bat" ''${mkVr3n bat {}}'';
-            vr3n_direnv = mkBin "vr3n_direnv" ''${mkVr3n direnv {field = 1;}}'';
-            vr3n_fd = mkBin "vr3n_fd" ''${mkVr3n fd {}}'';
-            vr3n_gum = mkBin "vr3n_gum" ''${mkVr3n gum {
-                head = true;
-                field = 3;
-              }}'';
-            vr3n_gitui = mkBin "vr3n_gitui" ''${mkVr3n gitui {}}'';
-            vr3n_jq = mkBin "vr3n_jq" ''${jq} --version 2>&1 | sed 's/jq-//' '';
-            vr3n_lsd = mkBin "vr3n_lsd" ''${mkVr3n lsd {}}'';
-            vr3n_mise = mkBin "vr3n_mise" ''
-              ${mise} version 2>/dev/null | grep -o '^[0-9]*\.[0-9]*\.[0-9]*'
-            '';
-            vr3n_onefetch = mkBin "vr3n_onefetch" ''${mkVr3n onefetch {}}'';
-            vr3n_nitch = mkBin "vr3n_nitch" ''${mkVr3n nitch {field = 3;}}'';
-            vr3n_nixd = mkBin "vr3n_nixd" ''${mkVr3n nixd {}}'';
-            vr3n_rg = mkBin "vr3n_rg" ''${mkVr3n ripgrep-all {}}'';
-            vr3n_sd = mkBin "vr3n_sd" ''${mkVr3n sd {}}'';
-            vr3n_trashy = mkBin "vr3n_trashy" ''${mkVr3n trashy {}}'';
-            vr3n_tokei = mkBin "vr3n_tokei" ''${mkVr3n tokei {}}'';
-          };
+              #~@ Script Helpers
+              find_cmd = mkBin "find_cmd" ''
+                command -v "$1" 2>/dev/null || true
+              '';
+
+              require_cmd = mkBin "require_cmd" ''
+                cmd="$(command -v "$1" 2>/dev/null || true)"
+                [ -n "''${cmd}" ] || {
+                  printf 'Error: required command not found: %s\n' "$1" >&2
+                  exit 1
+                }
+                printf '%s' "''${cmd}"
+              '';
+
+              is_true = mkBin "is_true" ''
+                case "$(printf '%s' "''${1:-}" | tr '[:upper:]' '[:lower:]')" in
+                1 | yes | true | on | enable*) exit 0 ;;
+                *) exit 1 ;;
+                esac
+              '';
+
+              #~@ Versions
+              vr3n_bat = mkBin "vr3n_bat" ''${mkVr3n bat {}}'';
+              vr3n_direnv = mkBin "vr3n_direnv" ''${mkVr3n direnv {field = 1;}}'';
+              vr3n_fd = mkBin "vr3n_fd" ''${mkVr3n fd {}}'';
+              vr3n_gum = mkBin "vr3n_gum" ''${mkVr3n gum {
+                  head = true;
+                  field = 3;
+                }}'';
+              vr3n_gitui = mkBin "vr3n_gitui" ''${mkVr3n gitui {}}'';
+              vr3n_jq = mkBin "vr3n_jq" ''${jq} --version 2>&1 | sed 's/jq-//' '';
+              vr3n_lsd = mkBin "vr3n_lsd" ''${mkVr3n lsd {}}'';
+              vr3n_mise = mkBin "vr3n_mise" ''
+                ${mise} version 2>/dev/null | grep -o '^[0-9]*\.[0-9]*\.[0-9]*'
+              '';
+              vr3n_onefetch = mkBin "vr3n_onefetch" ''${mkVr3n onefetch {}}'';
+              vr3n_nitch = mkBin "vr3n_nitch" ''${mkVr3n nitch {field = 3;}}'';
+              vr3n_nixd = mkBin "vr3n_nixd" ''${mkVr3n nixd {}}'';
+              vr3n_rg = mkBin "vr3n_rg" ''${mkVr3n ripgrep-all {}}'';
+              vr3n_sd = mkBin "vr3n_sd" ''${mkVr3n sd {}}'';
+              vr3n_trashy = mkBin "vr3n_trashy" ''${mkVr3n trashy {}}'';
+              vr3n_tokei = mkBin "vr3n_tokei" ''${mkVr3n tokei {}}'';
+            }
+            // mkPrintScripts print;
         in {inherit scripts packages;}
       );
 

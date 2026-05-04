@@ -6,18 +6,23 @@
 }: let
   paths = let
     src = ./.;
+    scr = src + "/scripts";
     mkCfg = path: src + "/.nix" + "/${path}";
-    mkScr = path: src + "/scripts" + "/${path}";
-    mkTScr = path: paths.templates + "/${path}";
+    mkScr = path: scr + "/${path}";
+
+    templates = mkCfg "templates";
+    mkTScr = path: templates + "/${path}";
   in {
+    inherit src;
     config = mkCfg "config";
     downloads = mkCfg "downloads";
     environment = mkCfg "environment";
     libraries = mkCfg "libraries";
     repl = mkCfg "repl.nix";
     modules = mkCfg "modules";
-    templates = mkCfg "templates";
+    inherit templates;
     scripts = {
+      src = scr;
       deployTemplates = mkTScr "deploy-templates.sh";
       fmtRust = mkScr "fmt-rust.sh";
       gcp = mkScr "gcp.sh";

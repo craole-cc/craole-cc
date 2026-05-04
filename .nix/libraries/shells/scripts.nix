@@ -5,7 +5,7 @@
 }: let
   inherit (lib.attrsets) attrNames mapAttrsToList;
   inherit (lib.packages) mkPkgs;
-  inherit (lib.strings) concatLines escapeShellArg;
+  inherit (lib.strings) concatLines escapeShellArg optionalString;
   inherit (lib.trivial) readFile throwIf;
 
   scripts = (paths.scripts or {}) // {missionControl = ./mission-control.sh;};
@@ -15,19 +15,22 @@
     name,
     file ? null,
     env ? {},
+    text ? "",
   }: let
     script = scripts.${name} or file;
+
     envLines = concatLines (
       mapAttrsToList
       (name: value: ''export ${name}=${escapeShellArg value}'')
       env
     );
   in
-    throwIf (script == null)
+    throwIf (script == null && text == "")
     "mkPackage: no script found for '${name}'"
     (pkgs.writeShellScriptBin name ''
       ${envLines}
-      ${readFile script}
+      ${optionalString (script != null) (readFile script)}
+      ${text}
     '');
 
   mkAlias = {
