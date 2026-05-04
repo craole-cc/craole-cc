@@ -4,9 +4,9 @@ libraries/packages/resolve.nix
 Pure package and binary resolution helpers for lib.packages.
 */
 {lib}: let
-  inherit (lib.attrsets) attrNames mapAttrs filterAttrs mapAttrsToList;
+  inherit (lib.attrsets) attrNames mapAttrs filterAttrs mapAttrsToList isAttrs;
   inherit (lib.trivial) isNotEmpty;
-  inherit (lib.strings)concatStringsSep parseDrvName escapeShellArg;
+  inherit (lib.strings) concatStringsSep parseDrvName escapeShellArg isString;
 
   /**
   Resolve a derivation's main executable path.
@@ -28,11 +28,50 @@ Pure package and binary resolution helpers for lib.packages.
   # Returns
   The absolute path to the derivation's main executable.
   */
-  resolveBin = drv: "${drv}/bin/${
-    drv.meta.mainProgram
-    or drv.pname
-    or (parseDrvName drv.name).name
-  }";
+  resolveBin = input: let
+    resolve = {
+      drv,
+      name ? null,
+      program ? null,
+    }: let
+      parsed =
+        if drv ? name
+        then parseDrvName drv.name
+        else {
+          name = null;
+          version = null;
+        };
+
+      mainProgram =
+        if program != null
+        then program
+        else if drv ? meta && drv.meta ? mainProgram
+        then drv.meta.mainProgram
+        else if drv ? NIX_MAIN_PROGRAM
+        then drv.NIX_MAIN_PROGRAM
+        else if drv ? pname
+        then drv.pname
+        else if name != null
+        then name
+        else parsed.name;
+    in
+      if mainProgram == null
+      then throw "resolveBin: could not determine main program for derivation"
+      else "${drv}/bin/${mainProgram}";
+  in
+    if isAttrs input && input ? drv
+    then resolve input
+    else if isString input
+    then
+      drv:
+        resolve {
+          name = input;
+          inherit drv;
+        }
+    else
+      resolve {
+        drv = input;
+      };
 
   resolveBins = packages:
     mapAttrs

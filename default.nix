@@ -14,6 +14,7 @@
     downloads = mkCfg "downloads";
     environment = mkCfg "environment";
     libraries = mkCfg "libraries";
+    repl = mkCfg "repl.nix";
     modules = mkCfg "modules";
     templates = mkCfg "templates";
     scripts = {
@@ -27,10 +28,19 @@
     };
   };
 
-  libraries = import paths.libraries {inherit paths lib;};
+  libraries = import paths.libraries {
+    inherit paths;
+    lib =
+      if inputs != null && inputs ? NixPackages
+      then inputs.NixPackages.lib
+      else (import <nixpkgs> {}).lib;
+  };
   packages = libraries.packages.mkPkgs {inherit inputs system;};
+  repl = import paths.repl {
+    inherit libraries packages;
+  };
 in {
-  inherit description paths;
+  inherit description paths repl;
   pkgs = packages;
   lib = libraries;
 }

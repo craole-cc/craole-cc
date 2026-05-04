@@ -23,7 +23,7 @@
       inherit inputs;
       inherit (inputs.NixPackages) lib;
     };
-    inherit (src) lib pkgs;
+    inherit (src) lib pkgs repl;
     inherit (lib.attrsets) mapAttrs;
     inherit (lib.shells) mkDevShells;
     inherit (lib.packages) mkPkgsPerSystem mkTreefmt;
@@ -31,7 +31,7 @@
     fmt = mkTreefmt {inherit inputs self;};
     env = mkDevShells {inherit inputs pkgs fmt;};
   in {
-    inherit lib;
+    inherit lib repl;
     inherit (fmt) formatter checks;
     inherit (env) devShells;
     legacyPackages = mapAttrs (
