@@ -71,7 +71,7 @@
             #~@ Git
             gt = bin.gitui;
             glog = "$(git log -1 --pretty=%B)";
-            gcp = writeShellScript "commit" ''
+            gcp = writeShellScript "git-add-commit-push" ''
               git add --all
               msg="''${*:-$(git log -1 --pretty=%B 2>/dev/null | head -1)}"
               git commit --message "$msg"
@@ -79,20 +79,25 @@
             '';
             #~@ Files
             clip = with bin; "$(if [ -n \"$WAYLAND_DISPLAY\" ]; then echo \"${wl-copy}\"; elif [ -n \"$DISPLAY\" ]; then echo \"${xclip} -selection clipboard\"; else echo \"pbcopy\"; fi)";
-            fbat = "${bin.bat} --paging=never --plain \"\$@\"";
-            fclip = "${cmd.fbat} | ${cmd.clip}";
+            bat-plain = "${bin.bat} --paging=never --plain \"\$@\"";
+            fclip = "${bin.bat} --paging=never --style=header \"\$@\" | ${cmd.clip}";
 
             #~@ Search
             ff = bin.fd;
             rg = bin.ripgrep-all;
 
             #~@ Nix
-            reload = "${bin.direnv} reload";
+            reload = "${cmd.gcp}; ${bin.direnv} reload";
             format = "${cmd.gcp}; nix fmt";
-            # update = "${print.yellow} \"Updating flake inputs...\"; \"nix flake update\"";
-            # update = "${print.yellow} \"Updating flake inputs...\"; nix flake update";
-            update = "echo \"Updating flake inputs...\" && nix flake update";
+            update = let
+              script = writeShellScript "update-flake" ''
+                ${print.yellow} "Updating flake inputs..."
+                nix flake update
+                ${cmd.gcp} "flake update"
+              '';
+            in "${script}";
           };
+
           aliases = concatStringsSep "\n" (
             mapAttrsToList
             (name: value: "alias ${name}=${escapeShellArg value}")
