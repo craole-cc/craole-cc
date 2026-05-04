@@ -5,15 +5,10 @@
 }: let
   inherit (lib.attrsets) attrNames mapAttrsToList;
   inherit (lib.packages) mkPkgs;
-  inherit (lib.strings) concatLines escapeShellArg optionalString;
-  inherit (lib.trivial) readFile;
+  inherit (lib.strings) concatLines escapeShellArg;
+  inherit (lib.trivial) readFile throwIf;
 
-  scripts =
-    (paths.scripts or {})
-    // {missionControl = ./mission-control.sh;};
-
-  mkEnvLines = env:
-    concatLines (mapAttrsToList (name: value: "${name}=${escapeShellArg value}") env);
+  scripts = (paths.scripts or {}) // {missionControl = ./mission-control.sh;};
 
   mkPackage = {
     pkgs,
@@ -21,18 +16,19 @@
     file ? null,
     env ? {},
   }: let
-    script =
-      if scripts ? ${name}
-      then scripts.${name}
-      else if file != null
-      then file
-      else null;
+    script = scripts.${name} or file;
+    envLines = concatLines (
+      mapAttrsToList
+      (name: value: ''export ${name}=${escapeShellArg value}'')
+      env
+    );
   in
-    pkgs.writeShellScriptBin name ''
-      ${mkEnvLines env}
-
-      ${optionalString (script != null) (readFile script)}
-    '';
+    throwIf (script == null)
+    "mkPackage: no script found for '${name}'"
+    (pkgs.writeShellScriptBin name ''
+      ${envLines}
+      ${readFile script}
+    '');
 
   mkAlias = {
     pkgs,
@@ -113,7 +109,6 @@
 in {
   inherit
     mkAlias
-    mkEnvLines
     mkMissionControl
     mkFlakeReset
     mkPackage
