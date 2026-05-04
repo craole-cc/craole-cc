@@ -31,7 +31,9 @@
   libraries = import paths.libraries {
     inherit paths;
     lib =
-      if inputs != null && inputs ? NixPackages
+      if lib != null
+      then lib
+      else if inputs != null && inputs ? NixPackages
       then inputs.NixPackages.lib
       else (import <nixpkgs> {}).lib;
   };
