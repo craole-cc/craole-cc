@@ -1,7 +1,15 @@
-{lib, paths ? {}, ...}:
-lib.assembly.importAttrs {
-  inherit lib;
-  path = ./.;
-  priority = ["scripts.nix"];
-  args = {inherit paths;};
-}
+{
+  lib,
+  paths ? {},
+  ...
+}: let
+  inherited = lib.shells or {};
+in
+  lib.assembly.assemble {
+    start = inherited;
+    entries = lib.assembly.collectPaths {path = ./.;};
+    scope = acc: lib // {shells = inherited // acc;};
+    priority = ["scripts.nix"];
+    ignore = ["default.nix"];
+    extraArgs = {inherit lib paths;};
+  }
