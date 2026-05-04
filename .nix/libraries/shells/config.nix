@@ -12,30 +12,20 @@
     fmt,
   }: let
     mk = args: let
-      inherit (pkgs) writeText;
-
+      tools = mkTools {inherit pkgs;};
       spec = mkSpec ({inherit pkgs;} // args);
-
-      tools = mkTools {
-        inherit pkgs;
-        includeEditor = args.includeEditor or true;
-        includeWeb = args.includeWeb or false;
-        includeInfo = args.includeInfo or true;
-      };
+      # shellHook = spec.shell.shellHook or "";
+      shellHook = "";
+      env = spec.shell.env or {};
 
       packages =
         spec.shell.packages
         ++ (attrValues fmt.packages.${getSystem pkgs})
         ++ tools.packages;
 
-      shellHook = spec.shell.shellHook or "";
-      env = spec.shell.env or {};
-
       shell =
         spec.shell
-        // {
-          inherit env packages shellHook;
-        };
+        // {inherit env packages shellHook;};
     in
       spec // {inherit shell;};
 
