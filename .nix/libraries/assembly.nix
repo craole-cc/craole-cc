@@ -515,7 +515,7 @@ Intended as a zero-dependency bootstrap that other library namespaces
     all = assemble {
       start = {};
       entries = paths;
-      scope = acc: libToUse // acc; # each file sees growing acc merged into lib
+      scope = acc: libToUse // {shells = libToUse.shells or {} // acc;};
       priority = n.priority or [];
       ignore = n.ignore or [];
     };
