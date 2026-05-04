@@ -55,11 +55,11 @@
                 ;
             };
           bin =
-            (mkBins packages)
-            // {
+            {
               helix = "${pkgs.helix}/bin/hx";
               wl-copy = "${pkgs.wl-clipboard}/bin/wl-copy";
-            };
+            }
+            // (mkBins packages // {helixy = pkgs.helix;});
           cmd = {
             #~@ Info
             prjfo = with bin; "${tokei}; ${onefetch}";
@@ -75,17 +75,9 @@
             gt = bin.gitui;
 
             #~@ Files
-            clip = with bin; "$([ -n \"$WAYLAND_DISPLAY\" ] && echo \"${wl-copy}\" || echo \"${xclip} -selection clipboard\")";
-            copy =
-              if isLinux
-              then
-                if getEnv "WAYLAND_DISPLAY" != ""
-                then "${bin.wl-copy}"
-                else "${bin.xclip} -selection clipboard"
-              else "pbcopy";
-            fcat = "${bin.bat} --paging=never \"\$@\"";
-            fclip = "${bin.bat} --paging=never \"\$@\" | ${cmd.clip}";
-            fcopy = "${bin.bat} --paging=never \"\$@\" | ${cmd.copy}";
+            clip = with bin; "$(if [ -n \"$WAYLAND_DISPLAY\" ]; then echo \"${wl-copy}\"; elif [ -n \"$DISPLAY\" ]; then echo \"${xclip} -selection clipboard\"; else echo \"pbcopy\"; fi)";
+            fbat = "${bin.bat} --paging=never --plain \"\$@\"";
+            fclip = "${cmd.fbat} | ${cmd.clip}";
 
             #~@ Search
             ff = bin.fd;
@@ -105,25 +97,35 @@
             (name: value: "alias ${name}=${escapeShellArg value}")
             cmd
           );
-          ver = {
-            vr3n_gitui = mkVr3n bin.gitui {};
-            vr3n_onefetch = mkVr3n bin.onefetch {};
-            vr3n_tokei = mkVr3n bin.tokei {};
-            vr3n_direnv = mkVr3n bin.direnv {field = 1;};
-            vr3n_gum = mkVr3n bin.gum {head = true;};
-            vr3n_trashy = mkVr3n bin.trashy {};
-            vr3n_mise = mkVr3n bin.mise {
-              custom = "${bin.mise} version 2>/dev/null | grep -o '^[0-9]*\\.[0-9]*\\.[0-9]*'";
+          ver = with bin; {
+            vr3n_gitui = mkVr3n gitui {};
+            vr3n_onefetch = mkVr3n onefetch {};
+            vr3n_tokei = mkVr3n tokei {};
+            vr3n_direnv = mkVr3n direnv {field = 1;};
+            # vr3n_gum = mkVr3n gum {head = true;};
+            vr3n_gum = mkVr3n gum {
+              head = true;
+              field = 3;
             };
-            vr3n_bat = mkVr3n bin.bat {};
-            vr3n_fd = mkVr3n bin.fd {};
-            vr3n_jq = mkVr3n bin.jq {};
-            vr3n_lsd = mkVr3n bin.lsd {};
-            vr3n_rg = mkVr3n bin.ripgrep-all {};
-            vr3n_sd = mkVr3n bin.sd {};
-            vr3n_nitch = mkVr3n bin.nitch {};
-            vr3n_nixd = mkVr3n bin.nixd {};
-            vr3n_helix = mkVr3n bin.helix {head = true;};
+            vr3n_helix = mkVr3n helix {
+              head = true;
+              field = 2;
+            };
+            vr3n_trashy = mkVr3n trashy {};
+            vr3n_mise = mkVr3n mise {
+              custom = "${mise} version 2>/dev/null | grep -o '^[0-9]*\\.[0-9]*\\.[0-9]*'";
+            };
+            vr3n_bat = mkVr3n bat {};
+            vr3n_fd = mkVr3n fd {};
+            vr3n_nitch = mkVr3n nitch {field = 3;};
+            vr3n_jq = mkVr3n jq {
+              custom = "${jq} --version 2>&1 | sed 's/jq-//'";
+            };
+            vr3n_lsd = mkVr3n lsd {};
+            vr3n_rg = mkVr3n ripgrep-all {};
+            vr3n_sd = mkVr3n sd {};
+            # vr3n_nitch = mkVr3n nitch {};
+            vr3n_nixd = mkVr3n nixd {};
           };
         in {
           inherit aliases bin cmd ver;
