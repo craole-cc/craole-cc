@@ -53,9 +53,7 @@
       shellHook = ''
         ${spec.shell.shellHook or ""}
         ${tools.aliases}
-        mkdir -p .direnv
-        cp ${writeText "tools-aliases" tools.aliases} .direnv/tools-aliases
-        export TOOLS_ALIASES=".direnv/tools-aliases"
+        export TOOLS_ALIASES="${writeText "tools-aliases" tools.aliases}"
       '';
 
       env = (spec.shell.env or {}) // tools.vr3n;
