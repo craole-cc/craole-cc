@@ -14,13 +14,10 @@
     mk = args: let
       tools = mkTools {inherit pkgs;};
       spec = mkSpec ({inherit pkgs;} // args);
-
       shell =
         spec.shell
         // {
-          # shellHook = ""; #TODO: Combined shellHook are currently too noisy
-      # shellHook = spec.shell.shellHook or "";
-          env = spec.shell.env or {};
+          shellHook = ""; #TODO: Combined shellHook are currently too noisy
           packages =
             spec.shell.packages
             ++ (attrValues fmt.packages.${getSystem pkgs})
