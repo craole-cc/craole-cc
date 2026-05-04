@@ -152,6 +152,9 @@
                   ${batp} "$f"
                 done | clip
               '';
+              getcmd=mkBins "getcmd" ''
+                cat "$(command -v "$@")"
+              ''
 
               #~@ Nix
               reload = mkBin "reload" ''
