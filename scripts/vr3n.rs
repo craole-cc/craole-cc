@@ -52,6 +52,10 @@ struct Cli {
   #[arg(short = 'm', long = "missing")]
   missing : bool,
 
+  /// Always include command names in output.
+  #[arg(short = 'n', long = "names")]
+  names : bool,
+
   /// Commands to inspect.
   commands : Vec<String,>,
 }
@@ -341,12 +345,22 @@ fn main() -> Result<(),> {
   let mut failed = false;
 
   for app in apps {
+    let plain = !cli.names && !cli.all && !cli.missing && cli.commands.len() == 1;
+
     match version_for(app,) {
       | Some((_command, version,),) => {
-        println!("{:<width$} {}", app.name, version, width = width);
+        if plain {
+          println!("{}", version);
+        } else {
+          println!("{:<width$} {}", app.name, version, width = width);
+        }
       }
       | None if cli.missing => {
-        println!("{:<width$} missing", app.name, width = width);
+        if plain {
+          println!("missing");
+        } else {
+          println!("{:<width$} missing", app.name, width = width);
+        }
         failed = true;
       }
       | None => {
