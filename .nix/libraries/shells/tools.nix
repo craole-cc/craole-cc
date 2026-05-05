@@ -219,7 +219,7 @@
       */
       web = optionalAttrs includeWeb (
         let
-          packages = {inherit (pkgs) deno prettierd;};
+          packages = {inherit (pkgs) deno pnpm prettierd;};
           bin = mkBins packages;
           scripts = with bin; {
             vr3n_deno = mkBin "vr3n_deno" ''${mkVr3n deno {head = true;}}'';
