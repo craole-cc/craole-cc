@@ -355,7 +355,9 @@ fn main() -> Result<(),> {
     }
   }
 
-  if failed {
+  let explicit = !cli.all && !cli.commands.is_empty();
+
+  if failed && explicit {
     return Err(Error::MissingCommands.into(),);
   }
 
