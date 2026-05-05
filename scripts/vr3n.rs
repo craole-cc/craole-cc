@@ -341,12 +341,11 @@ fn main() -> Result<(),> {
 
   let apps = resolve_apps(&cli,)?;
   let width = apps.iter().map(|app| app.name.len(),).max().unwrap_or(0,);
+  let plain = !cli.names && !cli.all && !cli.missing && cli.commands.len() == 1;
 
   let mut failed = false;
 
   for app in apps {
-    let plain = !cli.names && !cli.all && !cli.missing && cli.commands.len() == 1;
-
     match version_for(app,) {
       | Some((_command, version,),) => {
         if plain {
@@ -363,9 +362,7 @@ fn main() -> Result<(),> {
         }
         failed = true;
       }
-      | None => {
-        failed = true;
-      }
+      | None => {      failed = true;    }
     }
   }
 
