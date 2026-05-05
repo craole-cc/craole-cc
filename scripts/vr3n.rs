@@ -58,10 +58,6 @@ struct Cli {
 
 #[derive(Debug, Error, Diagnostic,)]
 enum Error {
-  #[error("no commands provided")]
-  #[diagnostic(help("Pass command names, use --all, or use --list to see known commands."))]
-  NoCommands,
-
   #[error("unknown command: {0}")]
   #[diagnostic(help("Use --list to see known names and aliases."))]
   UnknownCommand(String,),
