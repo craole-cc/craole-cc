@@ -40,13 +40,14 @@
     dir ? paths.scripts.src or null,
     file ? null,
     files ? [],
-    priority ? ["rs" "bash" "sh"],
+    priority ? ["rs" "bash" "sh" "py" "rb"],
   }: let
     dirFiles =
       if dir == null
       then []
       else let
         entries = readDir dir;
+
         names =
           filter
           (name: entries.${name} == "regular")
@@ -85,8 +86,11 @@
         ext = last parts;
       };
 
-    scriptName = item: (parseName item.name).base;
-    scriptExt = item: (parseName item.name).ext;
+    scriptName = item:
+      (parseName item.name).base;
+
+    scriptExt = item:
+      (parseName item.name).ext;
 
     isSupported = item:
       elem (scriptExt item) priority;
@@ -111,7 +115,8 @@
       findFirst
       (item: item != null)
       null
-      (map
+      (
+        map
         (ext: let
           matches =
             filter
@@ -121,36 +126,39 @@
           if matches == []
           then null
           else head matches)
-        priority);
+        priority
+      );
+
+    scriptEnv = ext:
+      if ext == "rs"
+      then ''
+        case "''${RUST_LOG:-}" in
+        *rust_script=*)
+          ;;
+        "") export RUST_LOG="rust_script=warn" ;;
+        *) export RUST_LOG="''${RUST_LOG},rust_script=warn" ;;
+        esac
+      ''
+      else "";
 
     mkDiscoveredScript = base: let
       chosen = choose base;
-      file = chosen.path;
       ext = scriptExt chosen;
 
       source = pkgs.writeTextFile {
         name = "${base}-source";
         destination = "/share/${base}/${chosen.name}";
         executable = true;
-        text = readFile file;
+        text = readFile chosen.path;
       };
-
-      envLines =
-        if ext == "rs"
-        then ''
-          export RUST_LOG="''${RUST_LOG:-rust_script=warn}"
-        ''
-        else "";
     in
       nameValuePair base
       (pkgs.writeShellScriptBin base ''
-        ${envLines}
+        ${scriptEnv ext}
         exec ${source}/share/${base}/${chosen.name} "$@"
       '');
   in
-    listToAttrs (
-      map mkDiscoveredScript bases
-    );
+    listToAttrs (map mkDiscoveredScript bases);
 
   mkAlias = {
     pkgs,
