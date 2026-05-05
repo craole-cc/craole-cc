@@ -13,7 +13,6 @@ use {
   clap::Parser,
   miette::{
     Diagnostic,
-    IntoDiagnostic,
     Result,
   },
   regex::Regex,
@@ -29,7 +28,6 @@ use {
     process::{
       Command,
       Stdio,
-      exit,
     },
   },
   thiserror::Error,
@@ -107,15 +105,6 @@ impl App {
     }
   }
 
-  const fn cmd(name : &'static str, cmd : &'static str,) -> Self {
-    Self {
-      name,
-      cmd : Some(cmd,),
-      mode : Mode::Version,
-      aliases : &[],
-    }
-  }
-
   const fn custom(name : &'static str, args : &'static [&'static str],) -> Self {
     Self {
       name,
@@ -130,15 +119,6 @@ impl App {
       name,
       cmd : None,
       mode : Mode::Version,
-      aliases,
-    }
-  }
-
-  const fn head_aliases(name : &'static str, aliases : &'static [&'static str],) -> Self {
-    Self {
-      name,
-      cmd : None,
-      mode : Mode::Head,
       aliases,
     }
   }
@@ -197,41 +177,6 @@ const APPS : &[App] = &[
   App::new("xclip",),
   App::new("xsel",),
 ];
-
-fn main() -> Result<(),> {
-  let cli = Cli::parse();
-
-  if cli.list {
-    list_known();
-    return Ok((),);
-  }
-
-  let apps = resolve_apps(&cli,)?;
-  let width = apps.iter().map(|app| app.name.len(),).max().unwrap_or(0,);
-
-  let mut failed = false;
-
-  for app in apps {
-    match version_for(app,) {
-      | Some((_command, version,),) => {
-        println!("{:<width$} {}", app.name, version, width = width);
-      }
-      | None if cli.missing => {
-        println!("{:<width$} missing", app.name, width = width);
-        failed = true;
-      }
-      | None => {
-        failed = true;
-      }
-    }
-  }
-
-  if failed {
-    return Err(Error::MissingCommands.into(),);
-  }
-
-  Ok((),)
-}
 
 fn is_executable(path : &Path,) -> bool {
   if !path.is_file() {
@@ -368,12 +313,8 @@ fn version_for(app : &App,) -> Option<(String, String,),> {
 }
 
 fn resolve_apps(cli : &Cli,) -> Result<Vec<&'static App,>,> {
-  if cli.all {
+  if cli.all || cli.commands.is_empty() {
     return Ok(APPS.iter().collect(),);
-  }
-
-  if cli.commands.is_empty() {
-    return Err(Error::NoCommands.into(),);
   }
 
   let registry = registry();
@@ -388,4 +329,39 @@ fn resolve_apps(cli : &Cli,) -> Result<Vec<&'static App,>,> {
   }
 
   Ok(apps,)
+}
+
+fn main() -> Result<(),> {
+  let cli = Cli::parse();
+
+  if cli.list {
+    list_known();
+    return Ok((),);
+  }
+
+  let apps = resolve_apps(&cli,)?;
+  let width = apps.iter().map(|app| app.name.len(),).max().unwrap_or(0,);
+
+  let mut failed = false;
+
+  for app in apps {
+    match version_for(app,) {
+      | Some((_command, version,),) => {
+        println!("{:<width$} {}", app.name, version, width = width);
+      }
+      | None if cli.missing => {
+        println!("{:<width$} missing", app.name, width = width);
+        failed = true;
+      }
+      | None => {
+        failed = true;
+      }
+    }
+  }
+
+  if failed {
+    return Err(Error::MissingCommands.into(),);
+  }
+
+  Ok((),)
 }
