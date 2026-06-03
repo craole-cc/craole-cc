@@ -114,7 +114,7 @@ SCSS, and assets.
 │   ├── posts/            # Markdown posts with frontmatter
 │   ├── projects/         # TOML project records
 │   └── SCHEMA.md         # Content format and validation rules
-├── contentctl/           # CLI for content validation and SQLite seed export
+├── contentctl/           # CLI for content validation, SQLite seed export, draft templates
 ├── database/
 │   ├── data/             # Local SQLite database files; gitignored
 │   └── migrations/       # Durable schema and baseline SQL migrations
@@ -129,6 +129,21 @@ SCSS, and assets.
 ## Content workflow
 
 Content should start in `content/`, not as ad-hoc SQL edits.
+
+### Create a draft template
+
+Use `contentctl new` to create the right file path with starter frontmatter/fields:
+
+```sh
+cargo run -p contentctl -- new project my-project
+cargo run -p contentctl -- new post project-build-log
+cargo run -p contentctl -- new media portfolio-screenshot
+```
+
+Generated project and post templates are valid unpublished drafts. Media templates still require you
+to add the referenced asset under `public/` before validation will pass.
+
+The command refuses invalid slugs and will not overwrite an existing content file.
 
 ### Validate content
 
@@ -155,22 +170,34 @@ project and one post are seeded.
 
 ### Add a project
 
-1. Create `content/projects/<slug>.toml`.
-2. Use a lowercase hyphenated `slug`.
-3. Include at minimum `title`, `slug`, `status`, and `description`.
-4. If `featured = true`, also set `published = true`.
-5. Run `cargo run -p contentctl -- validate .`.
-6. Run `bash scripts/ci.sh` before committing.
+1. Create a draft template:
+
+   ```sh
+   cargo run -p contentctl -- new project <slug>
+   ```
+
+2. Edit `content/projects/<slug>.toml`.
+3. Use a lowercase hyphenated `slug`.
+4. Include at minimum `title`, `slug`, `status`, and `description`.
+5. If `featured = true`, also set `published = true`.
+6. Run `cargo run -p contentctl -- validate .`.
+7. Run `bash scripts/ci.sh` before committing.
 
 See [content/SCHEMA.md](./content/SCHEMA.md) for complete field rules and examples.
 
 ### Add a post
 
-1. Create `content/posts/<slug>.md`.
-2. Add frontmatter with `title`, `slug`, and `kind`.
-3. Use `published_at: "YYYY-MM-DD"` when publishing dated content.
-4. Published posts must have a non-empty body.
-5. Run content validation and CI before committing.
+1. Create a draft template:
+
+   ```sh
+   cargo run -p contentctl -- new post <slug>
+   ```
+
+2. Edit `content/posts/<slug>.md`.
+3. Add frontmatter with `title`, `slug`, and `kind`.
+4. Use `published_at: "YYYY-MM-DD"` when publishing dated content.
+5. Published posts must have a non-empty body.
+6. Run content validation and CI before committing.
 
 ---
 

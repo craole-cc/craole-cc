@@ -34,6 +34,16 @@ pub enum ContentError {
   },
   #[error("content validation failed with {0} error(s)")]
   Validation(usize,),
+  #[error("invalid content slug `{0}`")]
+  InvalidSlug(String,),
+  #[error("content file already exists: `{0}`")]
+  AlreadyExists(PathBuf,),
+  #[error("failed to write `{path}`: {source}")]
+  Write {
+    path :   PathBuf,
+    #[source]
+    source : std::io::Error,
+  },
 }
 
 #[derive(Debug, Clone, PartialEq, Eq,)]
@@ -553,6 +563,107 @@ fn parse_array(value : &str,) -> Vec<String,> {
     .map(parse_scalar,)
     .filter(|value| !value.is_empty(),)
     .collect()
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq,)]
+pub enum ContentTemplateKind {
+  Project,
+  Post,
+  Media,
+}
+
+impl ContentTemplateKind {
+  #[must_use]
+  pub const fn directory(self,) -> &'static str {
+    match self {
+      | Self::Project => "content/projects",
+      | Self::Post => "content/posts",
+      | Self::Media => "content/media",
+    }
+  }
+
+  #[must_use]
+  pub const fn extension(self,) -> &'static str {
+    match self {
+      | Self::Project | Self::Media => "toml",
+      | Self::Post => "md",
+    }
+  }
+
+  #[must_use]
+  pub fn parse(value : &str,) -> Option<Self,> {
+    match value {
+      | "project" | "projects" => Some(Self::Project,),
+      | "post" | "posts" => Some(Self::Post,),
+      | "media" => Some(Self::Media,),
+      | _ => None,
+    }
+  }
+}
+
+/// Create a draft content template for a project, post, or media item.
+///
+/// # Errors
+///
+/// Returns [`ContentError`] when the slug is invalid, the target file already exists, or the file
+/// cannot be written.
+pub fn create_content_template(
+  root : &Path,
+  kind : ContentTemplateKind,
+  slug : &str,
+) -> Result<PathBuf, ContentError,> {
+  if !is_valid_slug(slug,) {
+    return Err(ContentError::InvalidSlug(slug.to_string(),),);
+  }
+
+  let dir = root.join(kind.directory(),);
+  let path = dir.join(format!("{}.{}", slug, kind.extension()),);
+  if path.exists() {
+    return Err(ContentError::AlreadyExists(path,),);
+  }
+
+  fs::create_dir_all(&dir,).map_err(|source| ContentError::Write {
+    path : dir.clone(),
+    source,
+  },)?;
+
+  let content = render_template(kind, slug,);
+  fs::write(&path, content,).map_err(|source| ContentError::Write {
+    path : path.clone(),
+    source,
+  },)?;
+
+  Ok(path,)
+}
+
+fn render_template(kind : ContentTemplateKind, slug : &str,) -> String {
+  let title = title_from_slug(slug,);
+  match kind {
+    | ContentTemplateKind::Project => format!(
+      "title = \"{title}\"\nslug = \"{slug}\"\nstatus = \"planning\"\ndescription = \"TODO: Short, portfolio-ready project summary.\"\nfeatured = false\npublished = false\nsort_order = 0\ntags = []\nscreenshots = []\n",
+    ),
+    | ContentTemplateKind::Post => format!(
+      "---\ntitle: \"{title}\"\nslug: \"{slug}\"\nkind: \"note\"\npublished: false\nfeatured: false\ntags: []\n---\n\n# {title}\n\nTODO: Write the post body.\n",
+    ),
+    | ContentTemplateKind::Media => format!(
+      "title = \"{title}\"\nslug = \"{slug}\"\nmedia_type = \"photo\"\nfile_path = \"/media/art/{slug}.webp\"\nalt_text = \"\"\npublished = false\nsort_order = 0\ntaken_at = \"\"\nwidth = 0\nheight = 0\ntags = []\n",
+    ),
+  }
+}
+
+fn title_from_slug(slug : &str,) -> String {
+  slug
+    .split('-',)
+    .filter(|part| !part.is_empty(),)
+    .map(|part| {
+      let mut chars = part.chars();
+      let Some(first,) = chars.next() else {
+        return String::new();
+      };
+      format!("{}{}", first.to_ascii_uppercase(), chars.as_str())
+    },)
+    .collect::<Vec<_>>()
+    .join(" ",)
 }
 
 /// Export valid content files as a `SQLite` seed script.

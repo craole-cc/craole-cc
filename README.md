@@ -42,7 +42,8 @@ Key implementation pieces:
 - `backend/` — Axum server entry point and database bootstrap.
 - `frontend/` — WASM hydration entry point.
 - `content/` — portfolio-owned source content: projects, posts, media, and schema docs.
-- `contentctl/` — CLI for validating content and exporting a SQLite seed script.
+- `contentctl/` — CLI for validating content, exporting a SQLite seed script, and creating draft
+  content templates.
 - `database/migrations/` — durable SQLite schema and baseline seed data.
 - `scripts/ci.sh` — local/CI quality gate for database setup, content validation, SQLx, clippy,
   and tests.
@@ -153,6 +154,14 @@ cargo leptos watch
 
 For full setup, content authoring, and CI instructions, see [CONTRIBUTING.md](./CONTRIBUTING.md).
 For the Git-tracked content format, see [content/SCHEMA.md](./content/SCHEMA.md).
+
+Create draft content with `contentctl new`:
+
+```sh
+cargo run -p contentctl -- new project my-project
+cargo run -p contentctl -- new post project-build-log
+cargo run -p contentctl -- new media portfolio-screenshot
+```
 
 ## ✅ Quality gate
 

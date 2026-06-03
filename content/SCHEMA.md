@@ -32,6 +32,26 @@ created the schema.
    bash scripts/ci.sh
    ```
 
+## Draft templates
+
+Use `contentctl new` to create starter files:
+
+```bash
+cargo run -p contentctl -- new project my-project
+cargo run -p contentctl -- new post project-build-log
+cargo run -p contentctl -- new media portfolio-screenshot
+```
+
+The command writes to the matching content directory:
+
+- `project` → `content/projects/<slug>.toml`
+- `post` → `content/posts/<slug>.md`
+- `media` → `content/media/<slug>.toml`
+
+It rejects invalid slugs and refuses to overwrite existing files. Project and post templates are valid
+unpublished drafts; media templates require the referenced asset to be added under `public/` before
+validation passes.
+
 ## General rules
 
 - Slugs are stable public identifiers. Prefer lowercase ASCII letters, numbers, and hyphens.
@@ -152,10 +172,12 @@ Recommended authoring checklist:
 ## `contentctl` reference
 
 ```text
-Usage: contentctl <command> [repo-root]
+Usage: contentctl <command> [args]
 Commands:
-  validate    Validate content files
-  export-sql  Print a SQLite seed script generated from content files
+  validate [repo-root]              Validate content files
+  export-sql [repo-root]            Print a SQLite seed script generated from content files
+  new <project|post|media> <slug> [repo-root]
+                                  Create a draft content template
 ```
 
 Examples:
@@ -169,6 +191,9 @@ cargo run -p contentctl -- validate /path/to/craole-cc
 
 # Export seed SQL to inspect before applying it.
 cargo run -p contentctl -- export-sql . > /tmp/craole-content.sql
+
+# Create a new draft project template.
+cargo run -p contentctl -- new project my-project
 
 # Apply exported content to the local database.
 cargo run -p contentctl -- export-sql . | sqlite3 database/data/portfolio.db
