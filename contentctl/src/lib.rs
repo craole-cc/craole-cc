@@ -44,6 +44,26 @@ pub enum ContentError {
     #[source]
     source : std::io::Error,
   },
+  #[error("unsupported database URL `{0}`; expected sqlite://<path> or sqlite:<path>")]
+  UnsupportedDatabaseUrl(String,),
+  #[error("failed to open SQLite database `{path}`: {source}")]
+  DatabaseOpen {
+    path :   PathBuf,
+    #[source]
+    source : rusqlite::Error,
+  },
+  #[error("failed to execute SQLite against `{path}`: {source}")]
+  DatabaseExec {
+    path :   PathBuf,
+    #[source]
+    source : rusqlite::Error,
+  },
+  #[error("failed to query SQLite database `{path}`: {source}")]
+  DatabaseQuery {
+    path :   PathBuf,
+    #[source]
+    source : rusqlite::Error,
+  },
 }
 
 #[derive(Debug, Clone, PartialEq, Eq,)]
@@ -56,6 +76,13 @@ pub struct ValidationIssue {
 pub struct ValidationReport {
   pub errors :   Vec<ValidationIssue,>,
   pub warnings : Vec<ValidationIssue,>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq,)]
+pub struct SyncReport {
+  pub projects : i64,
+  pub posts :    i64,
+  pub media :    i64,
 }
 
 impl ValidationReport {
@@ -775,6 +802,100 @@ pub fn export_seed_sql(root : &Path,) -> Result<String, ContentError,> {
 
   sql.push_str("COMMIT;\n",);
   Ok(sql,)
+}
+
+/// Validate content, apply migrations, seed `SQLite`, and return seeded table counts.
+///
+/// # Errors
+///
+/// Returns [`ContentError`] when validation fails, migrations cannot be read, the database URL is
+/// unsupported, `SQLite` execution fails, or final counts cannot be queried.
+pub fn sync_content_database(
+  root : &Path,
+  database_url : &str,
+) -> Result<SyncReport, ContentError,> {
+  let report = validate_content_root(root,)?;
+  if !report.is_valid() {
+    return Err(ContentError::Validation(report.errors.len(),),);
+  }
+
+  let database_path = sqlite_database_path(database_url,)?;
+  if let Some(parent,) = database_path.parent() {
+    fs::create_dir_all(parent,).map_err(|source| ContentError::Write {
+      path : parent.to_path_buf(),
+      source,
+    },)?;
+  }
+
+  let connection = rusqlite::Connection::open(&database_path,).map_err(|source| {
+    ContentError::DatabaseOpen {
+      path : database_path.clone(),
+      source,
+    }
+  },)?;
+  connection
+    .execute_batch("PRAGMA foreign_keys = ON;",)
+    .map_err(|source| ContentError::DatabaseExec {
+      path : database_path.clone(),
+      source,
+    },)?;
+
+  for migration in migration_files(root,)? {
+    let sql = read_to_string(&migration,)?;
+    connection
+      .execute_batch(&sql,)
+      .map_err(|source| ContentError::DatabaseExec {
+        path : database_path.clone(),
+        source,
+      },)?;
+  }
+
+  let seed_sql = export_seed_sql(root,)?;
+  connection
+    .execute_batch(&seed_sql,)
+    .map_err(|source| ContentError::DatabaseExec {
+      path : database_path.clone(),
+      source,
+    },)?;
+
+  Ok(SyncReport {
+    projects : count_rows(&connection, &database_path, "projects",)?,
+    posts :    count_rows(&connection, &database_path, "posts",)?,
+    media :    count_rows(&connection, &database_path, "media",)?,
+  },)
+}
+
+fn sqlite_database_path(database_url : &str,) -> Result<PathBuf, ContentError,> {
+  let path = if let Some(path,) = database_url.strip_prefix("sqlite://",) {
+    path
+  } else if let Some(path,) = database_url.strip_prefix("sqlite:",) {
+    path
+  } else {
+    return Err(ContentError::UnsupportedDatabaseUrl(database_url.to_string(),),);
+  };
+
+  if path.trim().is_empty() || path == ":memory:" {
+    return Ok(PathBuf::from(path,),);
+  }
+
+  Ok(PathBuf::from(path,),)
+}
+
+fn migration_files(root : &Path,) -> Result<Vec<PathBuf,>, ContentError,> {
+  files_with_extension(&root.join("database/migrations",), "sql",)
+}
+
+fn count_rows(
+  connection : &rusqlite::Connection,
+  database_path : &Path,
+  table : &str,
+) -> Result<i64, ContentError,> {
+  connection
+    .query_row(&format!("SELECT COUNT(*) FROM {table}"), [], |row| row.get(0,),)
+    .map_err(|source| ContentError::DatabaseQuery {
+      path : database_path.to_path_buf(),
+      source,
+    },)
 }
 
 fn load_projects(root : &Path,) -> Result<Vec<ProjectContent,>, ContentError,> {

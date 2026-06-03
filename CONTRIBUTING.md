@@ -168,6 +168,23 @@ cargo run -p contentctl -- export-sql . | sqlite3 database/data/portfolio.db
 This is the same smoke-test path used by `scripts/ci.sh`. It currently checks that at least one
 project and one post are seeded.
 
+### Sync content into SQLite
+
+Use `sync-db` when you want `contentctl` to apply migrations and seed the local database in one step:
+
+```sh
+cargo run -p contentctl -- sync-db . sqlite://database/data/portfolio.db
+```
+
+If the database URL argument is omitted, `sync-db` uses `DATABASE_URL` and then falls back to
+`sqlite://database/data/portfolio.db`.
+
+Successful output includes seeded table counts:
+
+```text
+content database synced: projects=1 posts=1 media=0
+```
+
 ### Add a project
 
 1. Create a draft template:

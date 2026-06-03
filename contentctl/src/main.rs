@@ -3,6 +3,7 @@ use {
     ContentTemplateKind,
     ValidationReport,
     create_content_template,
+    sync_content_database,
     validate_content_root,
   },
   std::{
@@ -45,6 +46,7 @@ fn main() -> ExitCode {
       }
     }
     | "new" => create_new_content(args,),
+    | "sync-db" => sync_database(args,),
     | "help" | "--help" | "-h" => {
       print_usage();
       ExitCode::SUCCESS
@@ -86,6 +88,29 @@ fn create_new_content(mut args : impl Iterator<Item = String,>,) -> ExitCode {
   }
 }
 
+fn sync_database(mut args : impl Iterator<Item = String,>,) -> ExitCode {
+  let root = args
+    .next()
+    .map_or_else(|| PathBuf::from("."), PathBuf::from,);
+  let database_url = args.next().or_else(|| env::var("DATABASE_URL").ok(),).unwrap_or_else(|| {
+    "sqlite://database/data/portfolio.db".to_string()
+  },);
+
+  match sync_content_database(&root, &database_url,) {
+    | Ok(report,) => {
+      println!(
+        "content database synced: projects={} posts={} media={}",
+        report.projects, report.posts, report.media
+      );
+      ExitCode::SUCCESS
+    }
+    | Err(error,) => {
+      eprintln!("content database sync failed: {error}");
+      ExitCode::FAILURE
+    }
+  }
+}
+
 fn print_report(report : &ValidationReport,) -> ExitCode {
   for warning in &report.warnings {
     eprintln!("{}\n  warning: {}", warning.path.display(), warning.message);
@@ -114,4 +139,6 @@ fn print_usage() {
   eprintln!("  export-sql [repo-root]            Print a SQLite seed script generated from content files");
   eprintln!("  new <project|post|media> <slug> [repo-root]");
   eprintln!("                                  Create a draft content template");
+  eprintln!("  sync-db [repo-root] [database-url]");
+  eprintln!("                                  Apply migrations and sync content into SQLite");
 }

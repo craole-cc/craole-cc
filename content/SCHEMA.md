@@ -8,6 +8,7 @@ Run commands from the repository root:
 ```bash
 cargo run -p contentctl -- validate .
 cargo run -p contentctl -- export-sql . | sqlite3 database/data/portfolio.db
+cargo run -p contentctl -- sync-db . sqlite://database/data/portfolio.db
 ```
 
 `validate` fails fast on malformed content. `export-sql` prints a deterministic SQLite seed script
@@ -51,6 +52,24 @@ The command writes to the matching content directory:
 It rejects invalid slugs and refuses to overwrite existing files. Project and post templates are valid
 unpublished drafts; media templates require the referenced asset to be added under `public/` before
 validation passes.
+
+## Database sync
+
+Use `sync-db` to validate content, apply SQL migrations from `database/migrations/`, export the seed
+SQL, apply it to SQLite, and print final counts:
+
+```bash
+cargo run -p contentctl -- sync-db . sqlite://database/data/portfolio.db
+```
+
+If the database URL argument is omitted, the command uses `DATABASE_URL`. If `DATABASE_URL` is not
+set, it falls back to `sqlite://database/data/portfolio.db`.
+
+Expected output:
+
+```text
+content database synced: projects=1 posts=1 media=0
+```
 
 ## General rules
 
@@ -178,6 +197,8 @@ Commands:
   export-sql [repo-root]            Print a SQLite seed script generated from content files
   new <project|post|media> <slug> [repo-root]
                                   Create a draft content template
+  sync-db [repo-root] [database-url]
+                                  Apply migrations and sync content into SQLite
 ```
 
 Examples:
@@ -194,6 +215,9 @@ cargo run -p contentctl -- export-sql . > /tmp/craole-content.sql
 
 # Create a new draft project template.
 cargo run -p contentctl -- new project my-project
+
+# Validate, migrate, and seed the local SQLite database.
+cargo run -p contentctl -- sync-db . sqlite://database/data/portfolio.db
 
 # Apply exported content to the local database.
 cargo run -p contentctl -- export-sql . | sqlite3 database/data/portfolio.db

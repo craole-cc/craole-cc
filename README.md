@@ -163,6 +163,12 @@ cargo run -p contentctl -- new post project-build-log
 cargo run -p contentctl -- new media portfolio-screenshot
 ```
 
+Sync validated content into the local SQLite database with one command:
+
+```sh
+cargo run -p contentctl -- sync-db . sqlite://database/data/portfolio.db
+```
+
 ## ✅ Quality gate
 
 Run the same checks used by CI before opening a pull request:
