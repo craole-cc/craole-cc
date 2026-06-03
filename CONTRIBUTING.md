@@ -185,6 +185,25 @@ Successful output includes seeded table counts:
 content database synced: projects=1 posts=1 media=0
 ```
 
+### Export static JSON
+
+Use `export-json` to generate static-friendly content data for a fallback site or future prerenderer:
+
+```sh
+cargo run -p contentctl -- export-json . dist/data
+```
+
+This writes:
+
+```text
+dist/data/projects.json
+dist/data/posts.json
+dist/data/media.json
+dist/data/manifest.json
+```
+
+The command validates content before writing files and refuses to export invalid content.
+
 ### Add a project
 
 1. Create a draft template:

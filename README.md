@@ -169,6 +169,12 @@ Sync validated content into the local SQLite database with one command:
 cargo run -p contentctl -- sync-db . sqlite://database/data/portfolio.db
 ```
 
+Export static-friendly JSON data for the fallback path:
+
+```sh
+cargo run -p contentctl -- export-json . dist/data
+```
+
 ## ✅ Quality gate
 
 Run the same checks used by CI before opening a pull request:

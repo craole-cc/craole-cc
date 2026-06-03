@@ -9,6 +9,7 @@ Run commands from the repository root:
 cargo run -p contentctl -- validate .
 cargo run -p contentctl -- export-sql . | sqlite3 database/data/portfolio.db
 cargo run -p contentctl -- sync-db . sqlite://database/data/portfolio.db
+cargo run -p contentctl -- export-json . dist/data
 ```
 
 `validate` fails fast on malformed content. `export-sql` prints a deterministic SQLite seed script
@@ -69,6 +70,23 @@ Expected output:
 
 ```text
 content database synced: projects=1 posts=1 media=0
+```
+
+## Static JSON export
+
+Use `export-json` to produce data files for static fallback work:
+
+```bash
+cargo run -p contentctl -- export-json . dist/data
+```
+
+It writes `projects.json`, `posts.json`, `media.json`, and `manifest.json`. The manifest contains
+item counts so build scripts can smoke-test the export without parsing every file.
+
+Expected output:
+
+```text
+static JSON exported to dist/data: projects=1 posts=1 media=0
 ```
 
 ## General rules
@@ -195,6 +213,8 @@ Usage: contentctl <command> [args]
 Commands:
   validate [repo-root]              Validate content files
   export-sql [repo-root]            Print a SQLite seed script generated from content files
+  export-json [repo-root] [output-dir]
+                                  Export static JSON data files
   new <project|post|media> <slug> [repo-root]
                                   Create a draft content template
   sync-db [repo-root] [database-url]
@@ -218,6 +238,9 @@ cargo run -p contentctl -- new project my-project
 
 # Validate, migrate, and seed the local SQLite database.
 cargo run -p contentctl -- sync-db . sqlite://database/data/portfolio.db
+
+# Export static fallback JSON data.
+cargo run -p contentctl -- export-json . dist/data
 
 # Apply exported content to the local database.
 cargo run -p contentctl -- export-sql . | sqlite3 database/data/portfolio.db

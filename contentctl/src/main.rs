@@ -3,6 +3,7 @@ use {
     ContentTemplateKind,
     ValidationReport,
     create_content_template,
+    export_static_json,
     sync_content_database,
     validate_content_root,
   },
@@ -47,6 +48,7 @@ fn main() -> ExitCode {
     }
     | "new" => create_new_content(args,),
     | "sync-db" => sync_database(args,),
+    | "export-json" => export_json(args,),
     | "help" | "--help" | "-h" => {
       print_usage();
       ExitCode::SUCCESS
@@ -111,6 +113,29 @@ fn sync_database(mut args : impl Iterator<Item = String,>,) -> ExitCode {
   }
 }
 
+fn export_json(mut args : impl Iterator<Item = String,>,) -> ExitCode {
+  let root = args
+    .next()
+    .map_or_else(|| PathBuf::from("."), PathBuf::from,);
+  let output_dir = args
+    .next()
+    .map_or_else(|| PathBuf::from("dist/data"), PathBuf::from,);
+
+  match export_static_json(&root, &output_dir,) {
+    | Ok(report,) => {
+      println!(
+        "static JSON exported to {}: projects={} posts={} media={}",
+        output_dir.display(), report.projects, report.posts, report.media
+      );
+      ExitCode::SUCCESS
+    }
+    | Err(error,) => {
+      eprintln!("static JSON export failed: {error}");
+      ExitCode::FAILURE
+    }
+  }
+}
+
 fn print_report(report : &ValidationReport,) -> ExitCode {
   for warning in &report.warnings {
     eprintln!("{}\n  warning: {}", warning.path.display(), warning.message);
@@ -137,6 +162,8 @@ fn print_usage() {
   eprintln!("Commands:");
   eprintln!("  validate [repo-root]              Validate content files");
   eprintln!("  export-sql [repo-root]            Print a SQLite seed script generated from content files");
+  eprintln!("  export-json [repo-root] [output-dir]");
+  eprintln!("                                  Export static JSON data files");
   eprintln!("  new <project|post|media> <slug> [repo-root]");
   eprintln!("                                  Create a draft content template");
   eprintln!("  sync-db [repo-root] [database-url]");

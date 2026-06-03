@@ -1,5 +1,8 @@
 use {
-  serde::Deserialize,
+  serde::{
+    Deserialize,
+    Serialize,
+  },
   std::{
     collections::{
       HashMap,
@@ -44,6 +47,12 @@ pub enum ContentError {
     #[source]
     source : std::io::Error,
   },
+  #[error("failed to serialize JSON `{path}`: {source}")]
+  Json {
+    path :   PathBuf,
+    #[source]
+    source : serde_json::Error,
+  },
   #[error("unsupported database URL `{0}`; expected sqlite://<path> or sqlite:<path>")]
   UnsupportedDatabaseUrl(String,),
   #[error("failed to open SQLite database `{path}`: {source}")]
@@ -85,6 +94,13 @@ pub struct SyncReport {
   pub media :    i64,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize,)]
+pub struct ExportJsonReport {
+  pub projects : usize,
+  pub posts :    usize,
+  pub media :    usize,
+}
+
 impl ValidationReport {
   #[must_use]
   pub const fn is_valid(&self,) -> bool { self.errors.is_empty() }
@@ -104,7 +120,7 @@ impl ValidationReport {
   }
 }
 
-#[derive(Debug, Deserialize,)]
+#[derive(Debug, Deserialize, Serialize,)]
 struct ProjectContent {
   title :       Option<String,>,
   slug :        Option<String,>,
@@ -119,7 +135,7 @@ struct ProjectContent {
   screenshots : Option<Vec<String,>,>,
 }
 
-#[derive(Debug, Deserialize,)]
+#[derive(Debug, Deserialize, Serialize,)]
 struct MediaContent {
   title :      Option<String,>,
   slug :       Option<String,>,
@@ -135,7 +151,7 @@ struct MediaContent {
   tags :       Option<Vec<String,>,>,
 }
 
-#[derive(Debug, Default,)]
+#[derive(Debug, Default, Serialize,)]
 struct PostFrontmatter {
   title :        Option<String,>,
   slug :         Option<String,>,
@@ -148,7 +164,9 @@ struct PostFrontmatter {
   cover_url :    Option<String,>,
 }
 
+#[derive(Debug, Serialize,)]
 struct PostContent {
+  #[serde(flatten)]
   frontmatter : PostFrontmatter,
   body :        String,
 }
@@ -691,6 +709,54 @@ fn title_from_slug(slug : &str,) -> String {
     },)
     .collect::<Vec<_>>()
     .join(" ",)
+}
+
+/// Export valid content as static-friendly JSON files.
+///
+/// # Errors
+///
+/// Returns [`ContentError`] when validation fails, content cannot be read, JSON cannot be
+/// serialized, or files cannot be written.
+pub fn export_static_json(
+  root : &Path,
+  output_dir : &Path,
+) -> Result<ExportJsonReport, ContentError,> {
+  let report = validate_content_root(root,)?;
+  if !report.is_valid() {
+    return Err(ContentError::Validation(report.errors.len(),),);
+  }
+
+  let projects = load_projects(root,)?;
+  let posts = load_posts(root,)?;
+  let media = load_media(root,)?;
+  let export_report = ExportJsonReport {
+    projects : projects.len(),
+    posts :    posts.len(),
+    media :    media.len(),
+  };
+
+  fs::create_dir_all(output_dir,).map_err(|source| ContentError::Write {
+    path : output_dir.to_path_buf(),
+    source,
+  },)?;
+
+  write_json_file(&output_dir.join("projects.json",), &projects,)?;
+  write_json_file(&output_dir.join("posts.json",), &posts,)?;
+  write_json_file(&output_dir.join("media.json",), &media,)?;
+  write_json_file(&output_dir.join("manifest.json",), &export_report,)?;
+
+  Ok(export_report,)
+}
+
+fn write_json_file<T : Serialize,>(path : &Path, value : &T,) -> Result<(), ContentError,> {
+  let json = serde_json::to_string_pretty(value,).map_err(|source| ContentError::Json {
+    path : path.to_path_buf(),
+    source,
+  },)?;
+  fs::write(path, format!("{json}\n"),).map_err(|source| ContentError::Write {
+    path : path.to_path_buf(),
+    source,
+  },)
 }
 
 /// Export valid content files as a `SQLite` seed script.
