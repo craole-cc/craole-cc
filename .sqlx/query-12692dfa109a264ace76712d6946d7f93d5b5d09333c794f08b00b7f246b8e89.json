@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "SELECT p.id AS \"id!: i64\",\n  p.title AS \"title!: String\",\n  p.slug AS \"slug!: String\",\n  p.excerpt AS \"excerpt: String\",\n  p.kind AS \"kind!: String\",\n  p.featured AS \"featured!: i64\",\n  p.cover_url AS \"cover_url: String\",\n  p.published_at AS \"published_at: String\",\n  p.created_at AS \"created_at!: String\",\n  CAST(COALESCE(GROUP_CONCAT(pt.tag, ','), '') AS TEXT) AS \"tags!: String\"\nFROM posts p\n  LEFT JOIN post_tags pt ON pt.post_id = p.id\nWHERE p.published = 1\nGROUP BY p.id\nORDER BY p.featured DESC,\n  p.published_at DESC,\n  p.created_at DESC;\n",
+  "query": "SELECT\n  p.id AS \"id!: i64\",\n  p.title AS \"title!: String\",\n  p.slug AS \"slug!: String\",\n  p.body AS \"body!: String\",\n  p.excerpt AS \"excerpt: String\",\n  p.kind AS \"kind!: String\",\n  p.cover_url AS \"cover_url: String\",\n  p.published_at AS \"published_at: String\",\n  p.created_at AS \"created_at!: String\",\n  CAST(COALESCE(GROUP_CONCAT(pt.tag, ','), '') AS TEXT) AS \"tags!: String\"\nFROM\n  posts p\n  LEFT JOIN post_tags pt ON pt.post_id = p.id\nWHERE\n  p.slug = ?1\n  AND p.published = 1\nGROUP BY\n  p.id;\n",
   "describe": {
     "columns": [
       {
@@ -19,19 +19,19 @@
         "type_info": "Text"
       },
       {
-        "name": "excerpt: String",
+        "name": "body!: String",
         "ordinal": 3,
         "type_info": "Text"
       },
       {
-        "name": "kind!: String",
+        "name": "excerpt: String",
         "ordinal": 4,
         "type_info": "Text"
       },
       {
-        "name": "featured!: i64",
+        "name": "kind!: String",
         "ordinal": 5,
-        "type_info": "Integer"
+        "type_info": "Text"
       },
       {
         "name": "cover_url: String",
@@ -51,24 +51,24 @@
       {
         "name": "tags!: String",
         "ordinal": 9,
-        "type_info": "Text"
+        "type_info": "Null"
       }
     ],
     "parameters": {
-      "Right": 0
+      "Right": 1
     },
     "nullable": [
+      true,
       false,
       false,
       false,
       true,
       false,
-      false,
       true,
       true,
       false,
-      false
+      null
     ]
   },
-  "hash": "61d3416b79724c7adbb1c10e6a7499db9ebf152b85e533dc9ad8aa676bdbe8bf"
+  "hash": "12692dfa109a264ace76712d6946d7f93d5b5d09333c794f08b00b7f246b8e89"
 }

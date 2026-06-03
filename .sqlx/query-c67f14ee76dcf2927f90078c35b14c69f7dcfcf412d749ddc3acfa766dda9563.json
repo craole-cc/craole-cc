@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "-- Related by shared tags first, then same shoot day, then recent.\n-- Excludes the current photo.\nSELECT\n  m.id         AS \"id!: i64\",\n  m.title      AS \"title!: String\",\n  m.slug       AS \"slug!: String\",\n  m.caption    AS \"caption: String\",\n  m.media_type AS \"media_type!: String\",\n  m.file_path  AS \"file_path!: String\",\n  m.alt_text   AS \"alt_text!: String\",\n  m.width      AS \"width: i64\",\n  m.height     AS \"height: i64\",\n  m.sort_order AS \"sort_order!: i64\",\n  m.taken_at   AS \"taken_at: String\",\n  m.created_at AS \"created_at!: String\",\n  CAST(COALESCE(GROUP_CONCAT(mt.tag, ','), '') AS TEXT) AS \"tags!: String\",\n  COUNT(shared.tag) AS shared_tag_count,\n  CASE WHEN DATE(m.taken_at) = DATE((\n    SELECT taken_at FROM media WHERE slug = ?1\n  )) THEN 1 ELSE 0 END AS same_shoot\nFROM media m\n  LEFT JOIN media_tags mt ON mt.media_id = m.id\n  LEFT JOIN media_tags shared ON shared.media_id = m.id\n    AND shared.tag IN (\n      SELECT tag FROM media_tags\n      WHERE media_id = (SELECT id FROM media WHERE slug = ?1)\n    )\nWHERE m.published = 1\n  AND m.slug != ?1\nGROUP BY m.id\nORDER BY\n  shared_tag_count DESC,\n  same_shoot DESC,\n  m.taken_at DESC\nLIMIT 6;\n",
+  "query": "-- Related by shared tags first, then same shoot day, then recent.\n-- Excludes the current photo.\nSELECT\n    m.id AS \"id!: i64\",\n    m.title AS \"title!: String\",\n    m.slug AS \"slug!: String\",\n    m.caption AS \"caption: String\",\n    m.media_type AS \"media_type!: String\",\n    m.file_path AS \"file_path!: String\",\n    m.alt_text AS \"alt_text!: String\",\n    m.width AS \"width: i64\",\n    m.height AS \"height: i64\",\n    m.sort_order AS \"sort_order!: i64\",\n    m.taken_at AS \"taken_at: String\",\n    m.created_at AS \"created_at!: String\",\n    CAST(COALESCE(GROUP_CONCAT(mt.tag, ','), '') AS TEXT) AS \"tags!: String\",\n    COUNT(shared.tag) AS shared_tag_count,\n    CASE WHEN DATE(m.taken_at) = DATE((\n        SELECT taken_at FROM media WHERE slug = ?1\n    )) THEN 1 ELSE 0 END AS same_shoot\nFROM media m\nLEFT JOIN media_tags mt ON mt.media_id = m.id\nLEFT JOIN media_tags shared\n    ON\n        shared.media_id = m.id\n        AND shared.tag IN (\n            SELECT tag FROM media_tags\n            WHERE media_id = (SELECT id FROM media WHERE slug = ?1)\n        )\nWHERE\n    m.published = 1\n    AND m.slug != ?1\nGROUP BY m.id\nORDER BY\nshared_tag_count DESC,\nsame_shoot DESC,\nm.taken_at DESC\nLIMIT 6;\n",
   "describe": {
     "columns": [
       {
@@ -100,5 +100,5 @@
       false
     ]
   },
-  "hash": "296cd12d7832ec43cd22400afe8b76568d1e84b0995da3defe5215e506ef96e9"
+  "hash": "c67f14ee76dcf2927f90078c35b14c69f7dcfcf412d749ddc3acfa766dda9563"
 }

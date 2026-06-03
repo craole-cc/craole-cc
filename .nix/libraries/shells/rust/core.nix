@@ -178,6 +178,8 @@
         cargo-leptos
         trunk
         binaryen
+        sqlx-cli
+        sqlite
         #~@ Watch
         bacon
         cargo-watch

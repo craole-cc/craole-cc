@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "SELECT\n  p.id,\n  p.title,\n  p.slug,\n  p.description,\n  p.status,\n  p.repo_url,\n  p.live_url,\n  p.featured,\n  p.sort_order,\n  p.created_at,\n  CAST(COALESCE(GROUP_CONCAT(pt.tag, ','), '') AS TEXT) AS tags\nFROM projects p\nLEFT JOIN project_tags pt ON pt.project_id = p.id\nWHERE p.published = 1\n  AND p.id IN (SELECT rowid FROM projects_fts WHERE projects_fts MATCH $1)\nGROUP BY p.id\nORDER BY p.sort_order ASC\n",
+  "query": "SELECT\n  p.id,\n  p.title,\n  p.slug,\n  p.description,\n  p.status,\n  p.repo_url,\n  p.live_url,\n  p.featured,\n  p.sort_order,\n  p.created_at,\n  CAST(COALESCE(GROUP_CONCAT(pt.tag, ','), '') AS TEXT) AS tags\nFROM\n  projects p\n  LEFT JOIN project_tags pt ON pt.project_id = p.id\nWHERE\n  p.published = 1\n  AND p.status = ?\nGROUP BY\n  p.id\nORDER BY\n  p.sort_order ASC,\n  p.created_at DESC\n",
   "describe": {
     "columns": [
       {
@@ -76,5 +76,5 @@
       false
     ]
   },
-  "hash": "34fdbc0ea327c0d296d968e8abdae9e55a63ffba8a03d5649d48dca559fdb682"
+  "hash": "8f62a9943c0657fcf7f2b78eb745be91bf01c0e3f0c858c461fc4439e580ba35"
 }

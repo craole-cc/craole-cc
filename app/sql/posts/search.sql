@@ -14,7 +14,7 @@ FROM
   JOIN posts_fts ON posts_fts.rowid = p.id
   LEFT JOIN post_tags pt ON pt.post_id = p.id
 WHERE
-  posts_fts MATCH ? 1
+  posts_fts MATCH ?1
   AND p.published = 1
 GROUP BY
   p.id

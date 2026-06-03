@@ -1,0 +1,79 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Local/CI quality gate for craole.cc.
+# Run from a Nix shell with:
+#   nix develop --command bash scripts/ci.sh
+
+ROOT=$(git rev-parse --show-toplevel 2>/dev/null || pwd)
+cd "$ROOT"
+
+export DATABASE_URL="${DATABASE_URL:-sqlite://database/data/portfolio.db}"
+export SQLX_OFFLINE="${SQLX_OFFLINE:-false}"
+
+need() {
+  if ! command -v "$1" >/dev/null 2>&1; then
+    printf 'error: required command not found: %s\n' "$1" >&2
+    exit 127
+  fi
+}
+
+need cargo
+need rustc
+need sqlx
+need sqlite3
+
+printf '==> Toolchain\n'
+rustc --version
+cargo --version
+sqlx --version
+sqlite3 --version | head -n 1
+
+printf '\n==> Preparing SQLite database at %s\n' "$DATABASE_URL"
+mkdir -p database/data
+sqlx database create --database-url "$DATABASE_URL"
+sqlx migrate run --source database/migrations --database-url "$DATABASE_URL"
+
+printf '\n==> Content validation\n'
+cargo run -p contentctl -- validate .
+
+printf '\n==> Content database seed smoke test\n'
+cargo run -p contentctl -- export-sql . | sqlite3 database/data/portfolio.db
+PROJECT_COUNT=$(sqlite3 database/data/portfolio.db 'SELECT COUNT(*) FROM projects;')
+POST_COUNT=$(sqlite3 database/data/portfolio.db 'SELECT COUNT(*) FROM posts;')
+printf 'Seeded projects=%s posts=%s\n' "$PROJECT_COUNT" "$POST_COUNT"
+if [ "$PROJECT_COUNT" -lt 1 ] || [ "$POST_COUNT" -lt 1 ]; then
+  printf 'error: content seed produced an empty required table\n' >&2
+  exit 1
+fi
+
+printf '\n==> Checking SQLx offline metadata\n'
+cargo sqlx prepare --workspace --check --database-url "$DATABASE_URL"
+
+if [ "${STRICT_FORMAT:-0}" = "1" ]; then
+  printf '\n==> Rust formatting\n'
+  cargo fmt --all --check
+
+  if command -v treefmt >/dev/null 2>&1; then
+    printf '\n==> Repository formatting\n'
+    treefmt --fail-on-change
+  fi
+else
+  printf '\n==> Formatting\n'
+  printf 'Skipping formatting gate by default because the current tree is not rustfmt-clean. Set STRICT_FORMAT=1 to enforce it.\n'
+fi
+
+printf '\n==> Cargo check\n'
+cargo check --workspace
+
+printf '\n==> Clippy\n'
+cargo clippy --workspace --all-targets --all-features -- -D warnings
+
+printf '\n==> Tests\n'
+if cargo nextest --version >/dev/null 2>&1; then
+  cargo nextest run --workspace --no-tests pass
+else
+  cargo test --workspace
+fi
+
+printf '\nCI checks completed successfully.\n'

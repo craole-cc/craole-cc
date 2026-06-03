@@ -176,7 +176,7 @@ pub async fn search_projects(query: String) -> Result<Vec<Project>, ServerFnErro
   let fts_query = query
     .split_whitespace()
     .filter(|w| !w.is_empty())
-    .map(|w| format!("{w}*",))
+    .map(|w| format!("{w}*"))
     .collect::<Vec<_>>()
     .join(" ");
 
@@ -278,7 +278,7 @@ async fn fetch_github_readme(repo_url: &str) -> Option<String> {
     return None;
   }
   let (repo, owner) = (parts[0], parts[1]);
-  let raw_url = format!("https://raw.githubusercontent.com/{owner}/{repo}/HEAD/README.md",);
+  let raw_url = format!("https://raw.githubusercontent.com/{owner}/{repo}/HEAD/README.md");
 
   let client = Client::builder()
     .timeout(Duration::from_secs(10))
@@ -302,11 +302,11 @@ async fn fetch_github_readme(repo_url: &str) -> Option<String> {
   let mut out = String::new();
   html::push_html(&mut out, parser);
 
-  let base = format!("https://raw.githubusercontent.com/{owner}/{repo}/HEAD/",);
-  let out = out.replace("src=\"./", &format!("src=\"{base}",));
-  let out = out.replace("src=\"images/", &format!("src=\"{base}images/",));
-  let out = out.replace("src=\"assets/", &format!("src=\"{base}assets/",));
-  let out = out.replace("src=\"docs/", &format!("src=\"{base}docs/",));
+  let base = format!("https://raw.githubusercontent.com/{owner}/{repo}/HEAD/");
+  let out = out.replace("src=\"./", &format!("src=\"{base}"));
+  let out = out.replace("src=\"images/", &format!("src=\"{base}images/"));
+  let out = out.replace("src=\"assets/", &format!("src=\"{base}assets/"));
+  let out = out.replace("src=\"docs/", &format!("src=\"{base}docs/"));
 
   let sanitized = ammonia::Builder::default()
     .add_tags(["img", "figure", "figcaption", "details", "summary"])

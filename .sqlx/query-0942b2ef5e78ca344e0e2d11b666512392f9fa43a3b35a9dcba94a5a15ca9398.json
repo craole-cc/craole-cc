@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "SELECT\n  m.id         AS \"id!: i64\",\n  m.title      AS \"title!: String\",\n  m.slug       AS \"slug!: String\",\n  m.caption    AS \"caption: String\",\n  m.media_type AS \"media_type!: String\",\n  m.file_path  AS \"file_path!: String\",\n  m.alt_text   AS \"alt_text!: String\",\n  m.width      AS \"width: i64\",\n  m.height     AS \"height: i64\",\n  m.sort_order AS \"sort_order!: i64\",\n  m.taken_at   AS \"taken_at: String\",\n  m.created_at AS \"created_at!: String\",\n  CAST(COALESCE(GROUP_CONCAT(mt.tag, ','), '') AS TEXT) AS \"tags!: String\"\nFROM media m\n  JOIN media_tags mt ON mt.media_id = m.id\nWHERE m.published = 1\n  AND mt.tag = ?1\nGROUP BY m.id\nORDER BY m.sort_order ASC, m.taken_at DESC;\n",
+  "query": "SELECT\n  m.id AS \"id!: i64\",\n  m.title AS \"title!: String\",\n  m.slug AS \"slug!: String\",\n  m.caption AS \"caption: String\",\n  m.media_type AS \"media_type!: String\",\n  m.file_path AS \"file_path!: String\",\n  m.alt_text AS \"alt_text!: String\",\n  m.width AS \"width: i64\",\n  m.height AS \"height: i64\",\n  m.sort_order AS \"sort_order!: i64\",\n  m.taken_at AS \"taken_at: String\",\n  m.created_at AS \"created_at!: String\",\n  CAST(COALESCE(GROUP_CONCAT(mt.tag, ','), '') AS TEXT) AS \"tags!: String\"\nFROM\n  media m\n  LEFT JOIN media_tags mt ON mt.media_id = m.id\nWHERE\n  m.slug = ?1\n  AND m.published = 1\nGROUP BY\n  m.id;\n",
   "describe": {
     "columns": [
       {
@@ -88,5 +88,5 @@
       null
     ]
   },
-  "hash": "f5e14a032e94d564475a3441a1795950982294b503e355c35d17cfbe68589549"
+  "hash": "0942b2ef5e78ca344e0e2d11b666512392f9fa43a3b35a9dcba94a5a15ca9398"
 }

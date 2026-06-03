@@ -16,7 +16,7 @@ FROM
   media m
   LEFT JOIN media_tags mt ON mt.media_id = m.id
 WHERE
-  m.slug = ? 1
+  m.slug = ?1
   AND m.published = 1
 GROUP BY
   m.id;

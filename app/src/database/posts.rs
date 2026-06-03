@@ -133,7 +133,7 @@ pub async fn search_posts(query: String) -> Result<Vec<PostSummary>, ServerFnErr
   let fts_query = query
     .split_whitespace()
     .filter(|w| !w.is_empty())
-    .map(|w| format!("{w}*",))
+    .map(|w| format!("{w}*"))
     .collect::<Vec<_>>()
     .join(" ");
 

@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "SELECT\n  p.id,\n  p.title,\n  p.slug,\n  p.description,\n  p.status,\n  p.repo_url,\n  p.live_url,\n  p.featured,\n  p.sort_order,\n  p.created_at,\n  CAST(COALESCE(GROUP_CONCAT(pt.tag, ','), '') AS TEXT) AS tags\nFROM projects p\nLEFT JOIN project_tags pt ON pt.project_id = p.id\nWHERE p.published = 1 AND p.status = $1\nGROUP BY p.id\nORDER BY p.sort_order ASC, p.created_at DESC\n",
+  "query": "SELECT\n  p.id,\n  p.title,\n  p.slug,\n  p.description,\n  p.status,\n  p.repo_url,\n  p.live_url,\n  p.featured,\n  p.sort_order,\n  p.created_at,\n  CAST(COALESCE(GROUP_CONCAT(pt.tag, ','), '') AS TEXT) AS tags\nFROM\n  projects p\n  LEFT JOIN project_tags pt ON pt.project_id = p.id\nWHERE\n  p.published = 1\nGROUP BY\n  p.id\nORDER BY\n  p.sort_order ASC,\n  p.created_at DESC\n",
   "describe": {
     "columns": [
       {
@@ -60,7 +60,7 @@
       }
     ],
     "parameters": {
-      "Right": 1
+      "Right": 0
     },
     "nullable": [
       false,
@@ -76,5 +76,5 @@
       false
     ]
   },
-  "hash": "49ba0a510c74b75a2f274caa587767a823f2d4ffd1d7f7b4f4a1e0655812b0f2"
+  "hash": "914d5d6ab4087d2eb723603dafd78c7b26637c1ba6b9bc157c6e002389991cf7"
 }

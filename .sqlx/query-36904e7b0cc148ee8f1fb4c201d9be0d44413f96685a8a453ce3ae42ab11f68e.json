@@ -1,0 +1,92 @@
+{
+  "db_name": "SQLite",
+  "query": "-- Filter media that has ALL of the given tags (intersection / AND logic).\n-- ?1 = newline-separated tag list, e.g. \"Landscape\\nJamaica\"\n-- Split with a recursive CTE, then count matches per media item.\n-- Only keep items where every requested tag matched.\nWITH RECURSIVE\n  split (tag, rest) AS (\n    SELECT\n      TRIM(\n        substr(?1, 1, INSTR(?1 || char(10), char(10)) - 1)\n      ),\n      TRIM(\n        substr(?1, INSTR(?1 || char(10), char(10)) + 1)\n      )\n    UNION ALL\n    SELECT\n      TRIM(\n        SUBSTR(rest, 1, INSTR(rest || CHAR(10), CHAR(10)) - 1)\n      ),\n      TRIM(\n        SUBSTR(rest, INSTR(rest || CHAR(10), CHAR(10)) + 1)\n      )\n    FROM\n      split\n    WHERE\n      rest != ''\n  ),\n  requested AS (\n    SELECT\n      tag\n    FROM\n      split\n    WHERE\n      tag != ''\n  ),\n  tag_count AS (\n    SELECT\n      COUNT(*) AS cnt\n    FROM\n      requested\n  )\nSELECT\n  m.id AS \"id!: i64\",\n  m.title AS \"title!: String\",\n  m.slug AS \"slug!: String\",\n  m.caption AS \"caption: String\",\n  m.media_type AS \"media_type!: String\",\n  m.file_path AS \"file_path!: String\",\n  m.alt_text AS \"alt_text!: String\",\n  m.width AS \"width: i64\",\n  m.height AS \"height: i64\",\n  m.sort_order AS \"sort_order!: i64\",\n  m.taken_at AS \"taken_at: String\",\n  m.created_at AS \"created_at!: String\",\n  CAST(COALESCE(GROUP_CONCAT(mt2.tag, ','), '') AS TEXT) AS \"tags!: String\"\nFROM\n  media m\n  JOIN media_tags mt ON mt.media_id = m.id\n  JOIN requested r ON mt.tag = r.tag\n  LEFT JOIN media_tags mt2 ON mt2.media_id = m.id\nWHERE\n  m.published = 1\nGROUP BY\n  m.id\nHAVING\n  COUNT(DISTINCT mt.tag) = (\n    SELECT\n      cnt\n    FROM\n      tag_count\n  )\nORDER BY\n  m.sort_order ASC,\n  m.taken_at DESC;\n",
+  "describe": {
+    "columns": [
+      {
+        "name": "id!: i64",
+        "ordinal": 0,
+        "type_info": "Integer"
+      },
+      {
+        "name": "title!: String",
+        "ordinal": 1,
+        "type_info": "Text"
+      },
+      {
+        "name": "slug!: String",
+        "ordinal": 2,
+        "type_info": "Text"
+      },
+      {
+        "name": "caption: String",
+        "ordinal": 3,
+        "type_info": "Text"
+      },
+      {
+        "name": "media_type!: String",
+        "ordinal": 4,
+        "type_info": "Text"
+      },
+      {
+        "name": "file_path!: String",
+        "ordinal": 5,
+        "type_info": "Text"
+      },
+      {
+        "name": "alt_text!: String",
+        "ordinal": 6,
+        "type_info": "Text"
+      },
+      {
+        "name": "width: i64",
+        "ordinal": 7,
+        "type_info": "Integer"
+      },
+      {
+        "name": "height: i64",
+        "ordinal": 8,
+        "type_info": "Integer"
+      },
+      {
+        "name": "sort_order!: i64",
+        "ordinal": 9,
+        "type_info": "Integer"
+      },
+      {
+        "name": "taken_at: String",
+        "ordinal": 10,
+        "type_info": "Text"
+      },
+      {
+        "name": "created_at!: String",
+        "ordinal": 11,
+        "type_info": "Text"
+      },
+      {
+        "name": "tags!: String",
+        "ordinal": 12,
+        "type_info": "Null"
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      true,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+      true,
+      true,
+      false,
+      true,
+      false,
+      null
+    ]
+  },
+  "hash": "36904e7b0cc148ee8f1fb4c201d9be0d44413f96685a8a453ce3ae42ab11f68e"
+}

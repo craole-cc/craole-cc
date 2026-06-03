@@ -11,10 +11,11 @@ Thanks for your interest! This document covers how to get the project running lo
 | Rust (nightly) | Compiler — version pinned in `rust-toolchain.toml` | [rustup.rs](https://rustup.rs)                                   |
 | `cargo-leptos` | Full-stack dev server & build tool                 | `cargo install cargo-leptos`                                     |
 | `sqlx-cli`     | Database migrations & compile-time query checks    | `cargo install sqlx-cli --no-default-features --features sqlite` |
+| `sqlite3`      | Local SQLite inspection/debugging                  | Usually available as `sqlite` / `sqlite3` in your package manager |
 | Node.js / npm  | Optional — only needed if you add JS dependencies  | [nodejs.org](https://nodejs.org)                                 |
 
 > If you're on NixOS, a `flake.nix` is included — `nix develop` will drop you into a shell with
-> everything available.
+> everything available, including Rust, `cargo-leptos`, `sqlx`, and `sqlite3`.
 
 ---
 
@@ -44,8 +45,14 @@ DATABASE_URL=sqlite:./database/data/portfolio.db
 ### 3. Initialize the database
 
 ```sh
-chmod +x scripts/init-db.sh
-./scripts/init-db.sh
+./scripts/init-db.rs
+```
+
+Or run the same database setup used by CI:
+
+```sh
+sqlx database create --database-url "$DATABASE_URL"
+sqlx migrate run --source database/migrations --database-url "$DATABASE_URL"
 ```
 
 This creates the SQLite database file and runs all migrations. SQLx verifies queries against a live
@@ -54,7 +61,7 @@ database at compile time, so this step must happen before you can build.
 To wipe and start fresh:
 
 ```sh
-./scripts/init-db.sh --reset   # also accepts -f or --force
+./scripts/init-db.rs --reset   # also accepts -f or --force
 ```
 
 ### 4. Start the dev server
@@ -73,7 +80,7 @@ SCSS, and assets.
 ```
 .
 ├── backend/        # Axum server entry point
-├── core/           # Shared library — pages, components, DB queries, theme
+├── app/            # Shared library — pages, components, DB queries, theme
 │   └── sql/        # SQL query files (used by sqlx query_file_as! macros)
 ├── frontend/       # WASM frontend entry point
 ├── database/

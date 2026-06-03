@@ -17,7 +17,7 @@ FROM
   JOIN media_fts ON media_fts.rowid = m.id
   LEFT JOIN media_tags mt ON mt.media_id = m.id
 WHERE
-  media_fts MATCH ? 1
+  media_fts MATCH ?1
   AND m.published = 1
 GROUP BY
   m.id

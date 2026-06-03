@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "SELECT tag FROM project_tags WHERE project_id = $1 ORDER BY tag ASC\n",
+  "query": "SELECT\n  tag\nFROM\n  project_tags\nWHERE\n  project_id = ?\nORDER BY\n  tag ASC\n",
   "describe": {
     "columns": [
       {
@@ -16,5 +16,5 @@
       false
     ]
   },
-  "hash": "e8e42cfde60396beb16b5948ea6a93902d29fe749f1dafb88dc8b1c5c0c1e4ef"
+  "hash": "4fcaa12fe9a7d7f90075eb76c97c8d73e3c0df2f4ad75bf6db7e2d71eaeb57e6"
 }

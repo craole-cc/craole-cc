@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "SELECT\n  m.id         AS \"id!: i64\",\n  m.title      AS \"title!: String\",\n  m.slug       AS \"slug!: String\",\n  m.caption    AS \"caption: String\",\n  m.media_type AS \"media_type!: String\",\n  m.file_path  AS \"file_path!: String\",\n  m.alt_text   AS \"alt_text!: String\",\n  m.width      AS \"width: i64\",\n  m.height     AS \"height: i64\",\n  m.sort_order AS \"sort_order!: i64\",\n  m.taken_at   AS \"taken_at: String\",\n  m.created_at AS \"created_at!: String\",\n  CAST(COALESCE(GROUP_CONCAT(mt.tag, ','), '') AS TEXT) AS \"tags!: String\"\nFROM media m\n  LEFT JOIN media_tags mt ON mt.media_id = m.id\nWHERE m.slug = ?1\n  AND m.published = 1\nGROUP BY m.id;\n",
+  "query": "SELECT\n  m.id AS \"id!: i64\",\n  m.title AS \"title!: String\",\n  m.slug AS \"slug!: String\",\n  m.caption AS \"caption: String\",\n  m.media_type AS \"media_type!: String\",\n  m.file_path AS \"file_path!: String\",\n  m.alt_text AS \"alt_text!: String\",\n  m.width AS \"width: i64\",\n  m.height AS \"height: i64\",\n  m.sort_order AS \"sort_order!: i64\",\n  m.taken_at AS \"taken_at: String\",\n  m.created_at AS \"created_at!: String\",\n  CAST(COALESCE(GROUP_CONCAT(mt.tag, ','), '') AS TEXT) AS \"tags!: String\"\nFROM\n  media m\n  LEFT JOIN media_tags mt ON mt.media_id = m.id\nWHERE\n  m.published = 1\nGROUP BY\n  m.id\nORDER BY\n  m.sort_order ASC,\n  m.taken_at DESC,\n  m.created_at DESC;\n",
   "describe": {
     "columns": [
       {
@@ -66,27 +66,27 @@
       {
         "name": "tags!: String",
         "ordinal": 12,
-        "type_info": "Null"
+        "type_info": "Text"
       }
     ],
     "parameters": {
-      "Right": 1
+      "Right": 0
     },
     "nullable": [
-      true,
-      false,
-      false,
-      true,
       false,
       false,
       false,
       true,
+      false,
+      false,
+      false,
+      true,
       true,
       false,
       true,
       false,
-      null
+      false
     ]
   },
-  "hash": "790ca5b7114a0775be264ee39f4a67f9aeb72333e514664474a489643cac7dd1"
+  "hash": "eb16e339064215837359f68afca00fc53a48e3c7976d662edba0064c0598898f"
 }

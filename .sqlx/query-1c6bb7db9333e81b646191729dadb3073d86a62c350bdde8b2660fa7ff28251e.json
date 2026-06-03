@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "SELECT DISTINCT kind AS \"kind!: String\"\nFROM posts\nWHERE published = 1\nORDER BY kind ASC;\n",
+  "query": "SELECT DISTINCT\n  kind AS \"kind!: String\"\nFROM\n  posts\nWHERE\n  published = 1\nORDER BY\n  kind ASC;\n",
   "describe": {
     "columns": [
       {
@@ -16,5 +16,5 @@
       false
     ]
   },
-  "hash": "58690c900e9d3233b7b97261022f69a7b434ed3d2f8e4aeccc2e36caf335977b"
+  "hash": "1c6bb7db9333e81b646191729dadb3073d86a62c350bdde8b2660fa7ff28251e"
 }

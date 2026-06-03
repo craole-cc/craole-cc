@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "SELECT p.id AS \"id!: i64\",\n  p.title AS \"title!: String\",\n  p.slug AS \"slug!: String\",\n  p.excerpt AS \"excerpt: String\",\n  p.kind AS \"kind!: String\",\n  p.featured AS \"featured!: i64\",\n  p.cover_url AS \"cover_url: String\",\n  p.published_at AS \"published_at: String\",\n  p.created_at AS \"created_at!: String\",\n  CAST(COALESCE(GROUP_CONCAT(pt.tag, ','), '') AS TEXT) AS \"tags!: String\"\nFROM posts p\n  JOIN posts_fts ON posts_fts.rowid = p.id\n  LEFT JOIN post_tags pt ON pt.post_id = p.id\nWHERE posts_fts MATCH ?1\n  AND p.published = 1\nGROUP BY p.id\nORDER BY rank;\n",
+  "query": "SELECT\n  p.id AS \"id!: i64\",\n  p.title AS \"title!: String\",\n  p.slug AS \"slug!: String\",\n  p.excerpt AS \"excerpt: String\",\n  p.kind AS \"kind!: String\",\n  p.featured AS \"featured!: i64\",\n  p.cover_url AS \"cover_url: String\",\n  p.published_at AS \"published_at: String\",\n  p.created_at AS \"created_at!: String\",\n  CAST(COALESCE(GROUP_CONCAT(pt.tag, ','), '') AS TEXT) AS \"tags!: String\"\nFROM\n  posts p\n  LEFT JOIN post_tags pt ON pt.post_id = p.id\nWHERE\n  p.published = 1\nGROUP BY\n  p.id\nORDER BY\n  p.featured DESC,\n  p.published_at DESC,\n  p.created_at DESC;\n",
   "describe": {
     "columns": [
       {
@@ -55,7 +55,7 @@
       }
     ],
     "parameters": {
-      "Right": 1
+      "Right": 0
     },
     "nullable": [
       false,
@@ -70,5 +70,5 @@
       false
     ]
   },
-  "hash": "263465a90311c3c514924ea51400fc00a2c3805829847fdc39c68c192043c705"
+  "hash": "49e240ff872394bf790dc0d05864669823b6e6020aea89d82b74161f81a45afd"
 }

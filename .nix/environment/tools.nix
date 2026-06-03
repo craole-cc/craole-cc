@@ -33,6 +33,8 @@
       cargo-leptos
       trunk
       binaryen
+      sqlx-cli
+      sqlite
       #~@ Build & Watch
       cargo-watch
       cargo-make
@@ -80,6 +82,8 @@
     // {
       cargo = "${rust}/bin/cargo";
       rustc = "${rust}/bin/rustc";
+      sqlx = "${tools.sqlx-cli}/bin/cargo-sqlx";
+      sqlite3 = "${tools.sqlite}/bin/sqlite3";
     };
 
   cmd = {
@@ -158,6 +162,8 @@
         ${cmd.awk} '{print substr($2, 1)}'
     '';
     test = "${bin.cargo} nextest run";
+    sqlx = "${bin.sqlx}";
+    sqlite3 = "${bin.sqlite3}";
     trash = bin.trashy;
     treefmtv = ''
       ${bin.treefmt} --version 2>&1 |

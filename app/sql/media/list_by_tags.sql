@@ -6,10 +6,10 @@ WITH RECURSIVE
   split (tag, rest) AS (
     SELECT
       TRIM(
-        substr(? 1, 1, INSTR(? 1 | | char(10), char(10)) - 1)
+        substr(?1, 1, INSTR(?1 || char(10), char(10)) - 1)
       ),
       TRIM(
-        substr(? 1, INSTR(? 1 | | char(10), char(10)) + 1)
+        substr(?1, INSTR(?1 || char(10), char(10)) + 1)
       )
     UNION ALL
     SELECT

@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "SELECT DISTINCT tag\nFROM project_tags\nORDER BY tag ASC\n",
+  "query": "SELECT DISTINCT\n  tag\nFROM\n  project_tags\nORDER BY\n  tag ASC\n",
   "describe": {
     "columns": [
       {
@@ -16,5 +16,5 @@
       false
     ]
   },
-  "hash": "b54b98932d86534e16f58c965c05f550851aeecc8f8137ffcd22148d15d48571"
+  "hash": "285258f945c89b687835b631aae09e5a07a7914fae0c84c0fcd7afa346b2597d"
 }

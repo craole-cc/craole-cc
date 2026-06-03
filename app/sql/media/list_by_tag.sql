@@ -17,7 +17,7 @@ FROM
   JOIN media_tags mt ON mt.media_id = m.id
 WHERE
   m.published = 1
-  AND mt.tag = ? 1
+  AND mt.tag = ?1
 GROUP BY
   m.id
 ORDER BY

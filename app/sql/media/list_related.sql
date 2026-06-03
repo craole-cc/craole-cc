@@ -16,7 +16,7 @@ SELECT
     CAST(COALESCE(GROUP_CONCAT(mt.tag, ','), '') AS TEXT) AS "tags!: String",
     COUNT(shared.tag) AS shared_tag_count,
     CASE WHEN DATE(m.taken_at) = DATE((
-        SELECT taken_at FROM media WHERE slug = ? 1
+        SELECT taken_at FROM media WHERE slug = ?1
     )) THEN 1 ELSE 0 END AS same_shoot
 FROM media m
 LEFT JOIN media_tags mt ON mt.media_id = m.id
@@ -25,12 +25,11 @@ LEFT JOIN media_tags shared
         shared.media_id = m.id
         AND shared.tag IN (
             SELECT tag FROM media_tags
-            WHERE media_id = (SELECT id FROM media WHERE slug = ? 1)
+            WHERE media_id = (SELECT id FROM media WHERE slug = ?1)
         )
 WHERE
     m.published = 1
-    AND m.slug
-! = ? 1
+    AND m.slug != ?1
 GROUP BY m.id
 ORDER BY
 shared_tag_count DESC,

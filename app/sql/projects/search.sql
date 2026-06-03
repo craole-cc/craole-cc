@@ -21,7 +21,6 @@ WHERE
     FROM
       projects_fts
     WHERE
-    where
       projects_fts MATCH ?
   )
 GROUP BY

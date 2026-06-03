@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "-- Featured projects for the Home page — max 4.\nSELECT\n  p.id          ,\n  p.title       ,\n  p.slug        ,\n  p.description ,\n  p.status      ,\n  p.repo_url    ,\n  p.live_url    ,\n  p.featured    ,\n  p.sort_order  ,\n  p.created_at  ,\n  CAST(COALESCE(GROUP_CONCAT(pt.tag, ','), '') AS TEXT) AS tags\nFROM projects p\n  LEFT JOIN project_tags pt ON pt.project_id = p.id\nWHERE p.published = 1\n  AND p.featured = 1\nGROUP BY p.id\nORDER BY p.sort_order ASC\nLIMIT 4;\n",
+  "query": "SELECT\n  p.id,\n  p.title,\n  p.slug,\n  p.description,\n  p.status,\n  p.repo_url,\n  p.live_url,\n  p.featured,\n  p.sort_order,\n  p.created_at,\n  CAST(COALESCE(GROUP_CONCAT(pt.tag, ','), '') AS TEXT) AS tags\nFROM\n  projects p\n  LEFT JOIN project_tags pt ON pt.project_id = p.id\nWHERE\n  p.published = 1\n  AND p.id = ?\nGROUP BY\n  p.id\n",
   "describe": {
     "columns": [
       {
@@ -60,7 +60,7 @@
       }
     ],
     "parameters": {
-      "Right": 0
+      "Right": 1
     },
     "nullable": [
       false,
@@ -76,5 +76,5 @@
       false
     ]
   },
-  "hash": "a83daeb4c545bdb77cdfb18980c24c98d43803e194b3a4ea954fa37a6d8d1052"
+  "hash": "458cf8bf40aade7049a006bf0fcd04e2facc466cc0b691b7638135b0ea2e00f2"
 }

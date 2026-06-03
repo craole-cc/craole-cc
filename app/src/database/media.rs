@@ -131,7 +131,7 @@ pub async fn search_media(query: String) -> Result<Vec<Media>, ServerFnError> {
   let fts_query = query
     .split_whitespace()
     .filter(|w| !w.is_empty())
-    .map(|w| format!("{w}*",))
+    .map(|w| format!("{w}*"))
     .collect::<Vec<_>>()
     .join(" ");
   if fts_query.is_empty() {

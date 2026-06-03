@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "SELECT\n  p.id,\n  p.title,\n  p.slug,\n  p.description,\n  p.status,\n  p.repo_url,\n  p.live_url,\n  p.featured,\n  p.sort_order,\n  p.created_at,\n  p.readme_html,\n  p.screenshots\nFROM projects p\nWHERE p.published = 1 AND p.slug = $1\n",
+  "query": "-- Featured projects for the Home page — max 4.\nSELECT\n  p.id,\n  p.title,\n  p.slug,\n  p.description,\n  p.status,\n  p.repo_url,\n  p.live_url,\n  p.featured,\n  p.sort_order,\n  p.created_at,\n  CAST(COALESCE(GROUP_CONCAT(pt.tag, ','), '') AS TEXT) AS tags\nFROM\n  projects p\n  LEFT JOIN project_tags pt ON pt.project_id = p.id\nWHERE\n  p.published = 1\n  AND p.featured = 1\nGROUP BY\n  p.id\nORDER BY\n  p.sort_order ASC\nLIMIT\n  4;\n",
   "describe": {
     "columns": [
       {
@@ -54,33 +54,27 @@
         "type_info": "Text"
       },
       {
-        "name": "readme_html",
+        "name": "tags",
         "ordinal": 10,
-        "type_info": "Text"
-      },
-      {
-        "name": "screenshots",
-        "ordinal": 11,
         "type_info": "Text"
       }
     ],
     "parameters": {
-      "Right": 1
+      "Right": 0
     },
     "nullable": [
-      true,
-      false,
-      true,
       false,
       false,
       true,
+      false,
+      false,
+      true,
       true,
       false,
       false,
       false,
-      true,
-      true
+      false
     ]
   },
-  "hash": "f3522016da95ae36c280542db77c4718ee0a261f95da1dc7e92c9c2a39ff1a94"
+  "hash": "d14e7829d34f25d0267db31b87c01d84ef8452b304f2795b4bec26b58b3abe89"
 }

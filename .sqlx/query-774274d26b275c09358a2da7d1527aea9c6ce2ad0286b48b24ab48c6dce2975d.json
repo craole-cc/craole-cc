@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "SELECT p.id AS \"id!: i64\",\n  p.title AS \"title!: String\",\n  p.slug AS \"slug!: String\",\n  p.body AS \"body!: String\",\n  p.excerpt AS \"excerpt: String\",\n  p.kind AS \"kind!: String\",\n  p.cover_url AS \"cover_url: String\",\n  p.published_at AS \"published_at: String\",\n  p.created_at AS \"created_at!: String\",\n  CAST(COALESCE(GROUP_CONCAT(pt.tag, ','), '') AS TEXT) AS \"tags!: String\"\nFROM posts p\n  LEFT JOIN post_tags pt ON pt.post_id = p.id\nWHERE p.slug = ?1\n  AND p.published = 1\nGROUP BY p.id;\n",
+  "query": "SELECT\n  p.id AS \"id!: i64\",\n  p.title AS \"title!: String\",\n  p.slug AS \"slug!: String\",\n  p.excerpt AS \"excerpt: String\",\n  p.kind AS \"kind!: String\",\n  p.featured AS \"featured!: i64\",\n  p.cover_url AS \"cover_url: String\",\n  p.published_at AS \"published_at: String\",\n  p.created_at AS \"created_at!: String\",\n  CAST(COALESCE(GROUP_CONCAT(pt.tag, ','), '') AS TEXT) AS \"tags!: String\"\nFROM\n  posts p\n  LEFT JOIN post_tags pt ON pt.post_id = p.id\nWHERE\n  p.published = 1\n  AND p.kind = ?1\nGROUP BY\n  p.id\nORDER BY\n  p.featured DESC,\n  p.published_at DESC,\n  p.created_at DESC;\n",
   "describe": {
     "columns": [
       {
@@ -19,19 +19,19 @@
         "type_info": "Text"
       },
       {
-        "name": "body!: String",
+        "name": "excerpt: String",
         "ordinal": 3,
         "type_info": "Text"
       },
       {
-        "name": "excerpt: String",
+        "name": "kind!: String",
         "ordinal": 4,
         "type_info": "Text"
       },
       {
-        "name": "kind!: String",
+        "name": "featured!: i64",
         "ordinal": 5,
-        "type_info": "Text"
+        "type_info": "Integer"
       },
       {
         "name": "cover_url: String",
@@ -51,24 +51,24 @@
       {
         "name": "tags!: String",
         "ordinal": 9,
-        "type_info": "Null"
+        "type_info": "Text"
       }
     ],
     "parameters": {
       "Right": 1
     },
     "nullable": [
-      true,
       false,
       false,
       false,
       true,
       false,
+      false,
       true,
       true,
       false,
-      null
+      false
     ]
   },
-  "hash": "6ad3a1fff862a32c020d70316cd503a991fa3ad234b28beaebf598ea89d102bf"
+  "hash": "774274d26b275c09358a2da7d1527aea9c6ce2ad0286b48b24ab48c6dce2975d"
 }

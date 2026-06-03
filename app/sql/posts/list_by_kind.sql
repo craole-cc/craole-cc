@@ -14,7 +14,7 @@ FROM
   LEFT JOIN post_tags pt ON pt.post_id = p.id
 WHERE
   p.published = 1
-  AND p.kind = ? 1
+  AND p.kind = ?1
 GROUP BY
   p.id
 ORDER BY

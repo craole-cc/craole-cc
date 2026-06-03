@@ -5,7 +5,7 @@ pub async fn sitewide_search(query: String) -> Result<Vec<Item>, ServerFnError> 
   let fts_query = query
     .split_whitespace()
     .filter(|w| !w.is_empty())
-    .map(|w| format!("{w}*",))
+    .map(|w| format!("{w}*"))
     .collect::<Vec<_>>()
     .join(" ");
 
