@@ -1,15 +1,44 @@
 # Content schema
 
-`contentctl validate` checks Git-tracked content before it is synced into SQLite or used by a static snapshot.
+`content/` is the Git-tracked source of truth for portfolio content. `contentctl` validates these
+files before they are synced into SQLite or used by a future static snapshot.
 
-Run it from the repository root:
+Run commands from the repository root:
 
 ```bash
 cargo run -p contentctl -- validate .
 cargo run -p contentctl -- export-sql . | sqlite3 database/data/portfolio.db
 ```
 
-`validate` fails fast on malformed content. `export-sql` prints a SQLite seed script that can hydrate the runtime database from the Git-tracked content files after migrations have created the schema.
+`validate` fails fast on malformed content. `export-sql` prints a deterministic SQLite seed script
+that can hydrate the runtime database from the Git-tracked content files after migrations have
+created the schema.
+
+## Workflow
+
+1. Add or edit files under `content/projects/`, `content/posts/`, or `content/media/`.
+2. Put referenced binary/static assets under `public/`.
+3. Run `cargo run -p contentctl -- validate .`.
+4. Rebuild the local database if needed:
+
+   ```bash
+   ./scripts/init-db.rs --reset
+   cargo run -p contentctl -- export-sql . | sqlite3 database/data/portfolio.db
+   ```
+
+5. Run the full quality gate before committing:
+
+   ```bash
+   bash scripts/ci.sh
+   ```
+
+## General rules
+
+- Slugs are stable public identifiers. Prefer lowercase ASCII letters, numbers, and hyphens.
+- Keep titles human-readable and portfolio-ready.
+- Keep descriptions concise enough for cards, indexes, and search results.
+- Prefer relative, repository-owned media paths rooted in `public/`.
+- Treat `published = false` as draft mode: valid content may exist without being surfaced publicly.
 
 ## Projects
 
@@ -37,7 +66,16 @@ Rules:
 - `repo_url` and `live_url`, when present, must be HTTP(S) URLs.
 - `sort_order`, when present, must be non-negative.
 - `featured = true` requires `published = true`.
-- Screenshot paths are rooted in `public/`, so `/media/projects/demo/home.webp` maps to `public/media/projects/demo/home.webp`.
+- Screenshot paths are rooted in `public/`, so `/media/projects/demo/home.webp` maps to
+  `public/media/projects/demo/home.webp`.
+
+Recommended authoring checklist:
+
+- Choose a slug that can remain stable after launch.
+- Write `description` as a card summary, not a full README.
+- Add tags that match the technologies visitors should notice.
+- Include `repo_url` for public engineering work and `live_url` when there is a deployed artifact.
+- Use `sort_order` to control featured ordering without renaming files.
 
 ## Posts
 
@@ -68,6 +106,14 @@ Rules:
 - Published posts must have a non-empty body.
 - Missing tags currently produce a warning, not a failure.
 
+Recommended authoring checklist:
+
+- Use `kind = "blog"` for public essays, `kind = "note"` for shorter logs, and `kind = "cv"` for
+  résumé/CV content.
+- Include `excerpt` for cards, archive pages, and search snippets.
+- Keep the first heading aligned with the title unless there is a deliberate editorial reason not to.
+- Validate before committing so frontmatter errors are caught outside the app runtime.
+
 ## Media
 
 Media files live in `content/media/*.toml`.
@@ -95,3 +141,35 @@ Rules:
 - Published media requires non-empty `alt_text`.
 - `width` and `height`, when present, must be positive.
 - `taken_at`, when present, must use `YYYY-MM-DD`.
+
+Recommended authoring checklist:
+
+- Prefer web-friendly formats such as `.webp` for images and `.mp4` for video.
+- Always write meaningful `alt_text`; it is required for published media.
+- Keep large originals outside the repo unless they are intentionally part of the delivered site.
+- Use tags for filtering and related-content discovery.
+
+## `contentctl` reference
+
+```text
+Usage: contentctl <command> [repo-root]
+Commands:
+  validate    Validate content files
+  export-sql  Print a SQLite seed script generated from content files
+```
+
+Examples:
+
+```bash
+# Validate the current repository.
+cargo run -p contentctl -- validate .
+
+# Validate another checkout.
+cargo run -p contentctl -- validate /path/to/craole-cc
+
+# Export seed SQL to inspect before applying it.
+cargo run -p contentctl -- export-sql . > /tmp/craole-content.sql
+
+# Apply exported content to the local database.
+cargo run -p contentctl -- export-sql . | sqlite3 database/data/portfolio.db
+```

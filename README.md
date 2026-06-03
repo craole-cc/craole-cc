@@ -22,12 +22,38 @@ precision and creativity I honed as a musician with the power of modern systems 
 
 > **Code is another instrument of expression through structure** 🎵⚙️
 
+## 🌐 About this repository
+
+`craole-cc/craole-cc` is both my GitHub profile README and the source for the next version of
+[craole.cc](https://craole.cc): a Rust-first portfolio site that showcases engineering craft,
+personal style, and a local-first content workflow.
+
+The site is intentionally built on two tracks:
+
+- **Robust path:** a Leptos + Axum + SQLite full-stack application with server rendering,
+  structured content, migrations, SQLx-checked queries, and CI gates.
+- **Fallback path:** Git-tracked Markdown/TOML content that can be validated and exported into a
+  deterministic SQLite seed script, making a future static snapshot or low-cost host easier to
+  support if dynamic hosting is unavailable.
+
+Key implementation pieces:
+
+- `app/` — shared Leptos UI, pages, components, theme, and SQL query wrappers.
+- `backend/` — Axum server entry point and database bootstrap.
+- `frontend/` — WASM hydration entry point.
+- `content/` — portfolio-owned source content: projects, posts, media, and schema docs.
+- `contentctl/` — CLI for validating content and exporting a SQLite seed script.
+- `database/migrations/` — durable SQLite schema and baseline seed data.
+- `scripts/ci.sh` — local/CI quality gate for database setup, content validation, SQLx, clippy,
+  and tests.
+
 ## 🛠️ What I Build
 
 ### 🌐 Full-Stack Development
 
-- Web applications with Rust backends (Axum, Actix) + modern frontends (HTMX, SPA frameworks)
+- Web applications with Rust backends (Axum, Actix) + modern frontends (HTMX, Leptos, SPA frameworks)
 - End-to-end solutions from database to UI
+- Local-first content and data workflows that can degrade gracefully
 
 ### 📊 Data Engineering
 
@@ -100,6 +126,45 @@ precision and creativity I honed as a musician with the power of modern systems 
 ![Starship](https://img.shields.io/badge/Starship-DD0B78?style=for-the-badge&logo=starship&logoColor=white)
 ![OhMyPosh](https://img.shields.io/badge/OhMyPosh-173448?style=for-the-badge&logo=gnometerminal&logoColor=white)
 
+## 🚀 Quick start
+
+The preferred development path is Nix because it provides the pinned Rust toolchain, `cargo-leptos`,
+`sqlx`, `sqlite3`, and supporting tools in one reproducible shell:
+
+```sh
+nix develop
+cp .env.example .env
+./scripts/init-db.rs
+cargo leptos watch
+```
+
+Open `http://127.0.0.1:3000` once the server starts.
+
+Without Nix, install the Rust toolchain from `rust-toolchain.toml`, then install the required Cargo
+CLIs:
+
+```sh
+cargo install cargo-leptos
+cargo install sqlx-cli --no-default-features --features sqlite
+cp .env.example .env
+./scripts/init-db.rs
+cargo leptos watch
+```
+
+For full setup, content authoring, and CI instructions, see [CONTRIBUTING.md](./CONTRIBUTING.md).
+For the Git-tracked content format, see [content/SCHEMA.md](./content/SCHEMA.md).
+
+## ✅ Quality gate
+
+Run the same checks used by CI before opening a pull request:
+
+```sh
+nix develop --command bash scripts/ci.sh
+```
+
+The gate prepares SQLite, validates content, smoke-tests the content seed export, checks SQLx
+metadata, runs `cargo check`, runs clippy with warnings denied, and runs the workspace tests.
+
 ## 🎯 Philosophy
 
 Code is expression. Just like music, it requires **precision, creativity, and purpose**. Whether I'm
@@ -117,11 +182,6 @@ Looking for **Rust-centric projects** across the full spectrum:
 - 📊 **Data engineering** pipelines and infrastructure
 - ⚙️ **Developer tools** and systems utilities
 - 🎨 **Creative technical** experiments
--
-
-## 🧑‍💻 Contributing / Local Dev
-
-See [CONTRIBUTING.md](./CONTRIBUTING.md) to get the project running locally.
 
 ## 📫 Let's Connect
 
