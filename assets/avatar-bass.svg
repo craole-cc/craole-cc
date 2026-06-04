@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-label="Bass guitar avatar">
+  <defs>
+    <radialGradient id="bg" cx="35%" cy="25%" r="80%">
+      <stop offset="0" stop-color="#2a2f3a"/>
+      <stop offset="0.55" stop-color="#111827"/>
+      <stop offset="1" stop-color="#06080d"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f5d06f"/>
+      <stop offset="0.5" stop-color="#c98b32"/>
+      <stop offset="1" stop-color="#7b4a16"/>
+    </linearGradient>
+    <linearGradient id="cream" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff4d6"/>
+      <stop offset="1" stop-color="#d6b46a"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="22" stdDeviation="24" flood-color="#000" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+
+  <rect width="1024" height="1024" rx="224" fill="url(#bg)"/>
+  <circle cx="512" cy="512" r="392" fill="none" stroke="#f5d06f" stroke-opacity="0.15" stroke-width="8"/>
+  <circle cx="512" cy="512" r="318" fill="none" stroke="#8b5cf6" stroke-opacity="0.12" stroke-width="3"/>
+
+  <!-- abstract C mark -->
+  <path d="M620 270c-136-68-306 9-363 153-65 166 44 333 207 355 91 12 175-18 235-75" fill="none" stroke="#f5d06f" stroke-width="54" stroke-linecap="round" opacity="0.24"/>
+
+  <!-- bass neck -->
+  <g filter="url(#shadow)" transform="rotate(-35 512 512)">
+    <rect x="486" y="120" width="52" height="560" rx="22" fill="#1f2937" stroke="#f7d47b" stroke-width="7"/>
+    <rect x="503" y="142" width="7" height="508" fill="#f8e6ae" opacity="0.82"/>
+    <rect x="526" y="142" width="7" height="508" fill="#f8e6ae" opacity="0.82"/>
+    <g fill="#d6b46a" opacity="0.9">
+      <rect x="480" y="220" width="64" height="5" rx="2"/>
+      <rect x="480" y="288" width="64" height="5" rx="2"/>
+      <rect x="480" y="356" width="64" height="5" rx="2"/>
+      <rect x="480" y="424" width="64" height="5" rx="2"/>
+      <rect x="480" y="492" width="64" height="5" rx="2"/>
+      <rect x="480" y="560" width="64" height="5" rx="2"/>
+    </g>
+
+    <!-- headstock -->
+    <path d="M466 84c0-22 18-40 40-40h54c18 0 31 18 24 35l-25 63c-6 14-19 23-34 23h-19c-22 0-40-18-40-40z" fill="url(#gold)" stroke="#ffe8a3" stroke-width="6"/>
+    <g fill="#fff1bf">
+      <circle cx="486" cy="82" r="10"/>
+      <circle cx="560" cy="84" r="10"/>
+      <circle cx="489" cy="132" r="10"/>
+      <circle cx="542" cy="132" r="10"/>
+    </g>
+
+    <!-- body -->
+    <path d="M414 608c-72 38-95 124-54 188 35 54 105 69 161 39 51 45 130 47 181 2 61-54 56-153-12-206-52-41-125-37-172 4-29-33-67-41-104-27z" fill="url(#gold)" stroke="#fff0b8" stroke-width="10"/>
+    <path d="M461 664c-40 22-53 70-30 105 20 31 60 40 93 21 29 26 75 27 104 1 35-31 32-88-7-118-30-24-72-22-99 2-17-19-39-24-61-11z" fill="#111827" opacity="0.42"/>
+    <ellipse cx="520" cy="710" rx="54" ry="38" fill="#0b1020" opacity="0.76"/>
+    <rect x="489" y="630" width="86" height="24" rx="8" fill="url(#cream)"/>
+    <rect x="475" y="762" width="116" height="18" rx="9" fill="#f8e6ae"/>
+  </g>
+
+  <path d="M221 846c81 55 182 86 291 86s210-31 291-86" fill="none" stroke="#fff4d6" stroke-opacity="0.12" stroke-width="18" stroke-linecap="round"/>
+</svg>
