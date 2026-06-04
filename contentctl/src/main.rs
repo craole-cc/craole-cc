@@ -4,6 +4,7 @@ use {
     ValidationReport,
     create_content_template,
     export_static_json,
+    export_static_site,
     sync_content_database,
     validate_content_root,
   },
@@ -49,6 +50,7 @@ fn main() -> ExitCode {
     | "new" => create_new_content(args,),
     | "sync-db" => sync_database(args,),
     | "export-json" => export_json(args,),
+    | "export-static" => export_static(args,),
     | "help" | "--help" | "-h" => {
       print_usage();
       ExitCode::SUCCESS
@@ -136,6 +138,29 @@ fn export_json(mut args : impl Iterator<Item = String,>,) -> ExitCode {
   }
 }
 
+fn export_static(mut args : impl Iterator<Item = String,>,) -> ExitCode {
+  let root = args
+    .next()
+    .map_or_else(|| PathBuf::from("."), PathBuf::from,);
+  let output_dir = args
+    .next()
+    .map_or_else(|| PathBuf::from("dist"), PathBuf::from,);
+
+  match export_static_site(&root, &output_dir,) {
+    | Ok(report,) => {
+      println!(
+        "static site exported to {}: pages={} projects={} posts={} media={}",
+        output_dir.display(), report.pages, report.projects, report.posts, report.media
+      );
+      ExitCode::SUCCESS
+    }
+    | Err(error,) => {
+      eprintln!("static site export failed: {error}");
+      ExitCode::FAILURE
+    }
+  }
+}
+
 fn print_report(report : &ValidationReport,) -> ExitCode {
   for warning in &report.warnings {
     eprintln!("{}\n  warning: {}", warning.path.display(), warning.message);
@@ -164,6 +189,8 @@ fn print_usage() {
   eprintln!("  export-sql [repo-root]            Print a SQLite seed script generated from content files");
   eprintln!("  export-json [repo-root] [output-dir]");
   eprintln!("                                  Export static JSON data files");
+  eprintln!("  export-static [repo-root] [output-dir]");
+  eprintln!("                                  Export static fallback HTML and JSON");
   eprintln!("  new <project|post|media> <slug> [repo-root]");
   eprintln!("                                  Create a draft content template");
   eprintln!("  sync-db [repo-root] [database-url]");

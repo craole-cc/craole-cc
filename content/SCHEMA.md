@@ -10,6 +10,7 @@ cargo run -p contentctl -- validate .
 cargo run -p contentctl -- export-sql . | sqlite3 database/data/portfolio.db
 cargo run -p contentctl -- sync-db . sqlite://database/data/portfolio.db
 cargo run -p contentctl -- export-json . dist/data
+cargo run -p contentctl -- export-static . dist
 ```
 
 `validate` fails fast on malformed content. `export-sql` prints a deterministic SQLite seed script
@@ -87,6 +88,24 @@ Expected output:
 
 ```text
 static JSON exported to dist/data: projects=1 posts=1 media=0
+```
+
+## Static HTML export
+
+Use `export-static` to produce a minimal static fallback site:
+
+```bash
+cargo run -p contentctl -- export-static . dist
+```
+
+It writes HTML route files for the home page, project index, project detail pages, log index, post
+detail pages, art index, `404.html`, and `sitemap.xml`. It also writes `dist/data/*.json` by running
+the same JSON export path.
+
+Expected output:
+
+```text
+static site exported to dist: pages=7 projects=1 posts=1 media=0
 ```
 
 ## General rules
@@ -215,6 +234,8 @@ Commands:
   export-sql [repo-root]            Print a SQLite seed script generated from content files
   export-json [repo-root] [output-dir]
                                   Export static JSON data files
+  export-static [repo-root] [output-dir]
+                                  Export static fallback HTML and JSON
   new <project|post|media> <slug> [repo-root]
                                   Create a draft content template
   sync-db [repo-root] [database-url]
@@ -241,6 +262,9 @@ cargo run -p contentctl -- sync-db . sqlite://database/data/portfolio.db
 
 # Export static fallback JSON data.
 cargo run -p contentctl -- export-json . dist/data
+
+# Export minimal static fallback HTML and JSON.
+cargo run -p contentctl -- export-static . dist
 
 # Apply exported content to the local database.
 cargo run -p contentctl -- export-sql . | sqlite3 database/data/portfolio.db

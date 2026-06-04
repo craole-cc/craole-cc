@@ -47,6 +47,17 @@ if [ "$PROJECT_COUNT" -lt 1 ] || [ "$POST_COUNT" -lt 1 ]; then
   exit 1
 fi
 
+printf '\n==> Content static export smoke test\n'
+STATIC_DIST=$(mktemp -d)
+cargo run -p contentctl -- export-json . "$STATIC_DIST/data"
+cargo run -p contentctl -- export-static . "$STATIC_DIST/site"
+test -f "$STATIC_DIST/data/manifest.json"
+test -f "$STATIC_DIST/site/index.html"
+test -f "$STATIC_DIST/site/data/manifest.json"
+STATIC_PROJECT_COUNT=$(sqlite3 database/data/portfolio.db 'SELECT COUNT(*) FROM projects;')
+printf 'Static export generated JSON manifest and site index; projects=%s\n' "$STATIC_PROJECT_COUNT"
+rm -rf "$STATIC_DIST"
+
 printf '\n==> Checking SQLx offline metadata\n'
 cargo sqlx prepare --workspace --check --database-url "$DATABASE_URL"
 

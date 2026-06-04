@@ -175,6 +175,12 @@ Export static-friendly JSON data for the fallback path:
 cargo run -p contentctl -- export-json . dist/data
 ```
 
+Generate a minimal static fallback site:
+
+```sh
+cargo run -p contentctl -- export-static . dist
+```
+
 ## ✅ Quality gate
 
 Run the same checks used by CI before opening a pull request:

@@ -101,6 +101,14 @@ pub struct ExportJsonReport {
   pub media :    usize,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize,)]
+pub struct StaticSiteReport {
+  pub projects : usize,
+  pub posts :    usize,
+  pub media :    usize,
+  pub pages :    usize,
+}
+
 impl ValidationReport {
   #[must_use]
   pub const fn is_valid(&self,) -> bool { self.errors.is_empty() }
@@ -757,6 +765,419 @@ fn write_json_file<T : Serialize,>(path : &Path, value : &T,) -> Result<(), Cont
     path : path.to_path_buf(),
     source,
   },)
+}
+
+/// Export a minimal static fallback site backed by generated JSON data.
+///
+/// # Errors
+///
+/// Returns [`ContentError`] when validation fails, content cannot be read, JSON cannot be
+/// serialized, assets cannot be copied, or HTML files cannot be written.
+pub fn export_static_site(
+  root : &Path,
+  output_dir : &Path,
+) -> Result<StaticSiteReport, ContentError,> {
+  let report = validate_content_root(root,)?;
+  if !report.is_valid() {
+    return Err(ContentError::Validation(report.errors.len(),),);
+  }
+
+  let mut projects = load_projects(root,)?;
+  let mut posts = load_posts(root,)?;
+  let media = load_media(root,)?;
+  projects.sort_by_key(|project| project.sort_order.unwrap_or(0,),);
+  posts.sort_by(|left, right| {
+    right
+      .frontmatter
+      .published_at
+      .cmp(&left.frontmatter.published_at,)
+      .then_with(|| left.frontmatter.slug.cmp(&right.frontmatter.slug,))
+  },);
+
+  fs::create_dir_all(output_dir,).map_err(|source| ContentError::Write {
+    path : output_dir.to_path_buf(),
+    source,
+  },)?;
+  copy_public_assets(root, output_dir,)?;
+  let json_report = export_static_json(root, &output_dir.join("data",),)?;
+
+  let published_projects = projects
+    .iter()
+    .filter(|project| project.published.unwrap_or(false,))
+    .collect::<Vec<_>>();
+  let published_posts = posts
+    .iter()
+    .filter(|post| post.frontmatter.published.unwrap_or(false,))
+    .collect::<Vec<_>>();
+  let published_media = media
+    .iter()
+    .filter(|item| item.published.unwrap_or(false,))
+    .collect::<Vec<_>>();
+
+  let mut pages = 0;
+  write_html_file(
+    &output_dir.join("index.html",),
+    &render_home_page(&published_projects, &published_posts, &published_media,),
+  )?;
+  pages += 1;
+
+  write_html_file(
+    &output_dir.join("dev/index.html",),
+    &render_projects_index(&published_projects,),
+  )?;
+  pages += 1;
+
+  for project in &published_projects {
+    if let Some(slug,) = project.slug.as_deref() {
+      write_html_file(
+        &output_dir.join("dev",).join(slug,).join("index.html",),
+        &render_project_page(project,),
+      )?;
+      pages += 1;
+    }
+  }
+
+  write_html_file(
+    &output_dir.join("log/index.html",),
+    &render_posts_index(&published_posts,),
+  )?;
+  pages += 1;
+
+  for post in &published_posts {
+    if let Some(slug,) = post.frontmatter.slug.as_deref() {
+      write_html_file(
+        &output_dir.join("log",).join(slug,).join("index.html",),
+        &render_post_page(post,),
+      )?;
+      pages += 1;
+    }
+  }
+
+  write_html_file(
+    &output_dir.join("art/index.html",),
+    &render_media_index(&published_media,),
+  )?;
+  pages += 1;
+
+  write_html_file(&output_dir.join("404.html",), &render_404_page(),)?;
+  pages += 1;
+
+  write_html_file(
+    &output_dir.join("sitemap.xml",),
+    &render_sitemap(&published_projects, &published_posts,),
+  )?;
+
+  Ok(StaticSiteReport {
+    projects : json_report.projects,
+    posts :    json_report.posts,
+    media :    json_report.media,
+    pages,
+  },)
+}
+
+fn write_html_file(path : &Path, content : &str,) -> Result<(), ContentError,> {
+  if let Some(parent,) = path.parent() {
+    fs::create_dir_all(parent,).map_err(|source| ContentError::Write {
+      path : parent.to_path_buf(),
+      source,
+    },)?;
+  }
+  fs::write(path, content,).map_err(|source| ContentError::Write {
+    path : path.to_path_buf(),
+    source,
+  },)
+}
+
+fn copy_public_assets(root : &Path, output_dir : &Path,) -> Result<(), ContentError,> {
+  let public_dir = root.join("public",);
+  if !public_dir.exists() {
+    return Ok((),);
+  }
+  copy_dir_contents(&public_dir, output_dir,)
+}
+
+fn copy_dir_contents(source : &Path, destination : &Path,) -> Result<(), ContentError,> {
+  for entry in fs::read_dir(source,).map_err(|source_error| ContentError::Read {
+    path :   source.to_path_buf(),
+    source : source_error,
+  },)? {
+    let entry = entry.map_err(|source_error| ContentError::Read {
+      path :   source.to_path_buf(),
+      source : source_error,
+    },)?;
+    let source_path = entry.path();
+    let destination_path = destination.join(entry.file_name(),);
+    if source_path.is_dir() {
+      fs::create_dir_all(&destination_path,).map_err(|source_error| ContentError::Write {
+        path :   destination_path.clone(),
+        source : source_error,
+      },)?;
+      copy_dir_contents(&source_path, &destination_path,)?;
+    } else if source_path.is_file() {
+      if let Some(parent,) = destination_path.parent() {
+        fs::create_dir_all(parent,).map_err(|source_error| ContentError::Write {
+          path :   parent.to_path_buf(),
+          source : source_error,
+        },)?;
+      }
+      fs::copy(&source_path, &destination_path,).map_err(|source_error| ContentError::Write {
+        path :   destination_path,
+        source : source_error,
+      },)?;
+    }
+  }
+  Ok((),)
+}
+
+fn page_shell(title : &str, active : &str, body : &str,) -> String {
+  let escaped_title = escape_html(title,);
+  format!(
+    r#"<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{escaped_title}</title>
+  <meta name="description" content="Static fallback preview for Craole.CC">
+  <style>{}</style>
+</head>
+<body data-section="{}">
+  <header class="site-header">
+    <a class="brand" href="/">Craole.CC Static Preview</a>
+    <nav aria-label="Primary navigation">
+      <a href="/dev/">Dev</a>
+      <a href="/log/">Log</a>
+      <a href="/art/">Art</a>
+      <a href="/data/manifest.json">Data</a>
+    </nav>
+  </header>
+  <main>{body}</main>
+  <footer>Generated from Git-tracked content by <code>contentctl export-static</code>.</footer>
+</body>
+</html>
+"#,
+    static_css(),
+    escape_html(active,),
+  )
+}
+
+fn render_home_page(
+  projects : &[&ProjectContent],
+  posts : &[&PostContent],
+  media : &[&MediaContent],
+) -> String {
+  page_shell(
+    "Craole.CC Static Preview",
+    "home",
+    &format!(
+      "<section class=\"hero\"><p class=\"eyebrow\">Static fallback</p><h1>Craole.CC Static Preview</h1><p>Rust-powered portfolio content exported to plain HTML and JSON.</p></section><section><h2>Featured projects</h2>{}</section><section><h2>Latest writing</h2>{}</section><section><h2>Media</h2><p>{} published media item(s). See <a href=\"/data/media.json\">media.json</a>.</p></section>",
+      render_project_cards(projects,),
+      render_post_list(posts,),
+      media.len(),
+    ),
+  )
+}
+
+fn render_projects_index(projects : &[&ProjectContent],) -> String {
+  page_shell(
+    "Projects | Craole.CC",
+    "dev",
+    &format!("<section><h1>Projects</h1>{}</section>", render_project_cards(projects,)),
+  )
+}
+
+fn render_project_page(project : &ProjectContent,) -> String {
+  let title = project.title.as_deref().unwrap_or("Untitled project",);
+  let tags = render_tags(project.tags.as_deref().unwrap_or(&[],),);
+  let repo = project
+    .repo_url
+    .as_deref()
+    .map(|url| format!("<a href=\"{}\">Repository</a>", escape_attr(url)))
+    .unwrap_or_default();
+  let live = project
+    .live_url
+    .as_deref()
+    .map(|url| format!("<a href=\"{}\">Live site</a>", escape_attr(url)))
+    .unwrap_or_default();
+  page_shell(
+    title,
+    "dev",
+    &format!(
+      "<article><p><a href=\"/dev/\">← Projects</a></p><h1>{}</h1><p class=\"lede\">{}</p><p>Status: <strong>{}</strong></p><div class=\"tags\">{tags}</div><p class=\"links\">{} {}</p></article>",
+      escape_html(title,),
+      escape_html(project.description.as_deref().unwrap_or_default(),),
+      escape_html(project.status.as_deref().unwrap_or("planning",),),
+      repo,
+      live,
+    ),
+  )
+}
+
+fn render_posts_index(posts : &[&PostContent],) -> String {
+  page_shell(
+    "Log | Craole.CC",
+    "log",
+    &format!("<section><h1>Log</h1>{}</section>", render_post_list(posts,)),
+  )
+}
+
+fn render_post_page(post : &PostContent,) -> String {
+  let title = post.frontmatter.title.as_deref().unwrap_or("Untitled post",);
+  let date = post.frontmatter.published_at.as_deref().unwrap_or("Draft",);
+  page_shell(
+    title,
+    "log",
+    &format!(
+      "<article><p><a href=\"/log/\">← Log</a></p><h1>{}</h1><p class=\"eyebrow\">{}</p><div class=\"tags\">{}</div><div class=\"prose\">{}</div></article>",
+      escape_html(title,),
+      escape_html(date,),
+      render_tags(&post.frontmatter.tags,),
+      markdown_to_html(&post.body,),
+    ),
+  )
+}
+
+#[allow(clippy::format_collect)]
+fn render_media_index(media : &[&MediaContent],) -> String {
+  let items = if media.is_empty() {
+    "<p>No published media yet. See <a href=\"/data/media.json\">media.json</a>.</p>".to_string()
+  } else {
+    media
+      .iter()
+      .map(|item| {
+        format!(
+          "<article class=\"card\"><h2>{}</h2><p>{}</p><p><code>{}</code></p></article>",
+          escape_html(item.title.as_deref().unwrap_or("Untitled media",),),
+          escape_html(item.alt_text.as_deref().unwrap_or_default(),),
+          escape_html(item.file_path.as_deref().unwrap_or_default(),),
+        )
+      },)
+      .collect::<String>()
+  };
+  page_shell("Art | Craole.CC", "art", &format!("<section><h1>Art</h1>{items}</section>"),)
+}
+
+fn render_404_page() -> String {
+  page_shell(
+    "Not found | Craole.CC",
+    "404",
+    "<section><h1>Not found</h1><p>This static fallback does not include that route.</p><p><a href=\"/\">Return home</a></p></section>",
+  )
+}
+
+#[allow(clippy::format_collect)]
+fn render_sitemap(projects : &[&ProjectContent], posts : &[&PostContent],) -> String {
+  let mut urls = vec!["/".to_string(), "/dev/".to_string(), "/log/".to_string(), "/art/".to_string(),];
+  urls.extend(projects.iter().filter_map(|project| {
+    project.slug.as_ref().map(|slug| format!("/dev/{slug}/"),)
+  },),);
+  urls.extend(posts.iter().filter_map(|post| {
+    post.frontmatter.slug.as_ref().map(|slug| format!("/log/{slug}/"),)
+  },),);
+  let body = urls
+    .into_iter()
+    .map(|url| format!("  <url><loc>{}</loc></url>\n", escape_html(&url)),)
+    .collect::<String>();
+  format!("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n{body}</urlset>\n")
+}
+
+#[allow(clippy::format_collect)]
+fn render_project_cards(projects : &[&ProjectContent],) -> String {
+  if projects.is_empty() {
+    return "<p>No published projects yet.</p>".to_string();
+  }
+  projects
+    .iter()
+    .map(|project| {
+      let title = project.title.as_deref().unwrap_or("Untitled project",);
+      let slug = project.slug.as_deref().unwrap_or_default();
+      format!(
+        "<article class=\"card\"><h2><a href=\"/dev/{}/\">{}</a></h2><p>{}</p><div class=\"tags\">{}</div></article>",
+        escape_attr(slug,),
+        escape_html(title,),
+        escape_html(project.description.as_deref().unwrap_or_default(),),
+        render_tags(project.tags.as_deref().unwrap_or(&[],),),
+      )
+    },)
+    .collect::<String>()
+}
+
+#[allow(clippy::format_collect)]
+fn render_post_list(posts : &[&PostContent],) -> String {
+  if posts.is_empty() {
+    return "<p>No published posts yet.</p>".to_string();
+  }
+  posts
+    .iter()
+    .map(|post| {
+      let title = post.frontmatter.title.as_deref().unwrap_or("Untitled post",);
+      let slug = post.frontmatter.slug.as_deref().unwrap_or_default();
+      format!(
+        "<article class=\"card\"><h2><a href=\"/log/{}/\">{}</a></h2><p>{}</p><p class=\"eyebrow\">{}</p></article>",
+        escape_attr(slug,),
+        escape_html(title,),
+        escape_html(post.frontmatter.excerpt.as_deref().unwrap_or_default(),),
+        escape_html(post.frontmatter.published_at.as_deref().unwrap_or("undated",),),
+      )
+    },)
+    .collect::<String>()
+}
+
+#[allow(clippy::format_collect)]
+fn render_tags(tags : &[String],) -> String {
+  tags
+    .iter()
+    .map(|tag| format!("<span>{}</span>", escape_html(tag)),)
+    .collect::<String>()
+}
+
+#[allow(clippy::format_push_string)]
+fn markdown_to_html(markdown : &str,) -> String {
+  let mut html = String::new();
+  let mut paragraph = Vec::new();
+  for line in markdown.lines() {
+    let trimmed = line.trim();
+    if trimmed.is_empty() {
+      flush_paragraph(&mut html, &mut paragraph,);
+    } else if let Some(heading,) = trimmed.strip_prefix("# ",) {
+      flush_paragraph(&mut html, &mut paragraph,);
+      html.push_str(&format!("<h1>{}</h1>", escape_html(heading)),);
+    } else if let Some(heading,) = trimmed.strip_prefix("## ",) {
+      flush_paragraph(&mut html, &mut paragraph,);
+      html.push_str(&format!("<h2>{}</h2>", escape_html(heading)),);
+    } else if let Some(heading,) = trimmed.strip_prefix("### ",) {
+      flush_paragraph(&mut html, &mut paragraph,);
+      html.push_str(&format!("<h3>{}</h3>", escape_html(heading)),);
+    } else {
+      paragraph.push(trimmed.to_string(),);
+    }
+  }
+  flush_paragraph(&mut html, &mut paragraph,);
+  html
+}
+
+#[allow(clippy::format_push_string)]
+fn flush_paragraph(html : &mut String, paragraph : &mut Vec<String,>,) {
+  if paragraph.is_empty() {
+    return;
+  }
+  html.push_str(&format!("<p>{}</p>", escape_html(&paragraph.join(" "))),);
+  paragraph.clear();
+}
+
+fn escape_html(value : &str,) -> String {
+  value
+    .replace('&', "&amp;",)
+    .replace('<', "&lt;",)
+    .replace('>', "&gt;",)
+    .replace('"', "&quot;",)
+    .replace('\'', "&#39;",)
+}
+
+fn escape_attr(value : &str,) -> String { escape_html(value,) }
+
+const fn static_css() -> &'static str {
+  "body{margin:0;font-family:Inter,ui-sans-serif,system-ui,sans-serif;background:#0d0f14;color:#f5f7fb;line-height:1.6}.site-header{display:flex;justify-content:space-between;gap:1rem;align-items:center;padding:1rem clamp(1rem,4vw,4rem);border-bottom:1px solid #252a36;background:#11141c;position:sticky;top:0}.brand{font-weight:800;color:#fff;text-decoration:none}nav{display:flex;gap:1rem;flex-wrap:wrap}a{color:#8dd3ff}main{max-width:1050px;margin:0 auto;padding:clamp(1rem,4vw,4rem)}.hero{padding:4rem 0}.hero h1{font-size:clamp(2.5rem,8vw,5rem);line-height:.95;margin:.25rem 0}.eyebrow{color:#aab3c5;text-transform:uppercase;letter-spacing:.12em;font-size:.8rem}.lede{font-size:1.25rem;color:#dbe2f1}.card{border:1px solid #252a36;background:#151925;border-radius:1rem;padding:1.25rem;margin:1rem 0;box-shadow:0 20px 50px rgba(0,0,0,.25)}.tags{display:flex;gap:.5rem;flex-wrap:wrap;margin:.75rem 0}.tags span{border:1px solid #3a4152;border-radius:999px;padding:.15rem .55rem;color:#dbe2f1;background:#1c2230}.links{display:flex;gap:1rem;flex-wrap:wrap}.prose{max-width:72ch}.prose h1{font-size:2rem}footer{padding:2rem clamp(1rem,4vw,4rem);color:#9aa3b5;border-top:1px solid #252a36}code{color:#c6f6d5}"
 }
 
 /// Export valid content files as a `SQLite` seed script.

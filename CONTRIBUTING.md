@@ -204,6 +204,31 @@ dist/data/manifest.json
 
 The command validates content before writing files and refuses to export invalid content.
 
+### Export a static fallback site
+
+Use `export-static` to generate a minimal HTML fallback site plus the same JSON data files:
+
+```sh
+cargo run -p contentctl -- export-static . dist
+```
+
+This writes:
+
+```text
+dist/index.html
+dist/dev/index.html
+dist/dev/<project-slug>/index.html
+dist/log/index.html
+dist/log/<post-slug>/index.html
+dist/art/index.html
+dist/404.html
+dist/sitemap.xml
+dist/data/*.json
+```
+
+The generated HTML is intentionally simple: it is a deployment safety net and preview artifact, not a
+replacement for the full Leptos/Axum SSR site.
+
 ### Add a project
 
 1. Create a draft template:
