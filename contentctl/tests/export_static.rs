@@ -74,7 +74,8 @@ Body for static fallback.
     let post = fs::read_to_string(output_dir.join("log/hello-static/index.html",),).unwrap();
     let manifest = fs::read_to_string(output_dir.join("data/manifest.json",),).unwrap();
 
-    assert!(index.contains("Craole.CC Static Preview"), "{index}");
+    assert!(index.contains("Creative engineering & visual narrative"), "{index}");
+    assert!(index.contains("assets/avatar-bass.png"), "{index}");
     assert!(index.contains("Demo Project"), "{index}");
     assert!(dev_index.contains("/dev/demo-project/"), "{dev_index}");
     assert!(project.contains("A useful project for static HTML export."), "{project}");

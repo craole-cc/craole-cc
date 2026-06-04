@@ -799,6 +799,7 @@ pub fn export_static_site(
     source,
   },)?;
   copy_public_assets(root, output_dir,)?;
+  copy_extra_static_assets(root, output_dir,)?;
   let json_report = export_static_json(root, &output_dir.join("data",),)?;
 
   let published_projects = projects
@@ -896,6 +897,19 @@ fn copy_public_assets(root : &Path, output_dir : &Path,) -> Result<(), ContentEr
   copy_dir_contents(&public_dir, output_dir,)
 }
 
+fn copy_extra_static_assets(root : &Path, output_dir : &Path,) -> Result<(), ContentError,> {
+  let assets_dir = root.join("assets",);
+  if !assets_dir.exists() {
+    return Ok((),);
+  }
+  let destination = output_dir.join("assets",);
+  fs::create_dir_all(&destination,).map_err(|source| ContentError::Write {
+    path : destination.clone(),
+    source,
+  },)?;
+  copy_dir_contents(&assets_dir, &destination,)
+}
+
 fn copy_dir_contents(source : &Path, destination : &Path,) -> Result<(), ContentError,> {
   for entry in fs::read_dir(source,).map_err(|source_error| ContentError::Read {
     path :   source.to_path_buf(),
@@ -931,28 +945,33 @@ fn copy_dir_contents(source : &Path, destination : &Path,) -> Result<(), Content
 
 fn page_shell(title : &str, active : &str, body : &str,) -> String {
   let escaped_title = escape_html(title,);
+  let home = site_path("",);
+  let dev = site_path("dev/",);
+  let log = site_path("log/",);
+  let art = site_path("art/",);
+  let data = site_path("data/manifest.json",);
   format!(
     r#"<!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{escaped_title}</title>
-  <meta name="description" content="Static fallback preview for Craole.CC">
+  <meta name="description" content="Craole.CC — creative engineering, Rust systems, and visual narrative.">
   <style>{}</style>
 </head>
 <body data-section="{}">
   <header class="site-header">
-    <a class="brand" href="/">Craole.CC Static Preview</a>
+    <a class="brand" href="{home}" aria-label="Craole.CC home"><span class="brand__mark">CC</span><span>Craole.CC</span></a>
     <nav aria-label="Primary navigation">
-      <a href="/dev/">Dev</a>
-      <a href="/log/">Log</a>
-      <a href="/art/">Art</a>
-      <a href="/data/manifest.json">Data</a>
+      <a href="{dev}">Dev</a>
+      <a href="{log}">Log</a>
+      <a href="{art}">Art</a>
+      <a href="{data}">Data</a>
     </nav>
   </header>
   <main>{body}</main>
-  <footer>Generated from Git-tracked content by <code>contentctl export-static</code>.</footer>
+  <footer><strong>Craole.CC</strong><span>Creative engineering & visual narrative.</span></footer>
 </body>
 </html>
 "#,
@@ -961,16 +980,53 @@ fn page_shell(title : &str, active : &str, body : &str,) -> String {
   )
 }
 
+fn site_path(path : &str,) -> String {
+  let base = std::env::var("CRAOLE_STATIC_BASE_PATH",).unwrap_or_else(|_| "/".to_string(),);
+  let mut base = if base.trim().is_empty() { "/".to_string() } else { base };
+  if !base.starts_with('/') {
+    base.insert(0, '/',);
+  }
+  if !base.ends_with('/') {
+    base.push('/');
+  }
+  format!("{}{}", base, path.trim_start_matches('/'))
+}
+
+#[allow(clippy::format_collect)]
 fn render_home_page(
   projects : &[&ProjectContent],
   posts : &[&PostContent],
   media : &[&MediaContent],
 ) -> String {
+  let dev = site_path("dev/",);
+  let log = site_path("log/",);
+  let art = site_path("art/",);
+  let avatar = site_path("assets/avatar-bass.png",);
+  let icons = [
+    ("Rust", site_path("icons/logos/rust.svg",)),
+    ("Leptos", site_path("icons/logos/leptos.svg",)),
+    ("Nix", site_path("icons/logos/nixos.svg",)),
+    ("Python", site_path("icons/logos/python.svg",)),
+    ("GitHub", site_path("icons/logos/github.svg",)),
+    ("Linux", site_path("icons/logos/linux.svg",)),
+  ];
+  let icon_html = icons
+    .iter()
+    .map(|(name, src,)| {
+      format!(
+        "<li><img src=\"{}\" alt=\"{}\"><span>{}</span></li>",
+        escape_attr(src,),
+        escape_attr(name,),
+        escape_html(name,),
+      )
+    },)
+    .collect::<String>();
   page_shell(
-    "Craole.CC Static Preview",
+    "Craole.CC",
     "home",
     &format!(
-      "<section class=\"hero\"><p class=\"eyebrow\">Static fallback</p><h1>Craole.CC Static Preview</h1><p>Rust-powered portfolio content exported to plain HTML and JSON.</p></section><section><h2>Featured projects</h2>{}</section><section><h2>Latest writing</h2>{}</section><section><h2>Media</h2><p>{} published media item(s). See <a href=\"/data/media.json\">media.json</a>.</p></section>",
+      "<section class=\"hero\"><figure class=\"hero__backdrop\" aria-hidden=\"true\"><span class=\"hero__slide hero__slide--one\"></span><span class=\"hero__scrim\"></span></figure><article class=\"hero__content\"><p class=\"eyebrow\">Creative engineering & visual narrative</p><h1><span>Craig </span><em>Craole</em><span> Cole</span></h1><p class=\"hero__sub\">Raised on rhythm, building with Rust. Code is another instrument of expression through structure.</p><div class=\"hero__actions\"><a class=\"button button--primary\" href=\"{dev}\">See the work</a><a class=\"button\" href=\"{log}\">Read the log</a></div></article><aside class=\"profile-card\"><img src=\"{}\" alt=\"Bass guitar avatar for Craole\"><span>Bassist • builder • systems thinker</span></aside></section><section class=\"vision\"><div class=\"vision__label\">The Vision</div><p>From music production to teaching to systems programming, the through-line is expression: structure with soul, precision with personality.</p></section><section class=\"stack\"><p class=\"eyebrow\">Tools & language</p><ul>{icon_html}</ul></section><section class=\"section-grid\"><article><h2>Featured projects</h2>{}</article><article><h2>Latest writing</h2>{}</article><article><h2>Art & media</h2><p>{} published media item(s). <a href=\"{art}\">Explore the visual side</a>.</p></article></section>",
+      escape_attr(&avatar,),
       render_project_cards(projects,),
       render_post_list(posts,),
       media.len(),
@@ -1003,7 +1059,8 @@ fn render_project_page(project : &ProjectContent,) -> String {
     title,
     "dev",
     &format!(
-      "<article><p><a href=\"/dev/\">← Projects</a></p><h1>{}</h1><p class=\"lede\">{}</p><p>Status: <strong>{}</strong></p><div class=\"tags\">{tags}</div><p class=\"links\">{} {}</p></article>",
+      "<article><p><a href=\"{}\">← Projects</a></p><h1>{}</h1><p class=\"lede\">{}</p><p>Status: <strong>{}</strong></p><div class=\"tags\">{tags}</div><p class=\"links\">{} {}</p></article>",
+      site_path("dev/",),
       escape_html(title,),
       escape_html(project.description.as_deref().unwrap_or_default(),),
       escape_html(project.status.as_deref().unwrap_or("planning",),),
@@ -1028,7 +1085,8 @@ fn render_post_page(post : &PostContent,) -> String {
     title,
     "log",
     &format!(
-      "<article><p><a href=\"/log/\">← Log</a></p><h1>{}</h1><p class=\"eyebrow\">{}</p><div class=\"tags\">{}</div><div class=\"prose\">{}</div></article>",
+      "<article><p><a href=\"{}\">← Log</a></p><h1>{}</h1><p class=\"eyebrow\">{}</p><div class=\"tags\">{}</div><div class=\"prose\">{}</div></article>",
+      site_path("log/",),
       escape_html(title,),
       escape_html(date,),
       render_tags(&post.frontmatter.tags,),
@@ -1040,7 +1098,7 @@ fn render_post_page(post : &PostContent,) -> String {
 #[allow(clippy::format_collect)]
 fn render_media_index(media : &[&MediaContent],) -> String {
   let items = if media.is_empty() {
-    "<p>No published media yet. See <a href=\"/data/media.json\">media.json</a>.</p>".to_string()
+    format!("<p>No published media yet. See <a href=\"{}\">media.json</a>.</p>", site_path("data/media.json",))
   } else {
     media
       .iter()
@@ -1061,7 +1119,7 @@ fn render_404_page() -> String {
   page_shell(
     "Not found | Craole.CC",
     "404",
-    "<section><h1>Not found</h1><p>This static fallback does not include that route.</p><p><a href=\"/\">Return home</a></p></section>",
+    &format!("<section><h1>Not found</h1><p>This static fallback does not include that route.</p><p><a href=\"{}\">Return home</a></p></section>", site_path("",)),
   )
 }
 
@@ -1092,8 +1150,8 @@ fn render_project_cards(projects : &[&ProjectContent],) -> String {
       let title = project.title.as_deref().unwrap_or("Untitled project",);
       let slug = project.slug.as_deref().unwrap_or_default();
       format!(
-        "<article class=\"card\"><h2><a href=\"/dev/{}/\">{}</a></h2><p>{}</p><div class=\"tags\">{}</div></article>",
-        escape_attr(slug,),
+        "<article class=\"card\"><h2><a href=\"{}\">{}</a></h2><p>{}</p><div class=\"tags\">{}</div></article>",
+        site_path(&format!("dev/{}/", escape_attr(slug))),
         escape_html(title,),
         escape_html(project.description.as_deref().unwrap_or_default(),),
         render_tags(project.tags.as_deref().unwrap_or(&[],),),
@@ -1113,8 +1171,8 @@ fn render_post_list(posts : &[&PostContent],) -> String {
       let title = post.frontmatter.title.as_deref().unwrap_or("Untitled post",);
       let slug = post.frontmatter.slug.as_deref().unwrap_or_default();
       format!(
-        "<article class=\"card\"><h2><a href=\"/log/{}/\">{}</a></h2><p>{}</p><p class=\"eyebrow\">{}</p></article>",
-        escape_attr(slug,),
+        "<article class=\"card\"><h2><a href=\"{}\">{}</a></h2><p>{}</p><p class=\"eyebrow\">{}</p></article>",
+        site_path(&format!("log/{}/", escape_attr(slug))),
         escape_html(title,),
         escape_html(post.frontmatter.excerpt.as_deref().unwrap_or_default(),),
         escape_html(post.frontmatter.published_at.as_deref().unwrap_or("undated",),),
@@ -1177,7 +1235,7 @@ fn escape_html(value : &str,) -> String {
 fn escape_attr(value : &str,) -> String { escape_html(value,) }
 
 const fn static_css() -> &'static str {
-  "body{margin:0;font-family:Inter,ui-sans-serif,system-ui,sans-serif;background:#0d0f14;color:#f5f7fb;line-height:1.6}.site-header{display:flex;justify-content:space-between;gap:1rem;align-items:center;padding:1rem clamp(1rem,4vw,4rem);border-bottom:1px solid #252a36;background:#11141c;position:sticky;top:0}.brand{font-weight:800;color:#fff;text-decoration:none}nav{display:flex;gap:1rem;flex-wrap:wrap}a{color:#8dd3ff}main{max-width:1050px;margin:0 auto;padding:clamp(1rem,4vw,4rem)}.hero{padding:4rem 0}.hero h1{font-size:clamp(2.5rem,8vw,5rem);line-height:.95;margin:.25rem 0}.eyebrow{color:#aab3c5;text-transform:uppercase;letter-spacing:.12em;font-size:.8rem}.lede{font-size:1.25rem;color:#dbe2f1}.card{border:1px solid #252a36;background:#151925;border-radius:1rem;padding:1.25rem;margin:1rem 0;box-shadow:0 20px 50px rgba(0,0,0,.25)}.tags{display:flex;gap:.5rem;flex-wrap:wrap;margin:.75rem 0}.tags span{border:1px solid #3a4152;border-radius:999px;padding:.15rem .55rem;color:#dbe2f1;background:#1c2230}.links{display:flex;gap:1rem;flex-wrap:wrap}.prose{max-width:72ch}.prose h1{font-size:2rem}footer{padding:2rem clamp(1rem,4vw,4rem);color:#9aa3b5;border-top:1px solid #252a36}code{color:#c6f6d5}"
+  r":root{color-scheme:dark;--bg:#05070d;--panel:rgba(13,18,29,.78);--panel-strong:rgba(18,25,39,.92);--text:#f7efe2;--muted:#b8c0cc;--gold:#f4ce73;--gold-2:#b77b2d;--line:rgba(244,206,115,.18);--glow:rgba(244,206,115,.28)}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:'Plus Jakarta Sans',Inter,ui-sans-serif,system-ui,sans-serif;background:radial-gradient(circle at 20% 0%,#263040 0,#111827 34rem,#05070d 72rem);color:var(--text);line-height:1.6;min-height:100vh}a{color:inherit;text-decoration:none}a:hover{color:var(--gold)}.site-header{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:1.25rem;padding:1rem clamp(1rem,4vw,4.5rem);background:rgba(5,7,13,.72);border-bottom:1px solid rgba(255,255,255,.08);backdrop-filter:blur(18px)}.brand{display:flex;align-items:center;gap:.75rem;font-weight:900;letter-spacing:.02em}.brand__mark{display:grid;place-items:center;width:2.35rem;height:2.35rem;border-radius:999px;background:linear-gradient(135deg,var(--gold),var(--gold-2));color:#10141f;box-shadow:0 0 34px var(--glow)}nav{display:flex;gap:.35rem;flex-wrap:wrap}nav a{padding:.55rem .85rem;border-radius:999px;color:#d6dbe5}nav a:hover,body[data-section=dev] nav a[href$='dev/'],body[data-section=log] nav a[href$='log/'],body[data-section=art] nav a[href$='art/']{background:rgba(244,206,115,.12);color:var(--gold)}main{overflow:hidden}.hero{position:relative;min-height:calc(100vh - 4.5rem);display:grid;grid-template-columns:minmax(0,1fr) minmax(16rem,24rem);gap:clamp(1.5rem,4vw,4rem);align-items:center;padding:clamp(5rem,11vw,9rem) clamp(1rem,5vw,5rem)}.hero__backdrop{position:absolute;inset:0;margin:0;z-index:-2}.hero__slide{position:absolute;inset:0;background-size:cover;background-position:center;filter:saturate(1.05) contrast(1.05)}.hero__slide--one{background-image:url('https://images.unsplash.com/photo-1433086966358-54859d0ed716?auto=format&fit=crop&w=1920&q=80')}.hero__scrim{position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,7,13,.95),rgba(5,7,13,.68) 46%,rgba(5,7,13,.28)),radial-gradient(circle at 74% 54%,rgba(244,206,115,.18),transparent 25rem)}.hero__content{max-width:62rem}.eyebrow{margin:0 0 .85rem;color:var(--gold);text-transform:uppercase;letter-spacing:.18em;font-size:.76rem;font-weight:800}.hero h1{margin:0;font-size:clamp(3.8rem,11vw,9.5rem);line-height:.86;letter-spacing:-.075em;text-wrap:balance}.hero h1 em{font-style:italic;color:var(--gold);text-shadow:0 0 40px var(--glow)}.hero__sub{max-width:45rem;font-size:clamp(1.15rem,2vw,1.6rem);color:#e6dfd2;margin:1.25rem 0 0}.hero__actions{display:flex;gap:.85rem;flex-wrap:wrap;margin-top:2rem}.button{display:inline-flex;align-items:center;justify-content:center;min-height:2.85rem;padding:.8rem 1.1rem;border:1px solid rgba(255,255,255,.2);border-radius:999px;background:rgba(255,255,255,.08);font-weight:800}.button--primary{background:linear-gradient(135deg,var(--gold),var(--gold-2));border-color:transparent;color:#111827}.profile-card{align-self:end;border:1px solid var(--line);background:linear-gradient(180deg,rgba(17,24,39,.82),rgba(7,10,18,.78));border-radius:2rem;padding:1rem;box-shadow:0 30px 90px rgba(0,0,0,.38);backdrop-filter:blur(14px)}.profile-card img{display:block;width:100%;border-radius:1.35rem;aspect-ratio:1;object-fit:cover}.profile-card span{display:block;padding:1rem .35rem .2rem;color:#d6dbe5;font-weight:700}.vision,.stack,.section-grid,section:not(.hero){max-width:1180px;margin:0 auto;padding:clamp(3rem,7vw,6rem) clamp(1rem,4vw,3rem)}.vision{display:grid;grid-template-columns:12rem 1fr;gap:clamp(1rem,4vw,4rem);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.vision__label{color:var(--gold);font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;font-weight:900}.vision p{font-size:clamp(1.6rem,4vw,3rem);line-height:1.1;margin:0;letter-spacing:-.04em}.stack ul{display:grid;grid-template-columns:repeat(auto-fit,minmax(8rem,1fr));gap:.85rem;list-style:none;margin:1rem 0 0;padding:0}.stack li,.card{border:1px solid rgba(255,255,255,.1);background:var(--panel);border-radius:1.2rem;box-shadow:0 20px 60px rgba(0,0,0,.24)}.stack li{display:flex;align-items:center;gap:.75rem;padding:1rem}.stack img{width:2rem;height:2rem;object-fit:contain}.section-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}.section-grid>article,section>article:first-child:not(.hero__content){border:1px solid rgba(255,255,255,.1);background:rgba(9,13,23,.64);border-radius:1.6rem;padding:clamp(1.1rem,3vw,2rem)}h1,h2,h3{line-height:1.05;letter-spacing:-.04em}h1{font-size:clamp(2.4rem,7vw,5rem)}h2{font-size:clamp(1.8rem,4vw,3rem);margin:.2rem 0 1rem}.card{padding:1.1rem;margin:1rem 0}.card h2{font-size:1.35rem}.card p{color:var(--muted)}.lede{font-size:1.25rem;color:#e7e0d2}.tags{display:flex;gap:.45rem;flex-wrap:wrap;margin:.9rem 0}.tags span{border:1px solid rgba(244,206,115,.2);border-radius:999px;padding:.22rem .65rem;color:#f6d98c;background:rgba(244,206,115,.08);font-size:.85rem}.links{display:flex;gap:1rem;flex-wrap:wrap}.prose{max-width:72ch}.prose p{color:#d5dbe6}footer{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;padding:2rem clamp(1rem,4vw,4rem);color:#aeb6c4;border-top:1px solid rgba(255,255,255,.08)}code{color:#c6f6d5}@media (max-width:820px){.site-header{align-items:flex-start;flex-direction:column}.hero{grid-template-columns:1fr;min-height:auto;padding-top:4rem}.profile-card{max-width:18rem}.vision{grid-template-columns:1fr}.section-grid{grid-template-columns:1fr}.hero h1{font-size:clamp(3.4rem,18vw,6rem)}}"
 }
 
 /// Export valid content files as a `SQLite` seed script.
