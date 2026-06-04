@@ -36,6 +36,19 @@ tags = ["Rust", "Static"]
 "#,
     );
     write(
+      &root.join("content/projects/bi.toml",),
+      r#"
+title = "BI Dashboard"
+slug = "bi-dashboard"
+status = "active"
+description = "A business intelligence dashboard for executive reporting."
+featured = false
+published = true
+sort_order = 20
+tags = ["Business Intelligence", "Dashboard", "SQL"]
+"#,
+    );
+    write(
       &root.join("content/posts/hello.md",),
       r#"---
 title: "Hello Static"
@@ -62,26 +75,32 @@ Body for static fallback.
 
     let report = export_static_site(&root, &output_dir,).unwrap();
 
-    assert_eq!(report.projects, 1);
+    assert_eq!(report.projects, 2);
     assert_eq!(report.posts, 1);
     assert_eq!(report.media, 0);
     assert!(report.pages >= 5, "{report:#?}");
 
     let index = fs::read_to_string(output_dir.join("index.html",),).unwrap();
     let dev_index = fs::read_to_string(output_dir.join("dev/index.html",),).unwrap();
+    let data_index = fs::read_to_string(output_dir.join("data/index.html",),).unwrap();
     let project = fs::read_to_string(output_dir.join("dev/demo-project/index.html",),).unwrap();
     let log_index = fs::read_to_string(output_dir.join("log/index.html",),).unwrap();
     let post = fs::read_to_string(output_dir.join("log/hello-static/index.html",),).unwrap();
     let manifest = fs::read_to_string(output_dir.join("data/manifest.json",),).unwrap();
 
     assert!(index.contains("Creative engineering & visual narrative"), "{index}");
-    assert!(index.contains("assets/avatar-bass.png"), "{index}");
+    assert!(!index.contains("assets/avatar-bass.png"), "{index}");
+    assert!(index.contains("<span class=\"brand__mark\">CC</span>"), "{index}");
+    assert!(index.contains(">Data</a>"), "{index}");
     assert!(index.contains("Demo Project"), "{index}");
     assert!(dev_index.contains("/dev/demo-project/"), "{dev_index}");
+    assert!(data_index.contains("Business intelligence"), "{data_index}");
+    assert!(data_index.contains("BI Dashboard"), "{data_index}");
+    assert!(!data_index.contains("Demo Project"), "{data_index}");
     assert!(project.contains("A useful project for static HTML export."), "{project}");
     assert!(log_index.contains("/log/hello-static/"), "{log_index}");
     assert!(post.contains("Body for static fallback."), "{post}");
-    assert!(manifest.contains("\"projects\": 1"), "{manifest}");
+    assert!(manifest.contains("\"projects\": 2"), "{manifest}");
   }
 
   #[test]

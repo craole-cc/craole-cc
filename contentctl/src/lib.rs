@@ -8,6 +8,7 @@ use {
       HashMap,
       HashSet,
     },
+    fmt::Write as _,
     fs,
     path::{
       Path,
@@ -806,6 +807,11 @@ pub fn export_static_site(
     .iter()
     .filter(|project| project.published.unwrap_or(false,))
     .collect::<Vec<_>>();
+  let data_projects = published_projects
+    .iter()
+    .copied()
+    .filter(|project| is_data_project(project,))
+    .collect::<Vec<_>>();
   let published_posts = posts
     .iter()
     .filter(|post| post.frontmatter.published.unwrap_or(false,))
@@ -825,6 +831,12 @@ pub fn export_static_site(
   write_html_file(
     &output_dir.join("dev/index.html",),
     &render_projects_index(&published_projects,),
+  )?;
+  pages += 1;
+
+  write_html_file(
+    &output_dir.join("data/index.html",),
+    &render_data_index(&data_projects,),
   )?;
   pages += 1;
 
@@ -947,9 +959,9 @@ fn page_shell(title : &str, active : &str, body : &str,) -> String {
   let escaped_title = escape_html(title,);
   let home = site_path("",);
   let dev = site_path("dev/",);
+  let data = site_path("data/",);
   let log = site_path("log/",);
   let art = site_path("art/",);
-  let data = site_path("data/manifest.json",);
   format!(
     r#"<!doctype html>
 <html lang="en" data-theme="dark">
@@ -965,9 +977,9 @@ fn page_shell(title : &str, active : &str, body : &str,) -> String {
     <a class="brand" href="{home}" aria-label="Craole.CC home"><span class="brand__mark">CC</span><span>Craole.CC</span></a>
     <nav aria-label="Primary navigation">
       <a href="{dev}">Dev</a>
+      <a href="{data}">Data</a>
       <a href="{log}">Log</a>
       <a href="{art}">Art</a>
-      <a href="{data}">Data</a>
     </nav>
   </header>
   <main>{body}</main>
@@ -1001,7 +1013,6 @@ fn render_home_page(
   let dev = site_path("dev/",);
   let log = site_path("log/",);
   let art = site_path("art/",);
-  let avatar = site_path("assets/avatar-bass.png",);
   let icons = [
     ("Rust", site_path("icons/logos/rust.svg",)),
     ("Leptos", site_path("icons/logos/leptos.svg",)),
@@ -1025,8 +1036,7 @@ fn render_home_page(
     "Craole.CC",
     "home",
     &format!(
-      "<section class=\"hero\"><figure class=\"hero__backdrop\" aria-hidden=\"true\"><span class=\"hero__slide hero__slide--one\"></span><span class=\"hero__scrim\"></span></figure><article class=\"hero__content\"><p class=\"eyebrow\">Creative engineering & visual narrative</p><h1><span>Craig </span><em>Craole</em><span> Cole</span></h1><p class=\"hero__sub\">Raised on rhythm, building with Rust. Code is another instrument of expression through structure.</p><div class=\"hero__actions\"><a class=\"button button--primary\" href=\"{dev}\">See the work</a><a class=\"button\" href=\"{log}\">Read the log</a></div></article><aside class=\"profile-card\"><img src=\"{}\" alt=\"Bass guitar avatar for Craole\"><span>Bassist • builder • systems thinker</span></aside></section><section class=\"vision\"><div class=\"vision__label\">The Vision</div><p>From music production to teaching to systems programming, the through-line is expression: structure with soul, precision with personality.</p></section><section class=\"stack\"><p class=\"eyebrow\">Tools & language</p><ul>{icon_html}</ul></section><section class=\"section-grid\"><article><h2>Featured projects</h2>{}</article><article><h2>Latest writing</h2>{}</article><article><h2>Art & media</h2><p>{} published media item(s). <a href=\"{art}\">Explore the visual side</a>.</p></article></section>",
-      escape_attr(&avatar,),
+      "<section class=\"hero\"><figure class=\"hero__backdrop\" aria-hidden=\"true\"><span class=\"hero__slide hero__slide--one\"></span><span class=\"hero__scrim\"></span></figure><article class=\"hero__content\"><p class=\"eyebrow\">Creative engineering & visual narrative</p><h1><span>Craig </span><em>Craole</em><span> Cole</span></h1><p class=\"hero__sub\">Raised on rhythm, building with Rust. Code is another instrument of expression through structure.</p><div class=\"hero__actions\"><a class=\"button button--primary\" href=\"{dev}\">See the work</a><a class=\"button\" href=\"{log}\">Read the log</a></div></article></section><section class=\"vision\"><div class=\"vision__label\">The Vision</div><p>From music production to teaching to systems programming, the through-line is expression: structure with soul, precision with personality.</p></section><section class=\"stack\"><p class=\"eyebrow\">Tools & language</p><ul>{icon_html}</ul></section><section class=\"section-grid\"><article><h2>Featured projects</h2>{}</article><article><h2>Latest writing</h2>{}</article><article><h2>Art & media</h2><p>{} published media item(s). <a href=\"{art}\">Explore the visual side</a>.</p></article></section>",
       render_project_cards(projects,),
       render_post_list(posts,),
       media.len(),
@@ -1039,6 +1049,21 @@ fn render_projects_index(projects : &[&ProjectContent],) -> String {
     "Projects | Craole.CC",
     "dev",
     &format!("<section><h1>Projects</h1>{}</section>", render_project_cards(projects,)),
+  )
+}
+
+fn render_data_index(projects : &[&ProjectContent],) -> String {
+  let body = if projects.is_empty() {
+    "<p class=\"lede\">Business intelligence case studies are being prepared. Published projects tagged Business Intelligence, BI, Analytics, Dashboard, Power BI, Tableau, SQL, or related data tools will appear here.</p>".to_string()
+  } else {
+    render_project_cards(projects,)
+  };
+  page_shell(
+    "Data | Craole.CC",
+    "data",
+    &format!(
+      "<section><p class=\"eyebrow\">Business intelligence</p><h1>Data</h1><p class=\"lede\">Dashboards, analytics systems, reporting workflows, and data products that turn raw information into decisions.</p>{body}</section>",
+    ),
   )
 }
 
@@ -1125,7 +1150,13 @@ fn render_404_page() -> String {
 
 #[allow(clippy::format_collect)]
 fn render_sitemap(projects : &[&ProjectContent], posts : &[&PostContent],) -> String {
-  let mut urls = vec!["/".to_string(), "/dev/".to_string(), "/log/".to_string(), "/art/".to_string(),];
+  let mut urls = vec![
+    "/".to_string(),
+    "/dev/".to_string(),
+    "/data/".to_string(),
+    "/log/".to_string(),
+    "/art/".to_string(),
+  ];
   urls.extend(projects.iter().filter_map(|project| {
     project.slug.as_ref().map(|slug| format!("/dev/{slug}/"),)
   },),);
@@ -1139,25 +1170,52 @@ fn render_sitemap(projects : &[&ProjectContent], posts : &[&PostContent],) -> St
   format!("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n{body}</urlset>\n")
 }
 
-#[allow(clippy::format_collect)]
+fn is_data_project(project : &ProjectContent,) -> bool {
+  const DATA_TAGS : &[&str] = &[
+    "Data",
+    "Data Engineering",
+    "Business Intelligence",
+    "BI",
+    "Analytics",
+    "Dashboard",
+    "Power BI",
+    "Tableau",
+    "SQL",
+    "PostgreSQL",
+    "SQLite",
+    "Neo4j",
+    "Delta Lake",
+    "Spark",
+    "Databricks",
+  ];
+  project.tags.as_deref().is_some_and(|tags| {
+    tags.iter().any(|tag| {
+      DATA_TAGS
+        .iter()
+        .any(|data_tag| tag.eq_ignore_ascii_case(data_tag,))
+    },)
+  },)
+}
+
 fn render_project_cards(projects : &[&ProjectContent],) -> String {
   if projects.is_empty() {
     return "<p>No published projects yet.</p>".to_string();
   }
-  projects
-    .iter()
-    .map(|project| {
-      let title = project.title.as_deref().unwrap_or("Untitled project",);
-      let slug = project.slug.as_deref().unwrap_or_default();
-      format!(
-        "<article class=\"card\"><h2><a href=\"{}\">{}</a></h2><p>{}</p><div class=\"tags\">{}</div></article>",
-        site_path(&format!("dev/{}/", escape_attr(slug))),
-        escape_html(title,),
-        escape_html(project.description.as_deref().unwrap_or_default(),),
-        render_tags(project.tags.as_deref().unwrap_or(&[],),),
-      )
-    },)
-    .collect::<String>()
+
+  projects.iter().fold(String::new(), |mut html, project| {
+    let title = project.title.as_deref().unwrap_or("Untitled project",);
+    let slug = project.slug.as_deref().unwrap_or_default();
+    write!(
+      html,
+      "<article class=\"card\"><h2><a href=\"{}\">{}</a></h2><p>{}</p><div class=\"tags\">{}</div></article>",
+      site_path(&format!("dev/{}/", escape_attr(slug))),
+      escape_html(title,),
+      escape_html(project.description.as_deref().unwrap_or_default(),),
+      render_tags(project.tags.as_deref().unwrap_or(&[],),),
+    )
+    .expect("writing to String should not fail");
+    html
+  },)
 }
 
 #[allow(clippy::format_collect)]
@@ -1235,7 +1293,7 @@ fn escape_html(value : &str,) -> String {
 fn escape_attr(value : &str,) -> String { escape_html(value,) }
 
 const fn static_css() -> &'static str {
-  r":root{color-scheme:dark;--bg:#05070d;--panel:rgba(13,18,29,.78);--panel-strong:rgba(18,25,39,.92);--text:#f7efe2;--muted:#b8c0cc;--gold:#f4ce73;--gold-2:#b77b2d;--line:rgba(244,206,115,.18);--glow:rgba(244,206,115,.28)}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:'Plus Jakarta Sans',Inter,ui-sans-serif,system-ui,sans-serif;background:radial-gradient(circle at 20% 0%,#263040 0,#111827 34rem,#05070d 72rem);color:var(--text);line-height:1.6;min-height:100vh}a{color:inherit;text-decoration:none}a:hover{color:var(--gold)}.site-header{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:1.25rem;padding:1rem clamp(1rem,4vw,4.5rem);background:rgba(5,7,13,.72);border-bottom:1px solid rgba(255,255,255,.08);backdrop-filter:blur(18px)}.brand{display:flex;align-items:center;gap:.75rem;font-weight:900;letter-spacing:.02em}.brand__mark{display:grid;place-items:center;width:2.35rem;height:2.35rem;border-radius:999px;background:linear-gradient(135deg,var(--gold),var(--gold-2));color:#10141f;box-shadow:0 0 34px var(--glow)}nav{display:flex;gap:.35rem;flex-wrap:wrap}nav a{padding:.55rem .85rem;border-radius:999px;color:#d6dbe5}nav a:hover,body[data-section=dev] nav a[href$='dev/'],body[data-section=log] nav a[href$='log/'],body[data-section=art] nav a[href$='art/']{background:rgba(244,206,115,.12);color:var(--gold)}main{overflow:hidden}.hero{position:relative;min-height:calc(100vh - 4.5rem);display:grid;grid-template-columns:minmax(0,1fr) minmax(16rem,24rem);gap:clamp(1.5rem,4vw,4rem);align-items:center;padding:clamp(5rem,11vw,9rem) clamp(1rem,5vw,5rem)}.hero__backdrop{position:absolute;inset:0;margin:0;z-index:-2}.hero__slide{position:absolute;inset:0;background-size:cover;background-position:center;filter:saturate(1.05) contrast(1.05)}.hero__slide--one{background-image:url('https://images.unsplash.com/photo-1433086966358-54859d0ed716?auto=format&fit=crop&w=1920&q=80')}.hero__scrim{position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,7,13,.95),rgba(5,7,13,.68) 46%,rgba(5,7,13,.28)),radial-gradient(circle at 74% 54%,rgba(244,206,115,.18),transparent 25rem)}.hero__content{max-width:62rem}.eyebrow{margin:0 0 .85rem;color:var(--gold);text-transform:uppercase;letter-spacing:.18em;font-size:.76rem;font-weight:800}.hero h1{margin:0;font-size:clamp(3.8rem,11vw,9.5rem);line-height:.86;letter-spacing:-.075em;text-wrap:balance}.hero h1 em{font-style:italic;color:var(--gold);text-shadow:0 0 40px var(--glow)}.hero__sub{max-width:45rem;font-size:clamp(1.15rem,2vw,1.6rem);color:#e6dfd2;margin:1.25rem 0 0}.hero__actions{display:flex;gap:.85rem;flex-wrap:wrap;margin-top:2rem}.button{display:inline-flex;align-items:center;justify-content:center;min-height:2.85rem;padding:.8rem 1.1rem;border:1px solid rgba(255,255,255,.2);border-radius:999px;background:rgba(255,255,255,.08);font-weight:800}.button--primary{background:linear-gradient(135deg,var(--gold),var(--gold-2));border-color:transparent;color:#111827}.profile-card{align-self:end;border:1px solid var(--line);background:linear-gradient(180deg,rgba(17,24,39,.82),rgba(7,10,18,.78));border-radius:2rem;padding:1rem;box-shadow:0 30px 90px rgba(0,0,0,.38);backdrop-filter:blur(14px)}.profile-card img{display:block;width:100%;border-radius:1.35rem;aspect-ratio:1;object-fit:cover}.profile-card span{display:block;padding:1rem .35rem .2rem;color:#d6dbe5;font-weight:700}.vision,.stack,.section-grid,section:not(.hero){max-width:1180px;margin:0 auto;padding:clamp(3rem,7vw,6rem) clamp(1rem,4vw,3rem)}.vision{display:grid;grid-template-columns:12rem 1fr;gap:clamp(1rem,4vw,4rem);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.vision__label{color:var(--gold);font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;font-weight:900}.vision p{font-size:clamp(1.6rem,4vw,3rem);line-height:1.1;margin:0;letter-spacing:-.04em}.stack ul{display:grid;grid-template-columns:repeat(auto-fit,minmax(8rem,1fr));gap:.85rem;list-style:none;margin:1rem 0 0;padding:0}.stack li,.card{border:1px solid rgba(255,255,255,.1);background:var(--panel);border-radius:1.2rem;box-shadow:0 20px 60px rgba(0,0,0,.24)}.stack li{display:flex;align-items:center;gap:.75rem;padding:1rem}.stack img{width:2rem;height:2rem;object-fit:contain}.section-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}.section-grid>article,section>article:first-child:not(.hero__content){border:1px solid rgba(255,255,255,.1);background:rgba(9,13,23,.64);border-radius:1.6rem;padding:clamp(1.1rem,3vw,2rem)}h1,h2,h3{line-height:1.05;letter-spacing:-.04em}h1{font-size:clamp(2.4rem,7vw,5rem)}h2{font-size:clamp(1.8rem,4vw,3rem);margin:.2rem 0 1rem}.card{padding:1.1rem;margin:1rem 0}.card h2{font-size:1.35rem}.card p{color:var(--muted)}.lede{font-size:1.25rem;color:#e7e0d2}.tags{display:flex;gap:.45rem;flex-wrap:wrap;margin:.9rem 0}.tags span{border:1px solid rgba(244,206,115,.2);border-radius:999px;padding:.22rem .65rem;color:#f6d98c;background:rgba(244,206,115,.08);font-size:.85rem}.links{display:flex;gap:1rem;flex-wrap:wrap}.prose{max-width:72ch}.prose p{color:#d5dbe6}footer{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;padding:2rem clamp(1rem,4vw,4rem);color:#aeb6c4;border-top:1px solid rgba(255,255,255,.08)}code{color:#c6f6d5}@media (max-width:820px){.site-header{align-items:flex-start;flex-direction:column}.hero{grid-template-columns:1fr;min-height:auto;padding-top:4rem}.profile-card{max-width:18rem}.vision{grid-template-columns:1fr}.section-grid{grid-template-columns:1fr}.hero h1{font-size:clamp(3.4rem,18vw,6rem)}}"
+  r":root{color-scheme:dark;--bg:#05070d;--panel:rgba(13,18,29,.78);--panel-strong:rgba(18,25,39,.92);--text:#f7efe2;--muted:#b8c0cc;--gold:#f4ce73;--gold-2:#b77b2d;--line:rgba(244,206,115,.18);--glow:rgba(244,206,115,.28)}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:'Plus Jakarta Sans',Inter,ui-sans-serif,system-ui,sans-serif;background:radial-gradient(circle at 20% 0%,#263040 0,#111827 34rem,#05070d 72rem);color:var(--text);line-height:1.6;min-height:100vh}a{color:inherit;text-decoration:none}a:hover{color:var(--gold)}.site-header{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:1.25rem;padding:1rem clamp(1rem,4vw,4.5rem);background:rgba(5,7,13,.72);border-bottom:1px solid rgba(255,255,255,.08);backdrop-filter:blur(18px)}.brand{display:flex;align-items:center;gap:.75rem;font-weight:900;letter-spacing:.02em}.brand__mark{display:grid;place-items:center;width:2.35rem;height:2.35rem;border-radius:999px;background:linear-gradient(135deg,var(--gold),var(--gold-2));color:#10141f;box-shadow:0 0 34px var(--glow)}nav{display:flex;gap:.35rem;flex-wrap:wrap}nav a{padding:.55rem .85rem;border-radius:999px;color:#d6dbe5}nav a:hover,body[data-section=dev] nav a[href$='dev/'],body[data-section=data] nav a[href$='data/'],body[data-section=log] nav a[href$='log/'],body[data-section=art] nav a[href$='art/']{background:rgba(244,206,115,.12);color:var(--gold)}main{overflow:hidden}.hero{position:relative;min-height:calc(100vh - 4.5rem);display:grid;grid-template-columns:minmax(0,1fr) minmax(16rem,24rem);gap:clamp(1.5rem,4vw,4rem);align-items:center;padding:clamp(5rem,11vw,9rem) clamp(1rem,5vw,5rem)}.hero__backdrop{position:absolute;inset:0;margin:0;z-index:-2}.hero__slide{position:absolute;inset:0;background-size:cover;background-position:center;filter:saturate(1.05) contrast(1.05)}.hero__slide--one{background-image:url('https://images.unsplash.com/photo-1433086966358-54859d0ed716?auto=format&fit=crop&w=1920&q=80')}.hero__scrim{position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,7,13,.95),rgba(5,7,13,.68) 46%,rgba(5,7,13,.28)),radial-gradient(circle at 74% 54%,rgba(244,206,115,.18),transparent 25rem)}.hero__content{max-width:62rem}.eyebrow{margin:0 0 .85rem;color:var(--gold);text-transform:uppercase;letter-spacing:.18em;font-size:.76rem;font-weight:800}.hero h1{margin:0;font-size:clamp(3.8rem,11vw,9.5rem);line-height:.86;letter-spacing:-.075em;text-wrap:balance}.hero h1 em{font-style:italic;color:var(--gold);text-shadow:0 0 40px var(--glow)}.hero__sub{max-width:45rem;font-size:clamp(1.15rem,2vw,1.6rem);color:#e6dfd2;margin:1.25rem 0 0}.hero__actions{display:flex;gap:.85rem;flex-wrap:wrap;margin-top:2rem}.button{display:inline-flex;align-items:center;justify-content:center;min-height:2.85rem;padding:.8rem 1.1rem;border:1px solid rgba(255,255,255,.2);border-radius:999px;background:rgba(255,255,255,.08);font-weight:800}.button--primary{background:linear-gradient(135deg,var(--gold),var(--gold-2));border-color:transparent;color:#111827}.vision,.stack,.section-grid,section:not(.hero){max-width:1180px;margin:0 auto;padding:clamp(3rem,7vw,6rem) clamp(1rem,4vw,3rem)}.vision{display:grid;grid-template-columns:12rem 1fr;gap:clamp(1rem,4vw,4rem);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.vision__label{color:var(--gold);font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;font-weight:900}.vision p{font-size:clamp(1.6rem,4vw,3rem);line-height:1.1;margin:0;letter-spacing:-.04em}.stack ul{display:grid;grid-template-columns:repeat(auto-fit,minmax(8rem,1fr));gap:.85rem;list-style:none;margin:1rem 0 0;padding:0}.stack li,.card{border:1px solid rgba(255,255,255,.1);background:var(--panel);border-radius:1.2rem;box-shadow:0 20px 60px rgba(0,0,0,.24)}.stack li{display:flex;align-items:center;gap:.75rem;padding:1rem}.stack img{width:2rem;height:2rem;object-fit:contain}.section-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}.section-grid>article,section>article:first-child:not(.hero__content){border:1px solid rgba(255,255,255,.1);background:rgba(9,13,23,.64);border-radius:1.6rem;padding:clamp(1.1rem,3vw,2rem)}h1,h2,h3{line-height:1.05;letter-spacing:-.04em}h1{font-size:clamp(2.4rem,7vw,5rem)}h2{font-size:clamp(1.8rem,4vw,3rem);margin:.2rem 0 1rem}.card{padding:1.1rem;margin:1rem 0}.card h2{font-size:1.35rem}.card p{color:var(--muted)}.lede{font-size:1.25rem;color:#e7e0d2}.tags{display:flex;gap:.45rem;flex-wrap:wrap;margin:.9rem 0}.tags span{border:1px solid rgba(244,206,115,.2);border-radius:999px;padding:.22rem .65rem;color:#f6d98c;background:rgba(244,206,115,.08);font-size:.85rem}.links{display:flex;gap:1rem;flex-wrap:wrap}.prose{max-width:72ch}.prose p{color:#d5dbe6}footer{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;padding:2rem clamp(1rem,4vw,4rem);color:#aeb6c4;border-top:1px solid rgba(255,255,255,.08)}code{color:#c6f6d5}@media (max-width:820px){.site-header{align-items:flex-start;flex-direction:column}.hero{grid-template-columns:1fr;min-height:auto;padding-top:4rem}.vision{grid-template-columns:1fr}.section-grid{grid-template-columns:1fr}.hero h1{font-size:clamp(3.4rem,18vw,6rem)}}"
 }
 
 /// Export valid content files as a `SQLite` seed script.
