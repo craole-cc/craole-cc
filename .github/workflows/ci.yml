@@ -2,7 +2,11 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+      - feat/**
+      - fix/**
+      - ci/**
   pull_request:
   workflow_dispatch:
 
@@ -15,10 +19,9 @@ concurrency:
 
 jobs:
   rust:
-    name: Rust / Leptos / SQLx
+    name: Rust workspace
     runs-on: ubuntu-latest
     timeout-minutes: 45
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -29,8 +32,8 @@ jobs:
       - name: Enable Nix cache
         uses: DeterminateSystems/magic-nix-cache-action@v9
 
-      - name: Check flake metadata
+      - name: Show flake metadata
         run: nix flake metadata --accept-flake-config
 
-      - name: Run project CI checks
+      - name: Run project CI
         run: nix develop --accept-flake-config --command bash scripts/ci.sh
