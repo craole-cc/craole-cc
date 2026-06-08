@@ -84,6 +84,18 @@
         file = ./commands.sh;
       };
 
+      port = pkgs'.writeShellScriptBin "port" ''
+        exec rust-commands port "$@"
+      '';
+
+      kill-port = pkgs'.writeShellScriptBin "kill-port" ''
+        exec rust-commands kill-port "$@"
+      '';
+
+      kill-3000 = pkgs'.writeShellScriptBin "kill-3000" ''
+        exec rust-commands kill-3000 "$@"
+      '';
+
       welcome = mkPackage {
         pkgs = pkgs';
         name = "rust-welcome";
@@ -100,15 +112,15 @@
     missionCommands = {
       bench = {
         description = "Run cargo bench";
-        run = ''exec rust-command bench "$@"'';
+        run = ''exec rust-commands bench "$@"'';
       };
       check = {
         description = "Run cargo check";
-        run = ''exec rust-command check "$@"'';
+        run = ''exec rust-commands check "$@"'';
       };
       clippy = {
         description = "Run cargo clippy with warnings denied";
-        run = ''exec rust-command clippy "$@"'';
+        run = ''exec rust-commands clippy "$@"'';
       };
       deploy = {
         description = "Deploy template files into the current project";
@@ -116,15 +128,15 @@
       };
       fmt = {
         description = "Format the project";
-        run = ''exec rust-command fmt "$@"'';
+        run = ''exec rust-commands fmt "$@"'';
       };
       info = {
         description = "Show project stats and repository summary";
-        run = ''exec rust-command info "$@"'';
+        run = ''exec rust-commands info "$@"'';
       };
       lint = {
         description = "Run treefmt, fmt checks, and clippy";
-        run = ''exec rust-command lint "$@"'';
+        run = ''exec rust-commands lint "$@"'';
       };
       reset = {
         description = "Remove deployed templates and transient build dirs";
@@ -132,27 +144,39 @@
       };
       run = {
         description = "Run cargo run";
-        run = ''exec rust-command run "$@"'';
+        run = ''exec rust-commands run "$@"'';
       };
       test = {
         description = "Run cargo nextest";
-        run = ''exec rust-command test "$@"'';
+        run = ''exec rust-commands test "$@"'';
       };
       version = {
         description = "Show rustc version";
-        run = ''exec rust-command version "$@"'';
+        run = ''exec rust-commands version "$@"'';
       };
       watch-check = {
         description = "Watch cargo check";
-        run = ''exec rust-command watch-check "$@"'';
+        run = ''exec rust-commands watch-check "$@"'';
       };
       watch-run = {
         description = "Watch cargo run";
-        run = ''exec rust-command watch-run "$@"'';
+        run = ''exec rust-commands watch-run "$@"'';
+      };
+      port = {
+        description = "Show the process listening on a TCP port (default: 3000)";
+        run = ''exec rust-commands port "$@"'';
+      };
+      kill-port = {
+        description = "Kill the process listening on a TCP port (default: 3000)";
+        run = ''exec rust-commands kill-port "$@"'';
+      };
+      kill-3000 = {
+        description = "Kill the process listening on port 3000";
+        run = ''exec rust-commands kill-port 3000 "$@"'';
       };
       watch-test = {
         description = "Watch cargo nextest";
-        run = ''exec rust-command watch-test "$@"'';
+        run = ''exec rust-commands watch-test "$@"'';
       };
     };
     missionControl = mkMissionControl {
@@ -184,6 +208,8 @@
         sqlx-cli
         sqlite
         gh
+        lsof
+        psmisc
         #~@ Watch
         bacon
         cargo-watch
@@ -225,6 +251,9 @@
       # templates.deployPackage
       # templates.resetPackage
       scripts.commands
+      scripts.port
+      scripts.kill-port
+      scripts.kill-3000
       scripts.welcome
       missionControl
       commandsAlias

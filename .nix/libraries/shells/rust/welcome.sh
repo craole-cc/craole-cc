@@ -34,9 +34,11 @@ section "Mission Control" \
   "mc deploy --force      Reinstall template files"
 
 section "Project Shortcuts" \
-  "rust-command fmt       Format with cargo fmt and treefmt" \
-  "rust-command lint      Run treefmt, fmt check, and clippy" \
-  "rust-command watch-run Watch cargo run" \
+  "rust-commands fmt       Format with cargo fmt and treefmt" \
+  "rust-commands lint      Run treefmt, fmt check, and clippy" \
+  "rust-commands watch-run Watch cargo run" \
+  "port [3000]             Show the process listening on a TCP port" \
+  "kill-3000               Kill the process listening on TCP port 3000" \
   "reset-flake            Remove deployed templates and temp dirs"
 
 section "Templates" \

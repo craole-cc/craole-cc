@@ -4,7 +4,7 @@ set -eu
 
 usage() {
   cat <<'EOF'
-Usage: rust-command <command> [args...]
+Usage: rust-commands <command> [args...]
 
 Commands:
   bench        Run cargo bench
@@ -17,6 +17,9 @@ Commands:
   run          Run cargo run
   test         Run cargo nextest
   version      Show rustc version
+  port         Show the process listening on a TCP port (default: 3000)
+  kill-port    Kill the process listening on a TCP port (default: 3000)
+  kill-3000    Kill the process listening on TCP port 3000
   watch-check  Watch cargo check
   watch-run    Watch cargo run
   watch-test   Watch cargo nextest
@@ -69,6 +72,31 @@ test)
   ;;
 version)
   exec rustc --version
+  ;;
+port)
+  port=${1:-3000}
+  if ! lsof -nP -iTCP:"$port" -sTCP:LISTEN; then
+    printf 'No process is listening on TCP port %s.\n' "$port"
+  fi
+  ;;
+kill-port)
+  port=${1:-3000}
+  pids=$(lsof -tiTCP:"$port" -sTCP:LISTEN 2>/dev/null || true)
+  if [ -z "$pids" ]; then
+    printf 'No process is listening on TCP port %s.\n' "$port"
+    exit 0
+  fi
+  printf 'Killing TCP port %s listener(s): %s\n' "$port" "$pids"
+  kill $pids
+  ;;
+kill-3000)
+  pids=$(lsof -tiTCP:3000 -sTCP:LISTEN 2>/dev/null || true)
+  if [ -z "$pids" ]; then
+    printf 'No process is listening on TCP port 3000.\n'
+    exit 0
+  fi
+  printf 'Killing TCP port 3000 listener(s): %s\n' "$pids"
+  kill $pids
   ;;
 watch-check)
   exec cargo watch --quiet --clear --exec check "$@"

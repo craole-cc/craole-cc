@@ -39,6 +39,8 @@
       sqlx-cli
       sqlite
       gh
+      lsof
+      psmisc
       #~@ Build & Watch
       cargo-watch
       cargo-make
@@ -168,6 +170,25 @@
     test = "${bin.cargo} nextest run";
     sqlx = "${bin.sqlx}";
     sqlite3 = "${bin.sqlite3}";
+    port = ''
+    port="''${1:-3000}"
+    ${bin.lsof} -nP -iTCP:"$port" -sTCP:LISTEN || {
+      ${cmd.yellow} "No process is listening on TCP port $port."
+    }
+    '';
+    kill-port = ''
+    port="''${1:-3000}"
+    pids="$(${bin.lsof} -tiTCP:"$port" -sTCP:LISTEN 2>/dev/null || true)"
+    if [ -z "$pids" ]; then
+      ${cmd.yellow} "No process is listening on TCP port $port."
+      exit 0
+    fi
+    ${cmd.yellow} "Killing TCP port $port listener(s): $pids"
+    kill $pids
+    '';
+    kill-3000 = ''
+      exec kill-port 3000 "$@"
+    '';
     trash = bin.trashy;
     treefmtv = ''
       ${bin.treefmt} --version 2>&1 |
