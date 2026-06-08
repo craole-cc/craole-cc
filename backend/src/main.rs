@@ -45,7 +45,8 @@ async fn main() -> anyhow::Result<()> {
     simple_logger::init_with_level(log::Level::Info).unwrap();
   });
 
-  let database_url = var("DATABASE_URL").unwrap_or_else(|_| "sqlite:./portfolio.db".to_string());
+  let database_url = var("DATABASE_URL")
+    .unwrap_or_else(|_| "sqlite://database/data/portfolio.db".to_string());
 
   log!("Connecting to database: {}", database_url);
   let pool = db::init(&database_url).await?;

@@ -20,12 +20,22 @@ need() {
 
 need cargo
 need rustc
+need cargo-leptos
+need wasm-bindgen
+need wasm-opt
+need sass
+need tailwindcss
 need sqlx
 need sqlite3
 
 printf '==> Toolchain\n'
 rustc --version
 cargo --version
+cargo leptos --version
+wasm-bindgen --version
+wasm-opt --version | head -n 1
+sass --version
+tailwindcss --help | head -n 1
 sqlx --version
 sqlite3 --version | head -n 1
 
@@ -57,6 +67,13 @@ test -f "$STATIC_DIST/site/data/manifest.json"
 STATIC_PROJECT_COUNT=$(sqlite3 database/data/portfolio.db 'SELECT COUNT(*) FROM projects;')
 printf 'Static export generated JSON manifest and site index; projects=%s\n' "$STATIC_PROJECT_COUNT"
 rm -rf "$STATIC_DIST"
+
+printf '\n==> Leptos full-stack build smoke test\n'
+cargo leptos build
+test -f target/site/pkg/craole-cc.js
+test -f target/site/pkg/craole-cc.wasm
+test -x target/debug/backend
+printf 'Leptos build generated server binary and WASM package.\n'
 
 printf '\n==> Checking SQLx offline metadata\n'
 cargo sqlx prepare --workspace --check --database-url "$DATABASE_URL"

@@ -33,8 +33,12 @@
       cargo-leptos
       trunk
       binaryen
+      wasm-bindgen-cli_0_2_108
+      dart-sass
+      tailwindcss
       sqlx-cli
       sqlite
+      gh
       #~@ Build & Watch
       cargo-watch
       cargo-make
