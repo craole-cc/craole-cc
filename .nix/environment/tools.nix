@@ -189,6 +189,65 @@
     kill-3000 = ''
       exec kill-port 3000 "$@"
     '';
+    leptoswatch = ''
+    port="''${1:-3000}"
+    if [ -z "$port" ]; then
+      port=3000
+    else
+      case "$port" in
+        *[!0-9]*)
+          port=3000
+          ;;
+        *)
+          shift
+          ;;
+      esac
+    fi
+
+    reload_port=$((port + 1))
+    occupied_ports=""
+    occupied_pids=""
+
+    for check_port in "$port" "$reload_port"; do
+      pids="$(${bin.lsof} -tiTCP:"$check_port" -sTCP:LISTEN 2>/dev/null || true)"
+      if [ -n "$pids" ]; then
+        occupied_ports="''${occupied_ports}''${occupied_ports:+ }$check_port"
+        occupied_pids="''${occupied_pids}''${occupied_pids:+ }$pids"
+        ${bin.lsof} -nP -iTCP:"$check_port" -sTCP:LISTEN || true
+      fi
+    done
+
+    if [ -n "$occupied_pids" ]; then
+      printf '\nPort(s) in use: %s\n' "$occupied_ports"
+      printf 'Kill listener(s) and continue with cargo leptos watch? [y/N] '
+      read -r answer
+      case "$answer" in
+        y|Y|yes|YES)
+          printf 'Killing listener PID(s): %s\n' "$occupied_pids"
+          kill $occupied_pids
+          for _ in 1 2 3 4 5 6 7 8 9 10; do
+            remaining=""
+            for check_port in "$port" "$reload_port"; do
+              remaining="''${remaining} $(${bin.lsof} -tiTCP:"$check_port" -sTCP:LISTEN 2>/dev/null || true)"
+            done
+            if [ -z "$(printf '%s' $remaining)" ]; then
+              break
+            fi
+            sleep 1
+          done
+          ;;
+        *)
+          printf 'Aborted. Run `port %s` or `kill-port %s` to inspect/clear manually.\n' "$port" "$port"
+          exit 1
+          ;;
+      esac
+    fi
+
+    printf 'Starting cargo leptos watch on http://127.0.0.1:%s (reload port %s)\n' "$port" "$reload_port"
+    LEPTOS_SITE_ADDR="127.0.0.1:$port" \
+      LEPTOS_RELOAD_PORT="$reload_port" \
+      exec ${bin.cargo} leptos watch "$@"
+    '';
     trash = bin.trashy;
     treefmtv = ''
       ${bin.treefmt} --version 2>&1 |

@@ -93,11 +93,13 @@ The database file is intentionally gitignored.
 ### 5. Start the dev server
 
 ```sh
-cargo leptos watch
+leptoswatch
 ```
 
 The app will be available at `http://127.0.0.1:3000`. The server hot-reloads on changes to Rust,
-SCSS, and assets.
+SCSS, and assets. Use `leptoswatch 3005` to run on another port; the reload port is set to the next
+port (`3006` in that example). If either port is already occupied, the shortcut prints the listener
+with `lsof` and asks whether to kill it before starting `cargo leptos watch`.
 
 ---
 

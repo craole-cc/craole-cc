@@ -96,6 +96,10 @@
         exec rust-commands kill-3000 "$@"
       '';
 
+      leptoswatch = pkgs'.writeShellScriptBin "leptoswatch" ''
+        exec rust-commands leptoswatch "$@"
+      '';
+
       welcome = mkPackage {
         pkgs = pkgs';
         name = "rust-welcome";
@@ -173,6 +177,10 @@
       kill-3000 = {
         description = "Kill the process listening on port 3000";
         run = ''exec rust-commands kill-port 3000 "$@"'';
+      };
+      leptoswatch = {
+        description = "Check/clear local Leptos ports, then run cargo leptos watch (default: 3000)";
+        run = ''exec rust-commands leptoswatch "$@"'';
       };
       watch-test = {
         description = "Watch cargo nextest";
@@ -254,6 +262,7 @@
       scripts.port
       scripts.kill-port
       scripts.kill-3000
+      scripts.leptoswatch
       scripts.welcome
       missionControl
       commandsAlias

@@ -136,10 +136,13 @@ The preferred development path is Nix because it provides the pinned Rust toolch
 nix develop
 cp .env.example .env
 ./scripts/init-db.rs
-cargo leptos watch
+leptoswatch
 ```
 
-Open `http://127.0.0.1:3000` once the server starts.
+Open `http://127.0.0.1:3000` once the server starts. If you need a different port, pass it as the
+first argument; for example, `leptoswatch 3005` starts the site on `http://127.0.0.1:3005` and uses
+`3006` for hot-reload. The shortcut checks the site and reload ports first and offers to kill stale
+listeners before starting `cargo leptos watch`.
 
 Without Nix, install the Rust toolchain from `rust-toolchain.toml`, then install the required Cargo
 CLIs:
