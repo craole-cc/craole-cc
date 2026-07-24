@@ -16,6 +16,21 @@ BI and data professional transitioning into Rust-first software, data, and AI en
 
 I am based in Mandeville, Jamaica, and interested in remote work that connects software development, data engineering, analytics engineering, AI applications, technical enablement, or developer education.
 
+## Creative and technical foundation
+
+Music was my first professional identity, not a side interest. I began playing keyboards and guitar as a teenager before choosing bass. I participated in church choir and band, formed a singing group while still a teenager, and eventually spent approximately 15–20 years working as a professional musician.
+
+I performed professionally with several Jamaican artists and local acts. I also co-founded **BLACK as COLE**, which released the single **“Musical Romance.”** Alongside performing, I maintained a longstanding interest in design, visual art, computers, and technical problem-solving.
+
+I studied Music Performance (Jazz) at Edna Manley College of the Visual and Performing Arts while maintaining full-time Tier 1 networking-support work. Earlier, I had begun IT studies at Northern Caribbean University but discontinued them when funding became unavailable. I eventually made a deliberate decision to pause music professionally and move fully into BPO, learning and development, BI, and software.
+
+## Early technical and working foundation
+
+- Taught Microsoft Office to working professionals in my first formal short-term role.
+- Worked as a computer technician, repairing and supporting people's computers.
+- Worked in the powerhouse laboratory at Windalco Bauxite in Kirkvine.
+- Maintained full-time Tier 1 networking-support work while studying music.
+
 ## Professional experience
 
 ### English as a Second Language Specialist

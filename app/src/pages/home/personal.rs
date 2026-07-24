@@ -12,14 +12,22 @@ pub fn About() -> impl IntoView {
         testing, and clear documentation."
       </p>
       <p>
-        "My professional background combines business intelligence, CRM and training-system work,
-        learning and development, technical support, and remote language teaching. Since July 2021,
-        I have delivered more than 5,000 remote English-learning sessions to approximately 1,800
-        students from more than 30 nationalities."
+        "Music was not a side interest in my life—it was my first professional identity. I started
+        as a teenager on keyboards and guitar before choosing bass. I sang and played in church,
+        formed a singing group as a teenager, and later spent approximately 15–20 years working as
+        a professional musician."
       </p>
       <p>
-        "I bring the same habits to software that I bring to teaching and operations: understand the
-        user's goal, make the system explainable, test the important paths, and finish the work."
+        "I studied Music Performance (Jazz) at Edna Manley College while working full time in Tier 1
+        networking support. I later paused music professionally and moved fully into BPO, learning
+        and development, BI, and software. Music, design, and technology have been connected
+        throughout my life."
+      </p>
+      <p>
+        "Since July 2021, I have delivered more than 5,000 remote English-learning sessions to
+        approximately 1,800 students from more than 30 nationalities. I bring the same habits to
+        software that I bring to teaching and operations: understand the user's goal, make the
+        system explainable, test the important paths, and finish the work."
       </p>
       <blockquote>
         "Code is another instrument of expression through structure 🎵⚙️"
@@ -60,8 +68,9 @@ pub fn Vision() -> impl IntoView {
         </div>
         <div class="vision__statement">
           <p>
-            "Raised on rhythm and shaped by teaching, BI, and operations, I now express the same
-            care through reliable software and data systems."
+            "Raised on rhythm, shaped by design, and grounded in technical work, I carried the habits of
+            a professional musician—listening closely, practicing deliberately, and collaborating
+            under pressure—into teaching, BI, operations, and now reliable software and data systems."
           </p>
         </div>
       </div>

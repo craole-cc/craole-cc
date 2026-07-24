@@ -16,13 +16,39 @@ and development, technical support, and remote language teaching. Since July 202
 more than **5,000 remote English-learning sessions** to approximately **1,800 students from more
 than 30 nationalities**.
 
-I bring the same habits to software that I bring to teaching and operations: understand the user's
-goal, make the system explainable, test the important paths, and finish the work. My roots in music
-production still shape how I think about structure, communication, and creative problem-solving.
+Music was not a side interest in my life—it was my first professional identity. I started as a
+teenager playing keyboards and guitar, eventually choosing bass. I sang and played in church, formed
+a singing group while still a teenager, and later spent approximately 15–20 years working as a
+professional musician. I also studied Music Performance (Jazz) at Edna Manley College of the Visual
+and Performing Arts while working full time in Tier 1 networking support.
+
+I eventually paused music as a career and moved fully into BPO, learning and development, BI, and
+software. That was a deliberate transition, not a replacement of one identity by another: music,
+design, and technology have been connected throughout my life.
 
 > **Code is another instrument of expression through structure** 🎵⚙️
 
+## 🎶 Creative and Technical Foundation
+
+- Began with keyboards and guitar as a teenager before specializing in bass.
+- Participated in church choir and band, and formed a singing group as a teenager.
+- Performed professionally with several Jamaican artists and local acts over approximately 15–20 years.
+- Co-founded **BLACK as COLE**, which released the single **“Musical Romance.”**
+- Studied Music Performance (Jazz) at Edna Manley College while maintaining full-time Tier 1 networking-support work.
+- Maintained a parallel interest in design, visual art, computers, and technical problem-solving.
+
 ## 💼 Professional Background
+
+My early working life combined teaching and technical roles before my music career became fully
+professional:
+
+- Taught Microsoft Office to working professionals in my first formal short-term role.
+- Worked as a computer technician, repairing and supporting people's computers.
+- Worked in the powerhouse laboratory at Windalco Bauxite in Kirkvine.
+- Began IT studies at Northern Caribbean University and later studied Jazz at Edna Manley College;
+  financial constraints shaped the timing and path of that education.
+- Maintained full-time Tier 1 networking-support work while studying at Edna Manley, before pausing
+  music professionally and moving fully into BPO and Learning & Development.
 
 - **English as a Second Language Specialist** — freelance and remote, July 2021–present; 5,000+
   sessions, approximately 1,800 students, and 30+ nationalities.
