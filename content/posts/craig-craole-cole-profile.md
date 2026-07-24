@@ -24,7 +24,9 @@ With BLACK as COLE, I released the single **“Musical Romance.”** My creative
 
 Technology was present early too. My first formal job was a short-term role teaching Microsoft Office to professionals. I then worked as a computer technician and in the powerhouse laboratory at WINDALCO’s Kirkvine operation. I started IT studies at Northern Caribbean University, but funding interrupted that path. Later, I studied Music Performance (Jazz) at the **Edna Manley College of the Visual and Performing Arts** while working full time in Tier 1 networking support.
 
-Eventually I made a deliberate decision to pause music professionally. I moved fully into business process outsourcing, then into learning and development, business intelligence, remote teaching, and now Rust-first software, data, and AI engineering. The thread through all of it is the same: learn a system deeply, communicate clearly, and make something useful.
+Eventually I made a deliberate decision to pause music professionally. I moved fully into business process outsourcing, then into learning and development, business intelligence, remote teaching, and now Rust-first software, data, and AI engineering. Development feels like a natural next chapter because it brings together design, creativity, and structured problem-solving. It also gives me room for sustained concentration and project-based, asynchronous work rather than requiring a rigid 9-to-5 rhythm. In that sense, the work is closer to music production than to a conventional office routine.
+
+The thread through all of it is the same: learn a system deeply, communicate clearly, and make something useful.
 
 ## Early technical and working foundation
 

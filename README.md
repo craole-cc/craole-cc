@@ -26,8 +26,13 @@ Visual and Performing Arts** while working full time in Tier 1 networking suppor
 
 Eventually I made a deliberate decision to pause music professionally. I moved fully into business
 process outsourcing, then into learning and development, business intelligence, remote teaching, and
-now Rust-first software, data, and AI engineering. The thread through all of it is the same: learn a
-system deeply, communicate clearly, and make something useful.
+now Rust-first software, data, and AI engineering. Development feels like a natural next chapter
+because it brings together design, creativity, and structured problem-solving. It also gives me room
+for sustained concentration and project-based, asynchronous work rather than requiring a rigid 9-to-5
+rhythm. In that sense, the work is closer to music production than to a conventional office routine.
+
+The thread through all of it is the same: learn a system deeply, communicate clearly, and make
+something useful.
 
 > **Code is another instrument of expression through structure** 🎵⚙️
 

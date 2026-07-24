@@ -27,7 +27,13 @@ pub fn About() -> impl IntoView {
         "I studied Music Performance (Jazz) at the Edna Manley College of the Visual and Performing
         Arts while working full time in Tier 1 networking support. I eventually made a deliberate
         decision to pause music professionally and move into business process outsourcing, learning
-        and development, BI, remote teaching, and software."
+        and development, BI, remote teaching, and software. Development feels like a natural next
+        chapter because it brings together design, creativity, and structured problem-solving."
+      </p>
+      <p>
+        "It also gives me room for sustained concentration and project-based, asynchronous work rather
+        than requiring a rigid 9-to-5 rhythm. In that sense, the work is closer to music production
+        than to a conventional office routine."
       </p>
       <p>
         "Since July 2021, I have delivered more than 5,000 remote English-learning sessions to
