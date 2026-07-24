@@ -15,12 +15,13 @@ pub fn About() -> impl IntoView {
         "Before software, I spent most of my adult life making music. I started on keyboards and
         guitar as a teenager, then settled on bass. Church choir and band gave me an early place to
         perform, and I formed a singing group while I was still a teenager. Music stayed at the
-        centre of my life for the next 15–20 years, including years as a professional musician."
+        centre of my life for the next 15–20 years, including long-term work with Skygrass, formerly
+        Blu Grass in the Sky, No-maddz, Stone Dub, Protoje & The Indiggnation, and BLACK as COLE."
       </p>
       <p>
-        "I later co-founded BLACK as COLE, and we released the single Musical Romance. Design and
-        visual art were part of that same creative life. They ran alongside music rather than arriving
-        later as a separate interest."
+        "With BLACK as COLE, I released the single Musical Romance. My creative interests have always
+        extended beyond music into the arts generally: performing, literary work, design, photography,
+        and anything that gives an idea a form."
       </p>
       <p>
         "I studied Music Performance (Jazz) at the Edna Manley College of the Visual and Performing

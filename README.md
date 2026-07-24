@@ -10,12 +10,13 @@
 Before software, I spent most of my adult life making music. I started on keyboards and guitar as a
 teenager, then settled on bass. Church choir and band gave me an early place to perform; I also
 formed a singing group while I was still a teenager. Music stayed at the centre of my life for the
-next 15–20 years, including years as a professional musician working with Jamaican artists and local
-acts.
+next 15–20 years, including long-term work with **Skygrass** (formerly **Blu Grass in the Sky**),
+**No-maddz**, **Stone Dub**, **Protoje & The Indiggnation**, and **BLACK as COLE**. I also played with
+many other Jamaican acts over the years.
 
-I later co-founded **BLACK as COLE**, and we released the single **“Musical Romance.”** Design and
-visual art were part of that same creative life. They were never separate interests I picked up after
-music; they ran alongside it.
+With BLACK as COLE, I released the single **“Musical Romance.”** My creative interests have always
+extended beyond music into the arts generally: performing, literary work, design, photography, and
+anything that gives an idea a form.
 
 Technology was present early too. My first formal job was a short-term role teaching Microsoft Office
 to professionals. I then repaired computers as a technician and worked in the powerhouse laboratory
