@@ -12,22 +12,26 @@ pub fn About() -> impl IntoView {
         testing, and clear documentation."
       </p>
       <p>
-        "Music was not a side interest in my life—it was my first professional identity. I started
-        as a teenager on keyboards and guitar before choosing bass. I sang and played in church,
-        formed a singing group as a teenager, and later spent approximately 15–20 years working as
-        a professional musician."
+        "Before software, I spent most of my adult life making music. I started on keyboards and
+        guitar as a teenager, then settled on bass. Church choir and band gave me an early place to
+        perform, and I formed a singing group while I was still a teenager. Music stayed at the
+        centre of my life for the next 15–20 years, including years as a professional musician."
       </p>
       <p>
-        "I studied Music Performance (Jazz) at Edna Manley College while working full time in Tier 1
-        networking support. I later paused music professionally and moved fully into BPO, learning
-        and development, BI, and software. Music, design, and technology have been connected
-        throughout my life."
+        "I later co-founded BLACK as COLE, and we released the single Musical Romance. Design and
+        visual art were part of that same creative life. They ran alongside music rather than arriving
+        later as a separate interest."
+      </p>
+      <p>
+        "I studied Music Performance (Jazz) at the Edna Manley College of the Visual and Performing
+        Arts while working full time in Tier 1 networking support. I eventually made a deliberate
+        decision to pause music professionally and move into business process outsourcing, learning
+        and development, BI, remote teaching, and software."
       </p>
       <p>
         "Since July 2021, I have delivered more than 5,000 remote English-learning sessions to
-        approximately 1,800 students from more than 30 nationalities. I bring the same habits to
-        software that I bring to teaching and operations: understand the user's goal, make the
-        system explainable, test the important paths, and finish the work."
+        approximately 1,800 students from more than 30 nationalities. The thread through all of this
+        work is the same: learn a system deeply, communicate clearly, and make something useful."
       </p>
       <blockquote>
         "Code is another instrument of expression through structure 🎵⚙️"

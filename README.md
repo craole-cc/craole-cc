@@ -7,48 +7,41 @@
 
 ## 👤 About Me
 
-I'm a BI and data professional transitioning into **Rust-first software, data, and AI engineering**.
-I build production-minded applications, data workflows, and systems utilities with a focus on
-reproducibility, testing, and clear documentation.
+Before software, I spent most of my adult life making music. I started on keyboards and guitar as a
+teenager, then settled on bass. Church choir and band gave me an early place to perform; I also
+formed a singing group while I was still a teenager. Music stayed at the centre of my life for the
+next 15–20 years, including years as a professional musician working with Jamaican artists and local
+acts.
 
-My professional background combines business intelligence, CRM and training-system work, learning
-and development, technical support, and remote language teaching. Since July 2021, I have delivered
-more than **5,000 remote English-learning sessions** to approximately **1,800 students from more
-than 30 nationalities**.
+I later co-founded **BLACK as COLE**, and we released the single **“Musical Romance.”** Design and
+visual art were part of that same creative life. They were never separate interests I picked up after
+music; they ran alongside it.
 
-Music was not a side interest in my life—it was my first professional identity. I started as a
-teenager playing keyboards and guitar, eventually choosing bass. I sang and played in church, formed
-a singing group while still a teenager, and later spent approximately 15–20 years working as a
-professional musician. I also studied Music Performance (Jazz) at Edna Manley College of the Visual
-and Performing Arts while working full time in Tier 1 networking support.
+Technology was present early too. My first formal job was a short-term role teaching Microsoft Office
+to professionals. I then repaired computers as a technician and worked in the powerhouse laboratory
+at WINDALCO’s Kirkvine operation. I started IT studies at Northern Caribbean University, but funding
+interrupted that path. Later, I studied Music Performance (Jazz) at the **Edna Manley College of the
+Visual and Performing Arts** while working full time in Tier 1 networking support.
 
-I eventually paused music as a career and moved fully into BPO, learning and development, BI, and
-software. That was a deliberate transition, not a replacement of one identity by another: music,
-design, and technology have been connected throughout my life.
+Eventually I made a deliberate decision to pause music professionally. I moved fully into business
+process outsourcing, then into learning and development, business intelligence, remote teaching, and
+now Rust-first software, data, and AI engineering. The thread through all of it is the same: learn a
+system deeply, communicate clearly, and make something useful.
 
 > **Code is another instrument of expression through structure** 🎵⚙️
 
-## 🎶 Creative and Technical Foundation
-
-- Began with keyboards and guitar as a teenager before specializing in bass.
-- Participated in church choir and band, and formed a singing group as a teenager.
-- Performed professionally with several Jamaican artists and local acts over approximately 15–20 years.
-- Co-founded **BLACK as COLE**, which released the single **“Musical Romance.”**
-- Studied Music Performance (Jazz) at Edna Manley College while maintaining full-time Tier 1 networking-support work.
-- Maintained a parallel interest in design, visual art, computers, and technical problem-solving.
-
 ## 💼 Professional Background
 
-My early working life combined teaching and technical roles before my music career became fully
-professional:
+My early working life combined teaching and technical roles with music:
 
 - Taught Microsoft Office to working professionals in my first formal short-term role.
 - Worked as a computer technician, repairing and supporting people's computers.
-- Worked in the powerhouse laboratory at Windalco Bauxite in Kirkvine.
-- Began IT studies at Northern Caribbean University and later studied Jazz at Edna Manley College;
-  financial constraints shaped the timing and path of that education.
-- Maintained full-time Tier 1 networking-support work while studying at Edna Manley, before pausing
-  music professionally and moving fully into BPO and Learning & Development.
+- Worked in the powerhouse laboratory at WINDALCO’s Kirkvine operation.
+- Began IT studies at Northern Caribbean University and later studied Music Performance (Jazz) at
+  the Edna Manley College of the Visual and Performing Arts; financial constraints shaped the timing
+  and path of that education.
+- Maintained full-time Tier 1 networking-support work while studying music, before pausing music
+  professionally and moving fully into BPO and Learning & Development.
 
 - **English as a Second Language Specialist** — freelance and remote, July 2021–present; 5,000+
   sessions, approximately 1,800 students, and 30+ nationalities.

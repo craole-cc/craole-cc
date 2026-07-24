@@ -18,11 +18,13 @@ I am based in Mandeville, Jamaica, and interested in remote work that connects s
 
 ## Creative and technical foundation
 
-Music was my first professional identity, not a side interest. I began playing keyboards and guitar as a teenager before choosing bass. I participated in church choir and band, formed a singing group while still a teenager, and eventually spent approximately 15–20 years working as a professional musician.
+Before software, I spent most of my adult life making music. I started on keyboards and guitar as a teenager, then settled on bass. Church choir and band gave me an early place to perform, and I formed a singing group while I was still a teenager. Music stayed at the centre of my life for the next 15–20 years, including years as a professional musician working with Jamaican artists and local acts.
 
-I performed professionally with several Jamaican artists and local acts. I also co-founded **BLACK as COLE**, which released the single **“Musical Romance.”** Alongside performing, I maintained a longstanding interest in design, visual art, computers, and technical problem-solving.
+I later co-founded **BLACK as COLE**, and we released the single **“Musical Romance.”** Design and visual art were part of that same creative life. They ran alongside music rather than arriving later as a separate interest.
 
-I studied Music Performance (Jazz) at Edna Manley College of the Visual and Performing Arts while maintaining full-time Tier 1 networking-support work. Earlier, I had begun IT studies at Northern Caribbean University but discontinued them when funding became unavailable. I eventually made a deliberate decision to pause music professionally and move fully into BPO, learning and development, BI, and software.
+Technology was present early too. My first formal job was a short-term role teaching Microsoft Office to professionals. I then worked as a computer technician and in the powerhouse laboratory at WINDALCO’s Kirkvine operation. I started IT studies at Northern Caribbean University, but funding interrupted that path. Later, I studied Music Performance (Jazz) at the **Edna Manley College of the Visual and Performing Arts** while working full time in Tier 1 networking support.
+
+Eventually I made a deliberate decision to pause music professionally. I moved fully into business process outsourcing, then into learning and development, business intelligence, remote teaching, and now Rust-first software, data, and AI engineering. The thread through all of it is the same: learn a system deeply, communicate clearly, and make something useful.
 
 ## Early technical and working foundation
 
