@@ -13,6 +13,16 @@ and this project uses [Semantic Versioning](https://semver.org/).
 
 ### Fixed
 
+## [0.2.2] - 2026-07-24
+
+### Changed
+
+- Replaced placeholder and aspirational profile copy with an author-provided account of Craig Cole's music, creative, technical, BPO, L&D, BI, TEFL, and software journey.
+- Added the long-term music affiliations Skygrass (formerly Blu Grass in the Sky), No-maddz, Stone Dub, Protoje & The Indiggnation, and BLACK as COLE.
+- Added the public profile/CV post and expanded the website About and Professional Background sections with verified career evidence.
+- Clarified the connection between music, creative production, deep-focus work, asynchronous collaboration, and Rust-first software development.
+- Updated the Fluentbe and independent-freelance teaching history, including the May 2022 Fluentbe start and reduced current freelance pace.
+
 ## [0.2.1] - 2026-07-24
 
 ### Changed
@@ -61,6 +71,7 @@ and this project uses [Semantic Versioning](https://semver.org/).
 - Improved content database synchronization and static export behavior.
 - Added CI coverage for content validation, export paths, and database sync.
 
-[Unreleased]: https://github.com/craole-cc/craole-cc/compare/v0.2.1...HEAD
+[Unreleased]: https://github.com/craole-cc/craole-cc/compare/v0.2.2...HEAD
+[0.2.2]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.2
 [0.2.1]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.1
 [0.2.0]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.0
