@@ -13,6 +13,21 @@ and this project uses [Semantic Versioning](https://semver.org/).
 
 ### Fixed
 
+## [0.2.1] - 2026-07-24
+
+### Changed
+
+- Removed the obsolete Oxyde.Cloud deployment attribution from the footer.
+- Reduced GitHub Actions runner disk usage by disabling incremental and debug
+  artifact storage for CI builds.
+- Removed deprecated Magic Nix Cache integration and duplicate branch/PR CI
+  triggers.
+
+### Fixed
+
+- Made the CI target-directory selection independent of Python by using the
+  repository-local Cargo target directory by default.
+
 ## [0.2.0] - 2026-07-24
 
 ### Added
@@ -46,5 +61,6 @@ and this project uses [Semantic Versioning](https://semver.org/).
 - Improved content database synchronization and static export behavior.
 - Added CI coverage for content validation, export paths, and database sync.
 
-[Unreleased]: https://github.com/craole-cc/craole-cc/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/craole-cc/craole-cc/compare/v0.2.1...HEAD
+[0.2.1]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.1
 [0.2.0]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.0
