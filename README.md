@@ -24,8 +24,7 @@ precision and creativity I honed as a musician with the power of modern systems 
 
 ## 🌐 About this repository
 
-`craole-cc/craole-cc` is both my GitHub profile README and the source for the next version of
-[craole.cc](https://craole.cc): a Rust-first portfolio site that showcases engineering craft,
+`craole-cc/craole-cc` is both my GitHub profile README and the source for the [craole.cc](https://craole.cc): a Rust-first portfolio site that showcases engineering craft,
 personal style, and a local-first content workflow.
 
 The site is intentionally built on two tracks:
