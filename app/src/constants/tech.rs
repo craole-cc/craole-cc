@@ -32,11 +32,11 @@ pub const STACKS: &[Stack] = &[
   },
   Stack {
     title: "Data",
-    icons: icons![deltalake, surrealdb, neo4j, postgresql, sqlite],
+    icons: icons![sqlite],
   },
   Stack {
     title: "DevOps",
-    icons: icons![git, github, gitlab, docker],
+    icons: icons![git, github],
   },
   Stack {
     title: "Systems",
@@ -59,20 +59,28 @@ pub const AREAS: &[Area] = &[
   },
   Area {
     emoji: "📊",
-    title: "Data Engineering",
+    title: "Data and Business Intelligence",
     points: &[
-      "High-performance pipelines with Rust and Delta Lake",
-      "Graph databases (Neo4j) for complex relationship modelling",
-      "Analytics infrastructure built to scale",
+      "Data workflows that connect business requirements, process metrics, systems, and usable outputs",
+      "Validation, deterministic exports, and SQLite-backed application data",
+      "Analytics and CRM-focused problem solving grounded in BI experience",
+    ],
+  },
+  Area {
+    emoji: "🤖",
+    title: "AI and Automation",
+    points: &[
+      "Local inference and LLM workflows with privacy, cost control, and reproducibility in mind",
+      "Agent tooling, model routing, and documented developer automation",
     ],
   },
   Area {
     emoji: "⚙️",
     title: "Systems Utilities",
     points: &[
-      "Command-line tools that solve everyday problems elegantly",
-      "Cross-platform applications targeting Windows, Linux, and macOS",
-      "Developer productivity and automation tooling",
+      "Command-line tools and developer workflows that make complex systems easier to operate",
+      "Cross-platform development targeting Windows and Linux",
+      "Reproducible Nix environments and Rust toolchains",
     ],
   },
   Area {
