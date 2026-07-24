@@ -7,20 +7,32 @@
 
 ## 👤 About Me
 
-I build **full-stack applications, data infrastructure, and systems utilities**, usually with
-**Rust** at the core. From frontend interfaces to backend pipelines to command-line tools, I'm
-exploring the entire spectrum of what's possible with modern systems programming.
+I'm a BI and data professional transitioning into **Rust-first software, data, and AI engineering**.
+I build production-minded applications, data workflows, and systems utilities with a focus on
+reproducibility, testing, and clear documentation.
 
-With roots in **music production** (bassist, singer, producer) and 8+ years in **Learning &
-Development** (including TEFL tutoring for professionals), I've always been driven by
-**expression**. The alias **"Craole"** embodies this — a fusion of my Caribbean heritage and
-creative identity, reminding me that _**I have something to say**_.
+My professional background combines business intelligence, CRM and training-system work, learning
+and development, technical support, and remote language teaching. Since July 2021, I have delivered
+more than **5,000 remote English-learning sessions** to approximately **1,800 students from more
+than 30 nationalities**.
 
-Music remains part of my voice, but **code has expanded my range**. Every system I build, every
-pipeline I design, every utility I craft — it's all **expression through structure**, blending the
-precision and creativity I honed as a musician with the power of modern systems programming.
+I bring the same habits to software that I bring to teaching and operations: understand the user's
+goal, make the system explainable, test the important paths, and finish the work. My roots in music
+production still shape how I think about structure, communication, and creative problem-solving.
 
 > **Code is another instrument of expression through structure** 🎵⚙️
+
+## 💼 Professional Background
+
+- **English as a Second Language Specialist** — freelance and remote, July 2021–present; 5,000+
+  sessions, approximately 1,800 students, and 30+ nationalities.
+- **Business Intelligence Specialist & Training / Quality Coordinator** — NKCS, June 2019–February
+  2021; BI tools, CRM systems, requirements analysis, process improvement, and training operations.
+- **Learning & Development Officer** — HGS, October 2016–June 2019; learning-management systems,
+  development programs, leadership training, dashboards, and technical support.
+- **Process Trainer / Technical Support Brand Advocate** — HGS, September 2015–January 2017;
+  technical-support coaching, quality improvement, networking support, and a 98% matriculation-to-
+  production rate across five cohorts.
 
 ## 🌐 About this repository
 
@@ -51,27 +63,26 @@ Key implementation pieces:
 
 ### 🌐 Full-Stack Development
 
-- Web applications with Rust backends (Axum, Actix) + modern frontends (HTMX, Leptos, SPA frameworks)
-- End-to-end solutions from database to UI
-- Local-first content and data workflows that can degrade gracefully
+- Rust web applications with Leptos, Axum, server rendering, and WASM hydration.
+- End-to-end systems from SQLite schema and SQLx-checked queries to accessible UI.
+- Local-first content workflows that can validate, export, and support a low-cost fallback path.
 
-### 📊 Data Engineering
+### 📊 Data and Business Intelligence
 
-- High-performance data pipelines with Rust & Delta Lake
-- Graph databases (Neo4j) for complex relationship modeling
-- Analytics infrastructure that scales
+- Data workflows that connect business requirements, process metrics, systems, and usable outputs.
+- Content and application data pipelines with validation, deterministic exports, and SQLite sync.
+- Analytics and CRM-focused problem solving grounded in prior BI and operations experience.
 
-### ⚙️ Systems Utilities
+### 🤖 AI and Automation
 
-- Command-line tools that solve everyday problems elegantly
-- Cross-platform applications (Windows, Linux, macOS)
-- Developer productivity tools
+- Local inference and LLM workflows that prioritize privacy, cost control, and reproducibility.
+- Agent tooling, model routing, developer automation, and documented operational workflows.
 
-### 🔧 Infrastructure
+### 🔧 Infrastructure and Systems
 
-- Declarative NixOS configurations for reproducible environments
-- Infrastructure-as-code and automation
-- Self-hosted solutions
+- Reproducible Nix development environments and Rust toolchains.
+- Linux services, reverse proxies, deployment artifacts, backups, monitoring, and recovery.
+- Command-line tools and developer workflows that make complex systems easier to operate.
 
 ## 🧰 Tech Stack
 
@@ -91,15 +102,12 @@ Key implementation pieces:
 
 <!-- ![Actix](https://img.shields.io/badge/Actix-000000?style=for-the-badge&logo=actix&logoColor=white) -->
 
-### Data Engineering
+### Data & Business Systems
 
-![Apache Spark](https://img.shields.io/badge/Apache_Spark-E25A1C?style=for-the-badge&logo=apachespark&logoColor=white)
-![Databricks](https://img.shields.io/badge/Databricks-FF3621?style=for-the-badge&logo=databricks&logoColor=white)
-![Neo4j](https://img.shields.io/badge/Neo4j-008CC1?style=for-the-badge&logo=neo4j&logoColor=white)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
+![SQLite](https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white)
+![SQL](https://img.shields.io/badge/SQL-336791?style=for-the-badge&logo=postgresql&logoColor=white)
 
-<!-- ![Power BI](https://img.shields.io/badge/Power_BI-F2C811?style=for-the-badge&logo=powerbi&logoColor=black) -->
-<!-- ![Tableau](https://img.shields.io/badge/Tableau-E97627?style=for-the-badge&logo=tableau&logoColor=white) -->
+<!-- Professional BI/CRM experience includes tools whose exact versions and depth are documented in private career notes. -->
 
 ### DevOps & Systems
 
