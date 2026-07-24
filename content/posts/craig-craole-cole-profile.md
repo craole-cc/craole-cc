@@ -10,68 +10,57 @@ excerpt: "A fact-based profile of Craig 'Craole' Cole: BI, learning and developm
 
 # Craig “Craole” Cole
 
-## Positioning
+## About Me
 
-BI and data professional transitioning into Rust-first software, data, and AI engineering. I combine business intelligence, systems and process thinking, remote communication, learning design, Linux operations, and production-minded software practice.
+Music is my first love. It shaped most of my adult life, long before software did. I played keyboards, guitar, and bass with the church choir and band as a teenager, but bass is the one I fell for and chose as my primary instrument. By my late teens I'd formed my own singing group.
 
-I am based in Mandeville, Jamaica, and interested in remote work that connects software development, data engineering, analytics engineering, AI applications, technical enablement, or developer education.
+For fifteen to twenty years, music was the center of my life. I played and worked with Skygrass (formerly Blu Grass in the Sky), No-maddz, Stone Dub, Protoje & The Indiggnation, and BLACK as COLE, a reggae/neo-soul/jazz fusion project I founded to give a collective feeling a shape. As founder, I flexed every creative and production skill I had, wearing hats from manager to producer, web developer, videographer/director, and photographer, experience that quietly prepared me for everything that came later. My creative instincts have always run past music into performance, writing, design, and photography: anything that turns an idea into something real.
 
-## Creative and technical foundation
+Technology was always there too, a steady countermelody running alongside the music. My first job was teaching Microsoft Office to working professionals. From there I moved into computer repair, started IT studies at Northern Caribbean University, and took a shift role in WINDALCO's Kirkvine powerhouse lab. It was chemistry work, not tech, but it paid me to work well past midnight and taught me I do my best thinking outside a 9-to-5 rhythm. Later, I studied Music Performance (Jazz) at the Edna Manley College of the Visual and Performing Arts while holding down full-time Tier 1 networking support, working nights to make both worlds fit.
 
-Before software, I spent most of my adult life making music. I started on keyboards and guitar as a teenager, then settled on bass. Church choir and band gave me an early place to perform, and I formed a singing group while I was still a teenager. Music stayed at the centre of my life for the next 15–20 years, including long-term work with **Skygrass** (formerly **Blu Grass in the Sky**), **No-maddz**, **Stone Dub**, **Protoje & The Indiggnation**, and **BLACK as COLE**. I also played with many other Jamaican acts over the years.
+Eventually I made a deliberate choice to step back from professional music and move into business process outsourcing, starting as an agent and earning a promotion into training and development within three months. From there, my path split three ways: BPO (support, learning and development, business intelligence), TEFL (freelance and with Fluentbe), and now software, data, and AI engineering.
 
-With BLACK as COLE, I released the single **“Musical Romance.”** My creative interests have always extended beyond music into the arts generally: performing, literary work, design, photography, and anything that gives an idea a form.
+None of it feels like dissonance. It's the same motif, just returning in a new arrangement: learn a system deeply, communicate clearly, build something useful. What moved me about music was never just the performance itself, it was watching it land, seeing a room change because of something I helped create. That's the same thing that pulls me toward this work now: an idea, built into something real, that actually adds value to someone's life. Code is just another instrument for the same purpose.
 
-Technology was present early too. My first formal job was a short-term role teaching Microsoft Office to professionals. I then worked as a computer technician and in the powerhouse laboratory at WINDALCO’s Kirkvine operation. I started IT studies at Northern Caribbean University, but funding interrupted that path. Later, I studied Music Performance (Jazz) at the **Edna Manley College of the Visual and Performing Arts** while working full time in Tier 1 networking support.
-
-Eventually I made a deliberate decision to pause music professionally. I moved fully into business process outsourcing, then into learning and development, business intelligence, remote teaching, and now Rust-first software, data, and AI engineering. Development feels like a natural next chapter because it brings together design, creativity, and structured problem-solving. It also gives me room for sustained concentration and project-based, asynchronous work rather than requiring a rigid 9-to-5 rhythm. In that sense, the work is closer to music production than to a conventional office routine.
-
-The thread through all of it is the same: learn a system deeply, communicate clearly, and make something useful.
-
-## Early technical and working foundation
-
-- Taught Microsoft Office to working professionals in my first formal short-term role.
-- Worked as a computer technician, repairing and supporting people's computers.
-- Worked in the powerhouse laboratory at Windalco Bauxite in Kirkvine.
-- Maintained full-time Tier 1 networking-support work while studying music.
-
-## Professional experience
+## Professional Background
 
 ### English as a Second Language Specialist
 
-**Freelance and remote · July 2021 – Present**
+**Freelance and Fluentbe · July 2021 – Present**
 
-- Delivered more than 5,000 remote learning sessions to approximately 1,800 students from more than 30 nationalities.
-- Prepared learners for IELTS, TOEFL, interviews, presentations, and business meetings.
-- Built structured, goal-oriented learning environments through coaching, feedback, and self-directed remote delivery.
+- Earned TEFL certification and joined Fluentbe in May 2022; continue to freelance independently, though at a reduced pace.
+- Delivered 5,000+ remote learning sessions to roughly 1,800 students across 30+ nationalities as an independent freelancer.
+- Prepared learners for IELTS, TOEFL, job interviews, presentations, and high-stakes business meetings.
+- Built structured, goal-oriented learning environments through targeted coaching and feedback.
 
-### Business Intelligence Specialist & Training / Quality Coordinator
+### Business Intelligence Specialist & Training/Quality Coordinator
 
 **NKCS · June 2019 – February 2021**
 
-- Supported business development across Operations, IT Systems, HR Management, and Payroll.
-- Analyzed business requirements, processes, performance indicators, and improvement areas.
 - Designed, implemented, and maintained BI tools and CRM systems across departments.
-- Oversaw the rollout of the Training and Quality department during startup operations.
-- Designed and delivered leadership, skills, BI-tool, and CRM-system training.
+- Analyzed business requirements, operational processes, and KPIs to identify improvement areas.
+- Launched and oversaw a Training and Quality department during startup operations.
+- Designed and delivered leadership, skills, BI-tool, and CRM-system training programs.
 
 ### Learning & Development Officer
 
 **HGS · October 2016 – June 2019**
 
-- Supported design, testing, implementation, and local support for the global Training, Learning and Development Compass learning-management system.
-- Designed development programs aligned with organizational goals and identified training needs.
+- Promoted from process trainer into leadership and professional development.
+- Supported design, testing, implementation, and local rollout of a global LMS.
+- Built development programs aligned to organizational goals and identified training gaps.
 - Trained leaders and brand advocates in leadership, facilitation, Microsoft Office, customer experience, and sales strategy.
-- Supported the technical and creative design of forms, dashboards, and print media.
+- Contributed to the technical and creative design of forms, dashboards, and print media.
 
 ### Process Trainer / Technical Support Brand Advocate
 
 **HGS · September 2015 – January 2017**
 
-- Coached production teams through targeted training interventions and quality-improvement projects.
-- Participated in Kaizen events to reduce technical-support errors.
+- Started as an agent and was promoted to process trainer within three months.
+- Coached production teams through targeted training and quality-improvement initiatives.
+- Participated in Kaizen events to reduce technical-support error rates.
 - Supported Internet, VoIP, and networking issues for Global Capacity and Megapath customers.
-- Maintained a 98% matriculation-to-production rate across five technical-support training cohorts.
+- Maintained a 98% matriculation-to-production rate across five training cohorts.
 
 ## Technical direction
 

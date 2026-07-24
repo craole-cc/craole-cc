@@ -4,45 +4,34 @@ use crate::prelude::*;
 pub fn About() -> impl IntoView {
   view! {
     <section id="about" class="about">
-      <h2>"👤 About Me"</h2>
+      <h2>"About Me"</h2>
       <p>
-        "I'm Craig " <strong>{AUTHOR_ALIAS}</strong> " Cole, a BI and data professional
-        transitioning into Rust-first software, data, and AI engineering. I build production-minded
-        applications, data workflows, and systems utilities with a focus on reproducibility,
-        testing, and clear documentation."
+        "Music is my first love. It shaped most of my adult life, long before software did. I played
+        keyboards, guitar, and bass with the church choir and band as a teenager, but bass is the one
+        I fell for and chose as my primary instrument. By my late teens I'd formed my own singing group."
       </p>
       <p>
-        "Before software, I spent most of my adult life making music. I started on keyboards and
-        guitar as a teenager, then settled on bass. Church choir and band gave me an early place to
-        perform, and I formed a singing group while I was still a teenager. Music stayed at the
-        centre of my life for the next 15–20 years, including long-term work with Skygrass, formerly
-        Blu Grass in the Sky, No-maddz, Stone Dub, Protoje & The Indiggnation, and BLACK as COLE."
+        "For fifteen to twenty years, music was the center of my life. I played and worked with
+        Skygrass, formerly Blu Grass in the Sky, No-maddz, Stone Dub, Protoje & The Indiggnation, and
+        BLACK as COLE, a reggae/neo-soul/jazz fusion project I founded. As founder, I worked across
+        management, production, web development, videography, direction, and photography."
       </p>
       <p>
-        "With BLACK as COLE, I released the single Musical Romance. My creative interests have always
-        extended beyond music into the arts generally: performing, literary work, design, photography,
-        and anything that gives an idea a form."
+        "Technology was always there too. My first job was teaching Microsoft Office to working
+        professionals. From there I moved into computer repair, IT studies, WINDALCO's Kirkvine
+        powerhouse lab, and Music Performance (Jazz) at the Edna Manley College while holding down
+        full-time Tier 1 networking support."
       </p>
       <p>
-        "I studied Music Performance (Jazz) at the Edna Manley College of the Visual and Performing
-        Arts while working full time in Tier 1 networking support. I eventually made a deliberate
-        decision to pause music professionally and move into business process outsourcing, learning
-        and development, BI, remote teaching, and software. Development feels like a natural next
-        chapter because it brings together design, creativity, and structured problem-solving."
-      </p>
-      <p>
-        "It also gives me room for sustained concentration and project-based, asynchronous work rather
-        than requiring a rigid 9-to-5 rhythm. In that sense, the work is closer to music production
-        than to a conventional office routine."
+        "Eventually I moved from professional music into BPO, training and development, BI, TEFL, and
+        now software, data, and AI engineering. None of it feels like dissonance. It's the same motif:
+        learn a system deeply, communicate clearly, and build something useful."
       </p>
       <p>
         "Since July 2021, I have delivered more than 5,000 remote English-learning sessions to
-        approximately 1,800 students from more than 30 nationalities. The thread through all of this
-        work is the same: learn a system deeply, communicate clearly, and make something useful."
+        approximately 1,800 students from more than 30 nationalities. Code is another instrument for
+        turning an idea into something real that adds value to someone's life."
       </p>
-      <blockquote>
-        "Code is another instrument of expression through structure 🎵⚙️"
-      </blockquote>
     </section>
   }
 }
