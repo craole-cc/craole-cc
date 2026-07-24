@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - main
-      - feat/**
-      - fix/**
-      - ci/**
   pull_request:
   workflow_dispatch:
 
@@ -47,9 +44,6 @@ jobs:
 
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@v17
-
-      - name: Enable Nix cache
-        uses: DeterminateSystems/magic-nix-cache-action@v9
 
       - name: Show flake metadata
         run: nix flake metadata --accept-flake-config

@@ -27,9 +27,6 @@ jobs:
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@v17
 
-      - name: Enable Nix cache
-        uses: DeterminateSystems/magic-nix-cache-action@v9
-
       - name: Build static fallback site
         env:
           CRAOLE_STATIC_BASE_PATH: /craole.cc/
