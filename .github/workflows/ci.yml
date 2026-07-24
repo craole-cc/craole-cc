@@ -22,7 +22,26 @@ jobs:
     name: Rust workspace
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    env:
+      # Keep debug/test artifacts small on GitHub's finite-disk hosted runner.
+      CARGO_INCREMENTAL: 0
+      CARGO_PROFILE_DEV_DEBUG: 0
+      CARGO_PROFILE_TEST_DEBUG: 0
+      RUSTFLAGS: -Cdebuginfo=0
     steps:
+      - name: Free runner disk space
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo rm -rf \
+            /usr/share/dotnet \
+            /usr/local/lib/android \
+            /opt/ghc \
+            /usr/local/share/powershell \
+            /usr/local/lib/node_modules \
+            /opt/hostedtoolcache/CodeQL
+          df -h /
+
       - name: Checkout
         uses: actions/checkout@v4
 
