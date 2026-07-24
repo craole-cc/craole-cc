@@ -13,6 +13,12 @@ and this project uses [Semantic Versioning](https://semver.org/).
 
 ### Fixed
 
+## [0.2.4] - 2026-07-25
+
+### Fixed
+
+- Prevented the Log page's duplicate post resources from overwriting populated results with an empty client-side state after hydration.
+
 ## [0.2.3] - 2026-07-24
 
 ### Changed
@@ -80,7 +86,8 @@ and this project uses [Semantic Versioning](https://semver.org/).
 - Improved content database synchronization and static export behavior.
 - Added CI coverage for content validation, export paths, and database sync.
 
-[Unreleased]: https://github.com/craole-cc/craole-cc/compare/v0.2.3...HEAD
+[Unreleased]: https://github.com/craole-cc/craole-cc/compare/v0.2.4...HEAD
+[0.2.4]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.4
 [0.2.3]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.3
 [0.2.2]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.2
 [0.2.1]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.1
