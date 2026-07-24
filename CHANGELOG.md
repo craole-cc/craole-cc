@@ -13,6 +13,15 @@ and this project uses [Semantic Versioning](https://semver.org/).
 
 ### Fixed
 
+## [0.2.3] - 2026-07-24
+
+### Changed
+
+- Served read-only public pages from the generated static export, retaining the Rust application as the dynamic fallback.
+- Reduced first-paint hero work from fourteen external 1920px background images to one responsive 1200px image.
+- Removed the hero slideshow timer and repeated client-side image/hue processing.
+- Added compressed delivery and browser caching for static assets at the reverse-proxy layer.
+
 ## [0.2.2] - 2026-07-24
 
 ### Changed
@@ -71,7 +80,8 @@ and this project uses [Semantic Versioning](https://semver.org/).
 - Improved content database synchronization and static export behavior.
 - Added CI coverage for content validation, export paths, and database sync.
 
-[Unreleased]: https://github.com/craole-cc/craole-cc/compare/v0.2.2...HEAD
+[Unreleased]: https://github.com/craole-cc/craole-cc/compare/v0.2.3...HEAD
+[0.2.3]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.3
 [0.2.2]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.2
 [0.2.1]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.1
 [0.2.0]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.0
