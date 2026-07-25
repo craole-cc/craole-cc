@@ -11,6 +11,12 @@ cd "$ROOT"
 export DATABASE_URL="${DATABASE_URL:-sqlite://database/data/portfolio.db}"
 export SQLX_OFFLINE="${SQLX_OFFLINE:-false}"
 
+# cargo may be configured with a shared target directory (for example
+# ~/.cargo/global_target). Resolve the actual directory instead of assuming
+# target/ at the repository root.
+CARGO_TARGET_DIR="${CARGO_TARGET_DIR:-$(cargo metadata --format-version 1 --no-deps \
+  | python3 -c 'import json,sys; print(json.load(sys.stdin)["target_directory"])')}"
+
 need() {
   if ! command -v "$1" >/dev/null 2>&1; then
     printf 'error: required command not found: %s\n' "$1" >&2
@@ -72,7 +78,7 @@ printf '\n==> Leptos full-stack build smoke test\n'
 cargo leptos build
 test -f target/site/pkg/craole-cc.js
 test -f target/site/pkg/craole-cc.wasm
-test -x target/debug/backend
+test -x "$CARGO_TARGET_DIR/debug/backend"
 printf 'Leptos build generated server binary and WASM package.\n'
 
 printf '\n==> Checking SQLx offline metadata\n'

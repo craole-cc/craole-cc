@@ -163,6 +163,19 @@ fn Content(p: ProjectDetail) -> impl IntoView {
         <p class="dev-detail__desc">{p.description.clone()}</p>
       </header>
 
+      {(p.slug == "lms-data-analysis").then(|| view! {
+        <aside class="dev-detail__app-callout">
+          <div>
+            <span class="dev-detail__app-kicker">"PUBLIC ANALYSIS DEMO"</span>
+            <h2>"Explore the LMS lesson-data analysis"</h2>
+            <p>"Inspect the questions, workflows, and privacy-safe product built around a real operational data shape."</p>
+          </div>
+          <a class="dev-detail__app-link" href="/data/lms">
+            "Open analysis app →"
+          </a>
+        </aside>
+      })}
+
       <TechSection icons />
       <Links repo_url=p.repo_url live_url=p.live_url />
       <Screenshots shots=p.screenshots />

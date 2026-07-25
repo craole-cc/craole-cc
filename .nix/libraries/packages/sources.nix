@@ -102,19 +102,6 @@
     inputs =
       args.inputs or args;
   in {
-    ai = parseInput {
-      inherit inputs;
-      names = [
-        "AIAgents"
-        "ai-agents"
-        "ai-tooling"
-        "llm"
-        "llm-agents"
-        "AI"
-        "ai"
-      ];
-    };
-
     nix = parseInput {
       inherit inputs;
       names = [
@@ -127,14 +114,6 @@
       error = "nixpkgs";
     };
 
-    openclaw = parseInput {
-      inherit inputs;
-      names = [
-        "claw"
-        "OpenClaw"
-        "openclaw"
-      ];
-    };
 
     rust = parseInput {
       inherit inputs;
@@ -193,11 +172,7 @@
   }: let
     packages = resolvePackages inputs;
   in
-    [
-      (resolveOverlay packages.ai)
-      (resolveOverlay packages.openclaw)
-      (resolveOverlay packages.rust)
-    ]
+    [(resolveOverlay packages.rust)]
     ++ extraOverlays;
 
   perSystem = {
