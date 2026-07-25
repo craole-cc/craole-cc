@@ -52,7 +52,7 @@ fn SocialIcon(default: Icon, hover: Icon) -> impl IntoView {
         class="footer__social-link group"
       >
         <span class="footer__social-icon footer__social-icon--default">
-          <IconRender icon=default class="footer__social-svg color-muted" />
+          <IconRender icon=default class="footer__social-svg text-base" />
         </span>
         <span class="footer__social-icon footer__social-icon--hover">
           <IconRender icon=hover class="footer__social-svg" />
