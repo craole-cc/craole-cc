@@ -83,7 +83,7 @@ checksum = "7f202df86484c868dbad7eaa557ef785d5c66295e41b460ef922eca0723b842c"
 
 [[package]]
 name = "app"
-version = "0.1.0"
+version = "0.2.8"
 dependencies = [
  "ammonia",
  "cfg-if",
@@ -277,7 +277,7 @@ dependencies = [
 
 [[package]]
 name = "backend"
-version = "0.1.0"
+version = "0.2.8"
 dependencies = [
  "anyhow",
  "app",
@@ -551,7 +551,7 @@ checksum = "f67855af358fcb20fac58f9d714c94e2b228fe5694c1c9b4ead4a366343eda1b"
 
 [[package]]
 name = "contentctl"
-version = "0.1.0"
+version = "0.2.8"
 dependencies = [
  "rusqlite",
  "serde",
@@ -931,7 +931,7 @@ dependencies = [
 
 [[package]]
 name = "frontend"
-version = "0.1.0"
+version = "0.2.8"
 dependencies = [
  "app",
  "console_error_panic_hook",

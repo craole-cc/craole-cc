@@ -4,30 +4,34 @@ use crate::prelude::*;
 pub fn About() -> impl IntoView {
   view! {
     <section id="about" class="about">
-      <h2>"👤 About Me"</h2>
+      <h2>"About Me"</h2>
       <p>
-        "From frontend interfaces to backend pipelines to command-line tools, I'm
-          exploring the entire spectrum of what's possible with modern systems
-          programming."
+        "Music is my first love. It shaped most of my adult life, long before software did. I played
+        keyboards, guitar, and bass with the church choir and band as a teenager, but bass is the one
+        I fell for and chose as my primary instrument. By my late teens I'd formed my own singing group."
       </p>
       <p>
-        "With roots in " <strong>"music production"</strong>
-        " (bassist, singer, producer) and 8+ years in " <strong>"Learning & Development"</strong>
-        " (including TEFL tutoring for professionals), I've always been driven by "
-        <strong>"expression"</strong> ". The alias " <strong>{AUTHOR_ALIAS}</strong>
-        " embodies this — a fusion of my Caribbean heritage and creative identity,
-        reminding me that " <em>"I have something to say"</em> "."
+        "For fifteen to twenty years, music was the center of my life. I played and worked with
+        Skygrass, formerly Blu Grass in the Sky, No-maddz, Stone Dub, Protoje & The Indiggnation, and
+        BLACK as COLE, a reggae/neo-soul/jazz fusion project I founded. As founder, I worked across
+        management, production, web development, videography, direction, and photography."
       </p>
       <p>
-        "Music remains part of my voice, but " <strong>"code has expanded my range"</strong>
-        ". Every system I build, every pipeline I design, every utility I craft —
-        it's all " <strong>"expression through structure"</strong>
-        ", blending the precision and creativity I honed as a musician with the
-        power of modern systems programming."
+        "Technology was always there too. My first job was teaching Microsoft Office to working
+        professionals. From there I moved into computer repair, IT studies, WINDALCO's Kirkvine
+        powerhouse lab, and Music Performance (Jazz) at the Edna Manley College while holding down
+        full-time Tier 1 networking support."
       </p>
-      <blockquote>
-        "Code is another instrument of expression through structure 🎵⚙️"
-      </blockquote>
+      <p>
+        "Eventually I moved from professional music into BPO, training and development, BI, TEFL, and
+        now software, data, and AI engineering. None of it feels like dissonance. It's the same motif:
+        learn a system deeply, communicate clearly, and build something useful."
+      </p>
+      <p>
+        "Since July 2021, I have delivered more than 5,000 remote English-learning sessions to
+        approximately 1,800 students from more than 30 nationalities. Code is another instrument for
+        turning an idea into something real that adds value to someone's life."
+      </p>
     </section>
   }
 }
@@ -39,15 +43,14 @@ pub fn Philosophy() -> impl IntoView {
       <h2>"🎯 Philosophy"</h2>
       <div class="philosophy__card">
         <p>
-          "Code is expression. Just like music, it requires "
+          "Good engineering connects people, data, and dependable systems. It requires "
           <strong>"precision, creativity, and purpose."</strong>
-          " Whether I'm building a web app, designing a data pipeline, or crafting a
-          CLI tool, it's about solving problems in ways that feel "
-          <strong>"structured yet innovative"</strong> "."
+          " Whether I'm building a web application, designing a data workflow, or maintaining
+          infrastructure, I aim for solutions that are understandable, testable, and useful."
         </p>
         <p>
-          "From my musical background to teaching to building systems — it's all
-          connected through the desire to " <strong>"create and communicate"</strong> "."
+          "From music and teaching to BI and software, the common thread is the desire to "
+          <strong>"create and communicate"</strong> "."
         </p>
       </div>
     </section>
@@ -65,9 +68,7 @@ pub fn Vision() -> impl IntoView {
         </div>
         <div class="vision__statement">
           <p>
-            "Raised on rhythm, I've always expressed myself through structure —
-            first through music, now through code. The instrument changed.
-            The intent never did."
+            "Raised on rhythm, shaped by design, and grounded in craft, I carried the habits of a professional musician, listening closely, practicing deliberately, and collaborating under pressure, into every role since, and now reliable software and data systems. Different stage, same standard."
           </p>
         </div>
       </div>

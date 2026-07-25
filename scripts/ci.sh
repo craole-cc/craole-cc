@@ -13,15 +13,17 @@ export SQLX_OFFLINE="${SQLX_OFFLINE:-false}"
 
 # cargo may be configured with a shared target directory (for example
 # ~/.cargo/global_target). Resolve the actual directory instead of assuming
-# target/ at the repository root.
+# target/ at the repository root. Respect an explicit override for CI or
+# shared build caches.
 CARGO_TARGET_DIR="${CARGO_TARGET_DIR:-$(cargo metadata --format-version 1 --no-deps \
   | python3 -c 'import json,sys; print(json.load(sys.stdin)["target_directory"])')}"
+export CARGO_TARGET_DIR
 
 need() {
-  if ! command -v "$1" >/dev/null 2>&1; then
-    printf 'error: required command not found: %s\n' "$1" >&2
-    exit 127
-  fi
+	if ! command -v "$1" >/dev/null 2>&1; then
+		printf 'error: required command not found: %s\n' "$1" >&2
+		exit 127
+	fi
 }
 
 need cargo
@@ -59,8 +61,8 @@ PROJECT_COUNT=$(sqlite3 database/data/portfolio.db 'SELECT COUNT(*) FROM project
 POST_COUNT=$(sqlite3 database/data/portfolio.db 'SELECT COUNT(*) FROM posts;')
 printf 'Seeded projects=%s posts=%s\n' "$PROJECT_COUNT" "$POST_COUNT"
 if [ "$PROJECT_COUNT" -lt 1 ] || [ "$POST_COUNT" -lt 1 ]; then
-  printf 'error: content seed produced an empty required table\n' >&2
-  exit 1
+	printf 'error: content seed produced an empty required table\n' >&2
+	exit 1
 fi
 
 printf '\n==> Content static export smoke test\n'
@@ -85,16 +87,16 @@ printf '\n==> Checking SQLx offline metadata\n'
 cargo sqlx prepare --workspace --check --database-url "$DATABASE_URL"
 
 if [ "${STRICT_FORMAT:-0}" = "1" ]; then
-  printf '\n==> Rust formatting\n'
-  cargo fmt --all --check
+	printf '\n==> Rust formatting\n'
+	cargo fmt --all --check
 
-  if command -v treefmt >/dev/null 2>&1; then
-    printf '\n==> Repository formatting\n'
-    treefmt --fail-on-change
-  fi
+	if command -v treefmt >/dev/null 2>&1; then
+		printf '\n==> Repository formatting\n'
+		treefmt --fail-on-change
+	fi
 else
-  printf '\n==> Formatting\n'
-  printf 'Skipping formatting gate by default because the current tree is not rustfmt-clean. Set STRICT_FORMAT=1 to enforce it.\n'
+	printf '\n==> Formatting\n'
+	printf 'Skipping formatting gate by default because the current tree is not rustfmt-clean. Set STRICT_FORMAT=1 to enforce it.\n'
 fi
 
 printf '\n==> Cargo check\n'
@@ -105,9 +107,9 @@ cargo clippy --workspace --all-targets --all-features -- -D warnings
 
 printf '\n==> Tests\n'
 if cargo nextest --version >/dev/null 2>&1; then
-  cargo nextest run --workspace --no-tests pass
+	cargo nextest run --workspace --no-tests pass
 else
-  cargo test --workspace
+	cargo test --workspace
 fi
 
 printf '\nCI checks completed successfully.\n'

@@ -5,27 +5,61 @@
 ![Full Stack](https://img.shields.io/badge/Full_Stack-blueviolet?style=for-the-badge&logo=stackexchange&logoColor=white)
 ![Systems](https://img.shields.io/badge/Systems-green?style=for-the-badge&logo=linux&logoColor=white)
 
-## 👤 About Me
+## About Me
 
-I build **full-stack applications, data infrastructure, and systems utilities**, usually with
-**Rust** at the core. From frontend interfaces to backend pipelines to command-line tools, I'm
-exploring the entire spectrum of what's possible with modern systems programming.
+Music is my first love. It shaped most of my adult life, long before software did. I played keyboards, guitar, and bass with the church choir and band as a teenager, but bass is the one I fell for and chose as my primary instrument. By my late teens I'd formed my own singing group.
 
-With roots in **music production** (bassist, singer, producer) and 8+ years in **Learning &
-Development** (including TEFL tutoring for professionals), I've always been driven by
-**expression**. The alias **"Craole"** embodies this — a fusion of my Caribbean heritage and
-creative identity, reminding me that _**I have something to say**_.
+For fifteen to twenty years, music was the center of my life. I played and worked with Skygrass (formerly Blu Grass in the Sky), No-maddz, Stone Dub, Protoje & The Indiggnation, and BLACK as COLE, a reggae/neo-soul/jazz fusion project I founded to give a collective feeling a shape. As founder, I flexed every creative and production skill I had, wearing hats from manager to producer, web developer, videographer/director, and photographer, experience that quietly prepared me for everything that came later. My creative instincts have always run past music into performance, writing, design, and photography: anything that turns an idea into something real.
 
-Music remains part of my voice, but **code has expanded my range**. Every system I build, every
-pipeline I design, every utility I craft — it's all **expression through structure**, blending the
-precision and creativity I honed as a musician with the power of modern systems programming.
+Technology was always there too, a steady countermelody running alongside the music. My first job was teaching Microsoft Office to working professionals. From there I moved into computer repair, started IT studies at Northern Caribbean University, and took a shift role in WINDALCO's Kirkvine powerhouse lab. It was chemistry work, not tech, but it paid me to work well past midnight and taught me I do my best thinking outside a 9-to-5 rhythm. Later, I studied Music Performance (Jazz) at the Edna Manley College of the Visual and Performing Arts while holding down full-time Tier 1 networking support, working nights to make both worlds fit.
 
-> **Code is another instrument of expression through structure** 🎵⚙️
+Eventually I made a deliberate choice to step back from professional music and move into business process outsourcing, starting as an agent and earning a promotion into training and development within three months. From there, my path split three ways: BPO (support, learning and development, business intelligence), TEFL (freelance and with Fluentbe), and now software, data, and AI engineering.
 
-## 🌐 About this repository
+None of it feels like dissonance. It's the same motif, just returning in a new arrangement: learn a system deeply, communicate clearly, build something useful. What moved me about music was never just the performance itself, it was watching it land, seeing a room change because of something I helped create. That's the same thing that pulls me toward this work now: an idea, built into something real, that actually adds value to someone's life. Code is just another instrument for the same purpose.
 
-`craole-cc/craole-cc` is both my GitHub profile README and the source for the next version of
-[craole.cc](https://craole.cc): a Rust-first portfolio site that showcases engineering craft,
+## Professional Background
+
+### English as a Second Language Specialist
+
+**Freelance and Fluentbe · July 2021 – Present**
+
+- Earned TEFL certification and joined Fluentbe in May 2022; continue to freelance independently, though at a reduced pace.
+- Delivered 5,000+ remote learning sessions to roughly 1,800 students across 30+ nationalities as an independent freelancer.
+- Prepared learners for IELTS, TOEFL, job interviews, presentations, and high-stakes business meetings.
+- Built structured, goal-oriented learning environments through targeted coaching and feedback.
+
+### Business Intelligence Specialist & Training/Quality Coordinator
+
+**NKCS · June 2019 – February 2021**
+
+- Designed, implemented, and maintained BI tools and CRM systems across departments.
+- Analyzed business requirements, operational processes, and KPIs to identify improvement areas.
+- Launched and oversaw a Training and Quality department during startup operations.
+- Designed and delivered leadership, skills, BI-tool, and CRM-system training programs.
+
+### Learning & Development Officer
+
+**HGS · October 2016 – June 2019**
+
+- Promoted from process trainer into leadership and professional development.
+- Supported design, testing, implementation, and local rollout of a global LMS.
+- Built development programs aligned to organizational goals and identified training gaps.
+- Trained leaders and brand advocates in leadership, facilitation, Microsoft Office, customer experience, and sales strategy.
+- Contributed to the technical and creative design of forms, dashboards, and print media.
+
+### Process Trainer / Technical Support Brand Advocate
+
+**HGS · September 2015 – January 2017**
+
+- Started as an agent and was promoted to process trainer within three months.
+- Coached production teams through targeted training and quality-improvement initiatives.
+- Participated in Kaizen events to reduce technical-support error rates.
+- Supported Internet, VoIP, and networking issues for Global Capacity and Megapath customers.
+- Maintained a 98% matriculation-to-production rate across five training cohorts.
+
+
+
+`craole-cc/craole-cc` is both my GitHub profile README and the source for the [craole.cc](https://craole.cc): a Rust-first portfolio site that showcases engineering craft,
 personal style, and a local-first content workflow.
 
 The site is intentionally built on two tracks:
@@ -52,27 +86,26 @@ Key implementation pieces:
 
 ### 🌐 Full-Stack Development
 
-- Web applications with Rust backends (Axum, Actix) + modern frontends (HTMX, Leptos, SPA frameworks)
-- End-to-end solutions from database to UI
-- Local-first content and data workflows that can degrade gracefully
+- Rust web applications with Leptos, Axum, server rendering, and WASM hydration.
+- End-to-end systems from SQLite schema and SQLx-checked queries to accessible UI.
+- Local-first content workflows that can validate, export, and support a low-cost fallback path.
 
-### 📊 Data Engineering
+### 📊 Data and Business Intelligence
 
-- High-performance data pipelines with Rust & Delta Lake
-- Graph databases (Neo4j) for complex relationship modeling
-- Analytics infrastructure that scales
+- Data workflows that connect business requirements, process metrics, systems, and usable outputs.
+- Content and application data pipelines with validation, deterministic exports, and SQLite sync.
+- Analytics and CRM-focused problem solving grounded in prior BI and operations experience.
 
-### ⚙️ Systems Utilities
+### 🤖 AI and Automation
 
-- Command-line tools that solve everyday problems elegantly
-- Cross-platform applications (Windows, Linux, macOS)
-- Developer productivity tools
+- Local inference and LLM workflows that prioritize privacy, cost control, and reproducibility.
+- Agent tooling, model routing, developer automation, and documented operational workflows.
 
-### 🔧 Infrastructure
+### 🔧 Infrastructure and Systems
 
-- Declarative NixOS configurations for reproducible environments
-- Infrastructure-as-code and automation
-- Self-hosted solutions
+- Reproducible Nix development environments and Rust toolchains.
+- Linux services, reverse proxies, deployment artifacts, backups, monitoring, and recovery.
+- Command-line tools and developer workflows that make complex systems easier to operate.
 
 ## 🧰 Tech Stack
 
@@ -92,15 +125,12 @@ Key implementation pieces:
 
 <!-- ![Actix](https://img.shields.io/badge/Actix-000000?style=for-the-badge&logo=actix&logoColor=white) -->
 
-### Data Engineering
+### Data & Business Systems
 
-![Apache Spark](https://img.shields.io/badge/Apache_Spark-E25A1C?style=for-the-badge&logo=apachespark&logoColor=white)
-![Databricks](https://img.shields.io/badge/Databricks-FF3621?style=for-the-badge&logo=databricks&logoColor=white)
-![Neo4j](https://img.shields.io/badge/Neo4j-008CC1?style=for-the-badge&logo=neo4j&logoColor=white)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
+![SQLite](https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white)
+![SQL](https://img.shields.io/badge/SQL-336791?style=for-the-badge&logo=postgresql&logoColor=white)
 
-<!-- ![Power BI](https://img.shields.io/badge/Power_BI-F2C811?style=for-the-badge&logo=powerbi&logoColor=black) -->
-<!-- ![Tableau](https://img.shields.io/badge/Tableau-E97627?style=for-the-badge&logo=tableau&logoColor=white) -->
+<!-- Professional BI/CRM experience includes tools whose exact versions and depth are documented in private career notes. -->
 
 ### DevOps & Systems
 

@@ -6,7 +6,7 @@ pub fn App() -> impl IntoView {
   provide_meta_context();
 
   view! {
-    <Stylesheet id="leptos" href="/pkg/craole-cc.css" />
+    <Stylesheet id="leptos" href="/pkg/craole-cc.css?v=0.2.8" />
     <Title text="Craole-CC" />
     <ThemeProvider>
       <Router>
