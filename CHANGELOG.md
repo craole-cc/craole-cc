@@ -13,6 +13,12 @@ and this project uses [Semantic Versioning](https://semver.org/).
 
 ### Fixed
 
+## [0.2.8] - 2026-07-25
+
+### Fixed
+
+- Added an explicit stylesheet version query so browsers fetch the updated footer icon colors instead of retaining cached CSS.
+
 ## [0.2.7] - 2026-07-25
 
 ### Fixed
@@ -104,7 +110,8 @@ and this project uses [Semantic Versioning](https://semver.org/).
 - Improved content database synchronization and static export behavior.
 - Added CI coverage for content validation, export paths, and database sync.
 
-[Unreleased]: https://github.com/craole-cc/craole-cc/compare/v0.2.7...HEAD
+[Unreleased]: https://github.com/craole-cc/craole-cc/compare/v0.2.8...HEAD
+[0.2.8]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.8
 [0.2.7]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.7
 [0.2.6]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.6
 [0.2.5]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.5
