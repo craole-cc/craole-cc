@@ -68,9 +68,7 @@ pub fn Vision() -> impl IntoView {
         </div>
         <div class="vision__statement">
           <p>
-            "Raised on rhythm, shaped by design, and grounded in technical work, I carried the habits of
-            a professional musician—listening closely, practicing deliberately, and collaborating
-            under pressure—into teaching, BI, operations, and now reliable software and data systems."
+            "Raised on rhythm, shaped by design, and grounded in craft, I carried the habits of a professional musician, listening closely, practicing deliberately, and collaborating under pressure, into every role since, and now reliable software and data systems. Different stage, same standard."
           </p>
         </div>
       </div>

@@ -13,6 +13,12 @@ and this project uses [Semantic Versioning](https://semver.org/).
 
 ### Fixed
 
+## [0.2.5] - 2026-07-25
+
+### Changed
+
+- Replaced the homepage Vision statement with the updated craft, musicianship, and software/data systems wording.
+
 ## [0.2.4] - 2026-07-25
 
 ### Fixed
@@ -86,7 +92,8 @@ and this project uses [Semantic Versioning](https://semver.org/).
 - Improved content database synchronization and static export behavior.
 - Added CI coverage for content validation, export paths, and database sync.
 
-[Unreleased]: https://github.com/craole-cc/craole-cc/compare/v0.2.4...HEAD
+[Unreleased]: https://github.com/craole-cc/craole-cc/compare/v0.2.5...HEAD
+[0.2.5]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.5
 [0.2.4]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.4
 [0.2.3]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.3
 [0.2.2]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.2
