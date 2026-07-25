@@ -45,6 +45,8 @@
 
     &--default {
       opacity: 1;
+      color: var(--color-text);
+
       .group:hover & {
         opacity: 0;
       }

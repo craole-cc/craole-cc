@@ -13,6 +13,12 @@ and this project uses [Semantic Versioning](https://semver.org/).
 
 ### Fixed
 
+## [0.2.7] - 2026-07-25
+
+### Fixed
+
+- Ensured the footer's normal social icons use the primary text color despite brand-specific icon classes; hover colors remain unchanged.
+
 ## [0.2.6] - 2026-07-25
 
 ### Changed
@@ -98,7 +104,8 @@ and this project uses [Semantic Versioning](https://semver.org/).
 - Improved content database synchronization and static export behavior.
 - Added CI coverage for content validation, export paths, and database sync.
 
-[Unreleased]: https://github.com/craole-cc/craole-cc/compare/v0.2.6...HEAD
+[Unreleased]: https://github.com/craole-cc/craole-cc/compare/v0.2.7...HEAD
+[0.2.7]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.7
 [0.2.6]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.6
 [0.2.5]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.5
 [0.2.4]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.4
