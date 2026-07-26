@@ -13,6 +13,23 @@ and this project uses [Semantic Versioning](https://semver.org/).
 
 ### Fixed
 
+## [0.2.13] - 2026-07-26
+
+### Added
+
+- Added four locally authored bass artwork studies to the Art catalogue with captions, dimensions, tags, accessible alt text, and public PNG assets.
+
+### Changed
+
+- Consolidated the former Data view into the Dev project catalogue.
+- Kept `/data` as a compatibility route that renders the unified Dev catalogue instead of maintaining a second page.
+- Removed the stale Data page from the static exporter and sitemap.
+
+### Fixed
+
+- Restored the Art page's media records and assets after the media table was empty and no `content/media` source files were present.
+- Preserved all published project records in the Dev query; the catalogue currently contains the two project records defined by source content.
+
 ## [0.2.8] - 2026-07-25
 
 ### Fixed
@@ -110,8 +127,8 @@ and this project uses [Semantic Versioning](https://semver.org/).
 - Improved content database synchronization and static export behavior.
 - Added CI coverage for content validation, export paths, and database sync.
 
-[Unreleased]: https://github.com/craole-cc/craole-cc/compare/v0.2.8...HEAD
-[0.2.8]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.8
+[Unreleased]: https://github.com/craole-cc/craole-cc/compare/v0.2.13...HEAD
+[0.2.13]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.13
 [0.2.7]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.7
 [0.2.6]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.6
 [0.2.5]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.5

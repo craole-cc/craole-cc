@@ -812,11 +812,7 @@ pub fn export_static_site(
     .iter()
     .filter(|project| project.published.unwrap_or(false,),)
     .collect::<Vec<_,>>();
-  let data_projects = published_projects
-    .iter()
-    .copied()
-    .filter(|project| is_data_project(project,),)
-    .collect::<Vec<_,>>();
+
   let published_posts = posts
     .iter()
     .filter(|post| post.frontmatter.published.unwrap_or(false,),)
@@ -836,12 +832,6 @@ pub fn export_static_site(
   write_html_file(
     &output_dir.join("dev/index.html",),
     &render_projects_index(&published_projects,),
-  )?;
-  pages += 1;
-
-  write_html_file(
-    &output_dir.join("data/index.html",),
-    &render_data_index(&data_projects,),
   )?;
   pages += 1;
 
@@ -965,7 +955,7 @@ fn page_shell(title : &str, active : &str, body : &str,) -> String {
   let escaped_title = escape_html(title,);
   let home = site_path("",);
   let dev = site_path("dev/",);
-  let data = site_path("data/",);
+
   let log = site_path("log/",);
   let art = site_path("art/",);
   format!(
@@ -983,7 +973,7 @@ fn page_shell(title : &str, active : &str, body : &str,) -> String {
     <a class="brand" href="{home}" aria-label="Craole.CC home"><span class="brand__mark">CC</span><span>Craole.CC</span></a>
     <nav aria-label="Primary navigation">
       <a href="{dev}">Dev</a>
-      <a href="{data}">Data</a>
+
       <a href="{log}">Log</a>
       <a href="{art}">Art</a>
     </nav>
@@ -1076,26 +1066,6 @@ fn render_projects_index(projects : &[&ProjectContent],) -> String {
     &format!(
       "<section><h1>Projects</h1>{}</section>",
       render_project_cards(projects,)
-    ),
-  )
-}
-
-fn render_data_index(projects : &[&ProjectContent],) -> String {
-  let body = if projects.is_empty() {
-    "<p class=\"lede\">Business intelligence case studies are being prepared. Published projects \
-     tagged Business Intelligence, BI, Analytics, Dashboard, Power BI, Tableau, SQL, or related \
-     data tools will appear here.</p>"
-      .to_string()
-  } else {
-    render_project_cards(projects,)
-  };
-  page_shell(
-    "Data | Craole.CC",
-    "data",
-    &format!(
-      "<section><p class=\"eyebrow\">Business intelligence</p><h1>Data</h1><p \
-       class=\"lede\">Dashboards, analytics systems, reporting workflows, and data products that \
-       turn raw information into decisions.</p>{body}</section>",
     ),
   )
 }
@@ -1207,7 +1177,6 @@ fn render_sitemap(projects : &[&ProjectContent], posts : &[&PostContent],) -> St
   let mut urls = vec![
     "/".to_string(),
     "/dev/".to_string(),
-    "/data/".to_string(),
     "/log/".to_string(),
     "/art/".to_string(),
   ];
@@ -1228,33 +1197,6 @@ fn render_sitemap(projects : &[&ProjectContent], posts : &[&PostContent],) -> St
     .map(|url| format!("  <url><loc>{}</loc></url>\n", escape_html(&url)),)
     .collect::<String>();
   format!("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n{body}</urlset>\n")
-}
-
-fn is_data_project(project : &ProjectContent,) -> bool {
-  const DATA_TAGS : &[&str] = &[
-    "Data",
-    "Data Engineering",
-    "Business Intelligence",
-    "BI",
-    "Analytics",
-    "Dashboard",
-    "Power BI",
-    "Tableau",
-    "SQL",
-    "PostgreSQL",
-    "SQLite",
-    "Neo4j",
-    "Delta Lake",
-    "Spark",
-    "Databricks",
-  ];
-  project.tags.as_deref().is_some_and(|tags| {
-    tags.iter().any(|tag| {
-      DATA_TAGS
-        .iter()
-        .any(|data_tag| tag.eq_ignore_ascii_case(data_tag,),)
-    },)
-  },)
 }
 
 fn render_project_cards(projects : &[&ProjectContent],) -> String {

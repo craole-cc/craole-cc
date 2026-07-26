@@ -15,7 +15,8 @@ pub fn App() -> impl IntoView {
           <Routes fallback=|| "Page not found.".into_view()>
             <Route path=StaticSegment("") view=HomePage />
             <Route path=StaticSegment("dev") view=DevPage />
-            <Route path=StaticSegment("data") view=DataPage />
+            // Keep old bookmarks useful while consolidating Data into Dev.
+            <Route path=StaticSegment("data") view=DevPage />
             <Route path=(StaticSegment("dev"), ParamSegment("slug")) view=DevDetail />
             <Route path=StaticSegment("art") view=ArtPage />
             <Route path=(StaticSegment("art"), ParamSegment("slug")) view=ArtDetail />
