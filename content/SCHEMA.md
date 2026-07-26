@@ -20,7 +20,7 @@ created the schema.
 ## Workflow
 
 1. Add or edit files under `content/projects/`, `content/posts/`, or `content/media/`.
-2. Put referenced binary/static assets under `public/`.
+2. Put local referenced binary/static assets under `public/`; HTTPS media URLs may be used for externally hosted royalty-free media.
 3. Run `cargo run -p contentctl -- validate .`.
 4. Rebuild the local database if needed:
 
@@ -113,7 +113,8 @@ static site exported to dist: pages=7 projects=1 posts=1 media=0
 - Slugs are stable public identifiers. Prefer lowercase ASCII letters, numbers, and hyphens.
 - Keep titles human-readable and portfolio-ready.
 - Keep descriptions concise enough for cards, indexes, and search results.
-- Prefer relative, repository-owned media paths rooted in `public/`.
+- Prefer relative, repository-owned media paths rooted in `public/` for work we control; use HTTPS URLs for royalty-free externally hosted media when avoiding local storage is important.
+- Remote media is hotlinked at request time and is not downloaded, cached, or backed up by TheOracle. Keep attribution/source details in the caption or tags and expect external URLs to change or become unavailable.
 - Treat `published = false` as draft mode: valid content may exist without being surfaced publicly.
 
 ## Projects
@@ -213,7 +214,7 @@ Rules:
 - `title`, `slug`, `media_type`, and `file_path` are required.
 - `slug` must be unique and use lowercase ASCII letters, numbers, and hyphens.
 - `media_type` must be one of: `photo`, `video`.
-- `file_path` is rooted in `public/` and must point to an existing file.
+- `file_path` may be rooted in `public/` and point to an existing file, or may be an HTTPS URL for externally hosted media.
 - Published media requires non-empty `alt_text`.
 - `width` and `height`, when present, must be positive.
 - `taken_at`, when present, must use `YYYY-MM-DD`.

@@ -130,4 +130,55 @@ Body.
 
     assert!(report.is_valid(), "{report:#?}");
   }
+
+  #[test]
+  fn accepts_https_remote_media_url() {
+    let root = fixture("remote-media",);
+    write(
+      &root.join("content/media/remote.toml",),
+      r#"title = "Remote Study"
+slug = "remote-study"
+media_type = "photo"
+file_path = "https://images.unsplash.com/photo-1234567890-example"
+alt_text = "A remotely hosted study."
+published = true
+width = 1200
+height = 800
+tags = ["art"]
+"#,
+    );
+
+    let report = validate_content_root(&root,).unwrap();
+
+    assert!(report.is_valid(), "{report:#?}");
+  }
+
+  #[test]
+  fn rejects_http_remote_media_url() {
+    let root = fixture("insecure-remote-media",);
+    write(
+      &root.join("content/media/remote.toml",),
+      r#"title = "Remote Study"
+slug = "remote-study"
+media_type = "photo"
+file_path = "http://images.example.com/photo.jpg"
+alt_text = "An insecure remote study."
+published = true
+width = 1200
+height = 800
+tags = ["art"]
+"#,
+    );
+
+    let report = validate_content_root(&root,).unwrap();
+
+    assert!(!report.is_valid());
+    assert!(
+      report
+        .errors
+        .iter()
+        .any(|error| error.message.contains("must use HTTPS")),
+      "{report:#?}"
+    );
+  }
 }

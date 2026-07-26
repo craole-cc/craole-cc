@@ -13,6 +13,18 @@ and this project uses [Semantic Versioning](https://semver.org/).
 
 ### Fixed
 
+## [0.2.14] - 2026-07-26
+
+### Added
+
+- Allow Art media to use HTTPS URLs for externally hosted royalty-free images, including Unsplash-style image hosts, without storing the binary on TheOracle.
+- Add validation coverage for accepted HTTPS media URLs and rejected insecure HTTP URLs.
+
+### Changed
+
+- Keep local `public/` media and remote HTTPS media as supported alternatives through the same `file_path` field.
+- Document the storage, hotlinking, attribution, and link-rot trade-offs of remote media.
+
 ## [0.2.13] - 2026-07-26
 
 ### Added
@@ -127,8 +139,8 @@ and this project uses [Semantic Versioning](https://semver.org/).
 - Improved content database synchronization and static export behavior.
 - Added CI coverage for content validation, export paths, and database sync.
 
-[Unreleased]: https://github.com/craole-cc/craole-cc/compare/v0.2.13...HEAD
-[0.2.13]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.13
+[Unreleased]: https://github.com/craole-cc/craole-cc/compare/v0.2.14...HEAD
+[0.2.14]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.14
 [0.2.7]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.7
 [0.2.6]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.6
 [0.2.5]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.5

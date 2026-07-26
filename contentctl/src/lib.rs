@@ -505,6 +505,20 @@ fn validate_tags(
 fn validate_public_asset(
   root : &Path, path : &Path, asset : &str, report : &mut ValidationReport,
 ) {
+  if asset.starts_with("https://",) {
+    if asset.len() <= "https://".len()
+      || asset.chars().any(char::is_whitespace,)
+      || !asset["https://".len() ..].contains('.',)
+    {
+      report.error(path, format!("invalid remote media URL: `{asset}`"),);
+    }
+    return;
+  }
+  if asset.starts_with("http://",) {
+    report.error(path, format!("remote media URL must use HTTPS: `{asset}`"),);
+    return;
+  }
+
   let relative = asset.trim_start_matches('/',);
   if relative.starts_with("..",) || relative.contains("/../",) {
     report.error(
