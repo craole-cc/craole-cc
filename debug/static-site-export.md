@@ -71,4 +71,5 @@ nix develop --command bash scripts/ci.sh
 ## Next possible phase
 
 Improve static rendering fidelity by sharing design tokens or adding a small Markdown renderer, then
-add deployment docs for GitHub Pages or Cloudflare Pages.
+keep the static export documented as a local preview and rollback artifact for the existing
+server-backed deployment.
