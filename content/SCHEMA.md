@@ -231,7 +231,29 @@ Recommended authoring checklist:
 - Keep large originals outside the repo unless they are intentionally part of the delivered site.
 - Use tags for filtering and related-content discovery.
 
-## `content` reference
+## Unsplash-hosted Art media
+
+Use the direct Unsplash CDN image URL, not the ordinary Unsplash photo-page URL. Create one metadata file under
+`content/assets/media/`:
+
+```toml
+title = "Blue Mountain Study"
+slug = "blue-mountain-study"
+caption = "Photo by Photographer Name on Unsplash."
+media_type = "photo"
+file_path = "https://images.unsplash.com/photo-1234567890-example?auto=format&fit=crop&w=1600&q=85"
+alt_text = "Blue mountains beneath a pale sky."
+published = true
+sort_order = 50
+width = 1600
+height = 900
+tags = ["art", "photography", "unsplash"]
+```
+
+Use the image URL copied from Unsplash's download/image link and preserve photographer attribution in the caption.
+The validator accepts HTTPS URLs and the exporter preserves them without downloading or copying the image. Do not use
+`https://unsplash.com/photos/...` as `file_path`; that is a photo page, not an image resource.
+
 
 ```text
 Usage: content <command> [args]
