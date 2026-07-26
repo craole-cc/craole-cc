@@ -50,3 +50,28 @@ jobs:
 
       - name: Run project CI
         run: nix develop --accept-flake-config --command bash scripts/ci.sh
+
+  deploy:
+    name: Deploy production
+    needs: rust
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: [self-hosted, linux, ARM64, theoracle]
+    timeout-minutes: 30
+    environment:
+      name: production
+      url: https://craole.cc/
+    env:
+      CARGO_INCREMENTAL: 0
+      CARGO_TARGET_DIR: ${{ github.workspace }}/target
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build production release
+        run: nix develop --accept-flake-config --command bash -lc 'cargo leptos build --release'
+
+      - name: Export static fallback
+        run: nix develop --accept-flake-config --command bash -lc 'cargo run -p contentctl -- export-static . .deploy-static'
+
+      - name: Deploy and verify
+        run: sudo /usr/local/sbin/craole-cc-deploy
