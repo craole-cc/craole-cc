@@ -33,7 +33,7 @@
       cargo-leptos
       trunk
       binaryen
-      wasm-bindgen-cli_0_2_108
+      wasm-bindgen-cli_0_2_126
       dart-sass
       tailwindcss
       sqlx-cli

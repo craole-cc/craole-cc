@@ -1,11 +1,11 @@
-# Contributing to craole.cc
+# Contributing to [Craole.CC](https://craole.cc)
 
 Thanks for your interest! This document covers how to get the project running locally, how the
 content pipeline works, and what to run before opening a pull request.
 
 ---
 
-## Project goals
+## Project Goals
 
 This repository is a Rust portfolio site with a deliberate dual-track architecture:
 
@@ -33,16 +33,16 @@ content source of truth harder to validate, seed, or eventually pre-render.
 
 ---
 
-## Fresh checkout setup
+## Fresh Checkout Setup
 
-### 1. Clone the repo
+### 1. Clone the Repo
 
 ```sh
 git clone https://github.com/craole-cc/craole-cc.git
 cd craole-cc
 ```
 
-### 2. Enter the dev environment
+### 2. Enter the Dev Environment
 
 Preferred:
 
@@ -60,7 +60,7 @@ sqlx --version
 sqlite3 --version
 ```
 
-### 3. Configure environment
+### 3. Configure Environment
 
 ```sh
 cp .env.example .env
@@ -75,7 +75,7 @@ DATABASE_URL=sqlite://./database/data/portfolio.db
 `SQLX_OFFLINE=true` may be useful for builds that rely on committed `.sqlx/` metadata, but leave it
 unset or set it to `false` when refreshing query metadata against a live local database.
 
-### 4. Initialize the database
+### 4. Initialize the Database
 
 ```sh
 ./scripts/init-db.rs
@@ -88,22 +88,22 @@ To wipe and start fresh:
 ```
 
 The script creates `database/data/portfolio.db` and applies migrations from `database/migrations/`.
-The database file is intentionally gitignored.
+The database file is intentionally ignored from git.
 
-### 5. Start the dev server
+### 5. Start the Dev Server
 
 ```sh
 leptoswatch
 ```
 
 The app will be available at `http://127.0.0.1:3000`. The server hot-reloads on changes to Rust,
-SCSS, and assets. Use `leptoswatch 3005` to run on another port; the reload port is set to the next
+Sass, and assets. Use `leptoswatch 3005` to run on another port; the reload port is set to the next
 port (`3006` in that example). If either port is already occupied, the shortcut prints the listener
 with `lsof` and asks whether to kill it before starting `cargo leptos watch`.
 
 ---
 
-## Repository structure
+## Repository Structure
 
 ```text
 .
@@ -116,7 +116,7 @@ with `lsof` and asks whether to kill it before starting `cargo leptos watch`.
 │   ├── posts/            # Markdown posts with frontmatter
 │   ├── projects/         # TOML project records
 │   └── SCHEMA.md         # Content format and validation rules
-├── assets/           # CLI for content validation, SQLite seed export, draft templates
+├── content/           # CLI for content validation, SQLite seed export, draft templates
 ├── database/
 │   ├── data/             # Local SQLite database files; gitignored
 │   └── migrations/       # Durable schema and baseline SQL migrations
@@ -129,13 +129,13 @@ with `lsof` and asks whether to kill it before starting `cargo leptos watch`.
 
 ---
 
-## Content workflow
+## Content Workflow
 
-Content should start in `assets/`, not as ad-hoc SQL edits.
+Content should start in `content/`, not as ad-hoc SQL edits.
 
-### Create a draft template
+### Create a Draft Template
 
-Use `content new` to create the right file path with starter frontmatter/fields:
+Use `content new` to create the right filepath with starter frontmatter/fields:
 
 ```sh
 cargo run -p content -- new project my-project
@@ -146,9 +146,9 @@ cargo run -p content -- new media portfolio-screenshot
 Generated project and post templates are valid unpublished drafts. Media templates still require you
 to add the referenced asset under ``assets/` before validation will pass.
 
-The command refuses invalid slugs and will not overwrite an existing content file.
+Invalid slugs are rejected, and existing content files will not be overwritten.
 
-### Validate content
+### Validate Content
 
 ```sh
 cargo run -p content -- validate .
@@ -160,7 +160,7 @@ Expected success output:
 content validation passed
 ```
 
-### Export content into SQLite
+### Export Content into SQLite
 
 After migrations have created the schema, export the Git-tracked content into the local database:
 
@@ -171,7 +171,7 @@ cargo run -p content -- export-sql . | sqlite3 database/data/portfolio.db
 This is the same smoke-test path used by `scripts/ci.sh`. It currently checks that at least one
 project and one post are seeded.
 
-### Sync content into SQLite
+### Sync Content into SQLite
 
 Use `sync-db` when you want `content` to apply migrations and seed the local database in one step:
 
@@ -188,9 +188,9 @@ Successful output includes seeded table counts:
 content database synced: projects=1 posts=1 media=0
 ```
 
-### Export static JSON
+### Export Static JSON
 
-Use `export-json` to generate static-friendly content data for a fallback site or future prerenderer:
+Use `export-json` to generate static-friendly content data for a fallback site or future pre-renderer:
 
 ```sh
 cargo run -p content -- export-json . dist/data
@@ -207,7 +207,7 @@ dist/data/manifest.json
 
 The command validates content before writing files and refuses to export invalid content.
 
-### Export a static fallback site
+### Export a Static Fallback Site
 
 Use `export-static` to generate a minimal HTML fallback site plus the same JSON data files:
 
@@ -232,7 +232,7 @@ dist/data/*.json
 The generated HTML is intentionally simple: it is a deployment safety net and preview artifact, not a
 replacement for the full Leptos/Axum SSR site.
 
-### Add a project
+### Add a Project
 
 1. Create a draft template:
 
@@ -249,7 +249,7 @@ replacement for the full Leptos/Axum SSR site.
 
 See [content/SCHEMA.md](./content/SCHEMA.md) for complete field rules and examples.
 
-### Add a post
+### Add a Post
 
 1. Create a draft template:
 
@@ -265,12 +265,12 @@ See [content/SCHEMA.md](./content/SCHEMA.md) for complete field rules and exampl
 
 ---
 
-## Database and SQLx workflow
+## Database and SQLx Workflow
 
 The backend automatically applies pending migrations on startup via `sqlx::migrate!`, but local
 compile-time query checks still need either a live database or committed SQLx metadata.
 
-### Live database path
+### Live Database Path
 
 ```sh
 export DATABASE_URL=sqlite://./database/data/portfolio.db
@@ -278,7 +278,7 @@ export DATABASE_URL=sqlite://./database/data/portfolio.db
 cargo check --workspace
 ```
 
-### Refresh SQLx metadata
+### Refresh SQLx Metadata
 
 Run this after changing SQL queries, migrations, or query result shapes:
 
@@ -291,7 +291,7 @@ cargo sqlx prepare --workspace --database-url "$DATABASE_URL"
 Commit the resulting `.sqlx/*.json` changes when they correspond to intentional query/schema
 changes.
 
-### Offline build path
+### Offline Build Path
 
 ```sh
 SQLX_OFFLINE=true cargo check --workspace
@@ -301,7 +301,7 @@ If this fails with missing query metadata, refresh SQLx metadata with the live d
 
 ---
 
-## Quality gate before a PR
+## Quality Gate Before a PR
 
 Preferred command:
 
@@ -335,7 +335,7 @@ STRICT_FORMAT=1 bash scripts/ci.sh
 
 ---
 
-## Common troubleshooting
+## Common Troubleshooting
 
 ### `error: required command not found: cargo`
 
@@ -347,7 +347,7 @@ nix develop
 
 Or install Rust with `rustup` and ensure `cargo` is on `PATH`.
 
-### `sqlx` cannot connect to the database
+### `sqlx` Cannot Connect to the Database
 
 Check `DATABASE_URL` and make sure the database directory exists:
 
@@ -357,7 +357,7 @@ mkdir -p database/data
 ./scripts/init-db.rs
 ```
 
-### SQLx offline metadata is stale
+### `sqlx` Offline Metadata Is Stale
 
 Refresh it against a live database:
 
@@ -367,7 +367,7 @@ export DATABASE_URL=sqlite://./database/data/portfolio.db
 cargo sqlx prepare --workspace --database-url "$DATABASE_URL"
 ```
 
-### Content seed creates empty tables
+### Content Seed Creates Empty Tables
 
 Run validation first and confirm that at least one published project and one published post exist:
 
@@ -376,14 +376,14 @@ cargo run -p content -- validate .
 ls content/assets/projects content/assets/posts assets/media assets/audio
 ```
 
-### Static assets referenced by content are missing
+### Static Assets Referenced by Content Are Missing
 
 - Screenshot paths use the flat image namespace, so `/media/images/demo_home.webp` maps to
   `assets/media/images/demo_home.webp`.
 
 ---
 
-## Commit guidance
+## Commit Guidance
 
 - Keep migrations, SQL query files, `.sqlx/` metadata, and content changes in sync.
 - Prefer conventional commit messages, e.g. `feat: add project content seed`.

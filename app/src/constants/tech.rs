@@ -93,7 +93,7 @@ pub const AREAS : &[Area] = &[
     points : &[
       "Declarative NixOS configurations for reproducible environments",
       "Infrastructure-as-code and self-hosted services",
-      "Homelab automation with Raspberry Pi and Ansible",
+      // "Homelab automation with Raspberry Pi and Ansible",
     ],
   },
 ];

@@ -12,7 +12,7 @@ pub fn About() -> impl IntoView {
       </p>
       <p>
         "For fifteen to twenty years, music was the center of my life. I played and worked with
-        Skygrass, formerly Blu Grass in the Sky, No-maddz, Stone Dub, Protoje & The Indiggnation, and
+        Skygrass, formerly Blu Grass in the Sky, No-Maddz, Stone Dub, Protoje & The Indiggnation, and
         BLACK as COLE, a reggae/neo-soul/jazz fusion project I founded. As founder, I worked across
         management, production, web development, videography, direction, and photography."
       </p>
@@ -68,7 +68,7 @@ pub fn Vision() -> impl IntoView {
         </div>
         <div class="vision__statement">
           <p>
-            "Raised on rhythm, shaped by design, and grounded in craft, I carried the habits of a professional musician, listening closely, practicing deliberately, and collaborating under pressure, into every role since, and now reliable software and data systems. Different stage, same standard."
+            "Raised on rhythm, shaped by design, and grounded in craft, I carried the habits of a professional musician, listening closely, practicing deliberately, and collaborating under pressure, into every role since, and now reliable software and data systems. Same motifs, different arrangements."
           </p>
         </div>
       </div>

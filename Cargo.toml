@@ -1,30 +1,28 @@
 [workspace]
 resolver = "2"
-members = ["app", "frontend", "backend", "content"]
-
+members = ["app", "backend", "content", "frontend"]
 
 [workspace.package]
-edition = "2024"
-rust-version = "1.85.0"
 version = "0.2.17"
 authors = ["Craig 'Craole' Cole <info@craole.cc>"]
-license = "MIT"
+edition = "2024"
+rust-version = "1.85.0"
 description = "Craole.CC portfolio at the intersection of engineering and art"
-keywords = ["portfolio", "leptos", "fullstack", "webassembly"]
-categories = ["web-programming"]
+readme = "README.md"
 homepage = "https://craole.cc"
 repository = "https://github.com/craole-cc/craole-cc"
-readme = "README.md"
+license = "MIT"
+keywords = ["fullstack", "leptos", "portfolio", "webassembly"]
+categories = ["web-programming"]
 
-#╔═══════════════════════════════════════════════════════════╗
-#║ Dependencies                                              ║
-#╚═══════════════════════════════════════════════════════════╝
+# ╔═══════════════════════════════════════════════════════════╗
+# ║ Dependencies                                              ║
+# ╚═══════════════════════════════════════════════════════════╝
 [workspace.dependencies]
-
 # -- Internal Crates ----------------------------------------------------------
 app = { path = "app", default-features = false }
-frontend = { path = "frontend" }
 backend = { path = "backend" }
+frontend = { path = "frontend" }
 
 # -- Core Async & Runtime -----------------------------------------------------
 futures = "0.3.32"
@@ -33,49 +31,52 @@ tokio = { version = "1.45.0", features = ["full"] }
 # -- Web Framework (Axum + Tower) ---------------------------------------------
 axum = "0.8.4"
 http = "1.3.1"
+reqwest = "0.13.2"
 tower = { version = "0.5.2", features = ["full"] }
 tower-http = { version = "0.6.4", features = ["full"] }
-reqwest = "0.13.2"
 
+icondata = "0.7.0"
 # -- Leptos UI Framework ------------------------------------------------------
 leptos = { version = "0.8.2", features = ["nightly"] }
 leptos_axum = { version = "0.8.2" }
 leptos_icons = { version = "0.7.1" }
 leptos_meta = { version = "0.8.2" }
 leptos_router = { version = "0.8.2", features = ["nightly"] }
-icondata = "0.7.0"
 
-# -- WebAssembly (WASM) -------------------------------------------------------
-# NOTE: Locked to the highest version available in nixpkgs
-wasm-bindgen = "=0.2.108"
-wasm-bindgen-futures = "0.4"
-web-sys = { version = "=0.3.85", features = [
-  "CanvasRenderingContext2d",
-  "CssStyleDeclaration",
-  "History",
-  "HtmlCanvasElement",
-  "HtmlImageElement",
-  "ImageData",
-  "KeyboardEvent",
-  "MediaQueryList",
-  "Performance",
-  "ScrollBehavior",
-  "ScrollToOptions",
-  "Storage",
-  "Window",
-] }
 console_error_panic_hook = "0.1.7"
 console_log = "1.0.0"
+# -- WebAssembly (WASM) -------------------------------------------------------
+# NOTE: Locked to the highest version available in nixpkgs. See `.nix/environment/default.nix`
+wasm-bindgen = "0.2.126"
+wasm-bindgen-futures = "0.4"
+web-sys = {
+  version = "0.3.103",
+  features = [
+    "CanvasRenderingContext2d",
+    "CssStyleDeclaration",
+    "History",
+    "HtmlCanvasElement",
+    "HtmlImageElement",
+    "ImageData",
+    "KeyboardEvent",
+    "MediaQueryList",
+    "Performance",
+    "ScrollBehavior",
+    "ScrollToOptions",
+    "Storage",
+    "Window",
+  ]
+}
 
 # -- Database -----------------------------------------------------------------
-sqlx = { version = "0.8.6", features = ["sqlite", "runtime-tokio", "macros"] }
+sqlx = { version = "0.8.6", features = ["macros", "runtime-tokio", "sqlite"] }
 
 # -- Serialization ------------------------------------------------------------
 serde = { version = "1", features = ["derive"] }
 
-# -- Markdown Processing ------------------------------------------------------
-pulldown-cmark = "0.12"
 ammonia = "4"
+# -- Markdown Processing ------------------------------------------------------
+pulldown-cmark = "0.13.4"
 
 # -- Logging ------------------------------------------------------------------
 log = "0.4.27"
@@ -93,9 +94,28 @@ dotenvy = "0.15"
 cargo-run-bin = { version = "1.7.4", default-features = false }
 paste-complete = "1.0.15"
 
-#╔═══════════════════════════════════════════════════════════╗
-#║ Leptos Metadata                                           ║
-#╚═══════════════════════════════════════════════════════════╝
+[workspace.lints.clippy]
+cargo = { level = "warn", priority = 0 }
+cognitive_complexity = { level = "allow", priority = 1 }
+complexity = { level = "warn", priority = 0 }
+correctness = { level = "deny", priority = 0 }
+multiple_crate_versions = { level = "allow", priority = 1 }
+nursery = { level = "warn", priority = 0 }
+pedantic = { level = "warn", priority = 0 }
+perf = { level = "warn", priority = 0 }
+style = { level = "warn", priority = 0 }
+suspicious = { level = "warn", priority = 0 }
+
+# ╔═══════════════════════════════════════════════════════════╗
+# ║ Lints                                                     ║
+# ╚═══════════════════════════════════════════════════════════╝
+[workspace.lints.rust]
+unsafe_code = { level = "deny", priority = 0 }
+unused = { level = "allow", priority = -1 }
+
+# ╔═══════════════════════════════════════════════════════════╗
+# ║ Leptos Metadata                                           ║
+# ╚═══════════════════════════════════════════════════════════╝
 [[workspace.metadata.leptos]]
 name = "craole-cc"
 bin-package = "backend"
@@ -106,38 +126,18 @@ style-file = "style/main.scss"
 tailwind-input-file = "style/tailwind.css"
 
 assets-dir = "assets"
-site-addr = "127.0.0.1:3000"
-reload-port = 3001
+site-addr = "127.0.0.1:3005"
+reload-port = 3006
 
 # End-to-end testing
 # [Windows non-WSL]: use "[npx|pnpx].cmd playwright test"
 end2end-cmd = "pnpm test"
 end2end-dir = "end2end"
 
-
-#╔═══════════════════════════════════════════════════════════╗
-#║ Lints                                                     ║
-#╚═══════════════════════════════════════════════════════════╝
-[workspace.lints.rust]
-unsafe_code = { level = "deny", priority = 0 }
-unused = { level = "allow", priority = -1 }
-
-[workspace.lints.clippy]
-cargo = { level = "warn", priority = 0 }
-complexity = { level = "warn", priority = 0 }
-correctness = { level = "deny", priority = 0 }
-nursery = { level = "warn", priority = 0 }
-pedantic = { level = "warn", priority = 0 }
-perf = { level = "warn", priority = 0 }
-style = { level = "warn", priority = 0 }
-suspicious = { level = "warn", priority = 0 }
-cognitive_complexity = { level = "allow", priority = 1 }
-multiple_crate_versions = { level = "allow", priority = 1 }
-
-#╔═══════════════════════════════════════════════════════════╗
-#║ Build Profiles                                            ║
-#╚═══════════════════════════════════════════════════════════╝
+# ╔═══════════════════════════════════════════════════════════╗
+# ║ Build Profiles                                            ║
+# ╚═══════════════════════════════════════════════════════════╝
 [profile.release]
-codegen-units = 1
+opt-level = "z"
 lto = true
-opt-level = 'z'
+codegen-units = 1

@@ -1,3 +1,4 @@
+<!-- markdownlint-disable MD024 -->
 # Changelog
 
 All notable changes to Craole.CC are documented here.
@@ -17,160 +18,148 @@ and this project uses [Semantic Versioning](https://semver.org/).
 
 ### Changed
 
-- Merge servable static assets into one top-level `assets/` tree and remove the `public/` tree.
-- Move private content definitions into `content/assets/` so TOML and Markdown are not exposed by the Leptos asset root.
-- Add project media bundles with expansion into normal media rows, including `audio` media support.
-- Normalize the LMS project slug to `lms-analysis` and group its images, video, and future audio under one project bundle.
+- Consolidated static assets into `assets/` and removed `public/`.
+- Moved private content to `content/assets/` to protect TOML/Markdown files.
+- Introduced project media bundles with auto-expansion and audio support.
+- Normalized the LMS slug to `lms-analysis` and bundled its assets.
+
 ## [0.2.16] - 2026-07-26
 
 ### Changed
 
-- Consolidate local image sources under flat `assets/media/images/` naming.
-- Remove the redundant avatar-workshop, art, and project image directory levels.
-- Serve the canonical top-level `assets/` tree directly; no generated `public/` media copy is required.
-- Keep private metadata under `content/assets/`, outside the Leptos `assets-dir`.
+- Flattened local image assets under `assets/media/images/`.
+- Removed redundant avatar, art, and project image subdirectories.
+- Served `assets/` directly without generating a `public/` copy.
+- Isolated private metadata inside `content/assets/`, outside asset root.
 
 ## [0.2.15] - 2026-07-26
 
 ### Changed
 
-- Move authored portfolio material from `content/` into `assets/`.
-- Rename the content-validation/export CLI crate from `contentctl` to `content`.
-- Update workspace membership, tests, CI, documentation, migrations, and authoring commands to use the new separation:
-  - `assets/` is the authored content source of truth.
-  - `content/` is the Rust content tooling crate.
-- Preserve all validation, SQLite seed/export, static export, draft generation, and remote-media behavior.
+- Reorganized portfolio sources, moving material from `content/` to `assets/`.
+- Renamed the content CLI crate from `contentctl` to `content`.
+- Structured workspace so `assets/` holds raw data and `content/` holds code.
+- Maintained existing validation, SQLite seed, export, and media workflows.
 
 ## [0.2.14] - 2026-07-26
 
 ### Added
 
-- Allow Art media to use HTTPS URLs for externally hosted royalty-free images, including Unsplash-style image hosts, without storing the binary on TheOracle.
-- Add validation coverage for accepted HTTPS media URLs and rejected insecure HTTP URLs.
+- Support for external HTTPS URLs to avoid storing local binaries.
+- Validation rules to enforce HTTPS and reject insecure HTTP links.
 
 ### Changed
 
-- Keep local `assets/` media and remote HTTPS media as supported alternatives through the same `file_path` field.
-- Document the storage, hotlinking, attribution, and link-rot trade-offs of remote media.
+- Supported both local `assets/` and remote HTTPS media via `file_path`.
+- Documented storage, hotlinking, attribution, and link-rot trade-offs.
 
 ## [0.2.13] - 2026-07-26
 
 ### Added
 
-- Added four locally authored bass artwork studies to the Art catalogue with captions, dimensions, tags, accessible alt text, and public PNG assets.
+- Four bass artwork studies with metadata, alt text, and export files.
 
 ### Changed
 
-- Consolidated the former Data view into the Dev project catalogue.
-- Kept `/data` as a compatibility route that renders the unified Dev catalogue instead of maintaining a second page.
-- Removed the stale Data page from the static exporter and sitemap.
+- Merged the Data page into the Dev project catalogue.
+- Redirected `/data` to render the unified Dev catalogue.
+- Removed the obsolete Data page from the sitemap and static exporter.
 
 ### Fixed
 
-- Restored the Art page's media records and assets after the media table was empty and no `assets/media` source files were present.
-- Preserved all published project records in the Dev query; the catalogue currently contains the two project records defined by source content.
+- Restored Art page media records and assets after data loss.
+- Preserved all published project records in the Dev query.
 
 ## [0.2.8] - 2026-07-25
 
 ### Fixed
 
-- Added an explicit stylesheet version query so browsers fetch the updated footer icon colors instead of retaining cached CSS.
+- Versioned stylesheet queries to bypass cached footer icon styles.
 
 ## [0.2.7] - 2026-07-25
 
 ### Fixed
 
-- Ensured the footer's normal social icons use the primary text color despite brand-specific icon classes; hover colors remain unchanged.
+- Set footer social icons to text colour while keeping hover styles intact.
 
 ## [0.2.6] - 2026-07-25
 
 ### Changed
 
-- Changed the footer's default social icons from muted color to the primary text color while preserving the existing hover icons.
+- Updated default footer social icons from muted to primary text colour.
 
 ## [0.2.5] - 2026-07-25
 
 ### Changed
 
-- Replaced the homepage Vision statement with the updated craft, musicianship, and software/data systems wording.
+- Updated homepage Vision to focus on craft, music, and software systems.
 
 ## [0.2.4] - 2026-07-25
 
 ### Fixed
 
-- Prevented the Log page's duplicate post resources from overwriting populated results with an empty client-side state after hydration.
+- Prevented hydration from overwriting Log posts with an empty state.
 
 ## [0.2.3] - 2026-07-24
 
 ### Changed
 
-- Served read-only public pages from the generated static export, retaining the Rust application as the dynamic fallback.
-- Reduced first-paint hero work from fourteen external 1920px background images to one responsive 1200px image.
-- Removed the hero slideshow timer and repeated client-side image/hue processing.
-- Added compressed delivery and browser caching for static assets at the reverse-proxy layer.
+- Served read-only pages via static export with Axum dynamic fallback.
+- Replaced hero slideshow and heavy backgrounds with one 1200px image.
+- Enabled compression and browser caching for static assets at proxy layer.
 
 ## [0.2.2] - 2026-07-24
 
 ### Changed
 
-- Replaced placeholder and aspirational profile copy with an author-provided account of Craig Cole's music, creative, technical, BPO, L&D, BI, TEFL, and software journey.
-- Added the long-term music affiliations Skygrass (formerly Blu Grass in the Sky), No-maddz, Stone Dub, Protoje & The Indiggnation, and BLACK as COLE.
-- Added the public profile/CV post and expanded the website About and Professional Background sections with verified career evidence.
-- Clarified the connection between music, creative production, deep-focus work, asynchronous collaboration, and Rust-first software development.
-- Updated the Fluentbe and independent-freelance teaching history, including the May 2022 Fluentbe start and reduced current freelance pace.
+- Updated profile copy on Craig Cole's music and software background.
+- Included affiliations: Skygrass, No-Maddz, Stone Dub, Protoje, BLACK as COLE.
+- Expanded About, Background, and CV entries with verified career history.
+- Clarified links between music production, async work, and Rust dev.
+- Updated teaching history details for Fluentbe and freelance work.
 
 ## [0.2.1] - 2026-07-24
 
 ### Changed
 
-- Removed the obsolete Oxyde.Cloud deployment attribution from the footer.
-- Reduced GitHub Actions runner disk usage by disabling incremental and debug
-  artifact storage for CI builds.
-- Removed deprecated Magic Nix Cache integration and duplicate branch/PR CI
-  triggers.
+- Removed obsolete deployment attribution from the footer.
+- Stripped incremental/debug build storage to trim CI disk usage.
+- Dropped Magic Nix Cache and duplicate branch triggers from CI.
 
 ### Fixed
 
-- Made the CI target-directory selection independent of Python by using the
-  repository-local Cargo target directory by default.
+- Defaulted CI target directory selection to the local Cargo path.
 
 ## [0.2.0] - 2026-07-24
 
 ### Added
 
-- Added a local-first content pipeline for projects, posts, and media.
-- Added the `content` Rust CLI for validating content, generating draft
-  templates, exporting JSON, exporting SQL seed data, synchronizing SQLite,
-  and producing a static fallback site.
-- Added the Data page and structured project content.
-- Added bass-themed avatar artwork and a workshop of visual variants.
-- Added GitHub Actions CI and Pages deployment workflows.
-- Added developer diagnostics for port inspection and guarded Leptos watch
-  workflows.
-- Added content-pipeline documentation, validation tests, and static-export
-  smoke tests.
+- Local-first content pipeline for projects, posts, and media.
+- Dedicated `content` CLI for validation, drafts, exports, and static builds.
+- Data page, structured projects, and bass avatar variants.
+- GitHub Actions workflows for CI and Pages deployment.
+- Developer diagnostics and content pipeline documentation.
 
 ### Changed
 
-- Moved the portfolio toward a Rust-first Leptos/Axum/SQLite architecture with
-  a tracked Markdown/TOML content source of truth.
-- Improved the portfolio shell and aligned static pages with the application
-  experience.
-- Restored the end-to-end Leptos development build and documented the required
-  local workflow.
-- Updated the project metadata and repository links for the canonical
-  `craole-cc/craole-cc` repository.
+- Migrated portfolio to Leptos/Axum/SQLite with Markdown/TOML sources.
+- Aligned static page shell with the main app interface.
+- Restored local Leptos dev build workflow.
+- Pointed project metadata to `craole-cc/craole-cc`.
 
 ### Fixed
 
-- Repaired the Data page and removed unintended site branding.
-- Improved content database synchronization and static export behavior.
-- Added CI coverage for content validation, export paths, and database sync.
+- Fixed Data page render and removed unintended branding.
+- Improved database sync and static export reliability.
+- Test coverage for validation, export, and database sync in CI.
 
 [Unreleased]: https://github.com/craole-cc/craole-cc/compare/v0.2.17...HEAD
 [0.2.17]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.17
 [0.2.16]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.16
 [0.2.15]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.15
+[0.2.14]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.14
+[0.2.13]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.13
+[0.2.8]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.8
 [0.2.7]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.7
 [0.2.6]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.6
 [0.2.5]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.5
