@@ -30,7 +30,7 @@ dist/data/media.json
 dist/data/manifest.json
 ```
 
-The exporter also copies files from `public/` into the output directory so referenced assets are
+The exporter also copies files from ``assets/` into the output directory so referenced assets are
 available to the static fallback.
 
 ## Behavior

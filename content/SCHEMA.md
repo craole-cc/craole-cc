@@ -1,7 +1,8 @@
 # Content schema
 
-`assets/` is the Git-tracked source of truth for portfolio content and static media. `content` validates
-these files before they are synced into SQLite or used by a future static snapshot.
+`content/assets/` is the Git-tracked source of truth for portfolio content metadata. Top-level `assets/` contains
+only files that may be served by the site: images, project media, audio, fonts, icons, and the favicon. The
+`content` crate validates metadata before it is synced into SQLite or used by a static snapshot.
 
 Run commands from the repository root:
 
@@ -19,16 +20,11 @@ created the schema.
 
 ## Workflow
 
-1. Add or edit files under `assets/projects/`, `assets/posts/`, or `assets/media/`.
-2. Put local referenced image assets under `assets/media/images/`; HTTPS media URLs may be used for externally hosted royalty-free media.
+1. Add or edit metadata under `content/assets/projects/`, `content/assets/posts/`, or `content/assets/media/`.
+2. Put local referenced files under top-level `assets/`; project media belongs under `assets/media/projects/<project-slug>/`.
 3. Run `cargo run -p content -- validate .`.
-4. Sync canonical images into the generated runtime delivery directory:
 
-   ```bash
-   ./scripts/sync-media-assets.sh
-   ```
-
-5. Rebuild the local database if needed:
+4. Rebuild the local database if needed:
 
    ```bash
    ./scripts/init-db.rs --reset
@@ -53,12 +49,12 @@ cargo run -p content -- new media portfolio-screenshot
 
 The command writes to the matching content directory:
 
-- `project` → `assets/projects/<slug>.toml`
-- `post` → `assets/posts/<slug>.md`
-- `media` → `assets/media/<slug>.toml`
+- `project` → `content/assets/projects/<slug>.toml`
+- `post` → `content/assets/posts/<slug>.md`
+- `media` → `content/assets/media/<slug>.toml`
 
 It rejects invalid slugs and refuses to overwrite existing files. Project and post templates are valid
-unpublished drafts; media templates require the referenced asset to be added under `public/` before
+unpublished drafts; media templates require the referenced asset to be added under `assets/` before
 validation passes.
 
 ## Database sync
@@ -119,13 +115,13 @@ static site exported to dist: pages=7 projects=1 posts=1 media=0
 - Slugs are stable public identifiers. Prefer lowercase ASCII letters, numbers, and hyphens.
 - Keep titles human-readable and portfolio-ready.
 - Keep descriptions concise enough for cards, indexes, and search results.
-- Prefer relative, repository-owned media paths rooted in `public/` for work we control; use HTTPS URLs for royalty-free externally hosted media when avoiding local storage is important.
+- Prefer relative, repository-owned media paths rooted in `assets/` for work we control; use HTTPS URLs for royalty-free externally hosted media when avoiding local storage is important.
 - Remote media is hotlinked at request time and is not downloaded, cached, or backed up by TheOracle. Keep attribution/source details in the caption or tags and expect external URLs to change or become unavailable.
 - Treat `published = false` as draft mode: valid content may exist without being surfaced publicly.
 
 ## Projects
 
-Project files live in `assets/projects/*.toml`.
+Project files live in `content/assets/projects/*.toml`.
 
 ```toml
 title = "Demo Project"
@@ -149,8 +145,8 @@ Rules:
 - `repo_url` and `live_url`, when present, must be HTTP(S) URLs.
 - `sort_order`, when present, must be non-negative.
 - `featured = true` requires `published = true`.
-- Screenshot paths use the flat image namespace, so `/media/images/demo_home.webp` maps to
-  `assets/media/images/demo_home.webp`.
+- Screenshot paths use project asset paths, for example `/media/projects/lms-analysis/images/web-dashboard.png`, which maps to
+  `assets/media/projects/lms-analysis/images/web-dashboard.png`.
 
 Recommended authoring checklist:
 
@@ -162,7 +158,7 @@ Recommended authoring checklist:
 
 ## Posts
 
-Post files live in `assets/posts/*.md` and use YAML-style or TOML-style frontmatter.
+Post files live in `content/assets/posts/*.md` and use YAML-style or TOML-style frontmatter.
 
 ```markdown
 ---
@@ -199,7 +195,7 @@ Recommended authoring checklist:
 
 ## Media
 
-Media files live in `assets/media/*.toml`.
+Media files live in `content/assets/media/*.toml`.
 
 ```toml
 title = "Blue Mountain Study"
@@ -219,8 +215,8 @@ Rules:
 
 - `title`, `slug`, `media_type`, and `file_path` are required.
 - `slug` must be unique and use lowercase ASCII letters, numbers, and hyphens.
-- `media_type` must be one of: `photo`, `video`.
-- `file_path` may be rooted in `public/` and point to an existing file, or may be an HTTPS URL for externally hosted media.
+- `media_type` must be one of: `photo`, `video`, `audio`.
+- `file_path` may be rooted in `assets/` and point to an existing file, or may be an HTTPS URL for externally hosted media.
 - Published media requires non-empty `alt_text`.
 - `width` and `height`, when present, must be positive.
 - `taken_at`, when present, must use `YYYY-MM-DD`.
@@ -228,7 +224,8 @@ Rules:
 Recommended authoring checklist:
 
 - Store local image files flat in `assets/media/images/` with descriptive names such as
-  `bass-plum-mint_avatar.svg` or `lms-analysis_web-dashboard.png`.
+  `bass-plum-mint_avatar.svg`. Project-specific media belongs under
+  `assets/media/projects/<project-slug>/{images,audio,video}/` and is declared by that project's `config.toml`.
 - Prefer web-friendly formats such as `.webp` for images and `.mp4` for video.
 - Always write meaningful `alt_text`; it is required for published media.
 - Keep large originals outside the repo unless they are intentionally part of the delivered site.

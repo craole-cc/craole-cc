@@ -46,7 +46,7 @@ Audio generation is opt-in in CI/deployment so builds remain fast. With the defa
 GENERATE_TTS=1 TTS_PROVIDER=piper PIPER_MODEL=/path/to/voice.onnx ./scripts/ci.sh
 ```
 
-Run generation before the static site export so `public/audio/` is copied into the Leptos site bundle. Do not commit API keys or generated audio unless explicitly desired; generated files are deployment artifacts.
+Run generation before the static site export so `assets/audio/` is copied into the Leptos site bundle. Do not commit API keys or generated audio unless explicitly desired; generated files are deployment artifacts.
 
 ## Sanitization
 

@@ -20,7 +20,7 @@ use {
 
 const PROJECT_STATUSES : &[&str] = &["active", "building", "planning", "archived",];
 const POST_KINDS : &[&str] = &["blog", "cv", "note",];
-const MEDIA_TYPES : &[&str] = &["photo", "video",];
+const MEDIA_TYPES : &[&str] = &["photo", "video", "audio",];
 
 #[derive(Debug, Error,)]
 pub enum ContentError {
@@ -160,6 +160,28 @@ struct MediaContent {
   tags :       Option<Vec<String,>,>,
 }
 
+#[derive(Debug, Clone, Deserialize, Serialize,)]
+struct ProjectMediaAsset {
+  title :      Option<String,>,
+  slug :       Option<String,>,
+  caption :    Option<String,>,
+  media_type : Option<String,>,
+  file_path :  Option<String,>,
+  alt_text :   Option<String,>,
+  published :  Option<bool,>,
+  sort_order : Option<i64,>,
+  taken_at :   Option<String,>,
+  width :      Option<i64,>,
+  height :     Option<i64,>,
+  tags :       Option<Vec<String,>,>,
+}
+
+#[derive(Debug, Deserialize, Serialize,)]
+struct ProjectMediaBundle {
+  project_slug : Option<String,>,
+  assets :       Vec<ProjectMediaAsset,>,
+}
+
 #[derive(Debug, Default, Serialize,)]
 struct PostFrontmatter {
   title :        Option<String,>,
@@ -197,7 +219,7 @@ pub fn validate_content_root(root : &Path,) -> Result<ValidationReport, ContentE
 
 fn validate_projects(root : &Path, report : &mut ValidationReport,) -> Result<(), ContentError,> {
   let mut seen = HashMap::<String, PathBuf,>::new();
-  for path in files_with_extension(&root.join("assets/projects",), "toml",)? {
+  for path in files_with_extension(&root.join("content/assets/projects",), "toml",)? {
     let content = read_to_string(&path,)?;
     let project : ProjectContent =
       toml::from_str(&content,).map_err(|source| ContentError::Toml {
@@ -246,7 +268,7 @@ fn validate_projects(root : &Path, report : &mut ValidationReport,) -> Result<()
 
 fn validate_posts(root : &Path, report : &mut ValidationReport,) -> Result<(), ContentError,> {
   let mut seen = HashMap::<String, PathBuf,>::new();
-  for path in files_with_extension(&root.join("assets/posts",), "md",)? {
+  for path in files_with_extension(&root.join("content/assets/posts",), "md",)? {
     let content = read_to_string(&path,)?;
     let Some((frontmatter, body,),) = split_frontmatter(&content,) else {
       report.error(&path, "post is missing frontmatter",);
@@ -303,57 +325,128 @@ fn validate_posts(root : &Path, report : &mut ValidationReport,) -> Result<(), C
 
 fn validate_media(root : &Path, report : &mut ValidationReport,) -> Result<(), ContentError,> {
   let mut seen = HashMap::<String, PathBuf,>::new();
-  for path in files_with_extension(&root.join("assets/media",), "toml",)? {
+  for path in files_with_extension(&root.join("content/assets/media",), "toml",)? {
     let content = read_to_string(&path,)?;
+    if is_project_media_bundle(&path, root,) {
+      let bundle : ProjectMediaBundle =
+        toml::from_str(&content,).map_err(|source| ContentError::Toml {
+          path : path.clone(),
+          source,
+        },)?;
+      validate_project_media_bundle(root, &path, &bundle, &mut seen, report,);
+      continue;
+    }
+
     let media : MediaContent = toml::from_str(&content,).map_err(|source| ContentError::Toml {
       path : path.clone(),
       source,
     },)?;
-
-    validate_required(media.title.as_deref(), &path, "title", report,);
-    let slug = validate_slug_field(media.slug.as_deref(), &path, "media", report,);
-
-    match media.media_type.as_deref() {
-      | Some(media_type,) if MEDIA_TYPES.contains(&media_type,) => {}
-      | Some(media_type,) => report.error(&path, format!("invalid media type `{media_type}`"),),
-      | None => report.error(&path, "missing required field `media_type`",),
-    }
-
-    if let Some(slug,) = slug
-      && let Some(first_path,) = seen.insert(slug.clone(), path.clone(),)
-    {
-      report.error(
-        &path,
-        format!(
-          "duplicate media slug `{slug}` also used by `{}`",
-          first_path.display()
-        ),
-      );
-    }
-
-    match media.file_path.as_deref() {
-      | Some(file_path,) => validate_asset(root, &path, file_path, report,),
-      | None => report.error(&path, "missing required field `file_path`",),
-    }
-
-    if media.published.unwrap_or(false,)
-      && media
-        .alt_text
-        .as_deref()
-        .is_none_or(|value| value.trim().is_empty(),)
-    {
-      report.error(&path, "published media requires non-empty alt_text",);
-    }
-
-    validate_sort_order(media.sort_order, &path, report,);
-    validate_positive(media.width, &path, "width", report,);
-    validate_positive(media.height, &path, "height", report,);
-    if let Some(date,) = media.taken_at.as_deref() {
-      validate_iso_date(date, &path, "taken_at", report,);
-    }
-    validate_tags(media.tags.as_deref(), &path, "media", report,);
+    validate_media_fields(root, &path, &media, &mut seen, report,);
   }
   Ok((),)
+}
+
+fn is_project_media_bundle(path : &Path, root : &Path,) -> bool {
+  let base = root.join("content/assets/media/projects",);
+  path.starts_with(&base,) && path.file_name().is_some_and(|name| name == "config.toml",)
+}
+
+fn validate_project_media_bundle(
+  root : &Path,
+  path : &Path,
+  bundle : &ProjectMediaBundle,
+  seen : &mut HashMap<String, PathBuf,>,
+  report : &mut ValidationReport,
+) {
+  let Some(folder_slug,) = path
+    .parent()
+    .and_then(Path::file_name,)
+    .and_then(|value| value.to_str(),)
+  else {
+    report.error(
+      path,
+      "project media bundle must be inside a slug-named directory",
+    );
+    return;
+  };
+  let bundle_slug = validate_slug_field(
+    bundle.project_slug.as_deref(),
+    path,
+    "project media bundle",
+    report,
+  );
+  if bundle_slug.as_deref() != Some(folder_slug,) {
+    report.error(
+      path,
+      format!("project media bundle slug must match directory `{folder_slug}`"),
+    );
+  }
+  if bundle.assets.is_empty() {
+    report.error(path, "project media bundle must contain at least one asset",);
+  }
+  for asset in &bundle.assets {
+    let media = MediaContent {
+      title :      asset.title.clone(),
+      slug :       asset.slug.clone(),
+      caption :    asset.caption.clone(),
+      media_type : asset.media_type.clone(),
+      file_path :  asset.file_path.clone(),
+      alt_text :   asset.alt_text.clone(),
+      published :  asset.published,
+      sort_order : asset.sort_order,
+      taken_at :   asset.taken_at.clone(),
+      width :      asset.width,
+      height :     asset.height,
+      tags :       asset.tags.clone(),
+    };
+    validate_media_fields(root, path, &media, seen, report,);
+  }
+}
+
+fn validate_media_fields(
+  root : &Path,
+  path : &Path,
+  media : &MediaContent,
+  seen : &mut HashMap<String, PathBuf,>,
+  report : &mut ValidationReport,
+) {
+  validate_required(media.title.as_deref(), path, "title", report,);
+  let slug = validate_slug_field(media.slug.as_deref(), path, "media", report,);
+  match media.media_type.as_deref() {
+    | Some(media_type,) if MEDIA_TYPES.contains(&media_type,) => {}
+    | Some(media_type,) => report.error(path, format!("invalid media type `{media_type}`"),),
+    | None => report.error(path, "missing required field `media_type`",),
+  }
+  if let Some(slug,) = slug
+    && let Some(first_path,) = seen.insert(slug.clone(), path.to_path_buf(),)
+  {
+    report.error(
+      path,
+      format!(
+        "duplicate media slug `{slug}` also used by `{}`",
+        first_path.display()
+      ),
+    );
+  }
+  match media.file_path.as_deref() {
+    | Some(file_path,) => validate_asset(root, path, file_path, report,),
+    | None => report.error(path, "missing required field `file_path`",),
+  }
+  if media.published.unwrap_or(false,)
+    && media
+      .alt_text
+      .as_deref()
+      .is_none_or(|value| value.trim().is_empty(),)
+  {
+    report.error(path, "published media requires non-empty alt_text",);
+  }
+  validate_sort_order(media.sort_order, path, report,);
+  validate_positive(media.width, path, "width", report,);
+  validate_positive(media.height, path, "height", report,);
+  if let Some(date,) = media.taken_at.as_deref() {
+    validate_iso_date(date, path, "taken_at", report,);
+  }
+  validate_tags(media.tags.as_deref(), path, "media", report,);
 }
 
 fn files_with_extension(dir : &Path, extension : &str,) -> Result<Vec<PathBuf,>, ContentError,> {
@@ -521,13 +614,13 @@ fn validate_asset(root : &Path, path : &Path, asset : &str, report : &mut Valida
   if relative.starts_with("..",) || relative.contains("/../",) {
     report.error(
       path,
-      format!("asset path escapes public directory: `{asset}`"),
+      format!("asset path escapes assets directory: `{asset}`"),
     );
     return;
   }
 
   let full_path = relative.strip_prefix("media/images/",).map_or_else(
-    || root.join("public",).join(relative,),
+    || root.join("assets",).join(relative,),
     |image| root.join("assets/media/images",).join(image,),
   );
   if !full_path.is_file() {
@@ -645,9 +738,9 @@ impl ContentTemplateKind {
   #[must_use]
   pub const fn directory(self,) -> &'static str {
     match self {
-      | Self::Project => "assets/projects",
-      | Self::Post => "assets/posts",
-      | Self::Media => "assets/media",
+      | Self::Project => "content/assets/projects",
+      | Self::Post => "content/assets/posts",
+      | Self::Media => "content/assets/media",
     }
   }
 
@@ -819,8 +912,7 @@ pub fn export_static_site(
     path : output_dir.to_path_buf(),
     source,
   },)?;
-  copy_public_assets(root, output_dir,)?;
-  copy_extra_static_assets(root, output_dir,)?;
+  copy_static_assets(root, output_dir,)?;
   let json_report = export_static_json(root, &output_dir.join("data",),)?;
 
   let published_projects = projects
@@ -911,25 +1003,12 @@ fn write_html_file(path : &Path, content : &str,) -> Result<(), ContentError,> {
   },)
 }
 
-fn copy_public_assets(root : &Path, output_dir : &Path,) -> Result<(), ContentError,> {
-  let public_dir = root.join("public",);
-  if !public_dir.exists() {
-    return Ok((),);
-  }
-  copy_dir_contents(&public_dir, output_dir,)
-}
-
-fn copy_extra_static_assets(root : &Path, output_dir : &Path,) -> Result<(), ContentError,> {
+fn copy_static_assets(root : &Path, output_dir : &Path,) -> Result<(), ContentError,> {
   let assets_dir = root.join("assets",);
   if !assets_dir.exists() {
     return Ok((),);
   }
-  let destination = output_dir.join("assets",);
-  fs::create_dir_all(&destination,).map_err(|source| ContentError::Write {
-    path : destination.clone(),
-    source,
-  },)?;
-  copy_dir_contents(&assets_dir, &destination,)
+  copy_dir_contents(&assets_dir, output_dir,)
 }
 
 fn copy_dir_contents(source : &Path, destination : &Path,) -> Result<(), ContentError,> {
@@ -1534,7 +1613,7 @@ fn count_rows(
 }
 
 fn load_projects(root : &Path,) -> Result<Vec<ProjectContent,>, ContentError,> {
-  files_with_extension(&root.join("assets/projects",), "toml",)?
+  files_with_extension(&root.join("content/assets/projects",), "toml",)?
     .into_iter()
     .map(|path| {
       let content = read_to_string(&path,)?;
@@ -1544,17 +1623,47 @@ fn load_projects(root : &Path,) -> Result<Vec<ProjectContent,>, ContentError,> {
 }
 
 fn load_media(root : &Path,) -> Result<Vec<MediaContent,>, ContentError,> {
-  files_with_extension(&root.join("assets/media",), "toml",)?
-    .into_iter()
-    .map(|path| {
-      let content = read_to_string(&path,)?;
-      toml::from_str(&content,).map_err(|source| ContentError::Toml { path, source, },)
-    },)
-    .collect()
+  let mut media = Vec::new();
+  for path in files_with_extension(&root.join("content/assets/media",), "toml",)? {
+    let content = read_to_string(&path,)?;
+    if is_project_media_bundle(&path, root,) {
+      let bundle : ProjectMediaBundle =
+        toml::from_str(&content,).map_err(|source| ContentError::Toml {
+          path : path.clone(),
+          source,
+        },)?;
+      media.extend(bundle.assets.into_iter().map(project_media_asset_to_media,),);
+    } else {
+      media.push(
+        toml::from_str(&content,).map_err(|source| ContentError::Toml {
+          path : path.clone(),
+          source,
+        },)?,
+      );
+    }
+  }
+  Ok(media,)
+}
+
+fn project_media_asset_to_media(asset : ProjectMediaAsset,) -> MediaContent {
+  MediaContent {
+    title :      asset.title,
+    slug :       asset.slug,
+    caption :    asset.caption,
+    media_type : asset.media_type,
+    file_path :  asset.file_path,
+    alt_text :   asset.alt_text,
+    published :  asset.published,
+    sort_order : asset.sort_order,
+    taken_at :   asset.taken_at,
+    width :      asset.width,
+    height :     asset.height,
+    tags :       asset.tags,
+  }
 }
 
 fn load_posts(root : &Path,) -> Result<Vec<PostContent,>, ContentError,> {
-  files_with_extension(&root.join("assets/posts",), "md",)?
+  files_with_extension(&root.join("content/assets/posts",), "md",)?
     .into_iter()
     .map(|path| {
       let content = read_to_string(&path,)?;

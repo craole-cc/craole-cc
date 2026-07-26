@@ -1,11 +1,11 @@
 title = "LMS Lesson Data Analysis"
-slug = "lms-data-analysis"
+slug = "lms-analysis"
 status = "active"
 description = "Privacy-conscious analysis of authenticated lesson data from a real LMS workflow. The project turns an irregular operational data source into validated aggregates, period comparisons, a Ratatui terminal dashboard, a synthetic public web demo, and a roadmap toward a cross-platform app."
 live_url = "https://craole.cc/demos/lms-analysis"
 screenshots = [
-  "/media/images/lms-analysis_web-dashboard.png",
-  "/media/images/lms-analysis_tui-dashboard.png",
+  "/media/projects/lms-analysis/images/web-dashboard.png",
+  "/media/projects/lms-analysis/images/tui-dashboard.png",
 ]
 featured = true
 published = true

@@ -140,7 +140,7 @@ def _json_string(value: str) -> str:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", type=Path, default=Path("."))
-    parser.add_argument("--output", type=Path, default=None, help="default: ROOT/public/audio")
+    parser.add_argument("--output", type=Path, default=None, help="default: ROOT/assets/audio")
     parser.add_argument("--provider", choices=("piper", "elevenlabs", "openai"), default=os.getenv("TTS_PROVIDER", "piper"))
     parser.add_argument("--voice", default=None, help="ElevenLabs voice ID or OpenAI voice name")
     parser.add_argument("--dry-run", action="store_true", help="print sanitized text; never call an API")

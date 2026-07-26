@@ -75,9 +75,9 @@ Key implementation pieces:
 - `app/` — shared Leptos UI, pages, components, theme, and SQL query wrappers.
 - `backend/` — Axum server entry point and database bootstrap.
 - `frontend/` — WASM hydration entry point.
-- `assets/` — portfolio-owned source content and static assets: projects, posts, media records, images, audio, fonts, and icons.
-- `content/` — Rust CLI for validating assets, exporting a SQLite seed script, and creating draft
-  content templates.
+- `assets/` — servable static assets: images, project media, audio, fonts, icons, and the favicon.
+- `content/assets/` — private authored metadata and prose definitions; the `content/` crate validates these,
+  exports SQLite/static data, and creates draft templates.
 - `database/migrations/` — durable SQLite schema and baseline seed data.
 - `scripts/ci.sh` — local/CI quality gate for database setup, content validation, SQLx, clippy,
   and tests.
@@ -186,7 +186,7 @@ cargo leptos watch
 ```
 
 For full setup, content authoring, and CI instructions, see [CONTRIBUTING.md](./CONTRIBUTING.md).
-For the Git-tracked content format, see [assets/SCHEMA.md](./assets/SCHEMA.md).
+For the Git-tracked content format, see [content/SCHEMA.md](./content/SCHEMA.md).
 
 Create draft content with `content new`:
 

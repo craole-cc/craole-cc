@@ -120,9 +120,10 @@ with `lsof` and asks whether to kill it before starting `cargo leptos watch`.
 ├── database/
 │   ├── data/             # Local SQLite database files; gitignored
 │   └── migrations/       # Durable schema and baseline SQL migrations
-├── public/               # Static assets copied into the site output
-├── scripts/              # Dev and CI helper scripts
-├── style/                # SCSS and Tailwind input
+├── assets/                # Servable static assets (images, media, audio, fonts, icons)
+├── content/               # Private content definitions and Rust content tooling
+├── scripts/               # Dev and CI helper scripts
+├── style/                 # SCSS and Tailwind input
 └── tests/                # Workspace-level tests and fixtures
 ```
 
@@ -143,7 +144,7 @@ cargo run -p content -- new media portfolio-screenshot
 ```
 
 Generated project and post templates are valid unpublished drafts. Media templates still require you
-to add the referenced asset under `public/` before validation will pass.
+to add the referenced asset under ``assets/` before validation will pass.
 
 The command refuses invalid slugs and will not overwrite an existing content file.
 
@@ -239,14 +240,14 @@ replacement for the full Leptos/Axum SSR site.
    cargo run -p content -- new project <slug>
    ```
 
-2. Edit `assets/projects/<slug>.toml`.
+2. Edit `content/assets/projects/<slug>.toml`.
 3. Use a lowercase hyphenated `slug`.
 4. Include at minimum `title`, `slug`, `status`, and `description`.
 5. If `featured = true`, also set `published = true`.
 6. Run `cargo run -p content -- validate .`.
 7. Run `bash scripts/ci.sh` before committing.
 
-See [assets/SCHEMA.md](./assets/SCHEMA.md) for complete field rules and examples.
+See [content/SCHEMA.md](./content/SCHEMA.md) for complete field rules and examples.
 
 ### Add a post
 
@@ -256,7 +257,7 @@ See [assets/SCHEMA.md](./assets/SCHEMA.md) for complete field rules and examples
    cargo run -p content -- new post <slug>
    ```
 
-2. Edit `assets/posts/<slug>.md`.
+2. Edit `content/assets/posts/<slug>.md`.
 3. Add frontmatter with `title`, `slug`, and `kind`.
 4. Use `published_at: "YYYY-MM-DD"` when publishing dated content.
 5. Published posts must have a non-empty body.
@@ -372,7 +373,7 @@ Run validation first and confirm that at least one published project and one pub
 
 ```sh
 cargo run -p content -- validate .
-ls assets/projects assets/posts
+ls content/assets/projects content/assets/posts assets/media assets/audio
 ```
 
 ### Static assets referenced by content are missing

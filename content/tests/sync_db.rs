@@ -11,9 +11,9 @@ mod tests {
   fn fixture(name : &str,) -> std::path::PathBuf {
     let root = std::env::temp_dir().join(format!("content-sync-{name}-{}", std::process::id()),);
     _ = fs::remove_dir_all(&root,);
-    fs::create_dir_all(root.join("assets/projects",),).unwrap();
-    fs::create_dir_all(root.join("assets/posts",),).unwrap();
-    fs::create_dir_all(root.join("assets/media",),).unwrap();
+    fs::create_dir_all(root.join("content/assets/projects",),).unwrap();
+    fs::create_dir_all(root.join("content/assets/posts",),).unwrap();
+    fs::create_dir_all(root.join("content/assets/media",),).unwrap();
     fs::create_dir_all(root.join("database/migrations",),).unwrap();
     root
   }
@@ -29,7 +29,7 @@ mod tests {
 
   fn write_valid_content(root : &Path,) {
     write(
-      &root.join("assets/projects/demo.toml",),
+      &root.join("content/assets/projects/demo.toml",),
       r#"
 title = "Demo Project"
 slug = "demo-project"
@@ -42,7 +42,7 @@ tags = ["Rust", "SQLite"]
 "#,
     );
     write(
-      &root.join("assets/posts/hello.md",),
+      &root.join("content/assets/posts/hello.md",),
       r#"---
 title: "Hello"
 slug: "hello"
@@ -83,7 +83,7 @@ Body.
     let root = fixture("invalid",);
     copy_schema_migration(&root,);
     write(
-      &root.join("assets/projects/demo.toml",),
+      &root.join("content/assets/projects/demo.toml",),
       r#"
 title = "Demo Project"
 slug = "demo-project"

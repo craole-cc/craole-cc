@@ -38,7 +38,7 @@ struct Cli {
   force : bool,
 
   /// Root directory where icons should be written.
-  #[arg(long = "root", default_value = "public/icons")]
+  #[arg(long = "root", default_value = "assets/icons")]
   root : PathBuf,
 }
 

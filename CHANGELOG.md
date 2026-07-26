@@ -13,14 +13,22 @@ and this project uses [Semantic Versioning](https://semver.org/).
 
 ### Fixed
 
+## [0.2.17] - 2026-07-26
+
+### Changed
+
+- Merge servable static assets into one top-level `assets/` tree and remove the `public/` tree.
+- Move private content definitions into `content/assets/` so TOML and Markdown are not exposed by the Leptos asset root.
+- Add project media bundles with expansion into normal media rows, including `audio` media support.
+- Normalize the LMS project slug to `lms-analysis` and group its images, video, and future audio under one project bundle.
 ## [0.2.16] - 2026-07-26
 
 ### Changed
 
 - Consolidate local image sources under flat `assets/media/images/` naming.
 - Remove the redundant avatar-workshop, art, and project image directory levels.
-- Generate runtime image copies through `scripts/sync-media-assets.sh`.
-- Keep `public/` as generated delivery output rather than an authored image source.
+- Serve the canonical top-level `assets/` tree directly; no generated `public/` media copy is required.
+- Keep private metadata under `content/assets/`, outside the Leptos `assets-dir`.
 
 ## [0.2.15] - 2026-07-26
 
@@ -42,7 +50,7 @@ and this project uses [Semantic Versioning](https://semver.org/).
 
 ### Changed
 
-- Keep local `public/` media and remote HTTPS media as supported alternatives through the same `file_path` field.
+- Keep local `assets/` media and remote HTTPS media as supported alternatives through the same `file_path` field.
 - Document the storage, hotlinking, attribution, and link-rot trade-offs of remote media.
 
 ## [0.2.13] - 2026-07-26
@@ -159,7 +167,8 @@ and this project uses [Semantic Versioning](https://semver.org/).
 - Improved content database synchronization and static export behavior.
 - Added CI coverage for content validation, export paths, and database sync.
 
-[Unreleased]: https://github.com/craole-cc/craole-cc/compare/v0.2.16...HEAD
+[Unreleased]: https://github.com/craole-cc/craole-cc/compare/v0.2.17...HEAD
+[0.2.17]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.17
 [0.2.16]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.16
 [0.2.15]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.15
 [0.2.7]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.7

@@ -24,12 +24,12 @@ cargo run -p content -- new project <slug> /path/to/repo-root
 - Rejects invalid slugs using the same lowercase/hyphenated slug rule as validation.
 - Creates parent directories as needed.
 - Refuses to overwrite an existing content file.
-- Writes project templates to `assets/projects/<slug>.toml`.
-- Writes post templates to `assets/posts/<slug>.md`.
-- Writes media templates to `assets/media/<slug>.toml`.
+- Writes project templates to `content/assets/projects/<slug>.toml`.
+- Writes post templates to `content/assets/posts/<slug>.md`.
+- Writes media templates to `content/assets/media/<slug>.toml`.
 
 Project and post templates are valid unpublished drafts immediately. Media templates still need the
-referenced asset added under `public/` before `content validate` can pass.
+referenced asset added under ``assets/` before `content validate` can pass.
 
 ## Verification
 

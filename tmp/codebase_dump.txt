@@ -4316,7 +4316,7 @@ pub enum Variant {
   #[default]
   Default,
 
-  /// Local SVG asset from the `public/icons/logos/` directory.
+  /// Local SVG asset from the `assets/icons/logos/` directory.
   /// Always monochrome — colour comes from the surrounding context.
   Local,
 
@@ -6543,7 +6543,7 @@ VALUES (
     datetime('now')
   );
 -- ── Media ─────────────────────────────────────────────────────────────────────
--- Placeholder row — replace file_path with a real asset under public/media/
+-- Placeholder row — replace file_path with a real asset under assets/media/
 INSERT INTO media (
     title,
     caption,
@@ -6555,7 +6555,7 @@ INSERT INTO media (
   )
 VALUES (
     'Placeholder',
-    'Replace with a real photo path under public/media/',
+    'Replace with a real photo path under assets/media/',
     'photo',
     'media/placeholder.jpg',
     'Placeholder image',

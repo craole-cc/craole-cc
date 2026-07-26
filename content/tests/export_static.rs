@@ -11,9 +11,9 @@ mod tests {
   fn fixture(name : &str,) -> std::path::PathBuf {
     let root = std::env::temp_dir().join(format!("content-static-{name}-{}", std::process::id()),);
     _ = fs::remove_dir_all(&root,);
-    fs::create_dir_all(root.join("assets/projects",),).unwrap();
-    fs::create_dir_all(root.join("assets/posts",),).unwrap();
-    fs::create_dir_all(root.join("assets/media",),).unwrap();
+    fs::create_dir_all(root.join("content/assets/projects",),).unwrap();
+    fs::create_dir_all(root.join("content/assets/posts",),).unwrap();
+    fs::create_dir_all(root.join("content/assets/media",),).unwrap();
     root
   }
 
@@ -21,7 +21,7 @@ mod tests {
 
   fn write_valid_content(root : &Path,) {
     write(
-      &root.join("assets/projects/demo.toml",),
+      &root.join("content/assets/projects/demo.toml",),
       r#"
 title = "Demo Project"
 slug = "demo-project"
@@ -36,7 +36,7 @@ tags = ["Rust", "Static"]
 "#,
     );
     write(
-      &root.join("assets/projects/bi.toml",),
+      &root.join("content/assets/projects/bi.toml",),
       r#"
 title = "BI Dashboard"
 slug = "bi-dashboard"
@@ -49,7 +49,7 @@ tags = ["Business Intelligence", "Dashboard", "SQL"]
 "#,
     );
     write(
-      &root.join("assets/posts/hello.md",),
+      &root.join("content/assets/posts/hello.md",),
       r#"---
 title: "Hello Static"
 slug: "hello-static"
@@ -113,7 +113,7 @@ Body for static fallback.
   fn refuses_to_export_static_site_for_invalid_content() {
     let root = fixture("invalid",);
     write(
-      &root.join("assets/projects/demo.toml",),
+      &root.join("content/assets/projects/demo.toml",),
       r#"
 title = "Demo Project"
 slug = "demo-project"

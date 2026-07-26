@@ -6,11 +6,11 @@
 - Added `content validate [repo-root]` for local-first content checks.
 - Added `content export-sql [repo-root]` to generate a SQLite seed script from content files.
 - Added validator coverage for:
-  - `assets/projects/*.toml`
-  - `assets/posts/*.md`
-  - `assets/media/*.toml`
+  - `content/assets/projects/*.toml`
+  - `content/assets/posts/*.md`
+  - `content/assets/media/*.toml`
 - Wired the validator into `scripts/ci.sh` before SQLx metadata checks.
-- Documented the source content schema in `assets/SCHEMA.md`.
+- Documented the source content schema in `content/SCHEMA.md`.
 
 ## Why this shape
 

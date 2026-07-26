@@ -158,12 +158,12 @@ fn LmsShowcase() -> impl IntoView {
       <section class="dev-detail__gallery">
         <h2 class="dev-detail__section-title">"Interface walkthrough"</h2>
         <div class="dev-detail__screenshots">
-          <figure class="dev-detail__screenshot"><img src="/media/images/lms-analysis_web-dashboard.png" alt="LMS Analytics web dashboard with metrics, filters, comparison controls, and lesson rows" loading="lazy" decoding="async" /></figure>
-          <figure class="dev-detail__screenshot"><img src="/media/images/lms-analysis_tui-dashboard.png" alt="Sanitized preview of the LMS Analytics Ratatui terminal dashboard" loading="lazy" decoding="async" /></figure>
+          <figure class="dev-detail__screenshot"><img src="/media/projects/lms-analysis/images/web-dashboard.png" alt="LMS Analytics web dashboard with metrics, filters, comparison controls, and lesson rows" loading="lazy" decoding="async" /></figure>
+          <figure class="dev-detail__screenshot"><img src="/media/projects/lms-analysis/images/tui-dashboard.png" alt="Sanitized preview of the LMS Analytics Ratatui terminal dashboard" loading="lazy" decoding="async" /></figure>
         </div>
         <div class="dev-detail__media-links">
-          <a class="dev-detail__link dev-detail__link--live" href="/media/projects/lms-analysis/demo-tour.mp4" target="_blank" rel="noopener noreferrer">"▶ Watch demo tour"</a>
-          <a class="dev-detail__link" href="/media/projects/lms-analysis/demo-tour.gif" target="_blank" rel="noopener noreferrer">"View GIF"</a>
+          <a class="dev-detail__link dev-detail__link--live" href="/media/projects/lms-analysis/video/demo-tour.mp4" target="_blank" rel="noopener noreferrer">"▶ Watch demo tour"</a>
+          <a class="dev-detail__link" href="/media/projects/lms-analysis/video/demo-tour.gif" target="_blank" rel="noopener noreferrer">"View GIF"</a>
         </div>
       </section>
     </>
@@ -194,7 +194,7 @@ fn Content(p : ProjectDetail,) -> impl IntoView {
         <p class="dev-detail__desc">{p.description.clone()}</p>
       </header>
 
-      {(p.slug == "lms-data-analysis").then(|| view! {
+      {(p.slug == "lms-analysis").then(|| view! {
         <aside class="dev-detail__app-callout">
           <div>
             <span class="dev-detail__app-kicker">"PUBLIC ANALYSIS DEMO"</span>
@@ -207,7 +207,7 @@ fn Content(p : ProjectDetail,) -> impl IntoView {
         </aside>
       })}
 
-      {(p.slug == "lms-data-analysis").then(|| view! { <LmsShowcase /> })}
+      {(p.slug == "lms-analysis").then(|| view! { <LmsShowcase /> })}
 
       <TechSection icons />
       <Links repo_url=p.repo_url live_url=p.live_url />

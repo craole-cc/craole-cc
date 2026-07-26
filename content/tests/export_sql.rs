@@ -11,9 +11,9 @@ mod tests {
   fn fixture(name : &str,) -> std::path::PathBuf {
     let root = std::env::temp_dir().join(format!("content-export-{name}-{}", std::process::id()),);
     _ = fs::remove_dir_all(&root,);
-    fs::create_dir_all(root.join("assets/projects",),).unwrap();
-    fs::create_dir_all(root.join("assets/posts",),).unwrap();
-    fs::create_dir_all(root.join("assets/media",),).unwrap();
+    fs::create_dir_all(root.join("content/assets/projects",),).unwrap();
+    fs::create_dir_all(root.join("content/assets/posts",),).unwrap();
+    fs::create_dir_all(root.join("content/assets/media",),).unwrap();
     root
   }
 
@@ -23,7 +23,7 @@ mod tests {
   fn exports_valid_content_as_sqlite_seed_script() {
     let root = fixture("sql-script",);
     write(
-      &root.join("assets/projects/demo.toml",),
+      &root.join("content/assets/projects/demo.toml",),
       r#"
 title = "Demo Project"
 slug = "demo-project"
@@ -37,7 +37,7 @@ tags = ["Rust", "SQLite"]
 "#,
     );
     write(
-      &root.join("assets/posts/hello.md",),
+      &root.join("content/assets/posts/hello.md",),
       r#"---
 title: "Hello"
 slug: "hello"
