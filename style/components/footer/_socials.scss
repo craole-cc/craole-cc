@@ -47,6 +47,13 @@
       opacity: 1;
       color: var(--color-text);
 
+      // Brand classes are attached to the Leptos icon variants. The footer's
+      // resting state is intentionally monochrome; hover reveals the local
+      // brand SVG in the alternate layer.
+      .footer__social-svg {
+        color: var(--color-text) !important;
+      }
+
       .group:hover & {
         opacity: 0;
       }

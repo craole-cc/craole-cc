@@ -14,27 +14,27 @@ fn socials() -> Vec<SocialEntry> {
     },
     SocialEntry {
       default: github::filled(),
-      hover: github::default(),
+      hover: github::local(),
     },
     SocialEntry {
       default: linkedin::filled(),
-      hover: linkedin::default(),
+      hover: linkedin::local(),
     },
     SocialEntry {
       default: whatsapp::filled(),
-      hover: whatsapp::default(),
+      hover: whatsapp::local(),
     },
     SocialEntry {
       default: instagram::filled(),
-      hover: instagram::default(),
+      hover: instagram::local(),
     },
     SocialEntry {
       default: facebook::filled(),
-      hover: facebook::default(),
+      hover: facebook::local(),
     },
     SocialEntry {
       default: x::filled(),
-      hover: x::default(),
+      hover: x::local(),
     },
   ]
 }
