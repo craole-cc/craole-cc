@@ -64,6 +64,12 @@ jobs:
       CARGO_INCREMENTAL: 0
       CARGO_TARGET_DIR: ${{ github.workspace }}/target
     steps:
+      - name: Repair runner workspace ownership
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo chown -R "$(id -un):$(id -gn)" "$GITHUB_WORKSPACE" 2>/dev/null || true
+
       - name: Checkout
         uses: actions/checkout@v4
 
