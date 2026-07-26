@@ -66,6 +66,7 @@ if [ "$PROJECT_COUNT" -lt 1 ] || [ "$POST_COUNT" -lt 1 ]; then
 fi
 
 printf '\n==> Content static export smoke test\n'
+./scripts/sync-media-assets.sh
 if [ "${GENERATE_TTS:-0}" = "1" ]; then
 	printf 'Generating local neural TTS audio with %s\n' "${TTS_PROVIDER:-piper}"
 	python3 scripts/generate_tts.py --provider "${TTS_PROVIDER:-piper}"

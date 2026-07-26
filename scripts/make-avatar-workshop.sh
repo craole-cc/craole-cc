@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-mkdir -p assets/avatar-workshop
+mkdir -p assets/media/images
 
 make_svg() {
   local file="$1" bg1="$2" bg2="$3" accent="$4" accent2="$5" body="$6" body2="$7" string="$8" glow="$9"
@@ -91,22 +91,22 @@ make_svg() {
 SVG
 }
 
-make_svg assets/avatar-workshop/avatar-bass-midnight-gold.svg '#29313f' '#101723' '#f5d06f' '#9d6421' '#d19031' '#704111' '#fff1bd' '#8b5cf6'
-make_svg assets/avatar-workshop/avatar-bass-oxide-teal.svg '#12313a' '#08151a' '#5eead4' '#0f766e' '#f97316' '#7c2d12' '#d5fff7' '#ffb86b'
-make_svg assets/avatar-workshop/avatar-bass-plum-mint.svg '#33213e' '#120a1c' '#a7f3d0' '#34d399' '#c084fc' '#6d28d9' '#f0fdf4' '#22d3ee'
-make_svg assets/avatar-workshop/avatar-bass-cream-ink.svg '#f1dcc2' '#2a211b' '#f6c35b' '#6f4b16' '#18181b' '#3f2f1f' '#fff7e6' '#f59e0b'
+make_svg assets/media/images/bass-midnight-gold_avatar.svg '#29313f' '#101723' '#f5d06f' '#9d6421' '#d19031' '#704111' '#fff1bd' '#8b5cf6'
+make_svg assets/media/images/bass-oxide-teal_avatar.svg '#12313a' '#08151a' '#5eead4' '#0f766e' '#f97316' '#7c2d12' '#d5fff7' '#ffb86b'
+make_svg assets/media/images/bass-plum-mint_avatar.svg '#33213e' '#120a1c' '#a7f3d0' '#34d399' '#c084fc' '#6d28d9' '#f0fdf4' '#22d3ee'
+make_svg assets/media/images/bass-cream-ink_avatar.svg '#f1dcc2' '#2a211b' '#f6c35b' '#6f4b16' '#18181b' '#3f2f1f' '#fff7e6' '#f59e0b'
 
-for svg in assets/avatar-workshop/*.svg; do
+for svg in assets/media/images/*.svg; do
   png="${svg%.svg}.png"
   magick -background none "$svg" -resize 1024x1024 "$png"
 done
 
-magick assets/avatar-workshop/avatar-bass-midnight-gold.png -resize 512x512 /tmp/avatar-midnight.png
-magick assets/avatar-workshop/avatar-bass-oxide-teal.png -resize 512x512 /tmp/avatar-oxide.png
-magick assets/avatar-workshop/avatar-bass-plum-mint.png -resize 512x512 /tmp/avatar-plum.png
-magick assets/avatar-workshop/avatar-bass-cream-ink.png -resize 512x512 /tmp/avatar-cream.png
+magick assets/media/images/bass-midnight-gold_avatar.png -resize 512x512 /tmp/avatar-midnight.png
+magick assets/media/images/bass-oxide-teal_avatar.png -resize 512x512 /tmp/avatar-oxide.png
+magick assets/media/images/bass-plum-mint_avatar.png -resize 512x512 /tmp/avatar-plum.png
+magick assets/media/images/bass-cream-ink_avatar.png -resize 512x512 /tmp/avatar-cream.png
 magick /tmp/avatar-midnight.png /tmp/avatar-oxide.png +append /tmp/avatar-row1.png
 magick /tmp/avatar-plum.png /tmp/avatar-cream.png +append /tmp/avatar-row2.png
-magick /tmp/avatar-row1.png /tmp/avatar-row2.png -append assets/avatar-workshop/contact-sheet.png
+magick /tmp/avatar-row1.png /tmp/avatar-row2.png -append assets/media/images/bass-avatars_contact-sheet.png
 
-identify assets/avatar-workshop/contact-sheet.png
+identify assets/media/images/bass-avatars_contact-sheet.png

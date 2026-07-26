@@ -377,8 +377,8 @@ ls assets/projects assets/posts
 
 ### Static assets referenced by content are missing
 
-Content paths such as `/media/projects/demo/home.webp` are rooted under `public/`, so the file should
-exist at `public/media/projects/demo/home.webp`.
+- Screenshot paths use the flat image namespace, so `/media/images/demo_home.webp` maps to
+  `assets/media/images/demo_home.webp`.
 
 ---
 

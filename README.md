@@ -75,8 +75,8 @@ Key implementation pieces:
 - `app/` — shared Leptos UI, pages, components, theme, and SQL query wrappers.
 - `backend/` — Axum server entry point and database bootstrap.
 - `frontend/` — WASM hydration entry point.
-- `assets/` — portfolio-owned source content: projects, posts, media, and schema docs.
-- `assets/` — CLI for validating content, exporting a SQLite seed script, and creating draft
+- `assets/` — portfolio-owned source content and static assets: projects, posts, media records, images, audio, fonts, and icons.
+- `content/` — Rust CLI for validating assets, exporting a SQLite seed script, and creating draft
   content templates.
 - `database/migrations/` — durable SQLite schema and baseline seed data.
 - `scripts/ci.sh` — local/CI quality gate for database setup, content validation, SQLx, clippy,

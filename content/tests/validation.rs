@@ -14,7 +14,7 @@ mod tests {
     fs::create_dir_all(root.join("assets/projects",),).unwrap();
     fs::create_dir_all(root.join("assets/posts",),).unwrap();
     fs::create_dir_all(root.join("assets/media",),).unwrap();
-    fs::create_dir_all(root.join("public/media/projects/demo",),).unwrap();
+    fs::create_dir_all(root.join("assets/media/images",),).unwrap();
     root
   }
 
@@ -32,7 +32,7 @@ featured = true
 published = true
 sort_order = 10
 tags = ["Rust", "Leptos"]
-screenshots = ["/media/projects/demo/home.webp"]
+screenshots = ["/media/images/demo_home.webp"]
 "#
   }
 
@@ -40,7 +40,7 @@ screenshots = ["/media/projects/demo/home.webp"]
   fn accepts_valid_project_content() {
     let root = fixture("valid-project",);
     write(
-      &root.join("public/media/projects/demo/home.webp",),
+      &root.join("assets/media/images/demo_home.webp",),
       "fake image",
     );
     write(&root.join("assets/projects/demo.toml",), valid_project(),);
@@ -54,7 +54,7 @@ screenshots = ["/media/projects/demo/home.webp"]
   fn rejects_duplicate_project_slugs() {
     let root = fixture("duplicate-projects",);
     write(
-      &root.join("public/media/projects/demo/home.webp",),
+      &root.join("assets/media/images/demo_home.webp",),
       "fake image",
     );
     write(&root.join("assets/projects/one.toml",), valid_project(),);

@@ -13,6 +13,15 @@ and this project uses [Semantic Versioning](https://semver.org/).
 
 ### Fixed
 
+## [0.2.16] - 2026-07-26
+
+### Changed
+
+- Consolidate local image sources under flat `assets/media/images/` naming.
+- Remove the redundant avatar-workshop, art, and project image directory levels.
+- Generate runtime image copies through `scripts/sync-media-assets.sh`.
+- Keep `public/` as generated delivery output rather than an authored image source.
+
 ## [0.2.15] - 2026-07-26
 
 ### Changed
@@ -150,7 +159,8 @@ and this project uses [Semantic Versioning](https://semver.org/).
 - Improved content database synchronization and static export behavior.
 - Added CI coverage for content validation, export paths, and database sync.
 
-[Unreleased]: https://github.com/craole-cc/craole-cc/compare/v0.2.15...HEAD
+[Unreleased]: https://github.com/craole-cc/craole-cc/compare/v0.2.16...HEAD
+[0.2.16]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.16
 [0.2.15]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.15
 [0.2.7]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.7
 [0.2.6]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.6

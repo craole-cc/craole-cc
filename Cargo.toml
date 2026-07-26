@@ -6,7 +6,7 @@ members = ["app", "frontend", "backend", "content"]
 [workspace.package]
 edition = "2024"
 rust-version = "1.85.0"
-version = "0.2.15"
+version = "0.2.16"
 authors = ["Craig 'Craole' Cole <info@craole.cc>"]
 license = "MIT"
 description = "Craole.CC portfolio at the intersection of engineering and art"

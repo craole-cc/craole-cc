@@ -1,7 +1,7 @@
 # Content schema
 
-`assets/` is the Git-tracked source of truth for portfolio content. `content` validates these
-files before they are synced into SQLite or used by a future static snapshot.
+`assets/` is the Git-tracked source of truth for portfolio content and static media. `content` validates
+these files before they are synced into SQLite or used by a future static snapshot.
 
 Run commands from the repository root:
 
@@ -20,16 +20,22 @@ created the schema.
 ## Workflow
 
 1. Add or edit files under `assets/projects/`, `assets/posts/`, or `assets/media/`.
-2. Put local referenced binary/static assets under `public/`; HTTPS media URLs may be used for externally hosted royalty-free media.
+2. Put local referenced image assets under `assets/media/images/`; HTTPS media URLs may be used for externally hosted royalty-free media.
 3. Run `cargo run -p content -- validate .`.
-4. Rebuild the local database if needed:
+4. Sync canonical images into the generated runtime delivery directory:
+
+   ```bash
+   ./scripts/sync-media-assets.sh
+   ```
+
+5. Rebuild the local database if needed:
 
    ```bash
    ./scripts/init-db.rs --reset
    cargo run -p content -- export-sql . | sqlite3 database/data/portfolio.db
    ```
 
-5. Run the full quality gate before committing:
+6. Run the full quality gate before committing:
 
    ```bash
    bash scripts/ci.sh
@@ -143,8 +149,8 @@ Rules:
 - `repo_url` and `live_url`, when present, must be HTTP(S) URLs.
 - `sort_order`, when present, must be non-negative.
 - `featured = true` requires `published = true`.
-- Screenshot paths are rooted in `public/`, so `/media/projects/demo/home.webp` maps to
-  `public/media/projects/demo/home.webp`.
+- Screenshot paths use the flat image namespace, so `/media/images/demo_home.webp` maps to
+  `assets/media/images/demo_home.webp`.
 
 Recommended authoring checklist:
 
@@ -199,7 +205,7 @@ Media files live in `assets/media/*.toml`.
 title = "Blue Mountain Study"
 slug = "blue-mountain-study"
 media_type = "photo"
-file_path = "/media/art/blue-mountain-study.webp"
+file_path = "/media/images/blue-mountain-study_image.webp"
 alt_text = "Abstract blue mountain landscape."
 published = true
 sort_order = 10
@@ -221,6 +227,8 @@ Rules:
 
 Recommended authoring checklist:
 
+- Store local image files flat in `assets/media/images/` with descriptive names such as
+  `bass-plum-mint_avatar.svg` or `lms-analysis_web-dashboard.png`.
 - Prefer web-friendly formats such as `.webp` for images and `.mp4` for video.
 - Always write meaningful `alt_text`; it is required for published media.
 - Keep large originals outside the repo unless they are intentionally part of the delivered site.

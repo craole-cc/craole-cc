@@ -238,7 +238,7 @@ fn validate_projects(root : &Path, report : &mut ValidationReport,) -> Result<()
     validate_tags(project.tags.as_deref(), &path, "project", report,);
 
     for screenshot in project.screenshots.unwrap_or_default() {
-      validate_public_asset(root, &path, &screenshot, report,);
+      validate_asset(root, &path, &screenshot, report,);
     }
   }
   Ok((),)
@@ -332,7 +332,7 @@ fn validate_media(root : &Path, report : &mut ValidationReport,) -> Result<(), C
     }
 
     match media.file_path.as_deref() {
-      | Some(file_path,) => validate_public_asset(root, &path, file_path, report,),
+      | Some(file_path,) => validate_asset(root, &path, file_path, report,),
       | None => report.error(&path, "missing required field `file_path`",),
     }
 
@@ -502,9 +502,7 @@ fn validate_tags(
   }
 }
 
-fn validate_public_asset(
-  root : &Path, path : &Path, asset : &str, report : &mut ValidationReport,
-) {
+fn validate_asset(root : &Path, path : &Path, asset : &str, report : &mut ValidationReport,) {
   if let Some(host_and_path,) = asset.strip_prefix("https://",) {
     if host_and_path.is_empty()
       || asset.chars().any(char::is_whitespace,)
@@ -528,7 +526,10 @@ fn validate_public_asset(
     return;
   }
 
-  let full_path = root.join("public",).join(relative,);
+  let full_path = relative.strip_prefix("media/images/",).map_or_else(
+    || root.join("public",).join(relative,),
+    |image| root.join("assets/media/images",).join(image,),
+  );
   if !full_path.is_file() {
     report.error(
       path,
@@ -718,8 +719,8 @@ fn render_template(kind : ContentTemplateKind, slug : &str,) -> String {
     ),
     | ContentTemplateKind::Media => format!(
       "title = \"{title}\"\nslug = \"{slug}\"\nmedia_type = \"photo\"\nfile_path = \
-       \"/media/art/{slug}.webp\"\nalt_text = \"\"\npublished = false\nsort_order = 0\ntaken_at = \
-       \"\"\nwidth = 0\nheight = 0\ntags = []\n",
+       \"/media/images/{slug}_image.webp\"\nalt_text = \"\"\npublished = false\nsort_order = \
+       0\ntaken_at = \"\"\nwidth = 0\nheight = 0\ntags = []\n",
     ),
   }
 }

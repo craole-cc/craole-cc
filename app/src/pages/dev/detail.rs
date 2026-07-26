@@ -158,8 +158,8 @@ fn LmsShowcase() -> impl IntoView {
       <section class="dev-detail__gallery">
         <h2 class="dev-detail__section-title">"Interface walkthrough"</h2>
         <div class="dev-detail__screenshots">
-          <figure class="dev-detail__screenshot"><img src="/media/projects/lms-analysis/web-dashboard.png" alt="LMS Analytics web dashboard with metrics, filters, comparison controls, and lesson rows" loading="lazy" decoding="async" /></figure>
-          <figure class="dev-detail__screenshot"><img src="/media/projects/lms-analysis/tui-dashboard.png" alt="Sanitized preview of the LMS Analytics Ratatui terminal dashboard" loading="lazy" decoding="async" /></figure>
+          <figure class="dev-detail__screenshot"><img src="/media/images/lms-analysis_web-dashboard.png" alt="LMS Analytics web dashboard with metrics, filters, comparison controls, and lesson rows" loading="lazy" decoding="async" /></figure>
+          <figure class="dev-detail__screenshot"><img src="/media/images/lms-analysis_tui-dashboard.png" alt="Sanitized preview of the LMS Analytics Ratatui terminal dashboard" loading="lazy" decoding="async" /></figure>
         </div>
         <div class="dev-detail__media-links">
           <a class="dev-detail__link dev-detail__link--live" href="/media/projects/lms-analysis/demo-tour.mp4" target="_blank" rel="noopener noreferrer">"▶ Watch demo tour"</a>
