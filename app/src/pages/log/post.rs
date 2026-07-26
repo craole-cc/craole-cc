@@ -4,7 +4,7 @@ const WORDS_PER_MINUTE : usize = 200;
 
 fn estimated_read_time(body : &str,) -> usize {
   let words = body.split_whitespace().count();
-  ((words + WORDS_PER_MINUTE - 1) / WORDS_PER_MINUTE).max(1,)
+  words.div_ceil(WORDS_PER_MINUTE,).max(1,)
 }
 
 fn article_body(body : &str,) -> String {
@@ -22,7 +22,7 @@ fn article_body(body : &str,) -> String {
 
 #[component]
 fn AudioPlayer(slug : String,) -> impl IntoView {
-  let source = format!("/audio/{}.mp3", slug,);
+  let source = format!("/audio/{slug}.mp3");
   view! {
     <div class="post__audio" aria-label="Article audio">
       <span class="post__audio-label">"Listen to this article"</span>
