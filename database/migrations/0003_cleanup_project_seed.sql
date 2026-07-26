@@ -1,7 +1,5 @@
 -- Remove the legacy seed row whose slug used a Cyrillic character and
 -- could coexist with the canonical content slug as a duplicate Dev card.
-BEGIN;
-
 DELETE FROM project_tags
 WHERE project_id IN (
   SELECT id
@@ -66,5 +64,3 @@ JOIN (
   SELECT 'Privacy'
 ) tags
 WHERE projects.slug = 'lms-data-analysis';
-
-COMMIT;
