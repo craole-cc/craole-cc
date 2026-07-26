@@ -22,9 +22,9 @@ fail() {
 [ -f "$WORKSPACE/target/site/pkg/craole-cc.wasm" ] || fail 'release WASM missing'
 [ -f "$WORKSPACE/.deploy-static/index.html" ] || fail 'static export missing'
 
-sha="${GITHUB_SHA:-unknown}"
+sha="$(git -C "$WORKSPACE" rev-parse --short=12 HEAD)"
 timestamp="$(date -u +%Y%m%dT%H%M%SZ)"
-release="$RELEASES/$(sed 's/^v//' "$WORKSPACE/Cargo.toml" | awk -F'"' '/^version = / {print $2; exit}')-$timestamp-${sha:0:12}"
+release="$RELEASES/$timestamp-$sha"
 old_release="$(readlink -f "$CURRENT" 2>/dev/null || true)"
 
 mkdir -p "$release/site" "$release/static"

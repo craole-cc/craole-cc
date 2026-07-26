@@ -73,5 +73,10 @@ jobs:
       - name: Export static fallback
         run: /nix/var/nix/profiles/default/bin/nix develop --accept-flake-config --command bash -lc 'cargo run -p contentctl -- export-static . .deploy-static'
 
-      - name: Deploy and verify
+      - name: Deploy and verify locally
         run: sudo /usr/local/sbin/craole-cc-deploy
+
+      - name: Verify public HTTPS endpoints
+        run: |
+          curl --fail --silent --show-error --retry 10 --retry-delay 3 https://craole.cc/ >/dev/null
+          curl --fail --silent --show-error --retry 10 --retry-delay 3 https://craole.cc/dev >/dev/null
