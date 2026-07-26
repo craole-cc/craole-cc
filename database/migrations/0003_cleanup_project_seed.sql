@@ -43,7 +43,7 @@ SELECT
   'Privacy-conscious analysis of authenticated lesson data from a real LMS workflow. The project turns an irregular operational data source into validated aggregates, period comparisons, a Ratatui terminal dashboard, a synthetic public web demo, and a roadmap toward a cross-platform app.',
   'active',
   'https://github.com/craole-cc/fluentbe',
-  'https://craole.cc/data/lms',
+  'https://craole.cc/demos/lms-analysis',
   1,
   1,
   20

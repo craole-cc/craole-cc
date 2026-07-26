@@ -170,7 +170,7 @@ fn Content(p: ProjectDetail) -> impl IntoView {
             <h2>"Explore the LMS lesson-data analysis"</h2>
             <p>"Inspect the questions, workflows, and privacy-safe product built around a real operational data shape."</p>
           </div>
-          <a class="dev-detail__app-link" href="/data/lms">
+          <a class="dev-detail__app-link" href="/demos/lms-analysis">
             "Open analysis app →"
           </a>
         </aside>
