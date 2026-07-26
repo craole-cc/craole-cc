@@ -39,6 +39,43 @@
     text-transform: uppercase;
   }
 
+  &__audio {
+    display: grid;
+    gap: spacing(2);
+    margin-top: spacing(4);
+    padding: spacing(3);
+    border: spacing(px) solid var(--color-border);
+    border-radius: radius(md);
+    background: var(--color-bg-alt);
+  }
+
+  &__audio-label {
+    color: var(--color-text-muted);
+    font-size: fontsize(sm);
+    font-weight: 600;
+  }
+
+  &__audio-player {
+    display: block;
+    width: 100%;
+    min-height: 2.75rem;
+    accent-color: var(--color-primary);
+  }
+
+  &__audio-download {
+    width: fit-content;
+    color: var(--color-primary-text);
+    font-size: fontsize(sm);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+
+    &:focus-visible {
+      outline: 2px solid var(--color-ring);
+      outline-offset: 2px;
+      border-radius: radius(sm);
+    }
+  }
+
   &__body {
     margin: 0;
     color: var(--color-text);

@@ -2,7 +2,7 @@ use super::_prelude::*;
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
-fn status_class(status: &str) -> &'static str {
+fn status_class(status : &str,) -> &'static str {
   match status {
     | "active" => "dev-detail__status--active",
     | "building" => "dev-detail__status--building",
@@ -10,7 +10,7 @@ fn status_class(status: &str) -> &'static str {
   }
 }
 
-fn status_label(status: &str) -> &'static str {
+fn status_label(status : &str,) -> &'static str {
   match status {
     | "active" => "Active",
     | "building" => "Building",
@@ -24,7 +24,7 @@ fn status_label(status: &str) -> &'static str {
 
 #[component]
 #[allow(clippy::needless_pass_by_value)]
-fn TechSection(icons: Vec<Icon>) -> impl IntoView {
+fn TechSection(icons : Vec<Icon,>,) -> impl IntoView {
   if icons.is_empty() {
     return None;
   }
@@ -61,11 +61,11 @@ fn TechSection(icons: Vec<Icon>) -> impl IntoView {
           .collect_view()}
       </ul>
     </section>
-  })
+  },)
 }
 
 #[component]
-fn Links(repo_url: Option<String>, live_url: Option<String>) -> impl IntoView {
+fn Links(repo_url : Option<String,>, live_url : Option<String,>,) -> impl IntoView {
   view! {
     <div class="dev-detail__links">
       {repo_url
@@ -116,7 +116,7 @@ fn Links(repo_url: Option<String>, live_url: Option<String>) -> impl IntoView {
 }
 
 #[component]
-fn Screenshots(#[allow(clippy::needless_pass_by_value)] shots: Vec<String>) -> impl IntoView {
+fn Screenshots(#[allow(clippy::needless_pass_by_value)] shots : Vec<String,>,) -> impl IntoView {
   if shots.is_empty() {
     return None;
   }
@@ -136,12 +136,43 @@ fn Screenshots(#[allow(clippy::needless_pass_by_value)] shots: Vec<String>) -> i
           .collect_view()}
       </div>
     </section>
-  })
+  },)
+}
+
+#[component]
+fn LmsShowcase() -> impl IntoView {
+  view! {
+    <>
+      <section class="dev-detail__readme">
+        <h2 class="dev-detail__section-title">"What this project demonstrates"</h2>
+        <div class="dev-detail__readme-body markdown">
+          <p>"LMS Analytics turns an irregular authenticated lesson export into a privacy-conscious analysis workflow. The public demo uses synthetic records only; real learner data remains local."</p>
+          <ul>
+            <li>"CLI ingestion and validation with last-known-good cache promotion"</li>
+            <li>"Ratatui terminal dashboard for fast local investigation"</li>
+            <li>"Leptos/Axum web interface with filters, date ranges, comparisons, and drill-down"</li>
+            <li>"A shared analysis model that can evolve toward cross-platform clients"</li>
+          </ul>
+        </div>
+      </section>
+      <section class="dev-detail__gallery">
+        <h2 class="dev-detail__section-title">"Interface walkthrough"</h2>
+        <div class="dev-detail__screenshots">
+          <figure class="dev-detail__screenshot"><img src="/media/projects/lms-analysis/web-dashboard.png" alt="LMS Analytics web dashboard with metrics, filters, comparison controls, and lesson rows" loading="lazy" decoding="async" /></figure>
+          <figure class="dev-detail__screenshot"><img src="/media/projects/lms-analysis/tui-dashboard.png" alt="Sanitized preview of the LMS Analytics Ratatui terminal dashboard" loading="lazy" decoding="async" /></figure>
+        </div>
+        <div class="dev-detail__media-links">
+          <a class="dev-detail__link dev-detail__link--live" href="/media/projects/lms-analysis/demo-tour.mp4" target="_blank" rel="noopener noreferrer">"▶ Watch demo tour"</a>
+          <a class="dev-detail__link" href="/media/projects/lms-analysis/demo-tour.gif" target="_blank" rel="noopener noreferrer">"View GIF"</a>
+        </div>
+      </section>
+    </>
+  }
 }
 
 #[component]
 #[allow(clippy::needless_pass_by_value)]
-fn Content(p: ProjectDetail) -> impl IntoView {
+fn Content(p : ProjectDetail,) -> impl IntoView {
   let icons = p.icons();
 
   view! {
@@ -176,6 +207,8 @@ fn Content(p: ProjectDetail) -> impl IntoView {
         </aside>
       })}
 
+      {(p.slug == "lms-data-analysis").then(|| view! { <LmsShowcase /> })}
+
       <TechSection icons />
       <Links repo_url=p.repo_url live_url=p.live_url />
       <Screenshots shots=p.screenshots />
@@ -205,14 +238,14 @@ fn Content(p: ProjectDetail) -> impl IntoView {
 #[component]
 pub fn Detail() -> impl IntoView {
   let params = use_params_map();
-  let slug = move || params.with(|p| p.get("slug").unwrap_or_default());
+  let slug = move || params.with(|p| p.get("slug",).unwrap_or_default(),);
 
   let project = Resource::new(slug, |s| async move {
     if s.is_empty() {
-      return Ok(None);
+      return Ok(None,);
     }
-    get_project_by_slug(s).await
-  });
+    get_project_by_slug(s,).await
+  },);
 
   view! {
     <Suspense fallback=move || {

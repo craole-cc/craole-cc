@@ -22,8 +22,8 @@ mod tests {
 
   fn copy_schema_migration(root : &Path,) {
     let manifest_dir = Path::new(env!("CARGO_MANIFEST_DIR"),);
-    let schema = fs::read_to_string(manifest_dir.join("../database/migrations/0001_schema.sql",),)
-      .unwrap();
+    let schema =
+      fs::read_to_string(manifest_dir.join("../database/migrations/0001_schema.sql",),).unwrap();
     write(&root.join("database/migrations/0001_schema.sql",), &schema,);
   }
 
@@ -65,7 +65,10 @@ Body.
     let root = fixture("valid",);
     copy_schema_migration(&root,);
     write_valid_content(&root,);
-    let database_url = format!("sqlite://{}", root.join("database/data/portfolio.db",).display());
+    let database_url = format!(
+      "sqlite://{}",
+      root.join("database/data/portfolio.db",).display()
+    );
 
     let report = sync_content_database(&root, &database_url,).unwrap();
 
@@ -88,7 +91,10 @@ status = "invalid"
 description = "Invalid project."
 "#,
     );
-    let database_url = format!("sqlite://{}", root.join("database/data/portfolio.db",).display());
+    let database_url = format!(
+      "sqlite://{}",
+      root.join("database/data/portfolio.db",).display()
+    );
 
     let error = sync_content_database(&root, &database_url,)
       .expect_err("invalid content should block sync",)

@@ -1,11 +1,11 @@
 use crate::prelude::*;
 
 struct Discipline {
-  number: &'static str,
-  title: &'static str,
-  description: &'static str,
-  path: &'static str,
-  image: &'static str,
+  number :      &'static str,
+  title :       &'static str,
+  description : &'static str,
+  path :        &'static str,
+  image :       &'static str,
 }
 
 const DISCIPLINES: &[Discipline] = &[

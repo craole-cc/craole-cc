@@ -9,7 +9,8 @@ mod tests {
   };
 
   fn fixture(name : &str,) -> std::path::PathBuf {
-    let root = std::env::temp_dir().join(format!("contentctl-static-{name}-{}", std::process::id()),);
+    let root =
+      std::env::temp_dir().join(format!("contentctl-static-{name}-{}", std::process::id()),);
     _ = fs::remove_dir_all(&root,);
     fs::create_dir_all(root.join("content/projects",),).unwrap();
     fs::create_dir_all(root.join("content/posts",),).unwrap();
@@ -88,16 +89,25 @@ Body for static fallback.
     let post = fs::read_to_string(output_dir.join("log/hello-static/index.html",),).unwrap();
     let manifest = fs::read_to_string(output_dir.join("data/manifest.json",),).unwrap();
 
-    assert!(index.contains("Creative engineering & visual narrative"), "{index}");
+    assert!(
+      index.contains("Creative engineering & visual narrative"),
+      "{index}"
+    );
     assert!(!index.contains("assets/avatar-bass.png"), "{index}");
-    assert!(index.contains("<span class=\"brand__mark\">CC</span>"), "{index}");
+    assert!(
+      index.contains("<span class=\"brand__mark\">CC</span>"),
+      "{index}"
+    );
     assert!(index.contains(">Data</a>"), "{index}");
     assert!(index.contains("Demo Project"), "{index}");
     assert!(dev_index.contains("/dev/demo-project/"), "{dev_index}");
     assert!(data_index.contains("Business intelligence"), "{data_index}");
     assert!(data_index.contains("BI Dashboard"), "{data_index}");
     assert!(!data_index.contains("Demo Project"), "{data_index}");
-    assert!(project.contains("A useful project for static HTML export."), "{project}");
+    assert!(
+      project.contains("A useful project for static HTML export."),
+      "{project}"
+    );
     assert!(log_index.contains("/log/hello-static/"), "{log_index}");
     assert!(post.contains("Body for static fallback."), "{post}");
     assert!(manifest.contains("\"projects\": 2"), "{manifest}");

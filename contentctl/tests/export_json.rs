@@ -66,7 +66,10 @@ Body.
     let projects = fs::read_to_string(output_dir.join("projects.json",),).unwrap();
     let posts = fs::read_to_string(output_dir.join("posts.json",),).unwrap();
     let manifest = fs::read_to_string(output_dir.join("manifest.json",),).unwrap();
-    assert!(projects.contains("\"slug\": \"demo-project\""), "{projects}");
+    assert!(
+      projects.contains("\"slug\": \"demo-project\""),
+      "{projects}"
+    );
     assert!(projects.contains("\"tags\": ["), "{projects}");
     assert!(posts.contains("\"body\": \"\\n# Hello"), "{posts}");
     assert!(manifest.contains("\"projects\": 1"), "{manifest}");

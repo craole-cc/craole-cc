@@ -3,4 +3,9 @@ mod nav;
 mod socials;
 mod view;
 
-pub use {info::*, nav::*, socials::*, view::*};
+pub use {
+  info::*,
+  nav::*,
+  socials::*,
+  view::*,
+};

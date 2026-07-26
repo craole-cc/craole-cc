@@ -1,11 +1,14 @@
 #![allow(clippy::must_use_candidate)]
 use crate::prelude::{
-  icons::{menu_close, menu_open},
+  icons::{
+    menu_close,
+    menu_open,
+  },
   *,
 };
 
 #[component]
-fn Hamburger(open: ReadSignal<bool>, set_open: WriteSignal<bool>) -> impl IntoView {
+fn Hamburger(open : ReadSignal<bool,>, set_open : WriteSignal<bool,>,) -> impl IntoView {
   view! {
     <button
       class="site-nav__menu-btn"
@@ -23,7 +26,7 @@ fn Hamburger(open: ReadSignal<bool>, set_open: WriteSignal<bool>) -> impl IntoVi
 }
 
 #[component]
-pub fn Controls(open: ReadSignal<bool>, set_open: WriteSignal<bool>) -> impl IntoView {
+pub fn Controls(open : ReadSignal<bool,>, set_open : WriteSignal<bool,>,) -> impl IntoView {
   view! {
     <div class="site-nav__controls">
       <Search />

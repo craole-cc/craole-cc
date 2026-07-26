@@ -5,6 +5,10 @@ pub mod header;
 pub mod search;
 pub mod prelude {
   pub use super::{
-    buttons::BackToTop, dividers::Divider, footer::Footer, header::Header, search::prelude::*,
+    buttons::BackToTop,
+    dividers::Divider,
+    footer::Footer,
+    header::Header,
+    search::prelude::*,
   };
 }

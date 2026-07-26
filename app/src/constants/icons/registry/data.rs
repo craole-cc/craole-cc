@@ -4,12 +4,15 @@ use super::_prelude::*;
 //║ Delta Lake                                                ║
 //╚═══════════════════════════════════════════════════════════╝
 pub mod deltalake {
-  use super::{Icon, Variant};
+  use super::{
+    Icon,
+    Variant,
+  };
 
-  pub struct DeltaLake(pub Variant);
+  pub struct DeltaLake(pub Variant,);
   impl DeltaLake {
     #[must_use]
-    pub const fn get(self) -> Icon {
+    pub const fn get(self,) -> Icon {
       match self.0 {
         | Variant::Default => default(),
         | Variant::Local => local(),
@@ -19,44 +22,39 @@ pub mod deltalake {
     }
   }
 
-  pub const TAGS: &[&str] = &["Delta Lake", "DeltaLake", "delta-lake", "deltalake"];
+  pub const TAGS : &[&str] = &["Delta Lake", "DeltaLake", "delta-lake", "deltalake",];
 
   const fn base() -> Icon {
-    Icon::new_local("icons/logos/deltalake.svg")
-      .with_link("https://delta.io/")
-      .with_tooltip("Open-source storage framework")
-      .with_label("Delta Lake")
+    Icon::new_local("icons/logos/deltalake.svg",)
+      .with_link("https://delta.io/",)
+      .with_tooltip("Open-source storage framework",)
+      .with_label("Delta Lake",)
   }
 
   // No Leptos icon — local SVG only
   #[must_use]
-  pub const fn local() -> Icon {
-    base()
-  }
+  pub const fn local() -> Icon { base() }
   #[must_use]
-  pub const fn filled() -> Icon {
-    local()
-  }
+  pub const fn filled() -> Icon { local() }
   #[must_use]
-  pub const fn outlined() -> Icon {
-    local()
-  }
+  pub const fn outlined() -> Icon { local() }
   #[must_use]
-  pub const fn default() -> Icon {
-    local()
-  }
+  pub const fn default() -> Icon { local() }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
 //║ Neo4j                                                     ║
 //╚═══════════════════════════════════════════════════════════╝
 pub mod neo4j {
-  use super::{Icon, Variant};
+  use super::{
+    Icon,
+    Variant,
+  };
 
-  pub struct Neo4j(pub Variant);
+  pub struct Neo4j(pub Variant,);
   impl Neo4j {
     #[must_use]
-    pub const fn get(self) -> Icon {
+    pub const fn get(self,) -> Icon {
       match self.0 {
         | Variant::Default => default(),
         | Variant::Local => local(),
@@ -66,44 +64,40 @@ pub mod neo4j {
     }
   }
 
-  pub const TAGS: &[&str] = &["Neo4j", "neo4j"];
+  pub const TAGS : &[&str] = &["Neo4j", "neo4j",];
 
   const fn base() -> Icon {
     Icon::new()
-      .with_link("https://neo4j.com/")
-      .with_tooltip("Graph database platform")
-      .with_label("Neo4j")
+      .with_link("https://neo4j.com/",)
+      .with_tooltip("Graph database platform",)
+      .with_label("Neo4j",)
   }
 
   // No Leptos icon — local SVG only
   #[must_use]
-  pub const fn local() -> Icon {
-    base().via_local("icons/logos/neo4j.svg")
-  }
+  pub const fn local() -> Icon { base().via_local("icons/logos/neo4j.svg",) }
   #[must_use]
-  pub const fn filled() -> Icon {
-    local()
-  }
+  pub const fn filled() -> Icon { local() }
   #[must_use]
-  pub const fn outlined() -> Icon {
-    local()
-  }
+  pub const fn outlined() -> Icon { local() }
   #[must_use]
-  pub const fn default() -> Icon {
-    local()
-  }
+  pub const fn default() -> Icon { local() }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
 //║ PostgreSQL                                                ║
 //╚═══════════════════════════════════════════════════════════╝
 pub mod postgresql {
-  use super::{Icon, Variant, icon};
+  use super::{
+    Icon,
+    Variant,
+    icon,
+  };
 
-  pub struct PostgreSQL(pub Variant);
+  pub struct PostgreSQL(pub Variant,);
   impl PostgreSQL {
     #[must_use]
-    pub fn get(self) -> Icon {
+    pub fn get(self,) -> Icon {
       match self.0 {
         | Variant::Default => default(),
         | Variant::Local => local(),
@@ -112,45 +106,43 @@ pub mod postgresql {
     }
   }
 
-  pub const TAGS: &[&str] = &["PostgreSQL", "postgresql", "postgres", "Postgres"];
+  pub const TAGS : &[&str] = &["PostgreSQL", "postgresql", "postgres", "Postgres",];
 
   const fn base() -> Icon {
-    Icon::new_local("icons/logos/postgresql.svg")
-      .with_link("https://www.postgresql.org/")
-      .with_tooltip("Advanced open source relational database")
-      .with_label("PostgreSQL")
+    Icon::new_local("icons/logos/postgresql.svg",)
+      .with_link("https://www.postgresql.org/",)
+      .with_tooltip("Advanced open source relational database",)
+      .with_label("PostgreSQL",)
   }
 
   #[must_use]
-  pub const fn local() -> Icon {
-    base()
-  }
+  pub const fn local() -> Icon { base() }
   #[must_use]
   pub fn filled() -> Icon {
     base()
-      .via_leptos(icon::SiPostgresql)
-      .colored("brand-postgresql")
+      .via_leptos(icon::SiPostgresql,)
+      .colored("brand-postgresql",)
   }
   #[must_use]
-  pub fn outlined() -> Icon {
-    filled()
-  }
+  pub fn outlined() -> Icon { filled() }
   #[must_use]
-  pub fn default() -> Icon {
-    filled()
-  }
+  pub fn default() -> Icon { filled() }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
 //║ SQLite                                                    ║
 //╚═══════════════════════════════════════════════════════════╝
 pub mod sqlite {
-  use super::{Icon, Variant, icon};
+  use super::{
+    Icon,
+    Variant,
+    icon,
+  };
 
-  pub struct SQLite(pub Variant);
+  pub struct SQLite(pub Variant,);
   impl SQLite {
     #[must_use]
-    pub fn get(self) -> Icon {
+    pub fn get(self,) -> Icon {
       match self.0 {
         | Variant::Default => default(),
         | Variant::Local => local(),
@@ -160,43 +152,39 @@ pub mod sqlite {
     }
   }
 
-  pub const TAGS: &[&str] = &["SQLite", "sqlite"];
+  pub const TAGS : &[&str] = &["SQLite", "sqlite",];
 
   const fn base() -> Icon {
-    Icon::new_local("icons/logos/SQLite.svg")
-      .with_link("https://www.sqlite.org/")
-      .with_tooltip("Self-contained embedded database")
-      .with_label("SQLite")
+    Icon::new_local("icons/logos/SQLite.svg",)
+      .with_link("https://www.sqlite.org/",)
+      .with_tooltip("Self-contained embedded database",)
+      .with_label("SQLite",)
   }
 
   #[must_use]
-  pub const fn local() -> Icon {
-    base()
-  }
+  pub const fn local() -> Icon { base() }
   #[must_use]
-  pub fn filled() -> Icon {
-    base().via_leptos(icon::SiSqlite).colored("brand-sqlite")
-  }
+  pub fn filled() -> Icon { base().via_leptos(icon::SiSqlite,).colored("brand-sqlite",) }
   #[must_use]
-  pub fn outlined() -> Icon {
-    filled()
-  }
+  pub fn outlined() -> Icon { filled() }
   #[must_use]
-  pub fn default() -> Icon {
-    filled()
-  }
+  pub fn default() -> Icon { filled() }
 }
 
 //╔═══════════════════════════════════════════════════════════╗
 //║ SurrealDB                                                 ║
 //╚═══════════════════════════════════════════════════════════╝
 pub mod surrealdb {
-  use super::{Icon, Variant, icon};
+  use super::{
+    Icon,
+    Variant,
+    icon,
+  };
 
-  pub struct SurrealDB(pub Variant);
+  pub struct SurrealDB(pub Variant,);
   impl SurrealDB {
     #[must_use]
-    pub fn get(self) -> Icon {
+    pub fn get(self,) -> Icon {
       match self.0 {
         | Variant::Default => default(),
         | Variant::Local => local(),
@@ -205,31 +193,25 @@ pub mod surrealdb {
     }
   }
 
-  pub const TAGS: &[&str] = &["SurrealDB", "surrealdb", "surreal"];
+  pub const TAGS : &[&str] = &["SurrealDB", "surrealdb", "surreal",];
 
   const fn base() -> Icon {
-    Icon::new_local("icons/logos/surrealdb.svg")
-      .with_link("https://surrealdb.com/")
-      .with_tooltip("Multi-model database")
-      .with_label("SurrealDB")
+    Icon::new_local("icons/logos/surrealdb.svg",)
+      .with_link("https://surrealdb.com/",)
+      .with_tooltip("Multi-model database",)
+      .with_label("SurrealDB",)
   }
 
   #[must_use]
-  pub const fn local() -> Icon {
-    base()
-  }
+  pub const fn local() -> Icon { base() }
   #[must_use]
   pub fn filled() -> Icon {
     base()
-      .via_leptos(icon::SiSurrealdb)
-      .colored("brand-surrealdb")
+      .via_leptos(icon::SiSurrealdb,)
+      .colored("brand-surrealdb",)
   }
   #[must_use]
-  pub fn outlined() -> Icon {
-    filled()
-  }
+  pub fn outlined() -> Icon { filled() }
   #[must_use]
-  pub fn default() -> Icon {
-    filled()
-  }
+  pub fn default() -> Icon { filled() }
 }

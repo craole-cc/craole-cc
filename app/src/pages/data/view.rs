@@ -1,6 +1,6 @@
 use crate::prelude::*;
 
-const DATA_TAGS: &[&str] = &[
+const DATA_TAGS : &[&str] = &[
   "Data",
   "Data Engineering",
   "Business Intelligence",
@@ -18,12 +18,12 @@ const DATA_TAGS: &[&str] = &[
   "Databricks",
 ];
 
-fn is_data_project(project: &Project) -> bool {
+fn is_data_project(project : &Project,) -> bool {
   project.tags.iter().any(|tag| {
     DATA_TAGS
       .iter()
-      .any(|data_tag| tag.eq_ignore_ascii_case(data_tag))
-  })
+      .any(|data_tag| tag.eq_ignore_ascii_case(data_tag,),)
+  },)
 }
 
 #[component]
@@ -31,9 +31,12 @@ pub fn Data() -> impl IntoView {
   let projects = Resource::new(
     || (),
     |()| async move {
-      list_projects()
-        .await
-        .map(|projects| projects.into_iter().filter(is_data_project).collect::<Vec<_>>())
+      list_projects().await.map(|projects| {
+        projects
+          .into_iter()
+          .filter(is_data_project,)
+          .collect::<Vec<_,>>()
+      },)
     },
   );
 

@@ -20,7 +20,8 @@ mod tests {
   fn creates_project_template_at_slug_path() {
     let root = fixture("project",);
 
-    let created = create_content_template(&root, ContentTemplateKind::Project, "demo-project",).unwrap();
+    let created =
+      create_content_template(&root, ContentTemplateKind::Project, "demo-project",).unwrap();
 
     assert_eq!(created, root.join("content/projects/demo-project.toml",));
     let content = fs::read_to_string(created,).unwrap();
@@ -34,7 +35,8 @@ mod tests {
   fn creates_post_template_at_slug_path() {
     let root = fixture("post",);
 
-    let created = create_content_template(&root, ContentTemplateKind::Post, "hello-craole",).unwrap();
+    let created =
+      create_content_template(&root, ContentTemplateKind::Post, "hello-craole",).unwrap();
 
     assert_eq!(created, root.join("content/posts/hello-craole.md",));
     let content = fs::read_to_string(created,).unwrap();
@@ -75,6 +77,9 @@ mod tests {
       .expect_err("existing file should fail",)
       .to_string();
 
-    assert!(error.contains(&format!("content file already exists: `{}`", created.display())));
+    assert!(error.contains(&format!(
+      "content file already exists: `{}`",
+      created.display()
+    )));
   }
 }

@@ -694,13 +694,18 @@ fn render_template(kind : ContentTemplateKind, slug : &str,) -> String {
   let title = title_from_slug(slug,);
   match kind {
     | ContentTemplateKind::Project => format!(
-      "title = \"{title}\"\nslug = \"{slug}\"\nstatus = \"planning\"\ndescription = \"TODO: Short, portfolio-ready project summary.\"\nfeatured = false\npublished = false\nsort_order = 0\ntags = []\nscreenshots = []\n",
+      "title = \"{title}\"\nslug = \"{slug}\"\nstatus = \"planning\"\ndescription = \"TODO: \
+       Short, portfolio-ready project summary.\"\nfeatured = false\npublished = false\nsort_order \
+       = 0\ntags = []\nscreenshots = []\n",
     ),
     | ContentTemplateKind::Post => format!(
-      "---\ntitle: \"{title}\"\nslug: \"{slug}\"\nkind: \"note\"\npublished: false\nfeatured: false\ntags: []\n---\n\n# {title}\n\nTODO: Write the post body.\n",
+      "---\ntitle: \"{title}\"\nslug: \"{slug}\"\nkind: \"note\"\npublished: false\nfeatured: \
+       false\ntags: []\n---\n\n# {title}\n\nTODO: Write the post body.\n",
     ),
     | ContentTemplateKind::Media => format!(
-      "title = \"{title}\"\nslug = \"{slug}\"\nmedia_type = \"photo\"\nfile_path = \"/media/art/{slug}.webp\"\nalt_text = \"\"\npublished = false\nsort_order = 0\ntaken_at = \"\"\nwidth = 0\nheight = 0\ntags = []\n",
+      "title = \"{title}\"\nslug = \"{slug}\"\nmedia_type = \"photo\"\nfile_path = \
+       \"/media/art/{slug}.webp\"\nalt_text = \"\"\npublished = false\nsort_order = 0\ntaken_at = \
+       \"\"\nwidth = 0\nheight = 0\ntags = []\n",
     ),
   }
 }
@@ -716,7 +721,7 @@ fn title_from_slug(slug : &str,) -> String {
       };
       format!("{}{}", first.to_ascii_uppercase(), chars.as_str())
     },)
-    .collect::<Vec<_>>()
+    .collect::<Vec<_,>>()
     .join(" ",)
 }
 
@@ -792,7 +797,7 @@ pub fn export_static_site(
       .frontmatter
       .published_at
       .cmp(&left.frontmatter.published_at,)
-      .then_with(|| left.frontmatter.slug.cmp(&right.frontmatter.slug,))
+      .then_with(|| left.frontmatter.slug.cmp(&right.frontmatter.slug,),)
   },);
 
   fs::create_dir_all(output_dir,).map_err(|source| ContentError::Write {
@@ -805,21 +810,21 @@ pub fn export_static_site(
 
   let published_projects = projects
     .iter()
-    .filter(|project| project.published.unwrap_or(false,))
-    .collect::<Vec<_>>();
+    .filter(|project| project.published.unwrap_or(false,),)
+    .collect::<Vec<_,>>();
   let data_projects = published_projects
     .iter()
     .copied()
-    .filter(|project| is_data_project(project,))
-    .collect::<Vec<_>>();
+    .filter(|project| is_data_project(project,),)
+    .collect::<Vec<_,>>();
   let published_posts = posts
     .iter()
-    .filter(|post| post.frontmatter.published.unwrap_or(false,))
-    .collect::<Vec<_>>();
+    .filter(|post| post.frontmatter.published.unwrap_or(false,),)
+    .collect::<Vec<_,>>();
   let published_media = media
     .iter()
-    .filter(|item| item.published.unwrap_or(false,))
-    .collect::<Vec<_>>();
+    .filter(|item| item.published.unwrap_or(false,),)
+    .collect::<Vec<_,>>();
 
   let mut pages = 0;
   write_html_file(
@@ -882,8 +887,8 @@ pub fn export_static_site(
 
   Ok(StaticSiteReport {
     projects : json_report.projects,
-    posts :    json_report.posts,
-    media :    json_report.media,
+    posts : json_report.posts,
+    media : json_report.media,
     pages,
   },)
 }
@@ -926,7 +931,8 @@ fn copy_dir_contents(source : &Path, destination : &Path,) -> Result<(), Content
   for entry in fs::read_dir(source,).map_err(|source_error| ContentError::Read {
     path :   source.to_path_buf(),
     source : source_error,
-  },)? {
+  },)?
+  {
     let entry = entry.map_err(|source_error| ContentError::Read {
       path :   source.to_path_buf(),
       source : source_error,
@@ -994,12 +1000,16 @@ fn page_shell(title : &str, active : &str, body : &str,) -> String {
 
 fn site_path(path : &str,) -> String {
   let base = std::env::var("CRAOLE_STATIC_BASE_PATH",).unwrap_or_else(|_| "/".to_string(),);
-  let mut base = if base.trim().is_empty() { "/".to_string() } else { base };
-  if !base.starts_with('/') {
+  let mut base = if base.trim().is_empty() {
+    "/".to_string()
+  } else {
+    base
+  };
+  if !base.starts_with('/',) {
     base.insert(0, '/',);
   }
-  if !base.ends_with('/') {
-    base.push('/');
+  if !base.ends_with('/',) {
+    base.push('/',);
   }
   format!("{}{}", base, path.trim_start_matches('/'))
 }
@@ -1014,12 +1024,12 @@ fn render_home_page(
   let log = site_path("log/",);
   let art = site_path("art/",);
   let icons = [
-    ("Rust", site_path("icons/logos/rust.svg",)),
-    ("Leptos", site_path("icons/logos/leptos.svg",)),
-    ("Nix", site_path("icons/logos/nixos.svg",)),
-    ("Python", site_path("icons/logos/python.svg",)),
-    ("GitHub", site_path("icons/logos/github.svg",)),
-    ("Linux", site_path("icons/logos/linux.svg",)),
+    ("Rust", site_path("icons/logos/rust.svg",),),
+    ("Leptos", site_path("icons/logos/leptos.svg",),),
+    ("Nix", site_path("icons/logos/nixos.svg",),),
+    ("Python", site_path("icons/logos/python.svg",),),
+    ("GitHub", site_path("icons/logos/github.svg",),),
+    ("Linux", site_path("icons/logos/linux.svg",),),
   ];
   let icon_html = icons
     .iter()
@@ -1036,7 +1046,22 @@ fn render_home_page(
     "Craole.CC",
     "home",
     &format!(
-      "<section class=\"hero\"><figure class=\"hero__backdrop\" aria-hidden=\"true\"><span class=\"hero__slide hero__slide--one\"></span><span class=\"hero__scrim\"></span></figure><article class=\"hero__content\"><p class=\"eyebrow\">Creative engineering & visual narrative</p><h1><span>Craig </span><em>Craole</em><span> Cole</span></h1><p class=\"hero__sub\">Raised on rhythm, building with Rust. Code is another instrument of expression through structure.</p><div class=\"hero__actions\"><a class=\"button button--primary\" href=\"{dev}\">See the work</a><a class=\"button\" href=\"{log}\">Read the log</a></div></article></section><section class=\"vision\"><div class=\"vision__label\">The Vision</div><p>From music production to teaching to systems programming, the through-line is expression: structure with soul, precision with personality.</p></section><section class=\"stack\"><p class=\"eyebrow\">Tools & language</p><ul>{icon_html}</ul></section><section class=\"section-grid\"><article><h2>Featured projects</h2>{}</article><article><h2>Latest writing</h2>{}</article><article><h2>Art & media</h2><p>{} published media item(s). <a href=\"{art}\">Explore the visual side</a>.</p></article></section>",
+      "<section class=\"hero\"><figure class=\"hero__backdrop\" aria-hidden=\"true\"><span \
+       class=\"hero__slide hero__slide--one\"></span><span \
+       class=\"hero__scrim\"></span></figure><article class=\"hero__content\"><p \
+       class=\"eyebrow\">Creative engineering & visual narrative</p><h1><span>Craig \
+       </span><em>Craole</em><span> Cole</span></h1><p class=\"hero__sub\">Raised on rhythm, \
+       building with Rust. Code is another instrument of expression through structure.</p><div \
+       class=\"hero__actions\"><a class=\"button button--primary\" href=\"{dev}\">See the \
+       work</a><a class=\"button\" href=\"{log}\">Read the \
+       log</a></div></article></section><section class=\"vision\"><div \
+       class=\"vision__label\">The Vision</div><p>From music production to teaching to systems \
+       programming, the through-line is expression: structure with soul, precision with \
+       personality.</p></section><section class=\"stack\"><p class=\"eyebrow\">Tools & \
+       language</p><ul>{icon_html}</ul></section><section \
+       class=\"section-grid\"><article><h2>Featured projects</h2>{}</article><article><h2>Latest \
+       writing</h2>{}</article><article><h2>Art & media</h2><p>{} published media item(s). <a \
+       href=\"{art}\">Explore the visual side</a>.</p></article></section>",
       render_project_cards(projects,),
       render_post_list(posts,),
       media.len(),
@@ -1048,13 +1073,19 @@ fn render_projects_index(projects : &[&ProjectContent],) -> String {
   page_shell(
     "Projects | Craole.CC",
     "dev",
-    &format!("<section><h1>Projects</h1>{}</section>", render_project_cards(projects,)),
+    &format!(
+      "<section><h1>Projects</h1>{}</section>",
+      render_project_cards(projects,)
+    ),
   )
 }
 
 fn render_data_index(projects : &[&ProjectContent],) -> String {
   let body = if projects.is_empty() {
-    "<p class=\"lede\">Business intelligence case studies are being prepared. Published projects tagged Business Intelligence, BI, Analytics, Dashboard, Power BI, Tableau, SQL, or related data tools will appear here.</p>".to_string()
+    "<p class=\"lede\">Business intelligence case studies are being prepared. Published projects \
+     tagged Business Intelligence, BI, Analytics, Dashboard, Power BI, Tableau, SQL, or related \
+     data tools will appear here.</p>"
+      .to_string()
   } else {
     render_project_cards(projects,)
   };
@@ -1062,7 +1093,9 @@ fn render_data_index(projects : &[&ProjectContent],) -> String {
     "Data | Craole.CC",
     "data",
     &format!(
-      "<section><p class=\"eyebrow\">Business intelligence</p><h1>Data</h1><p class=\"lede\">Dashboards, analytics systems, reporting workflows, and data products that turn raw information into decisions.</p>{body}</section>",
+      "<section><p class=\"eyebrow\">Business intelligence</p><h1>Data</h1><p \
+       class=\"lede\">Dashboards, analytics systems, reporting workflows, and data products that \
+       turn raw information into decisions.</p>{body}</section>",
     ),
   )
 }
@@ -1073,18 +1106,20 @@ fn render_project_page(project : &ProjectContent,) -> String {
   let repo = project
     .repo_url
     .as_deref()
-    .map(|url| format!("<a href=\"{}\">Repository</a>", escape_attr(url)))
+    .map(|url| format!("<a href=\"{}\">Repository</a>", escape_attr(url)),)
     .unwrap_or_default();
   let live = project
     .live_url
     .as_deref()
-    .map(|url| format!("<a href=\"{}\">Live site</a>", escape_attr(url)))
+    .map(|url| format!("<a href=\"{}\">Live site</a>", escape_attr(url)),)
     .unwrap_or_default();
   page_shell(
     title,
     "dev",
     &format!(
-      "<article><p><a href=\"{}\">← Projects</a></p><h1>{}</h1><p class=\"lede\">{}</p><p>Status: <strong>{}</strong></p><div class=\"tags\">{tags}</div><p class=\"links\">{} {}</p></article>",
+      "<article><p><a href=\"{}\">← Projects</a></p><h1>{}</h1><p class=\"lede\">{}</p><p>Status: \
+       <strong>{}</strong></p><div class=\"tags\">{tags}</div><p class=\"links\">{} \
+       {}</p></article>",
       site_path("dev/",),
       escape_html(title,),
       escape_html(project.description.as_deref().unwrap_or_default(),),
@@ -1099,18 +1134,26 @@ fn render_posts_index(posts : &[&PostContent],) -> String {
   page_shell(
     "Log | Craole.CC",
     "log",
-    &format!("<section><h1>Log</h1>{}</section>", render_post_list(posts,)),
+    &format!(
+      "<section><h1>Log</h1>{}</section>",
+      render_post_list(posts,)
+    ),
   )
 }
 
 fn render_post_page(post : &PostContent,) -> String {
-  let title = post.frontmatter.title.as_deref().unwrap_or("Untitled post",);
+  let title = post
+    .frontmatter
+    .title
+    .as_deref()
+    .unwrap_or("Untitled post",);
   let date = post.frontmatter.published_at.as_deref().unwrap_or("Draft",);
   page_shell(
     title,
     "log",
     &format!(
-      "<article><p><a href=\"{}\">← Log</a></p><h1>{}</h1><p class=\"eyebrow\">{}</p><div class=\"tags\">{}</div><div class=\"prose\">{}</div></article>",
+      "<article><p><a href=\"{}\">← Log</a></p><h1>{}</h1><p class=\"eyebrow\">{}</p><div \
+       class=\"tags\">{}</div><div class=\"prose\">{}</div></article>",
       site_path("log/",),
       escape_html(title,),
       escape_html(date,),
@@ -1123,7 +1166,10 @@ fn render_post_page(post : &PostContent,) -> String {
 #[allow(clippy::format_collect)]
 fn render_media_index(media : &[&MediaContent],) -> String {
   let items = if media.is_empty() {
-    format!("<p>No published media yet. See <a href=\"{}\">media.json</a>.</p>", site_path("data/media.json",))
+    format!(
+      "<p>No published media yet. See <a href=\"{}\">media.json</a>.</p>",
+      site_path("data/media.json",)
+    )
   } else {
     media
       .iter()
@@ -1137,14 +1183,22 @@ fn render_media_index(media : &[&MediaContent],) -> String {
       },)
       .collect::<String>()
   };
-  page_shell("Art | Craole.CC", "art", &format!("<section><h1>Art</h1>{items}</section>"),)
+  page_shell(
+    "Art | Craole.CC",
+    "art",
+    &format!("<section><h1>Art</h1>{items}</section>"),
+  )
 }
 
 fn render_404_page() -> String {
   page_shell(
     "Not found | Craole.CC",
     "404",
-    &format!("<section><h1>Not found</h1><p>This static fallback does not include that route.</p><p><a href=\"{}\">Return home</a></p></section>", site_path("",)),
+    &format!(
+      "<section><h1>Not found</h1><p>This static fallback does not include that route.</p><p><a \
+       href=\"{}\">Return home</a></p></section>",
+      site_path("",)
+    ),
   )
 }
 
@@ -1157,11 +1211,17 @@ fn render_sitemap(projects : &[&ProjectContent], posts : &[&PostContent],) -> St
     "/log/".to_string(),
     "/art/".to_string(),
   ];
-  urls.extend(projects.iter().filter_map(|project| {
-    project.slug.as_ref().map(|slug| format!("/dev/{slug}/"),)
-  },),);
+  urls.extend(
+    projects
+      .iter()
+      .filter_map(|project| project.slug.as_ref().map(|slug| format!("/dev/{slug}/"),),),
+  );
   urls.extend(posts.iter().filter_map(|post| {
-    post.frontmatter.slug.as_ref().map(|slug| format!("/log/{slug}/"),)
+    post
+      .frontmatter
+      .slug
+      .as_ref()
+      .map(|slug| format!("/log/{slug}/"),)
   },),);
   let body = urls
     .into_iter()
@@ -1192,7 +1252,7 @@ fn is_data_project(project : &ProjectContent,) -> bool {
     tags.iter().any(|tag| {
       DATA_TAGS
         .iter()
-        .any(|data_tag| tag.eq_ignore_ascii_case(data_tag,))
+        .any(|data_tag| tag.eq_ignore_ascii_case(data_tag,),)
     },)
   },)
 }
@@ -1207,13 +1267,14 @@ fn render_project_cards(projects : &[&ProjectContent],) -> String {
     let slug = project.slug.as_deref().unwrap_or_default();
     write!(
       html,
-      "<article class=\"card\"><h2><a href=\"{}\">{}</a></h2><p>{}</p><div class=\"tags\">{}</div></article>",
+      "<article class=\"card\"><h2><a href=\"{}\">{}</a></h2><p>{}</p><div \
+       class=\"tags\">{}</div></article>",
       site_path(&format!("dev/{}/", escape_attr(slug))),
       escape_html(title,),
       escape_html(project.description.as_deref().unwrap_or_default(),),
       render_tags(project.tags.as_deref().unwrap_or(&[],),),
     )
-    .expect("writing to String should not fail");
+    .expect("writing to String should not fail",);
     html
   },)
 }
@@ -1226,14 +1287,25 @@ fn render_post_list(posts : &[&PostContent],) -> String {
   posts
     .iter()
     .map(|post| {
-      let title = post.frontmatter.title.as_deref().unwrap_or("Untitled post",);
+      let title = post
+        .frontmatter
+        .title
+        .as_deref()
+        .unwrap_or("Untitled post",);
       let slug = post.frontmatter.slug.as_deref().unwrap_or_default();
       format!(
-        "<article class=\"card\"><h2><a href=\"{}\">{}</a></h2><p>{}</p><p class=\"eyebrow\">{}</p></article>",
+        "<article class=\"card\"><h2><a href=\"{}\">{}</a></h2><p>{}</p><p \
+         class=\"eyebrow\">{}</p></article>",
         site_path(&format!("log/{}/", escape_attr(slug))),
         escape_html(title,),
         escape_html(post.frontmatter.excerpt.as_deref().unwrap_or_default(),),
-        escape_html(post.frontmatter.published_at.as_deref().unwrap_or("undated",),),
+        escape_html(
+          post
+            .frontmatter
+            .published_at
+            .as_deref()
+            .unwrap_or("undated",),
+        ),
       )
     },)
     .collect::<String>()
@@ -1430,12 +1502,11 @@ pub fn sync_content_database(
     },)?;
   }
 
-  let connection = rusqlite::Connection::open(&database_path,).map_err(|source| {
-    ContentError::DatabaseOpen {
+  let connection =
+    rusqlite::Connection::open(&database_path,).map_err(|source| ContentError::DatabaseOpen {
       path : database_path.clone(),
       source,
-    }
-  },)?;
+    },)?;
   connection
     .execute_batch("PRAGMA foreign_keys = ON;",)
     .map_err(|source| ContentError::DatabaseExec {
@@ -1474,7 +1545,9 @@ fn sqlite_database_path(database_url : &str,) -> Result<PathBuf, ContentError,> 
   } else if let Some(path,) = database_url.strip_prefix("sqlite:",) {
     path
   } else {
-    return Err(ContentError::UnsupportedDatabaseUrl(database_url.to_string(),),);
+    return Err(ContentError::UnsupportedDatabaseUrl(
+      database_url.to_string(),
+    ),);
   };
 
   if path.trim().is_empty() || path == ":memory:" {
@@ -1494,7 +1567,9 @@ fn count_rows(
   table : &str,
 ) -> Result<i64, ContentError,> {
   connection
-    .query_row(&format!("SELECT COUNT(*) FROM {table}"), [], |row| row.get(0,),)
+    .query_row(&format!("SELECT COUNT(*) FROM {table}"), [], |row| {
+      row.get(0,)
+    },)
     .map_err(|source| ContentError::DatabaseQuery {
       path : database_path.to_path_buf(),
       source,

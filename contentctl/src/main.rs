@@ -63,8 +63,11 @@ fn main() -> ExitCode {
   }
 }
 
-fn create_new_content(mut args : impl Iterator<Item = String,>,) -> ExitCode {
-  let Some(kind,) = args.next().and_then(|kind| ContentTemplateKind::parse(&kind,),) else {
+fn create_new_content(mut args : impl Iterator<Item=String,>,) -> ExitCode {
+  let Some(kind,) = args
+    .next()
+    .and_then(|kind| ContentTemplateKind::parse(&kind,),)
+  else {
     eprintln!("missing or invalid content type for `new`");
     print_usage();
     return ExitCode::FAILURE;
@@ -92,13 +95,14 @@ fn create_new_content(mut args : impl Iterator<Item = String,>,) -> ExitCode {
   }
 }
 
-fn sync_database(mut args : impl Iterator<Item = String,>,) -> ExitCode {
+fn sync_database(mut args : impl Iterator<Item=String,>,) -> ExitCode {
   let root = args
     .next()
-    .map_or_else(|| PathBuf::from("."), PathBuf::from,);
-  let database_url = args.next().or_else(|| env::var("DATABASE_URL").ok(),).unwrap_or_else(|| {
-    "sqlite://database/data/portfolio.db".to_string()
-  },);
+    .map_or_else(|| PathBuf::from(".",), PathBuf::from,);
+  let database_url = args
+    .next()
+    .or_else(|| env::var("DATABASE_URL",).ok(),)
+    .unwrap_or_else(|| "sqlite://database/data/portfolio.db".to_string(),);
 
   match sync_content_database(&root, &database_url,) {
     | Ok(report,) => {
@@ -115,19 +119,22 @@ fn sync_database(mut args : impl Iterator<Item = String,>,) -> ExitCode {
   }
 }
 
-fn export_json(mut args : impl Iterator<Item = String,>,) -> ExitCode {
+fn export_json(mut args : impl Iterator<Item=String,>,) -> ExitCode {
   let root = args
     .next()
-    .map_or_else(|| PathBuf::from("."), PathBuf::from,);
+    .map_or_else(|| PathBuf::from(".",), PathBuf::from,);
   let output_dir = args
     .next()
-    .map_or_else(|| PathBuf::from("dist/data"), PathBuf::from,);
+    .map_or_else(|| PathBuf::from("dist/data",), PathBuf::from,);
 
   match export_static_json(&root, &output_dir,) {
     | Ok(report,) => {
       println!(
         "static JSON exported to {}: projects={} posts={} media={}",
-        output_dir.display(), report.projects, report.posts, report.media
+        output_dir.display(),
+        report.projects,
+        report.posts,
+        report.media
       );
       ExitCode::SUCCESS
     }
@@ -138,19 +145,23 @@ fn export_json(mut args : impl Iterator<Item = String,>,) -> ExitCode {
   }
 }
 
-fn export_static(mut args : impl Iterator<Item = String,>,) -> ExitCode {
+fn export_static(mut args : impl Iterator<Item=String,>,) -> ExitCode {
   let root = args
     .next()
-    .map_or_else(|| PathBuf::from("."), PathBuf::from,);
+    .map_or_else(|| PathBuf::from(".",), PathBuf::from,);
   let output_dir = args
     .next()
-    .map_or_else(|| PathBuf::from("dist"), PathBuf::from,);
+    .map_or_else(|| PathBuf::from("dist",), PathBuf::from,);
 
   match export_static_site(&root, &output_dir,) {
     | Ok(report,) => {
       println!(
         "static site exported to {}: pages={} projects={} posts={} media={}",
-        output_dir.display(), report.pages, report.projects, report.posts, report.media
+        output_dir.display(),
+        report.pages,
+        report.projects,
+        report.posts,
+        report.media
       );
       ExitCode::SUCCESS
     }
@@ -186,7 +197,9 @@ fn print_usage() {
   eprintln!("Usage: contentctl <command> [args]");
   eprintln!("Commands:");
   eprintln!("  validate [repo-root]              Validate content files");
-  eprintln!("  export-sql [repo-root]            Print a SQLite seed script generated from content files");
+  eprintln!(
+    "  export-sql [repo-root]            Print a SQLite seed script generated from content files"
+  );
   eprintln!("  export-json [repo-root] [output-dir]");
   eprintln!("                                  Export static JSON data files");
   eprintln!("  export-static [repo-root] [output-dir]");

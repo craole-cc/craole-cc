@@ -66,6 +66,12 @@ if [ "$PROJECT_COUNT" -lt 1 ] || [ "$POST_COUNT" -lt 1 ]; then
 fi
 
 printf '\n==> Content static export smoke test\n'
+if [ "${GENERATE_TTS:-0}" = "1" ]; then
+	printf 'Generating local neural TTS audio with %s\n' "${TTS_PROVIDER:-piper}"
+	python3 scripts/generate_tts.py --provider "${TTS_PROVIDER:-piper}"
+else
+	printf 'Skipping paid TTS generation. Set GENERATE_TTS=1 to enable it.\n'
+fi
 STATIC_DIST=$(mktemp -d)
 cargo run -p contentctl -- export-json . "$STATIC_DIST/data"
 cargo run -p contentctl -- export-static . "$STATIC_DIST/site"
