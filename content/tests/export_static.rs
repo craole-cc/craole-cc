@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod tests {
   use {
-    contentctl::export_static_site,
+    content::export_static_site,
     std::{
       fs,
       path::Path,
@@ -9,12 +9,11 @@ mod tests {
   };
 
   fn fixture(name : &str,) -> std::path::PathBuf {
-    let root =
-      std::env::temp_dir().join(format!("contentctl-static-{name}-{}", std::process::id()),);
+    let root = std::env::temp_dir().join(format!("content-static-{name}-{}", std::process::id()),);
     _ = fs::remove_dir_all(&root,);
-    fs::create_dir_all(root.join("content/projects",),).unwrap();
-    fs::create_dir_all(root.join("content/posts",),).unwrap();
-    fs::create_dir_all(root.join("content/media",),).unwrap();
+    fs::create_dir_all(root.join("assets/projects",),).unwrap();
+    fs::create_dir_all(root.join("assets/posts",),).unwrap();
+    fs::create_dir_all(root.join("assets/media",),).unwrap();
     root
   }
 
@@ -22,7 +21,7 @@ mod tests {
 
   fn write_valid_content(root : &Path,) {
     write(
-      &root.join("content/projects/demo.toml",),
+      &root.join("assets/projects/demo.toml",),
       r#"
 title = "Demo Project"
 slug = "demo-project"
@@ -37,7 +36,7 @@ tags = ["Rust", "Static"]
 "#,
     );
     write(
-      &root.join("content/projects/bi.toml",),
+      &root.join("assets/projects/bi.toml",),
       r#"
 title = "BI Dashboard"
 slug = "bi-dashboard"
@@ -50,7 +49,7 @@ tags = ["Business Intelligence", "Dashboard", "SQL"]
 "#,
     );
     write(
-      &root.join("content/posts/hello.md",),
+      &root.join("assets/posts/hello.md",),
       r#"---
 title: "Hello Static"
 slug: "hello-static"
@@ -83,7 +82,6 @@ Body for static fallback.
 
     let index = fs::read_to_string(output_dir.join("index.html",),).unwrap();
     let dev_index = fs::read_to_string(output_dir.join("dev/index.html",),).unwrap();
-    let data_index = fs::read_to_string(output_dir.join("data/index.html",),).unwrap();
     let project = fs::read_to_string(output_dir.join("dev/demo-project/index.html",),).unwrap();
     let log_index = fs::read_to_string(output_dir.join("log/index.html",),).unwrap();
     let post = fs::read_to_string(output_dir.join("log/hello-static/index.html",),).unwrap();
@@ -98,12 +96,10 @@ Body for static fallback.
       index.contains("<span class=\"brand__mark\">CC</span>"),
       "{index}"
     );
-    assert!(index.contains(">Data</a>"), "{index}");
+    assert!(!index.contains(">Data</a>"), "{index}");
     assert!(index.contains("Demo Project"), "{index}");
     assert!(dev_index.contains("/dev/demo-project/"), "{dev_index}");
-    assert!(data_index.contains("Business intelligence"), "{data_index}");
-    assert!(data_index.contains("BI Dashboard"), "{data_index}");
-    assert!(!data_index.contains("Demo Project"), "{data_index}");
+    assert!(!output_dir.join("data/index.html").exists());
     assert!(
       project.contains("A useful project for static HTML export."),
       "{project}"
@@ -117,7 +113,7 @@ Body for static fallback.
   fn refuses_to_export_static_site_for_invalid_content() {
     let root = fixture("invalid",);
     write(
-      &root.join("content/projects/demo.toml",),
+      &root.join("assets/projects/demo.toml",),
       r#"
 title = "Demo Project"
 slug = "demo-project"

@@ -77,7 +77,7 @@ jobs:
         run: /nix/var/nix/profiles/default/bin/nix develop --accept-flake-config --command bash -lc 'cargo leptos build --release'
 
       - name: Export static fallback
-        run: /nix/var/nix/profiles/default/bin/nix develop --accept-flake-config --command bash -lc 'cargo run -p contentctl -- export-static . .deploy-static'
+        run: /nix/var/nix/profiles/default/bin/nix develop --accept-flake-config --command bash -lc 'cargo run -p content -- export-static . .deploy-static'
 
       - name: Deploy and verify locally
         run: sudo /usr/local/sbin/craole-cc-deploy

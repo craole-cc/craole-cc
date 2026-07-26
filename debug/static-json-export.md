@@ -2,14 +2,14 @@
 
 ## Summary
 
-This phase adds `contentctl export-json` as the first concrete static-fallback artifact. It turns
+This phase adds `content export-json` as the first concrete static-fallback artifact. It turns
 validated Git-tracked content into JSON files that a static site, prerenderer, or client-side
 fallback can consume without a live SQLite database.
 
 ## Command
 
 ```sh
-cargo run -p contentctl -- export-json . dist/data
+cargo run -p content -- export-json . dist/data
 ```
 
 If the output directory is omitted, it defaults to `dist/data`.
@@ -44,7 +44,7 @@ static JSON exported to dist/data: projects=1 posts=1 media=0
 Focused TDD loop:
 
 ```text
-cargo test -p contentctl --test export_json
+cargo test -p content --test export_json
 ```
 
 Full local quality gate:

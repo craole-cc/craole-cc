@@ -112,11 +112,11 @@ with `lsof` and asks whether to kill it before starting `cargo leptos watch`.
 │   └── src/
 ├── backend/              # Axum server entry point and database bootstrap
 ├── frontend/             # WASM hydration entry point
-├── content/              # Git-tracked content source of truth
+├── assets/              # Git-tracked content source of truth
 │   ├── posts/            # Markdown posts with frontmatter
 │   ├── projects/         # TOML project records
 │   └── SCHEMA.md         # Content format and validation rules
-├── contentctl/           # CLI for content validation, SQLite seed export, draft templates
+├── assets/           # CLI for content validation, SQLite seed export, draft templates
 ├── database/
 │   ├── data/             # Local SQLite database files; gitignored
 │   └── migrations/       # Durable schema and baseline SQL migrations
@@ -130,16 +130,16 @@ with `lsof` and asks whether to kill it before starting `cargo leptos watch`.
 
 ## Content workflow
 
-Content should start in `content/`, not as ad-hoc SQL edits.
+Content should start in `assets/`, not as ad-hoc SQL edits.
 
 ### Create a draft template
 
-Use `contentctl new` to create the right file path with starter frontmatter/fields:
+Use `content new` to create the right file path with starter frontmatter/fields:
 
 ```sh
-cargo run -p contentctl -- new project my-project
-cargo run -p contentctl -- new post project-build-log
-cargo run -p contentctl -- new media portfolio-screenshot
+cargo run -p content -- new project my-project
+cargo run -p content -- new post project-build-log
+cargo run -p content -- new media portfolio-screenshot
 ```
 
 Generated project and post templates are valid unpublished drafts. Media templates still require you
@@ -150,7 +150,7 @@ The command refuses invalid slugs and will not overwrite an existing content fil
 ### Validate content
 
 ```sh
-cargo run -p contentctl -- validate .
+cargo run -p content -- validate .
 ```
 
 Expected success output:
@@ -164,7 +164,7 @@ content validation passed
 After migrations have created the schema, export the Git-tracked content into the local database:
 
 ```sh
-cargo run -p contentctl -- export-sql . | sqlite3 database/data/portfolio.db
+cargo run -p content -- export-sql . | sqlite3 database/data/portfolio.db
 ```
 
 This is the same smoke-test path used by `scripts/ci.sh`. It currently checks that at least one
@@ -172,10 +172,10 @@ project and one post are seeded.
 
 ### Sync content into SQLite
 
-Use `sync-db` when you want `contentctl` to apply migrations and seed the local database in one step:
+Use `sync-db` when you want `content` to apply migrations and seed the local database in one step:
 
 ```sh
-cargo run -p contentctl -- sync-db . sqlite://database/data/portfolio.db
+cargo run -p content -- sync-db . sqlite://database/data/portfolio.db
 ```
 
 If the database URL argument is omitted, `sync-db` uses `DATABASE_URL` and then falls back to
@@ -192,7 +192,7 @@ content database synced: projects=1 posts=1 media=0
 Use `export-json` to generate static-friendly content data for a fallback site or future prerenderer:
 
 ```sh
-cargo run -p contentctl -- export-json . dist/data
+cargo run -p content -- export-json . dist/data
 ```
 
 This writes:
@@ -211,7 +211,7 @@ The command validates content before writing files and refuses to export invalid
 Use `export-static` to generate a minimal HTML fallback site plus the same JSON data files:
 
 ```sh
-cargo run -p contentctl -- export-static . dist
+cargo run -p content -- export-static . dist
 ```
 
 This writes:
@@ -236,27 +236,27 @@ replacement for the full Leptos/Axum SSR site.
 1. Create a draft template:
 
    ```sh
-   cargo run -p contentctl -- new project <slug>
+   cargo run -p content -- new project <slug>
    ```
 
-2. Edit `content/projects/<slug>.toml`.
+2. Edit `assets/projects/<slug>.toml`.
 3. Use a lowercase hyphenated `slug`.
 4. Include at minimum `title`, `slug`, `status`, and `description`.
 5. If `featured = true`, also set `published = true`.
-6. Run `cargo run -p contentctl -- validate .`.
+6. Run `cargo run -p content -- validate .`.
 7. Run `bash scripts/ci.sh` before committing.
 
-See [content/SCHEMA.md](./content/SCHEMA.md) for complete field rules and examples.
+See [assets/SCHEMA.md](./assets/SCHEMA.md) for complete field rules and examples.
 
 ### Add a post
 
 1. Create a draft template:
 
    ```sh
-   cargo run -p contentctl -- new post <slug>
+   cargo run -p content -- new post <slug>
    ```
 
-2. Edit `content/posts/<slug>.md`.
+2. Edit `assets/posts/<slug>.md`.
 3. Add frontmatter with `title`, `slug`, and `kind`.
 4. Use `published_at: "YYYY-MM-DD"` when publishing dated content.
 5. Published posts must have a non-empty body.
@@ -318,8 +318,8 @@ The gate performs:
 
 1. Toolchain discovery for `cargo`, `rustc`, `sqlx`, and `sqlite3`.
 2. SQLite database creation and migrations.
-3. `contentctl validate`.
-4. `contentctl export-sql` piped into SQLite as a seed smoke test.
+3. `content validate`.
+4. `content export-sql` piped into SQLite as a seed smoke test.
 5. `cargo sqlx prepare --workspace --check`.
 6. `cargo check --workspace`.
 7. `cargo clippy --workspace --all-targets --all-features -- -D warnings`.
@@ -371,8 +371,8 @@ cargo sqlx prepare --workspace --database-url "$DATABASE_URL"
 Run validation first and confirm that at least one published project and one published post exist:
 
 ```sh
-cargo run -p contentctl -- validate .
-ls content/projects content/posts
+cargo run -p content -- validate .
+ls assets/projects assets/posts
 ```
 
 ### Static assets referenced by content are missing

@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod tests {
   use {
-    contentctl::sync_content_database,
+    content::sync_content_database,
     std::{
       fs,
       path::Path,
@@ -9,11 +9,11 @@ mod tests {
   };
 
   fn fixture(name : &str,) -> std::path::PathBuf {
-    let root = std::env::temp_dir().join(format!("contentctl-sync-{name}-{}", std::process::id()),);
+    let root = std::env::temp_dir().join(format!("content-sync-{name}-{}", std::process::id()),);
     _ = fs::remove_dir_all(&root,);
-    fs::create_dir_all(root.join("content/projects",),).unwrap();
-    fs::create_dir_all(root.join("content/posts",),).unwrap();
-    fs::create_dir_all(root.join("content/media",),).unwrap();
+    fs::create_dir_all(root.join("assets/projects",),).unwrap();
+    fs::create_dir_all(root.join("assets/posts",),).unwrap();
+    fs::create_dir_all(root.join("assets/media",),).unwrap();
     fs::create_dir_all(root.join("database/migrations",),).unwrap();
     root
   }
@@ -29,7 +29,7 @@ mod tests {
 
   fn write_valid_content(root : &Path,) {
     write(
-      &root.join("content/projects/demo.toml",),
+      &root.join("assets/projects/demo.toml",),
       r#"
 title = "Demo Project"
 slug = "demo-project"
@@ -42,7 +42,7 @@ tags = ["Rust", "SQLite"]
 "#,
     );
     write(
-      &root.join("content/posts/hello.md",),
+      &root.join("assets/posts/hello.md",),
       r#"---
 title: "Hello"
 slug: "hello"
@@ -83,7 +83,7 @@ Body.
     let root = fixture("invalid",);
     copy_schema_migration(&root,);
     write(
-      &root.join("content/projects/demo.toml",),
+      &root.join("assets/projects/demo.toml",),
       r#"
 title = "Demo Project"
 slug = "demo-project"

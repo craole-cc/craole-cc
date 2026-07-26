@@ -75,8 +75,8 @@ Key implementation pieces:
 - `app/` — shared Leptos UI, pages, components, theme, and SQL query wrappers.
 - `backend/` — Axum server entry point and database bootstrap.
 - `frontend/` — WASM hydration entry point.
-- `content/` — portfolio-owned source content: projects, posts, media, and schema docs.
-- `contentctl/` — CLI for validating content, exporting a SQLite seed script, and creating draft
+- `assets/` — portfolio-owned source content: projects, posts, media, and schema docs.
+- `assets/` — CLI for validating content, exporting a SQLite seed script, and creating draft
   content templates.
 - `database/migrations/` — durable SQLite schema and baseline seed data.
 - `scripts/ci.sh` — local/CI quality gate for database setup, content validation, SQLx, clippy,
@@ -186,32 +186,32 @@ cargo leptos watch
 ```
 
 For full setup, content authoring, and CI instructions, see [CONTRIBUTING.md](./CONTRIBUTING.md).
-For the Git-tracked content format, see [content/SCHEMA.md](./content/SCHEMA.md).
+For the Git-tracked content format, see [assets/SCHEMA.md](./assets/SCHEMA.md).
 
-Create draft content with `contentctl new`:
+Create draft content with `content new`:
 
 ```sh
-cargo run -p contentctl -- new project my-project
-cargo run -p contentctl -- new post project-build-log
-cargo run -p contentctl -- new media portfolio-screenshot
+cargo run -p content -- new project my-project
+cargo run -p content -- new post project-build-log
+cargo run -p content -- new media portfolio-screenshot
 ```
 
 Sync validated content into the local SQLite database with one command:
 
 ```sh
-cargo run -p contentctl -- sync-db . sqlite://database/data/portfolio.db
+cargo run -p content -- sync-db . sqlite://database/data/portfolio.db
 ```
 
 Export static-friendly JSON data for the fallback path:
 
 ```sh
-cargo run -p contentctl -- export-json . dist/data
+cargo run -p content -- export-json . dist/data
 ```
 
 Generate a minimal static fallback site:
 
 ```sh
-cargo run -p contentctl -- export-static . dist
+cargo run -p content -- export-static . dist
 ```
 
 ## ✅ Quality gate

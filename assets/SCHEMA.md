@@ -1,16 +1,16 @@
 # Content schema
 
-`content/` is the Git-tracked source of truth for portfolio content. `contentctl` validates these
+`assets/` is the Git-tracked source of truth for portfolio content. `content` validates these
 files before they are synced into SQLite or used by a future static snapshot.
 
 Run commands from the repository root:
 
 ```bash
-cargo run -p contentctl -- validate .
-cargo run -p contentctl -- export-sql . | sqlite3 database/data/portfolio.db
-cargo run -p contentctl -- sync-db . sqlite://database/data/portfolio.db
-cargo run -p contentctl -- export-json . dist/data
-cargo run -p contentctl -- export-static . dist
+cargo run -p content -- validate .
+cargo run -p content -- export-sql . | sqlite3 database/data/portfolio.db
+cargo run -p content -- sync-db . sqlite://database/data/portfolio.db
+cargo run -p content -- export-json . dist/data
+cargo run -p content -- export-static . dist
 ```
 
 `validate` fails fast on malformed content. `export-sql` prints a deterministic SQLite seed script
@@ -19,14 +19,14 @@ created the schema.
 
 ## Workflow
 
-1. Add or edit files under `content/projects/`, `content/posts/`, or `content/media/`.
+1. Add or edit files under `assets/projects/`, `assets/posts/`, or `assets/media/`.
 2. Put local referenced binary/static assets under `public/`; HTTPS media URLs may be used for externally hosted royalty-free media.
-3. Run `cargo run -p contentctl -- validate .`.
+3. Run `cargo run -p content -- validate .`.
 4. Rebuild the local database if needed:
 
    ```bash
    ./scripts/init-db.rs --reset
-   cargo run -p contentctl -- export-sql . | sqlite3 database/data/portfolio.db
+   cargo run -p content -- export-sql . | sqlite3 database/data/portfolio.db
    ```
 
 5. Run the full quality gate before committing:
@@ -37,19 +37,19 @@ created the schema.
 
 ## Draft templates
 
-Use `contentctl new` to create starter files:
+Use `content new` to create starter files:
 
 ```bash
-cargo run -p contentctl -- new project my-project
-cargo run -p contentctl -- new post project-build-log
-cargo run -p contentctl -- new media portfolio-screenshot
+cargo run -p content -- new project my-project
+cargo run -p content -- new post project-build-log
+cargo run -p content -- new media portfolio-screenshot
 ```
 
 The command writes to the matching content directory:
 
-- `project` → `content/projects/<slug>.toml`
-- `post` → `content/posts/<slug>.md`
-- `media` → `content/media/<slug>.toml`
+- `project` → `assets/projects/<slug>.toml`
+- `post` → `assets/posts/<slug>.md`
+- `media` → `assets/media/<slug>.toml`
 
 It rejects invalid slugs and refuses to overwrite existing files. Project and post templates are valid
 unpublished drafts; media templates require the referenced asset to be added under `public/` before
@@ -61,7 +61,7 @@ Use `sync-db` to validate content, apply SQL migrations from `database/migration
 SQL, apply it to SQLite, and print final counts:
 
 ```bash
-cargo run -p contentctl -- sync-db . sqlite://database/data/portfolio.db
+cargo run -p content -- sync-db . sqlite://database/data/portfolio.db
 ```
 
 If the database URL argument is omitted, the command uses `DATABASE_URL`. If `DATABASE_URL` is not
@@ -78,7 +78,7 @@ content database synced: projects=1 posts=1 media=0
 Use `export-json` to produce data files for static fallback work:
 
 ```bash
-cargo run -p contentctl -- export-json . dist/data
+cargo run -p content -- export-json . dist/data
 ```
 
 It writes `projects.json`, `posts.json`, `media.json`, and `manifest.json`. The manifest contains
@@ -95,7 +95,7 @@ static JSON exported to dist/data: projects=1 posts=1 media=0
 Use `export-static` to produce a minimal static fallback site:
 
 ```bash
-cargo run -p contentctl -- export-static . dist
+cargo run -p content -- export-static . dist
 ```
 
 It writes HTML route files for the home page, project index, project detail pages, log index, post
@@ -119,7 +119,7 @@ static site exported to dist: pages=7 projects=1 posts=1 media=0
 
 ## Projects
 
-Project files live in `content/projects/*.toml`.
+Project files live in `assets/projects/*.toml`.
 
 ```toml
 title = "Demo Project"
@@ -156,7 +156,7 @@ Recommended authoring checklist:
 
 ## Posts
 
-Post files live in `content/posts/*.md` and use YAML-style or TOML-style frontmatter.
+Post files live in `assets/posts/*.md` and use YAML-style or TOML-style frontmatter.
 
 ```markdown
 ---
@@ -193,7 +193,7 @@ Recommended authoring checklist:
 
 ## Media
 
-Media files live in `content/media/*.toml`.
+Media files live in `assets/media/*.toml`.
 
 ```toml
 title = "Blue Mountain Study"
@@ -226,10 +226,10 @@ Recommended authoring checklist:
 - Keep large originals outside the repo unless they are intentionally part of the delivered site.
 - Use tags for filtering and related-content discovery.
 
-## `contentctl` reference
+## `content` reference
 
 ```text
-Usage: contentctl <command> [args]
+Usage: content <command> [args]
 Commands:
   validate [repo-root]              Validate content files
   export-sql [repo-root]            Print a SQLite seed script generated from content files
@@ -247,26 +247,26 @@ Examples:
 
 ```bash
 # Validate the current repository.
-cargo run -p contentctl -- validate .
+cargo run -p content -- validate .
 
 # Validate another checkout.
-cargo run -p contentctl -- validate /path/to/craole-cc
+cargo run -p content -- validate /path/to/craole-cc
 
 # Export seed SQL to inspect before applying it.
-cargo run -p contentctl -- export-sql . > /tmp/craole-content.sql
+cargo run -p content -- export-sql . > /tmp/craole-content.sql
 
 # Create a new draft project template.
-cargo run -p contentctl -- new project my-project
+cargo run -p content -- new project my-project
 
 # Validate, migrate, and seed the local SQLite database.
-cargo run -p contentctl -- sync-db . sqlite://database/data/portfolio.db
+cargo run -p content -- sync-db . sqlite://database/data/portfolio.db
 
 # Export static fallback JSON data.
-cargo run -p contentctl -- export-json . dist/data
+cargo run -p content -- export-json . dist/data
 
 # Export minimal static fallback HTML and JSON.
-cargo run -p contentctl -- export-static . dist
+cargo run -p content -- export-static . dist
 
 # Apply exported content to the local database.
-cargo run -p contentctl -- export-sql . | sqlite3 database/data/portfolio.db
+cargo run -p content -- export-sql . | sqlite3 database/data/portfolio.db
 ```

@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod tests {
   use {
-    contentctl::{
+    content::{
       ContentTemplateKind,
       create_content_template,
       validate_content_root,
@@ -10,7 +10,7 @@ mod tests {
   };
 
   fn fixture(name : &str,) -> std::path::PathBuf {
-    let root = std::env::temp_dir().join(format!("contentctl-new-{name}-{}", std::process::id()),);
+    let root = std::env::temp_dir().join(format!("content-new-{name}-{}", std::process::id()),);
     _ = fs::remove_dir_all(&root,);
     fs::create_dir_all(&root,).unwrap();
     root
@@ -23,7 +23,7 @@ mod tests {
     let created =
       create_content_template(&root, ContentTemplateKind::Project, "demo-project",).unwrap();
 
-    assert_eq!(created, root.join("content/projects/demo-project.toml",));
+    assert_eq!(created, root.join("assets/projects/demo-project.toml",));
     let content = fs::read_to_string(created,).unwrap();
     assert!(content.contains("title = \"Demo Project\""));
     assert!(content.contains("slug = \"demo-project\""));
@@ -38,7 +38,7 @@ mod tests {
     let created =
       create_content_template(&root, ContentTemplateKind::Post, "hello-craole",).unwrap();
 
-    assert_eq!(created, root.join("content/posts/hello-craole.md",));
+    assert_eq!(created, root.join("assets/posts/hello-craole.md",));
     let content = fs::read_to_string(created,).unwrap();
     assert!(content.contains("title: \"Hello Craole\""));
     assert!(content.contains("slug: \"hello-craole\""));

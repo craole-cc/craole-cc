@@ -2,13 +2,13 @@
 
 ## Summary
 
-This phase adds `contentctl export-static`, the first end-to-end static fallback generator. It turns
+This phase adds `content export-static`, the first end-to-end static fallback generator. It turns
 validated Git-tracked content into plain HTML route files plus the existing static JSON data export.
 
 ## Command
 
 ```sh
-cargo run -p contentctl -- export-static . dist
+cargo run -p content -- export-static . dist
 ```
 
 If the output directory is omitted, it defaults to `dist`.
@@ -53,7 +53,7 @@ static site exported to dist: pages=7 projects=1 posts=1 media=0
 Focused TDD loop:
 
 ```text
-cargo test -p contentctl --test export_static
+cargo test -p content --test export_static
 ```
 
 Full quality gate now smoke-tests both static JSON and static HTML export:

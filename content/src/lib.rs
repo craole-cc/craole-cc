@@ -197,7 +197,7 @@ pub fn validate_content_root(root : &Path,) -> Result<ValidationReport, ContentE
 
 fn validate_projects(root : &Path, report : &mut ValidationReport,) -> Result<(), ContentError,> {
   let mut seen = HashMap::<String, PathBuf,>::new();
-  for path in files_with_extension(&root.join("content/projects",), "toml",)? {
+  for path in files_with_extension(&root.join("assets/projects",), "toml",)? {
     let content = read_to_string(&path,)?;
     let project : ProjectContent =
       toml::from_str(&content,).map_err(|source| ContentError::Toml {
@@ -246,7 +246,7 @@ fn validate_projects(root : &Path, report : &mut ValidationReport,) -> Result<()
 
 fn validate_posts(root : &Path, report : &mut ValidationReport,) -> Result<(), ContentError,> {
   let mut seen = HashMap::<String, PathBuf,>::new();
-  for path in files_with_extension(&root.join("content/posts",), "md",)? {
+  for path in files_with_extension(&root.join("assets/posts",), "md",)? {
     let content = read_to_string(&path,)?;
     let Some((frontmatter, body,),) = split_frontmatter(&content,) else {
       report.error(&path, "post is missing frontmatter",);
@@ -303,7 +303,7 @@ fn validate_posts(root : &Path, report : &mut ValidationReport,) -> Result<(), C
 
 fn validate_media(root : &Path, report : &mut ValidationReport,) -> Result<(), ContentError,> {
   let mut seen = HashMap::<String, PathBuf,>::new();
-  for path in files_with_extension(&root.join("content/media",), "toml",)? {
+  for path in files_with_extension(&root.join("assets/media",), "toml",)? {
     let content = read_to_string(&path,)?;
     let media : MediaContent = toml::from_str(&content,).map_err(|source| ContentError::Toml {
       path : path.clone(),
@@ -505,10 +505,10 @@ fn validate_tags(
 fn validate_public_asset(
   root : &Path, path : &Path, asset : &str, report : &mut ValidationReport,
 ) {
-  if asset.starts_with("https://",) {
-    if asset.len() <= "https://".len()
+  if let Some(host_and_path,) = asset.strip_prefix("https://",) {
+    if host_and_path.is_empty()
       || asset.chars().any(char::is_whitespace,)
-      || !asset["https://".len() ..].contains('.',)
+      || !host_and_path.contains('.',)
     {
       report.error(path, format!("invalid remote media URL: `{asset}`"),);
     }
@@ -644,9 +644,9 @@ impl ContentTemplateKind {
   #[must_use]
   pub const fn directory(self,) -> &'static str {
     match self {
-      | Self::Project => "content/projects",
-      | Self::Post => "content/posts",
-      | Self::Media => "content/media",
+      | Self::Project => "assets/projects",
+      | Self::Post => "assets/posts",
+      | Self::Media => "assets/media",
     }
   }
 
@@ -1533,7 +1533,7 @@ fn count_rows(
 }
 
 fn load_projects(root : &Path,) -> Result<Vec<ProjectContent,>, ContentError,> {
-  files_with_extension(&root.join("content/projects",), "toml",)?
+  files_with_extension(&root.join("assets/projects",), "toml",)?
     .into_iter()
     .map(|path| {
       let content = read_to_string(&path,)?;
@@ -1543,7 +1543,7 @@ fn load_projects(root : &Path,) -> Result<Vec<ProjectContent,>, ContentError,> {
 }
 
 fn load_media(root : &Path,) -> Result<Vec<MediaContent,>, ContentError,> {
-  files_with_extension(&root.join("content/media",), "toml",)?
+  files_with_extension(&root.join("assets/media",), "toml",)?
     .into_iter()
     .map(|path| {
       let content = read_to_string(&path,)?;
@@ -1553,7 +1553,7 @@ fn load_media(root : &Path,) -> Result<Vec<MediaContent,>, ContentError,> {
 }
 
 fn load_posts(root : &Path,) -> Result<Vec<PostContent,>, ContentError,> {
-  files_with_extension(&root.join("content/posts",), "md",)?
+  files_with_extension(&root.join("assets/posts",), "md",)?
     .into_iter()
     .map(|path| {
       let content = read_to_string(&path,)?;

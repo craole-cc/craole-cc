@@ -25,7 +25,7 @@ WHERE repo_url = 'https://github.com/craole-cc/craole-cc'
   AND NOT EXISTS (SELECT 1 FROM projects WHERE slug = 'craole-cc');
 
 -- Ensure the public analysis project exists after a normal production startup,
--- even when the deployment has not separately run contentctl sync-db yet.
+-- even when the deployment has not separately run content sync-db yet.
 INSERT INTO projects (
   title,
   slug,

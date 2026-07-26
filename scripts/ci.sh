@@ -53,10 +53,10 @@ sqlx database create --database-url "$DATABASE_URL"
 sqlx migrate run --source database/migrations --database-url "$DATABASE_URL"
 
 printf '\n==> Content validation\n'
-cargo run -p contentctl -- validate .
+cargo run -p content -- validate .
 
 printf '\n==> Content database seed smoke test\n'
-cargo run -p contentctl -- export-sql . | sqlite3 database/data/portfolio.db
+cargo run -p content -- export-sql . | sqlite3 database/data/portfolio.db
 PROJECT_COUNT=$(sqlite3 database/data/portfolio.db 'SELECT COUNT(*) FROM projects;')
 POST_COUNT=$(sqlite3 database/data/portfolio.db 'SELECT COUNT(*) FROM posts;')
 printf 'Seeded projects=%s posts=%s\n' "$PROJECT_COUNT" "$POST_COUNT"
@@ -73,8 +73,8 @@ else
 	printf 'Skipping paid TTS generation. Set GENERATE_TTS=1 to enable it.\n'
 fi
 STATIC_DIST=$(mktemp -d)
-cargo run -p contentctl -- export-json . "$STATIC_DIST/data"
-cargo run -p contentctl -- export-static . "$STATIC_DIST/site"
+cargo run -p content -- export-json . "$STATIC_DIST/data"
+cargo run -p content -- export-static . "$STATIC_DIST/site"
 test -f "$STATIC_DIST/data/manifest.json"
 test -f "$STATIC_DIST/site/index.html"
 test -f "$STATIC_DIST/site/data/manifest.json"

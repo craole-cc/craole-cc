@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod tests {
   use {
-    contentctl::validate_content_root,
+    content::validate_content_root,
     std::{
       fs,
       path::Path,
@@ -9,11 +9,11 @@ mod tests {
   };
 
   fn fixture(name : &str,) -> std::path::PathBuf {
-    let root = std::env::temp_dir().join(format!("contentctl-{name}-{}", std::process::id()),);
+    let root = std::env::temp_dir().join(format!("content-{name}-{}", std::process::id()),);
     _ = fs::remove_dir_all(&root,);
-    fs::create_dir_all(root.join("content/projects",),).unwrap();
-    fs::create_dir_all(root.join("content/posts",),).unwrap();
-    fs::create_dir_all(root.join("content/media",),).unwrap();
+    fs::create_dir_all(root.join("assets/projects",),).unwrap();
+    fs::create_dir_all(root.join("assets/posts",),).unwrap();
+    fs::create_dir_all(root.join("assets/media",),).unwrap();
     fs::create_dir_all(root.join("public/media/projects/demo",),).unwrap();
     root
   }
@@ -43,7 +43,7 @@ screenshots = ["/media/projects/demo/home.webp"]
       &root.join("public/media/projects/demo/home.webp",),
       "fake image",
     );
-    write(&root.join("content/projects/demo.toml",), valid_project(),);
+    write(&root.join("assets/projects/demo.toml",), valid_project(),);
 
     let report = validate_content_root(&root,).unwrap();
 
@@ -57,8 +57,8 @@ screenshots = ["/media/projects/demo/home.webp"]
       &root.join("public/media/projects/demo/home.webp",),
       "fake image",
     );
-    write(&root.join("content/projects/one.toml",), valid_project(),);
-    write(&root.join("content/projects/two.toml",), valid_project(),);
+    write(&root.join("assets/projects/one.toml",), valid_project(),);
+    write(&root.join("assets/projects/two.toml",), valid_project(),);
 
     let report = validate_content_root(&root,).unwrap();
 
@@ -75,7 +75,7 @@ screenshots = ["/media/projects/demo/home.webp"]
   fn rejects_invalid_project_status() {
     let root = fixture("invalid-status",);
     let project = valid_project().replace("building", "nearly-done",);
-    write(&root.join("content/projects/demo.toml",), &project,);
+    write(&root.join("assets/projects/demo.toml",), &project,);
 
     let report = validate_content_root(&root,).unwrap();
 
@@ -91,7 +91,7 @@ screenshots = ["/media/projects/demo/home.webp"]
   #[test]
   fn rejects_missing_project_screenshot_asset() {
     let root = fixture("missing-screenshot",);
-    write(&root.join("content/projects/demo.toml",), valid_project(),);
+    write(&root.join("assets/projects/demo.toml",), valid_project(),);
 
     let report = validate_content_root(&root,).unwrap();
 
@@ -109,7 +109,7 @@ screenshots = ["/media/projects/demo/home.webp"]
   fn accepts_markdown_post_with_frontmatter() {
     let root = fixture("valid-post",);
     write(
-      &root.join("content/posts/hello.md",),
+      &root.join("assets/posts/hello.md",),
       r#"---
 title: "Hello"
 slug: "hello"
@@ -135,7 +135,7 @@ Body.
   fn accepts_https_remote_media_url() {
     let root = fixture("remote-media",);
     write(
-      &root.join("content/media/remote.toml",),
+      &root.join("assets/media/remote.toml",),
       r#"title = "Remote Study"
 slug = "remote-study"
 media_type = "photo"
@@ -157,7 +157,7 @@ tags = ["art"]
   fn rejects_http_remote_media_url() {
     let root = fixture("insecure-remote-media",);
     write(
-      &root.join("content/media/remote.toml",),
+      &root.join("assets/media/remote.toml",),
       r#"title = "Remote Study"
 slug = "remote-study"
 media_type = "photo"

@@ -13,6 +13,17 @@ and this project uses [Semantic Versioning](https://semver.org/).
 
 ### Fixed
 
+## [0.2.15] - 2026-07-26
+
+### Changed
+
+- Move authored portfolio material from `content/` into `assets/`.
+- Rename the content-validation/export CLI crate from `contentctl` to `content`.
+- Update workspace membership, tests, CI, documentation, migrations, and authoring commands to use the new separation:
+  - `assets/` is the authored content source of truth.
+  - `content/` is the Rust content tooling crate.
+- Preserve all validation, SQLite seed/export, static export, draft generation, and remote-media behavior.
+
 ## [0.2.14] - 2026-07-26
 
 ### Added
@@ -39,7 +50,7 @@ and this project uses [Semantic Versioning](https://semver.org/).
 
 ### Fixed
 
-- Restored the Art page's media records and assets after the media table was empty and no `content/media` source files were present.
+- Restored the Art page's media records and assets after the media table was empty and no `assets/media` source files were present.
 - Preserved all published project records in the Dev query; the catalogue currently contains the two project records defined by source content.
 
 ## [0.2.8] - 2026-07-25
@@ -111,7 +122,7 @@ and this project uses [Semantic Versioning](https://semver.org/).
 ### Added
 
 - Added a local-first content pipeline for projects, posts, and media.
-- Added the `contentctl` Rust CLI for validating content, generating draft
+- Added the `content` Rust CLI for validating content, generating draft
   templates, exporting JSON, exporting SQL seed data, synchronizing SQLite,
   and producing a static fallback site.
 - Added the Data page and structured project content.
@@ -139,8 +150,8 @@ and this project uses [Semantic Versioning](https://semver.org/).
 - Improved content database synchronization and static export behavior.
 - Added CI coverage for content validation, export paths, and database sync.
 
-[Unreleased]: https://github.com/craole-cc/craole-cc/compare/v0.2.14...HEAD
-[0.2.14]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.14
+[Unreleased]: https://github.com/craole-cc/craole-cc/compare/v0.2.15...HEAD
+[0.2.15]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.15
 [0.2.7]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.7
 [0.2.6]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.6
 [0.2.5]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.5

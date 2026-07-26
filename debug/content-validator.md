@@ -2,29 +2,29 @@
 
 ## What changed
 
-- Added a new workspace crate: `contentctl`.
-- Added `contentctl validate [repo-root]` for local-first content checks.
-- Added `contentctl export-sql [repo-root]` to generate a SQLite seed script from content files.
+- Added a new workspace crate: `content`.
+- Added `content validate [repo-root]` for local-first content checks.
+- Added `content export-sql [repo-root]` to generate a SQLite seed script from content files.
 - Added validator coverage for:
-  - `content/projects/*.toml`
-  - `content/posts/*.md`
-  - `content/media/*.toml`
+  - `assets/projects/*.toml`
+  - `assets/posts/*.md`
+  - `assets/media/*.toml`
 - Wired the validator into `scripts/ci.sh` before SQLx metadata checks.
-- Documented the source content schema in `content/SCHEMA.md`.
+- Documented the source content schema in `assets/SCHEMA.md`.
 
 ## Why this shape
 
 The CMS/content pipeline can stay Git-first for now:
 
 ```text
-content files -> contentctl validate -> SQLite sync / SSR -> static snapshot later
+content files -> content validate -> SQLite sync / SSR -> static snapshot later
 ```
 
 That keeps the portfolio deployable without requiring a production admin dashboard yet.
 
 ## Validator guarantees
 
-`contentctl` catches the failures that would be annoying to debug after deploy:
+`content` catches the failures that would be annoying to debug after deploy:
 
 - duplicate slugs inside a content type
 - invalid project/media status-like fields
@@ -38,9 +38,9 @@ That keeps the portfolio deployable without requiring a production admin dashboa
 ## Commands
 
 ```bash
-cargo test -p contentctl --test validation
-cargo test -p contentctl --test export_sql
-cargo run -p contentctl -- validate .
-cargo run -p contentctl -- export-sql . | sqlite3 database/data/portfolio.db
+cargo test -p content --test validation
+cargo test -p content --test export_sql
+cargo run -p content -- validate .
+cargo run -p content -- export-sql . | sqlite3 database/data/portfolio.db
 nix develop --command bash scripts/ci.sh
 ```

@@ -1,5 +1,5 @@
 use {
-  contentctl::{
+  content::{
     ContentTemplateKind,
     ValidationReport,
     create_content_template,
@@ -36,7 +36,7 @@ fn main() -> ExitCode {
       let root = args
         .next()
         .map_or_else(|| PathBuf::from(".",), PathBuf::from,);
-      match contentctl::export_seed_sql(&root,) {
+      match content::export_seed_sql(&root,) {
         | Ok(sql,) => {
           print!("{sql}");
           ExitCode::SUCCESS
@@ -194,7 +194,7 @@ fn print_report(report : &ValidationReport,) -> ExitCode {
 }
 
 fn print_usage() {
-  eprintln!("Usage: contentctl <command> [args]");
+  eprintln!("Usage: content <command> [args]");
   eprintln!("Commands:");
   eprintln!("  validate [repo-root]              Validate content files");
   eprintln!(

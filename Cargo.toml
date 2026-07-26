@@ -1,12 +1,12 @@
 [workspace]
 resolver = "2"
-members = ["app", "frontend", "backend", "contentctl"]
+members = ["app", "frontend", "backend", "content"]
 
 
 [workspace.package]
 edition = "2024"
 rust-version = "1.85.0"
-version = "0.2.14"
+version = "0.2.15"
 authors = ["Craig 'Craole' Cole <info@craole.cc>"]
 license = "MIT"
 description = "Craole.CC portfolio at the intersection of engineering and art"
