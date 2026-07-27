@@ -1,4 +1,4 @@
-# Content schema
+# Content Schema
 
 `content/assets/` is the Git-tracked source of truth for portfolio content metadata. Top-level `assets/` contains
 only files that may be served by the site: images, project media, audio, fonts, icons, and the favicon. The
@@ -31,13 +31,13 @@ created the schema.
    cargo run -p content -- export-sql . | sqlite3 database/data/portfolio.db
    ```
 
-6. Run the full quality gate before committing:
+5. Run the full quality gate before committing:
 
    ```bash
    bash scripts/ci.sh
    ```
 
-## Draft templates
+## Draft Templates
 
 Use `content new` to create starter files:
 
@@ -57,7 +57,7 @@ It rejects invalid slugs and refuses to overwrite existing files. Project and po
 unpublished drafts; media templates require the referenced asset to be added under `assets/` before
 validation passes.
 
-## Database sync
+## Database Sync
 
 Use `sync-db` to validate content, apply SQL migrations from `database/migrations/`, export the seed
 SQL, apply it to SQLite, and print final counts:
@@ -75,7 +75,7 @@ Expected output:
 content database synced: projects=1 posts=1 media=0
 ```
 
-## Static JSON export
+## Static JSON Export
 
 Use `export-json` to produce data files for static fallback work:
 
@@ -92,7 +92,7 @@ Expected output:
 static JSON exported to dist/data: projects=1 posts=1 media=0
 ```
 
-## Static HTML export
+## Static HTML Export
 
 Use `export-static` to produce a minimal static fallback site:
 
@@ -100,7 +100,7 @@ Use `export-static` to produce a minimal static fallback site:
 cargo run -p content -- export-static . dist
 ```
 
-It writes HTML route files for the home page, project index, project detail pages, log index, post
+It writes HTML route files for the homepage, project index, project detail pages, log index, post
 detail pages, art index, `404.html`, and `sitemap.xml`. It also writes `dist/data/*.json` by running
 the same JSON export path.
 
@@ -110,13 +110,13 @@ Expected output:
 static site exported to dist: pages=7 projects=1 posts=1 media=0
 ```
 
-## General rules
+## General Rules
 
 - Slugs are stable public identifiers. Prefer lowercase ASCII letters, numbers, and hyphens.
 - Keep titles human-readable and portfolio-ready.
 - Keep descriptions concise enough for cards, indexes, and search results.
 - Prefer relative, repository-owned media paths rooted in `assets/` for work we control; use HTTPS URLs for royalty-free externally hosted media when avoiding local storage is important.
-- Remote media is hotlinked at request time and is not downloaded, cached, or backed up by TheOracle. Keep attribution/source details in the caption or tags and expect external URLs to change or become unavailable.
+- Remote media is hotlinked at request time and is not downloaded, cached, or backed up by web server. Keep attribution/source details in the caption or tags and expect external URLs to change or become unavailable.
 - Treat `published = false` as draft mode: valid content may exist without being surfaced publicly.
 
 ## Projects
@@ -253,7 +253,6 @@ tags = ["art", "photography", "unsplash"]
 Use the image URL copied from Unsplash's download/image link and preserve photographer attribution in the caption.
 The validator accepts HTTPS URLs and the exporter preserves them without downloading or copying the image. Do not use
 `https://unsplash.com/photos/...` as `file_path`; that is a photo page, not an image resource.
-
 
 ```text
 Usage: content <command> [args]

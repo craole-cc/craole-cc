@@ -1,0 +1,10 @@
+title = "wallter"
+slug = "wallter"
+status = "building"
+description = "Dynamic desktop wallpaper manager that rotates backgrounds on a schedule. Cross-platform CLI built in Rust with a focus on clean argument parsing and OS-native integrations for Linux, macOS, and Windows."
+repo_url = "https://github.com/craole-cc/wallter"
+# live_url = "https://craole.cc"
+featured = true
+published = true
+sort_order = 10
+tags = ["Rust", "CLI", "Desktop", "Wallpaper", "Cross-Platform"]
