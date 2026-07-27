@@ -14,6 +14,13 @@ and this project uses [Semantic Versioning](https://semver.org/).
 
 ### Fixed
 
+## [0.2.22] - 2026-07-27
+
+### Fixed
+
+- Regenerate SQLx offline query metadata for SQLx `0.9.0` so clean CI runners validate the production queries.
+- Normalize the `web-sys` inline table to standards-compliant TOML.
+
 ## [0.2.21] - 2026-07-27
 
 ### Fixed
@@ -183,7 +190,8 @@ and this project uses [Semantic Versioning](https://semver.org/).
 - Improved database sync and static export reliability.
 - Test coverage for validation, export, and database sync in CI.
 
-[Unreleased]: https://github.com/craole-cc/craole-cc/compare/v0.2.21...HEAD
+[Unreleased]: https://github.com/craole-cc/craole-cc/compare/v0.2.22...HEAD
+[0.2.22]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.22
 [0.2.21]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.21
 [0.2.20]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.20
 [0.2.19]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.19

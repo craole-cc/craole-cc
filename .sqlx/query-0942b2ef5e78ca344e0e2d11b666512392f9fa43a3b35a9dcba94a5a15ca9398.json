@@ -6,86 +6,159 @@
       {
         "name": "id!: i64",
         "ordinal": 0,
-        "type_info": "Integer"
+        "type_info": "Integer",
+        "origin": {
+          "Table": {
+            "table": "media",
+            "name": "id"
+          }
+        }
       },
       {
         "name": "title!: String",
         "ordinal": 1,
-        "type_info": "Text"
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "media",
+            "name": "title"
+          }
+        }
       },
       {
         "name": "slug!: String",
         "ordinal": 2,
-        "type_info": "Text"
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "media",
+            "name": "slug"
+          }
+        }
       },
       {
         "name": "caption: String",
         "ordinal": 3,
-        "type_info": "Text"
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "media",
+            "name": "caption"
+          }
+        }
       },
       {
         "name": "media_type!: String",
         "ordinal": 4,
-        "type_info": "Text"
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "media",
+            "name": "media_type"
+          }
+        }
       },
       {
         "name": "file_path!: String",
         "ordinal": 5,
-        "type_info": "Text"
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "media",
+            "name": "file_path"
+          }
+        }
       },
       {
         "name": "alt_text!: String",
         "ordinal": 6,
-        "type_info": "Text"
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "media",
+            "name": "alt_text"
+          }
+        }
       },
       {
         "name": "width: i64",
         "ordinal": 7,
-        "type_info": "Integer"
+        "type_info": "Integer",
+        "origin": {
+          "Table": {
+            "table": "media",
+            "name": "width"
+          }
+        }
       },
       {
         "name": "height: i64",
         "ordinal": 8,
-        "type_info": "Integer"
+        "type_info": "Integer",
+        "origin": {
+          "Table": {
+            "table": "media",
+            "name": "height"
+          }
+        }
       },
       {
         "name": "sort_order!: i64",
         "ordinal": 9,
-        "type_info": "Integer"
+        "type_info": "Integer",
+        "origin": {
+          "Table": {
+            "table": "media",
+            "name": "sort_order"
+          }
+        }
       },
       {
         "name": "taken_at: String",
         "ordinal": 10,
-        "type_info": "Text"
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "media",
+            "name": "taken_at"
+          }
+        }
       },
       {
         "name": "created_at!: String",
         "ordinal": 11,
-        "type_info": "Text"
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "media",
+            "name": "created_at"
+          }
+        }
       },
       {
         "name": "tags!: String",
         "ordinal": 12,
-        "type_info": "Null"
+        "type_info": "Text",
+        "origin": "Expression"
       }
     ],
     "parameters": {
       "Right": 1
     },
     "nullable": [
-      true,
-      false,
-      false,
-      true,
       false,
       false,
       false,
       true,
+      false,
+      false,
+      false,
+      true,
       true,
       false,
       true,
       false,
-      null
+      false
     ]
   },
   "hash": "0942b2ef5e78ca344e0e2d11b666512392f9fa43a3b35a9dcba94a5a15ca9398"
