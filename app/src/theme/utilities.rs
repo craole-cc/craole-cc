@@ -129,7 +129,7 @@ pub fn extract_hue_from_url(url : &'static str, on_hue : impl Fn(f64,)+'static,)
     };
     let data = image_data.data();
     let len = data.len();
-    let (mut sum_cos, mut sum_sin, mut n,) = (0.0_f64, 0.0_f64, 0_u64,);
+    let (mut sum_cos, mut sum_sin, mut n,) = (0f64, 0f64, 0_u64,);
 
     // Sample every 8th pixel (32-byte stride in RGBA).
     // 128×128 / 8 = 2 048 samples — accurate and fast.

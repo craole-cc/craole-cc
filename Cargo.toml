@@ -3,7 +3,7 @@ resolver = "2"
 members = ["app", "backend", "content", "frontend"]
 
 [workspace.package]
-version = "0.2.17"
+version = "0.2.18"
 authors = ["Craig 'Craole' Cole <info@craole.cc>"]
 edition = "2024"
 rust-version = "1.85.0"
@@ -49,24 +49,7 @@ console_log = "1.0.0"
 # NOTE: Locked to the highest version available in nixpkgs. See `.nix/environment/default.nix`
 wasm-bindgen = "0.2.126"
 wasm-bindgen-futures = "0.4"
-web-sys = {
-  version = "0.3.103",
-  features = [
-    "CanvasRenderingContext2d",
-    "CssStyleDeclaration",
-    "History",
-    "HtmlCanvasElement",
-    "HtmlImageElement",
-    "ImageData",
-    "KeyboardEvent",
-    "MediaQueryList",
-    "Performance",
-    "ScrollBehavior",
-    "ScrollToOptions",
-    "Storage",
-    "Window",
-  ]
-}
+web-sys = { version = "0.3.103", features = ["CanvasRenderingContext2d", "CssStyleDeclaration", "History", "HtmlCanvasElement", "HtmlImageElement", "ImageData", "KeyboardEvent", "MediaQueryList", "Performance", "ScrollBehavior", "ScrollToOptions", "Storage", "Window"] }
 
 # -- Database -----------------------------------------------------------------
 sqlx = { version = "0.8.6", features = ["macros", "runtime-tokio", "sqlite"] }

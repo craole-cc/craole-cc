@@ -12,7 +12,7 @@ pub fn Provider(children : Children,) -> impl IntoView {
   let theme = RwSignal::new(Theme::default(),);
 
   #[allow(unused_variables)]
-  let (hue, set_hue,) = signal(164.0_f64,);
+  let (hue, set_hue,) = signal(164f64,);
 
   provide_context(Context { theme, set_hue, },);
 
