@@ -1,0 +1,12 @@
+title = "Root System"
+slug = "root-system"
+caption = "A silk cotton tree in St. Thomas. Some things take three hundred years to become themselves."
+media_type = "photo"
+file_path = "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1920&q=80"
+alt_text = "Massive tree roots spreading across forest floor"
+published = true
+sort_order = 100
+taken_at = "2023-09-15"
+width = 1280
+height = 1920
+tags = ["nature", "jamaica", "trees"]

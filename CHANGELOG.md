@@ -14,6 +14,14 @@ and this project uses [Semantic Versioning](https://semver.org/).
 
 ### Fixed
 
+## [0.2.23] - 2026-07-27
+
+### Fixed
+
+- Restore the twelve published Unsplash art entries from the original database seed as authored TOML content.
+- Restore four archived log entries from the original seed with explicit notices where only opening notes survived in repository history.
+- Keep remote Unsplash media external while preserving captions, dimensions, dates, tags, and alt text.
+
 ## [0.2.22] - 2026-07-27
 
 ### Fixed
@@ -190,7 +198,8 @@ and this project uses [Semantic Versioning](https://semver.org/).
 - Improved database sync and static export reliability.
 - Test coverage for validation, export, and database sync in CI.
 
-[Unreleased]: https://github.com/craole-cc/craole-cc/compare/v0.2.22...HEAD
+[Unreleased]: https://github.com/craole-cc/craole-cc/compare/v0.2.23...HEAD
+[0.2.23]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.23
 [0.2.22]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.22
 [0.2.21]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.21
 [0.2.20]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.20

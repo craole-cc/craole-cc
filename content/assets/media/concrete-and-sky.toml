@@ -1,0 +1,12 @@
+title = "Concrete and Sky"
+slug = "concrete-and-sky"
+caption = "New Kingston. Glass and steel learning to live alongside everything else."
+media_type = "photo"
+file_path = "https://images.unsplash.com/photo-1486325212027-8081e485255e?auto=format&fit=crop&w=1920&q=80"
+alt_text = "Modern city buildings against blue sky"
+published = true
+sort_order = 80
+taken_at = "2024-02-14"
+width = 1920
+height = 1280
+tags = ["urban", "architecture", "jamaica"]

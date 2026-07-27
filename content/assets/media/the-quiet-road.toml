@@ -1,0 +1,12 @@
+title = "The Quiet Road"
+slug = "the-quiet-road"
+caption = "A parish road at 5am. Jamaica before it wakes up is a different country entirely."
+media_type = "photo"
+file_path = "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1920&q=80"
+alt_text = "Empty road through mountain landscape at dawn"
+published = true
+sort_order = 40
+taken_at = "2024-01-08"
+width = 1920
+height = 1280
+tags = ["landscape", "dawn", "jamaica", "roads"]

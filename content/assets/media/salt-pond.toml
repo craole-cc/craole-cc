@@ -1,0 +1,12 @@
+title = "Salt Pond"
+slug = "salt-pond"
+caption = "The flamingos were unimpressed by the camera. As they should be."
+media_type = "photo"
+file_path = "https://images.unsplash.com/photo-1559825481-12a05cc00344?auto=format&fit=crop&w=1920&q=80"
+alt_text = "Flamingos standing in a shallow salt lake"
+published = true
+sort_order = 90
+taken_at = "2023-10-30"
+width = 1920
+height = 1280
+tags = ["wildlife", "nature", "colour"]

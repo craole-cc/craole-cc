@@ -1,0 +1,12 @@
+title = "Night Code"
+slug = "night-code"
+caption = "The terminal at 2am. Most of the good ideas happen here."
+media_type = "photo"
+file_path = "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1920&q=80"
+alt_text = "Code editor with syntax highlighting on dark background"
+published = true
+sort_order = 60
+taken_at = "2024-03-01"
+width = 1920
+height = 1080
+tags = ["technology", "code", "night"]

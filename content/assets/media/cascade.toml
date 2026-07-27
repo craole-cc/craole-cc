@@ -1,0 +1,12 @@
+title = "Cascade"
+slug = "cascade"
+caption = "Dunns River. Every tourist has a photo of this place. Somehow it still earns one."
+media_type = "photo"
+file_path = "https://images.unsplash.com/photo-1546587348-d12660c30c50?auto=format&fit=crop&w=1920&q=80"
+alt_text = "Waterfall cascading over moss-covered rocks"
+published = true
+sort_order = 30
+taken_at = "2024-01-10"
+width = 1280
+height = 1920
+tags = ["waterfall", "nature", "jamaica", "water"]

@@ -1,0 +1,12 @@
+title = "Long Exposure, Kingston"
+slug = "long-exposure-kingston"
+caption = "Eight seconds. The cars became light. The city became abstraction."
+media_type = "photo"
+file_path = "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=1920&q=80"
+alt_text = "City lights streaking in long exposure night photography"
+published = true
+sort_order = 120
+taken_at = "2024-03-10"
+width = 1920
+height = 1280
+tags = ["urban", "night", "jamaica", "light"]
