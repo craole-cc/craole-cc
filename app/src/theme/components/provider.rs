@@ -9,7 +9,16 @@ use {
 /// Place this at the application root, wrapping all other components.
 #[component]
 pub fn Provider(children : Children,) -> impl IntoView {
-  let theme = RwSignal::new(Theme::default(),);
+  let theme = RwSignal::new({
+    #[cfg(feature = "hydrate")]
+    {
+      Theme::from_browser_storage().unwrap_or_default()
+    }
+    #[cfg(not(feature = "hydrate"))]
+    {
+      Theme::default()
+    }
+  },);
 
   #[allow(unused_variables)]
   let (hue, set_hue,) = signal(164f64,);
@@ -25,6 +34,9 @@ pub fn Provider(children : Children,) -> impl IntoView {
       .and_then(|d| d.document_element(),)
     {
       let _ = el.set_attribute("data-theme", resolved,);
+    }
+    if let Some(storage,) = window().and_then(|w| w.local_storage().ok().flatten(),) {
+      let _ = storage.set_item("craole-theme", theme.get().storage_value(),);
     }
   },);
 

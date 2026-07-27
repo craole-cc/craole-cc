@@ -53,6 +53,37 @@ impl Theme {
     }
   }
 
+  /// Stable storage value for the user preference.
+  #[must_use]
+  pub const fn storage_value(self,) -> &'static str {
+    match self {
+      | Self::System => "system",
+      | Self::Light => "light",
+      | Self::Dark => "dark",
+    }
+  }
+
+  /// Parses a stored theme preference, ignoring unknown values.
+  #[must_use]
+  pub fn from_storage_value(value : &str,) -> Option<Self,> {
+    match value {
+      | "system" => Some(Self::System,),
+      | "light" => Some(Self::Light,),
+      | "dark" => Some(Self::Dark,),
+      | _ => None,
+    }
+  }
+
+  /// Returns the saved browser preference, when available during hydration.
+  #[cfg(feature = "hydrate")]
+  #[must_use]
+  pub fn from_browser_storage() -> Option<Self,> {
+    window()
+      .and_then(|w| w.local_storage().ok().flatten(),)
+      .and_then(|storage| storage.get_item("craole-theme",).ok().flatten(),)
+      .and_then(|value| Self::from_storage_value(&value,),)
+  }
+
   /// Resolves `System` to the actual `"light"` or `"dark"` string
   /// by reading `window.matchMedia` in the browser.
   ///

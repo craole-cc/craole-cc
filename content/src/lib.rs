@@ -1068,7 +1068,7 @@ fn page_shell(title : &str, active : &str, body : &str,) -> String {
   let art = site_path("art/",);
   format!(
     r#"<!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
