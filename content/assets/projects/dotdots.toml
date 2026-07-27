@@ -1,0 +1,9 @@
+title = "dotDots"
+slug = "dotdots"
+status = "active"
+description = "Declarative system configuration for NixOS, GNOME, and development environments. Manages shell configs, editor setups, and reproducible toolchains across multiple machines — infrastructure-as-code for the desktop."
+repo_url = "https://github.com/craole-cc/dotDots"
+featured = false
+published = true
+sort_order = 50
+tags = ["NixOS", "Nix", "Shell", "Infrastructure"]

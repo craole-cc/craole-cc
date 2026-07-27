@@ -9,6 +9,7 @@ RELEASES="$APP_ROOT/releases"
 CURRENT="$APP_ROOT/current"
 WORKSPACE=/opt/actions-runner/_work/craole-cc/craole-cc
 SERVICE=craole-cc.service
+DATABASE=/var/lib/craole-cc/portfolio.db
 
 fail() {
   printf 'deployment error: %s\n' "$*" >&2
@@ -18,6 +19,8 @@ fail() {
 [ "$(id -u)" -eq 0 ] || fail 'must run as root'
 [ -d "$WORKSPACE" ] || fail "workspace missing: $WORKSPACE"
 [ -x "$WORKSPACE/target/release/backend" ] || fail 'release backend missing'
+[ -x "$WORKSPACE/target/debug/content" ] || fail 'content sync binary missing'
+[ -f "$DATABASE" ] || fail "production database missing: $DATABASE"
 [ -f "$WORKSPACE/target/site/pkg/craole-cc.js" ] || fail 'release JavaScript missing'
 [ -f "$WORKSPACE/target/site/pkg/craole-cc.wasm" ] || fail 'release WASM missing'
 [ -f "$WORKSPACE/.deploy-static/index.html" ] || fail 'static export missing'
@@ -33,9 +36,26 @@ cp -a "$WORKSPACE/.deploy-static/." "$release/static/"
 install -m 0755 "$WORKSPACE/target/release/backend" "$release/backend"
 chown -R caddy:caddy "$release"
 
+database_backup="$DATABASE.backup-$timestamp-$sha"
+staged_database="$DATABASE.stage-$timestamp-$sha"
+
+systemctl stop "$SERVICE"
+cp --reflink=auto --preserve=mode,ownership,timestamps "$DATABASE" "$database_backup"
+cp --reflink=auto --preserve=mode,ownership,timestamps "$DATABASE" "$staged_database"
+
+if ! "$WORKSPACE/target/debug/content" sync-db "$WORKSPACE" "sqlite://$staged_database"; then
+  rm -f -- "$staged_database"
+  systemctl start "$SERVICE"
+  fail 'content database synchronization failed'
+fi
+
+chown caddy:caddy "$staged_database"
+chmod 0640 "$staged_database"
+rm -f -- "$DATABASE-wal" "$DATABASE-shm"
+mv -f -- "$staged_database" "$DATABASE"
 ln -sfn "$release" "$APP_ROOT/current.next"
 mv -Tf "$APP_ROOT/current.next" "$CURRENT"
-systemctl restart "$SERVICE"
+systemctl start "$SERVICE"
 
 healthy=0
 for _ in {1..15}; do
@@ -49,12 +69,15 @@ for _ in {1..15}; do
 done
 
 if [ "$healthy" -ne 1 ]; then
-  printf 'new release failed health check; rolling back\n' >&2
+  printf 'new release failed health check; rolling back release and database\n' >&2
+  systemctl stop "$SERVICE" || true
+  cp --reflink=auto --preserve=mode,ownership,timestamps "$database_backup" "$DATABASE"
+  rm -f -- "$DATABASE-wal" "$DATABASE-shm"
   if [ -n "$old_release" ] && [ -d "$old_release" ]; then
     ln -sfn "$old_release" "$APP_ROOT/current.next"
     mv -Tf "$APP_ROOT/current.next" "$CURRENT"
-    systemctl restart "$SERVICE" || true
   fi
+  systemctl start "$SERVICE" || true
   exit 1
 fi
 

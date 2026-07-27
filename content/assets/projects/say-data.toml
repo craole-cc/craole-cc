@@ -1,0 +1,9 @@
+title = "say_data"
+slug = "say-data"
+status = "planning"
+description = "Exploration of data storytelling and analytics communication. Building tools and techniques for presenting data insights clearly — because the pipeline is only half the story."
+repo_url = "https://github.com/craole-cc/say_data"
+featured = false
+published = true
+sort_order = 90
+tags = ["Rust", "Data Engineering", "Analytics"]

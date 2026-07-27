@@ -1,0 +1,9 @@
+title = "datum"
+slug = "datum"
+status = "building"
+description = "Unified data engineering lab for building pipelines in both Rust and Python. Explores Delta Lake for versioned storage, medallion architecture (bronze/silver/gold), and practical patterns for ingestion, transformation, and analytics."
+repo_url = "https://github.com/craole-cc/datum"
+featured = true
+published = true
+sort_order = 30
+tags = ["Rust", "Python", "Data Engineering", "Delta Lake"]

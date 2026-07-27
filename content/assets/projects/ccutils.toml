@@ -1,0 +1,9 @@
+title = "ccutils"
+slug = "ccutils"
+status = "active"
+description = "Collection of cross-platform shell utilities and developer productivity scripts. POSIX-compatible wrappers, environment helpers, and automation tools that smooth out day-to-day terminal workflows."
+repo_url = "https://github.com/craole-cc/ccutils"
+featured = false
+published = true
+sort_order = 60
+tags = ["Shell", "POSIX", "CLI", "Cross-Platform"]

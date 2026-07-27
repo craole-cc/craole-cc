@@ -1,0 +1,9 @@
+title = "gitsy"
+slug = "gitsy"
+status = "planning"
+description = "Git repository initialiser with opinionated defaults. Sets up commit conventions, branch structure, and remote configuration in a single command — removing friction from starting new projects."
+repo_url = "https://github.com/craole-cc/gitsy"
+featured = false
+published = true
+sort_order = 70
+tags = ["Rust", "Git", "CLI"]

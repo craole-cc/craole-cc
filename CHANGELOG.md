@@ -14,6 +14,16 @@ and this project uses [Semantic Versioning](https://semver.org/).
 
 ### Fixed
 
+## [0.2.21] - 2026-07-27
+
+### Fixed
+
+- Make Git-tracked TOML and Markdown the production content source of truth while retaining SQLite as the migrated runtime index.
+- Preserve the eight canonical projects that previously existed only in the development database.
+- Run content synchronization through SQLx migration tracking instead of replaying raw migration files.
+- Back up, stage, synchronize, switch, and roll back the production database together with each versioned release.
+- Restore the original checksum of applied migration `0005`.
+
 ## [0.2.20] - 2026-07-27
 
 ### Fixed
@@ -173,7 +183,8 @@ and this project uses [Semantic Versioning](https://semver.org/).
 - Improved database sync and static export reliability.
 - Test coverage for validation, export, and database sync in CI.
 
-[Unreleased]: https://github.com/craole-cc/craole-cc/compare/v0.2.20...HEAD
+[Unreleased]: https://github.com/craole-cc/craole-cc/compare/v0.2.21...HEAD
+[0.2.21]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.21
 [0.2.20]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.20
 [0.2.19]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.19
 [0.2.18]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.18

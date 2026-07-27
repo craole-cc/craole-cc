@@ -56,6 +56,20 @@ pub enum ContentError {
   },
   #[error("unsupported database URL `{0}`; expected sqlite://<path> or sqlite:<path>")]
   UnsupportedDatabaseUrl(String,),
+  #[error("failed to create SQLite migration runtime: {0}")]
+  DatabaseRuntime(#[source] std::io::Error,),
+  #[error("failed to connect to SQLite database `{path}` for migrations: {source}")]
+  DatabaseConnect {
+    path :   PathBuf,
+    #[source]
+    source : sqlx::Error,
+  },
+  #[error("failed to migrate SQLite database `{path}`: {source}")]
+  DatabaseMigrate {
+    path :   PathBuf,
+    #[source]
+    source : sqlx::migrate::MigrateError,
+  },
   #[error("failed to open SQLite database `{path}`: {source}")]
   DatabaseOpen {
     path :   PathBuf,
@@ -1538,6 +1552,8 @@ pub fn sync_content_database(
     },)?;
   }
 
+  migrate_database(root, database_url, &database_path,)?;
+
   let connection =
     rusqlite::Connection::open(&database_path,).map_err(|source| ContentError::DatabaseOpen {
       path : database_path.clone(),
@@ -1549,16 +1565,6 @@ pub fn sync_content_database(
       path : database_path.clone(),
       source,
     },)?;
-
-  for migration in migration_files(root,)? {
-    let sql = read_to_string(&migration,)?;
-    connection
-      .execute_batch(&sql,)
-      .map_err(|source| ContentError::DatabaseExec {
-        path : database_path.clone(),
-        source,
-      },)?;
-  }
 
   let seed_sql = export_seed_sql(root,)?;
   connection
@@ -1593,8 +1599,54 @@ fn sqlite_database_path(database_url : &str,) -> Result<PathBuf, ContentError,> 
   Ok(PathBuf::from(path,),)
 }
 
-fn migration_files(root : &Path,) -> Result<Vec<PathBuf,>, ContentError,> {
-  files_with_extension(&root.join("database/migrations",), "sql",)
+fn migrate_database(
+  root : &Path,
+  database_url : &str,
+  database_path : &Path,
+) -> Result<(), ContentError,> {
+  use sqlx::sqlite::{
+    SqliteConnectOptions,
+    SqlitePoolOptions,
+  };
+
+  let options = database_url
+    .parse::<SqliteConnectOptions>()
+    .map_err(|source| ContentError::DatabaseConnect {
+      path : database_path.to_path_buf(),
+      source,
+    },)?
+    .create_if_missing(true,);
+  let migrations = root.join("database/migrations",);
+  let runtime = tokio::runtime::Builder::new_current_thread()
+    .enable_all()
+    .build()
+    .map_err(ContentError::DatabaseRuntime,)?;
+
+  runtime.block_on(async {
+    let pool = SqlitePoolOptions::new()
+      .max_connections(1,)
+      .connect_with(options,)
+      .await
+      .map_err(|source| ContentError::DatabaseConnect {
+        path : database_path.to_path_buf(),
+        source,
+      },)?;
+    let migrator = sqlx::migrate::Migrator::new(migrations,)
+      .await
+      .map_err(|source| ContentError::DatabaseMigrate {
+        path : database_path.to_path_buf(),
+        source,
+      },)?;
+    migrator
+      .run(&pool,)
+      .await
+      .map_err(|source| ContentError::DatabaseMigrate {
+        path : database_path.to_path_buf(),
+        source,
+      },)?;
+    pool.close().await;
+    Ok((),)
+  },)
 }
 
 fn count_rows(

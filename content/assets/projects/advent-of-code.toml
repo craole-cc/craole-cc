@@ -1,0 +1,9 @@
+title = "Advent of Code"
+slug = "advent-of-code"
+status = "active"
+description = "Solutions to Advent of Code challenges, implemented in Rust with a focus on idiomatic patterns, performance, and readable problem decomposition."
+repo_url = "https://github.com/craole-cc/Advent-of-Code"
+featured = false
+published = true
+sort_order = 80
+tags = ["Rust", "Algorithms"]

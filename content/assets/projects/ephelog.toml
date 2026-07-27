@@ -1,0 +1,9 @@
+title = "ephelog"
+slug = "ephelog"
+status = "building"
+description = "Ephemeral logger that wraps the tracing ecosystem with sane defaults. Zero-config startup for CLI tools and servers — structured output, level filtering, and coloured terminal formatting out of the box."
+repo_url = "https://github.com/craole-cc/ephelog"
+featured = true
+published = true
+sort_order = 40
+tags = ["Rust", "Tracing", "CLI", "Open Source"]

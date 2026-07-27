@@ -76,6 +76,14 @@ Body.
     assert_eq!(report.posts, 1);
     assert_eq!(report.media, 0);
     assert!(root.join("database/data/portfolio.db",).is_file());
+
+    let connection = rusqlite::Connection::open(root.join("database/data/portfolio.db",),).unwrap();
+    let applied_migrations : i64 = connection
+      .query_row("SELECT COUNT(*) FROM _sqlx_migrations", [], |row| {
+        row.get(0,)
+      },)
+      .unwrap();
+    assert_eq!(applied_migrations, 1);
   }
 
   #[test]
