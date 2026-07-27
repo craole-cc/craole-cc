@@ -14,6 +14,12 @@ and this project uses [Semantic Versioning](https://semver.org/).
 
 ### Fixed
 
+## [0.2.19] - 2026-07-27
+
+### Fixed
+
+- Track canonical PNG assets under `assets/` so clean CI checkouts and production deployments include the Art and LMS images.
+- Remove the overly broad image ignore rules that caused public assets to remain local-only.
 ## [0.2.18] - 2026-07-26
 
 ### Changed
@@ -21,6 +27,7 @@ and this project uses [Semantic Versioning](https://semver.org/).
 - Update `pulldown-cmark`, `wasm-bindgen`, `wasm-bindgen-futures`, and `web-sys` to current compatible releases.
 - Update the pinned Nixpkgs input and matching `wasm-bindgen` CLI for reproducible release builds.
 - Remove tracked temporary diagnostics and normalize formatting after the dependency update.
+
 ## [0.2.17] - 2026-07-26
 
 ### Changed
@@ -160,7 +167,8 @@ and this project uses [Semantic Versioning](https://semver.org/).
 - Improved database sync and static export reliability.
 - Test coverage for validation, export, and database sync in CI.
 
-[Unreleased]: https://github.com/craole-cc/craole-cc/compare/v0.2.18...HEAD
+[Unreleased]: https://github.com/craole-cc/craole-cc/compare/v0.2.19...HEAD
+[0.2.19]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.19
 [0.2.18]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.18
 [0.2.17]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.17
 [0.2.16]: https://github.com/craole-cc/craole-cc/releases/tag/v0.2.16

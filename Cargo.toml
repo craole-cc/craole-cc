@@ -3,7 +3,7 @@ resolver = "2"
 members = ["app", "backend", "content", "frontend"]
 
 [workspace.package]
-version = "0.2.18"
+version = "0.2.19"
 authors = ["Craig 'Craole' Cole <info@craole.cc>"]
 edition = "2024"
 rust-version = "1.85.0"

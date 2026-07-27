@@ -25,11 +25,7 @@ package-lock.json
 #╔═══════════════════════════════════════════════════════════╗
 #║ Assets                                                    ║
 #╚═══════════════════════════════════════════════════════════╝
-*.png
-*.webp
-*.jpg
-# /assets/
-# /public/
+# Canonical public assets under /assets/ are tracked; keep generated output ignored above.
 
 #╔═══════════════════════════════════════════════════════════╗
 #║ Environment                                               ║
