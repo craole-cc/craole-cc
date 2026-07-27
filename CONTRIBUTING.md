@@ -112,16 +112,18 @@ with `lsof` and asks whether to kill it before starting `cargo leptos watch`.
 │   └── src/
 ├── backend/              # Axum server entry point and database bootstrap
 ├── frontend/             # WASM hydration entry point
-├── assets/              # Git-tracked content source of truth
-│   ├── posts/            # Markdown posts with frontmatter
-│   ├── projects/         # TOML project records
-│   └── SCHEMA.md         # Content format and validation rules
-├── content/           # CLI for content validation, SQLite seed export, draft templates
+├── content/
+│   ├── assets/           # Private authored Markdown/TOML source of truth
+│   │   ├── posts/        # Blog, note, and profile Markdown
+│   │   ├── projects/     # Project TOML records
+│   │   └── media/        # Standalone/project media metadata
+│   ├── src/              # Content CLI implementation
+│   └── SCHEMA.md         # Complete content format and validation rules
 ├── database/
 │   ├── data/             # Local SQLite database files; gitignored
 │   └── migrations/       # Durable schema and baseline SQL migrations
-├── assets/                # Servable static assets (images, media, audio, fonts, icons)
-├── content/               # Private content definitions and Rust content tooling
+├── assets/                # Publicly served images, project media, audio, fonts, and icons
+├── docs/                  # Owner runbooks and focused documentation
 ├── scripts/               # Dev and CI helper scripts
 ├── style/                 # SCSS and Tailwind input
 └── tests/                # Workspace-level tests and fixtures
@@ -132,6 +134,9 @@ with `lsof` and asks whether to kill it before starting `cargo leptos watch`.
 ## Content Workflow
 
 Content should start in `content/`, not as ad-hoc SQL edits.
+
+For the copyable owner workflow—adding a blog, project, standalone image, Unsplash image, or project
+media and publishing it through production—see [Updating Craole.CC](./docs/UPDATING_SITE.md).
 
 ### Create a Draft Template
 

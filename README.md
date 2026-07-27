@@ -185,8 +185,10 @@ cp .env.example .env
 cargo leptos watch
 ```
 
-For full setup, content authoring, and CI instructions, see [CONTRIBUTING.md](./CONTRIBUTING.md).
-For the Git-tracked content format, see [content/SCHEMA.md](./content/SCHEMA.md).
+For the practical owner workflow for adding blogs, projects, and media, see
+[Updating Craole.CC](./docs/UPDATING_SITE.md). For full development and CI instructions, see
+[CONTRIBUTING.md](./CONTRIBUTING.md). For every content field and validation rule, see
+[content/SCHEMA.md](./content/SCHEMA.md).
 
 Create draft content with `content new`:
 
