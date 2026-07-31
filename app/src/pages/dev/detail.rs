@@ -173,19 +173,48 @@ fn LmsShowcase() -> impl IntoView {
 #[component]
 fn LignumShowcase() -> impl IntoView {
   view! {
-    <section class="dev-detail__readme">
-      <h2 class="dev-detail__section-title">"What this project demonstrates"</h2>
-      <div class="dev-detail__readme-body markdown">
-        <p>"Lignum IQ is a private commercial application prototype. Its public portfolio description is limited to synthetic classroom data; no learner or school records are published here."</p>
-        <ul>
-          <li>"Typed Rust and Dioxus workflows for attendance, gradebook, reporting, and student context."</li>
-          <li>"Axum server APIs with session-backed role and teacher scope enforcement."</li>
-          <li>"libSQL/SQLite persistence with SQL kept in IDE-friendly database assets."</li>
-          <li>"A reproducible Nix development environment and ARM64 Android packaging path."</li>
-        </ul>
-        <p><strong>"Demo boundary: "</strong>"the seeded demo is available during authorized development; there is no public live Lignum deployment yet."</p>
-      </div>
-    </section>
+    <>
+      <section class="dev-detail__readme">
+        <h2 class="dev-detail__section-title">"Why Lignum IQ exists"</h2>
+        <div class="dev-detail__readme-body markdown">
+          <p>"Lignum IQ is a classroom-intelligence product for primary-school educators working with Jamaica's MOESYI curriculum. It is designed around a practical problem: attendance, assessment evidence, reporting, and student context often live in disconnected records, while teachers need a calm view of the current class and the decisions that need attention."</p>
+          <p>"The product is intentionally private and privacy-first. The public portfolio shows the engineering approach and synthetic records, not a school, teacher, or learner dataset."</p>
+        </div>
+      </section>
+
+      <section class="dev-detail__readme">
+        <h2 class="dev-detail__section-title">"Product approach"</h2>
+        <div class="dev-detail__readme-body markdown">
+          <ul>
+            <li><strong>"Classroom-first: "</strong>"attendance, gradebook, Language Arts strands, reports, and a student Vitae are organized around the teacher's active class."</li>
+            <li><strong>"Scoped by design: "</strong>"a role and school context determine which records a user can access; historical cohorts should not leak into the active roster."</li>
+            <li><strong>"Evidence over decoration: "</strong>"weighted results, attendance summaries, and report views are derived from typed data and explicit rules rather than presentation-only mock values."</li>
+            <li><strong>"Synthetic by default in demos: "</strong>"development and portfolio builds use deterministic district fixtures so the workflow can be demonstrated without exposing personal information."</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="dev-detail__readme">
+        <h2 class="dev-detail__section-title">"Why these technology decisions"</h2>
+        <div class="dev-detail__readme-body markdown">
+          <ul>
+            <li><strong>"Rust: "</strong>"provides one strongly typed language for domain models, validation, server boundaries, and client-facing data structures, reducing drift between classroom rules and the interface."</li>
+            <li><strong>"Dioxus: "</strong>"supports a shared Rust UI model across the browser and the ARM64 mobile packaging path, while keeping the application close to the domain rather than splitting rules across separate clients."</li>
+            <li><strong>"Axum: "</strong>"provides a small, explicit HTTP boundary for authentication, sessions, scoped reads, and future write operations without placing database access in the browser."</li>
+            <li><strong>"libSQL/SQLite: "</strong>"keeps local development and synthetic demos simple and portable while leaving room for a managed libSQL deployment model. SQL lives in reviewable database assets so queries remain inspectable and IDE-friendly."</li>
+            <li><strong>"Nix: "</strong>"pins the development environment, Rust/WASM tooling, native dependencies, and matching Dioxus CLI so setup is reproducible across development machines and CI."</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="dev-detail__readme">
+        <h2 class="dev-detail__section-title">"Engineering and privacy boundary"</h2>
+        <div class="dev-detail__readme-body markdown">
+          <p>"The current foundation includes typed domain models, scoped repository reads, server-side sessions, normalized authorization identifiers, independent attendance sessions, weighted assessment calculations, and deterministic fixtures. A real deployment would still require hardened identity, secure cookie and secret handling, tenant isolation, audit logging, retention and deletion controls, account lifecycle management, monitoring, backup procedures, and a formal privacy review."</p>
+          <p><strong>"Demo boundary: "</strong>"the seeded demo is available during authorized development; there is no public live Lignum deployment yet."</p>
+        </div>
+      </section>
+    </>
   }
 }
 
