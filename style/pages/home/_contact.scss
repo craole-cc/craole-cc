@@ -5,16 +5,15 @@
   margin-top: spacing(8);
   padding: spacing(16) spacing(4);
   overflow: hidden;
-  color: var(--color-text-inverse);
-  background:
-    radial-gradient(circle at 85% 15%, rgba(255, 255, 255, 0.14), transparent 32%),
-    linear-gradient(135deg, var(--color-primary), var(--color-primary-hover));
+  color: var(--color-text);
+  background: var(--color-bg-surface);
+  border-block: 1px solid var(--color-border);
 
   &::before,
   &::after {
     position: absolute;
     content: "";
-    border: 1px solid rgba(255, 255, 255, 0.16);
+    border: 1px solid color-mix(in srgb, var(--color-primary) 18%, transparent);
     border-radius: 50%;
     pointer-events: none;
   }
@@ -51,7 +50,7 @@
 
   &__eyebrow {
     margin: 0 0 spacing(3);
-    color: rgba(255, 255, 255, 0.72);
+    color: var(--color-primary-text);
     font-size: fontsize(sm);
     font-weight: 700;
     letter-spacing: 0.14em;
@@ -61,7 +60,7 @@
   h2 {
     max-width: 34rem;
     margin: 0;
-    color: #fff;
+    color: var(--color-text);
     font-size: clamp(2.25rem, 5vw, 4.5rem);
     line-height: 0.98;
     letter-spacing: -0.045em;
@@ -70,7 +69,7 @@
   &__lead {
     max-width: 38rem;
     margin: spacing(6) 0 0;
-    color: rgba(255, 255, 255, 0.84);
+    color: var(--color-text-muted);
     font-size: fontsize(lg);
     line-height: 1.65;
   }
@@ -82,7 +81,7 @@
     max-width: 38rem;
     margin: spacing(8) 0 0;
     padding: 0;
-    color: rgba(255, 255, 255, 0.76);
+    color: var(--color-text-muted);
     font-size: fontsize(sm);
     list-style: none;
 
@@ -105,16 +104,15 @@
 
   &__form {
     padding: spacing(6);
-    background: rgba(0, 0, 0, 0.16);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: var(--color-bg-hover);
+    border: 1px solid var(--color-border);
     border-radius: radius(xl);
-    box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.14);
 
     label {
       display: flex;
       flex-direction: column;
       gap: spacing(2);
-      color: rgba(255, 255, 255, 0.8);
+      color: var(--color-text-muted);
       font-size: fontsize(sm);
       font-weight: 700;
     }
@@ -126,15 +124,15 @@
       color: var(--color-text);
       font: inherit;
       font-weight: 400;
-      background: rgba(255, 255, 255, 0.94);
-      border: 1px solid transparent;
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border);
       border-radius: radius(md);
       outline: none;
       transition: border-color duration(fast), box-shadow duration(fast);
 
       &:focus {
         border-color: var(--color-accent);
-        box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.28);
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 18%, transparent);
       }
     }
 
@@ -208,7 +206,7 @@
 
   &__note {
     margin: spacing(4) 0 0;
-    color: rgba(255, 255, 255, 0.62);
+    color: var(--color-text-faint);
     font-size: fontsize(xs);
   }
 
