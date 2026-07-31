@@ -2,6 +2,7 @@
 title: "Teaching English Through Rhythm and Melody"
 slug: "teaching-english-rhythm"
 kind: "note"
+featured: true
 published: true
 published_at: "2026-06-22"
 cover_url: "https://images.unsplash.com/photo-1507838153414-b4b713384a76?auto=format&fit=crop&w=1200&q=80"

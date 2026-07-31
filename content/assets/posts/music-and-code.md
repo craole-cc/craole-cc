@@ -2,6 +2,7 @@
 title: "Raised on Rhythm: How Music Shaped My Approach to Code"
 slug: "music-and-code"
 kind: "blog"
+featured: true
 published: true
 published_at: "2026-07-22"
 cover_url: "https://images.unsplash.com/photo-1510915361894-db8b60106cb1?auto=format&fit=crop&w=1200&q=80"

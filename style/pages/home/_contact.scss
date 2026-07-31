@@ -223,13 +223,6 @@
     }
   }
 
-  @include breakpoint(md) {
-    &__inner {
-      grid-template-columns: minmax(0, 1.35fr) minmax(16rem, 0.65fr);
-      gap: spacing(12);
-      align-items: end;
-    }
-  }
 
   @media (max-width: 479px) {
     &__form {

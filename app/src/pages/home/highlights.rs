@@ -66,7 +66,7 @@ pub fn Highlights() -> impl IntoView {
                   <a href="/log">"Read the log →"</a>
                 </div>
                 <div class="home-highlights__post-grid">
-                  {posts.get().and_then(Result::ok).unwrap_or_default().into_iter().filter(|post| post.featured).take(2).map(|post| view! {
+                  {posts.get().and_then(Result::ok).unwrap_or_default().into_iter().filter(|post| post.featured).take(3).map(|post| view! {
                     <a class="home-highlights__post" href=format!("/log/{}", post.slug)>
                       <span>{post.kind}</span>
                       <h4>{post.title}</h4>

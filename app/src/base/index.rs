@@ -22,7 +22,7 @@ pub fn App() -> impl IntoView {
             <Route path=(StaticSegment("art"), ParamSegment("slug")) view=ArtDetail />
             <Route path=StaticSegment("log") view=LogPage />
             <Route path=(StaticSegment("log"), ParamSegment("slug")) view=LogPost />
-            <Route path=StaticSegment("contact") view=ContactPage />
+
             <Route path=StaticSegment("admin") view=AdminPage />
           </Routes>
         </main>

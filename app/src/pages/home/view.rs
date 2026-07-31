@@ -12,7 +12,6 @@ pub fn Home() -> impl IntoView {
         <Areas />
       </main>
       <Highlights />
-      <Contact />
     </div>
   }
 }

@@ -1,6 +1,5 @@
 pub mod admin;
 pub mod art;
-pub mod contact;
 pub mod dev;
 pub mod home;
 pub mod log;
@@ -37,7 +36,7 @@ pub const PAGES : [Page; 5] = [
   Page {
     label :       "Contact",
     description : "Send a message and start a conversation",
-    path :        "/contact",
+    path :        "/#contact",
   },
 ];
 
@@ -46,7 +45,6 @@ pub mod prelude {
     PAGES,
     admin::prelude::*,
     art::prelude::*,
-    contact::prelude::*,
     dev::prelude::*,
     home::prelude::*,
     log::prelude::*,

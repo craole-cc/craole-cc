@@ -12,6 +12,7 @@ use {
 pub fn Footer() -> impl IntoView {
   view! {
     <footer class="footer">
+      <Contact />
       <Divider />
       <div class="footer__inner">
         <Socials />
