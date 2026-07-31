@@ -7,45 +7,6 @@
   flex-shrink: 0;
 }
 
-.site-nav__contact {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: size(btn-h);
-  padding: spacing(2) spacing(4);
-  color: #fff;
-  font-size: fontsize(sm);
-  font-weight: 700;
-  text-decoration: none;
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.62);
-  border-radius: radius(pill);
-  transition: color duration(fast), background-color duration(fast), border-color duration(fast), transform duration(fast);
-
-  &:hover,
-  &:focus-visible {
-    color: #fff;
-    background: rgba(255, 255, 255, 0.14);
-    transform: translateY(-1px);
-  }
-
-  .site-nav--scrolled & {
-    color: var(--color-text-faint);
-    background: transparent;
-    border-color: var(--color-border);
-  }
-
-  .site-nav--scrolled &:hover,
-  .site-nav--scrolled &:focus-visible {
-    color: var(--color-text);
-    background: var(--color-bg-hover);
-  }
-
-  @media (max-width: 479px) {
-    display: none;
-  }
-}
-
 .site-nav .theme-btn {
   color: rgba(255, 255, 255, 0.65);
 

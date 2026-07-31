@@ -3,6 +3,7 @@ title: "Craig 'Craole' Cole — Profile"
 slug: "craig-craole-cole-profile"
 kind: "cv"
 published: true
+featured: true
 published_at: "2026-07-24"
 tags: ["profile", "career", "rust", "data", "business-intelligence"]
 excerpt: "A fact-based profile of Craig 'Craole' Cole: BI, learning and development, remote teaching, and Rust-first software and data engineering."
