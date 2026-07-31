@@ -40,7 +40,7 @@ pub fn Contact() -> impl IntoView {
           set_email.set(String::new(),);
           set_subject.set(String::new(),);
           set_message.set(String::new(),);
-          set_status.set(Some("Thanks — your message is on its way. I’ll get back to you by email.".into(),),);
+          set_status.set(Some("Thanks — your message is on its way. Expect a response from info@craole.cc soon.".into(),),);
         }
         Err(error,) => set_status.set(Some(error.to_string(),),),
       }
@@ -120,7 +120,7 @@ pub fn Contact() -> impl IntoView {
             {move || if submitting.get() { "Sending…" } else { "Send message →" }}
           </button>
           <p class="contact-section__note" aria-live="polite">
-            {move || status.get().unwrap_or_else(|| "I’ll reply at info@craole.cc".into())}
+            {move || status.get().unwrap_or_else(|| "Expect a response from info@craole.cc soon.".into())}
           </p>
         </form>
       </div>
