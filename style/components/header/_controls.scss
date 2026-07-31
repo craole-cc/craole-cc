@@ -7,7 +7,44 @@
   flex-shrink: 0;
 }
 
-// Theme button context overrides
+.site-nav__contact {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: size(btn-h);
+  padding: spacing(2) spacing(4);
+  color: #fff;
+  font-size: fontsize(sm);
+  font-weight: 700;
+  text-decoration: none;
+  background: var(--color-primary);
+  border: 1px solid transparent;
+  border-radius: radius(pill);
+  transition: color duration(fast), background-color duration(fast), border-color duration(fast), transform duration(fast);
+
+  &:hover,
+  &:focus-visible {
+    color: var(--color-primary-text);
+    background: var(--color-primary-hover);
+    transform: translateY(-1px);
+  }
+
+  .site-nav--scrolled & {
+    color: var(--color-primary-text);
+    background: var(--color-primary);
+  }
+
+  .site-nav--scrolled &:hover,
+  .site-nav--scrolled &:focus-visible {
+    background: var(--color-primary-hover);
+  }
+
+  @include breakpoint(xs) {
+    padding-inline: spacing(3);
+    font-size: fontsize(xs);
+  }
+}
+
 .site-nav .theme-btn {
   color: rgba(255, 255, 255, 0.65);
 
