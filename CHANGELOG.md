@@ -14,6 +14,20 @@ and this project uses [Semantic Versioning](https://semver.org/).
 
 ### Fixed
 
+## [0.2.24] - 2026-07-31
+
+### Added
+
+- Add a shared footer Contact section with a server-backed message form, private persistence, and a Contact menu anchor to `/#contact`.
+- Feature three log entries on the homepage: the CV profile, the music-and-code essay, and the English-through-rhythm note.
+
+### Changed
+
+- Make the homepage responsive on small screens with mobile-first featured grids and stacked Contact fields.
+- Refine featured project cards with narrower proportions and restrained interaction states.
+- Remove the standalone Contact page and the duplicate header Contact utility.
+- Align the Contact section typography with the Dev page’s label and headline hierarchy.
+
 ## [0.2.23] - 2026-07-27
 
 ### Fixed
