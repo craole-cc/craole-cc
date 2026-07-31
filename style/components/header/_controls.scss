@@ -41,9 +41,8 @@
     background: var(--color-bg-hover);
   }
 
-  @include breakpoint(xs) {
-    padding-inline: spacing(3);
-    font-size: fontsize(xs);
+  @media (max-width: 479px) {
+    display: none;
   }
 }
 

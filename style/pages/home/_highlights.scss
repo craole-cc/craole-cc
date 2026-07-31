@@ -80,8 +80,9 @@
   &__project-grid,
   &__post-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: 1fr;
     gap: spacing(4);
+    max-width: 64rem;
   }
 
   &__project,
@@ -89,13 +90,14 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    min-height: 12rem;
+    min-height: 13rem;
     padding: spacing(5);
     color: var(--color-text);
     text-decoration: none;
     background: var(--color-bg-surface);
     border: 1px solid var(--color-border);
     border-radius: radius(xl);
+    overflow: hidden;
     transition: border-color duration(fast), box-shadow duration(fast), transform duration(fast);
 
     &:hover,
@@ -103,6 +105,22 @@
       border-color: var(--color-primary);
       box-shadow: var(--shadow-card);
       transform: translateY(-3px);
+    }
+
+    &::before {
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 0.25rem;
+      content: "";
+      background: var(--color-primary);
+      opacity: 0.5;
+      transition: opacity duration(fast), width duration(fast);
+    }
+
+    &:hover::before,
+    &:focus-visible::before {
+      width: 0.4rem;
+      opacity: 1;
     }
 
     h4 {
@@ -135,7 +153,7 @@
 
   &__art-grid {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: spacing(3);
 
     a {
@@ -171,17 +189,20 @@
     &__post-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+
+    &__art-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
   }
 
-  @include breakpoint(xs) {
+  @include breakpoint(md) {
     &__project-grid,
-    &__post-grid,
-    &__art-grid {
-      grid-template-columns: 1fr;
+    &__post-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
     &__art-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
     }
   }
 }

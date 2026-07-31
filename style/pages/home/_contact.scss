@@ -36,7 +36,7 @@
     position: relative;
     z-index: 1;
     display: grid;
-    grid-template-columns: minmax(0, 1.35fr) minmax(16rem, 0.65fr);
+    grid-template-columns: 1fr;
     gap: spacing(12);
     align-items: end;
     max-width: 72rem;
@@ -76,7 +76,7 @@
 
   &__topics {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr;
     gap: spacing(3) spacing(6);
     max-width: 38rem;
     margin: spacing(8) 0 0;
@@ -144,7 +144,7 @@
 
   &__fields {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr;
     gap: spacing(4);
     margin-bottom: spacing(4);
   }
@@ -217,23 +217,23 @@
   @include breakpoint(sm) {
     padding-block: spacing(12);
 
-    &__inner {
-      grid-template-columns: 1fr;
-      gap: spacing(8);
+    &__topics,
+    &__fields {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
-  @include breakpoint(xs) {
-    &__topics {
-      grid-template-columns: 1fr;
+  @include breakpoint(md) {
+    &__inner {
+      grid-template-columns: minmax(0, 1.35fr) minmax(16rem, 0.65fr);
+      gap: spacing(12);
+      align-items: end;
     }
+  }
 
+  @media (max-width: 479px) {
     &__form {
       padding: spacing(5);
-    }
-
-    &__fields {
-      grid-template-columns: 1fr;
     }
   }
 }
