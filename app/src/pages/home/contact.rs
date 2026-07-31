@@ -1,6 +1,7 @@
 use crate::prelude::*;
 
 #[component]
+#[allow(clippy::too_many_lines)]
 pub fn Contact() -> impl IntoView {
   let (name, set_name,) = signal(String::new(),);
   let (email, set_email,) = signal(String::new(),);

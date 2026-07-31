@@ -18,14 +18,6 @@ pub fn Highlights() -> impl IntoView {
       <div class="home-highlights__groups">
         <Suspense fallback=|| view! { <p aria-busy="true">"Loading projects…"</p> }>
           {move || {
-            let items = projects
-              .get()
-              .and_then(Result::ok)
-              .unwrap_or_default()
-              .into_iter()
-              .filter(|project| project.featured)
-              .take(3)
-              .collect::<Vec<_>>();
             view! {
               <section class="home-highlights__group" aria-labelledby="featured-projects-title">
                 <div class="home-highlights__group-heading">
@@ -33,7 +25,7 @@ pub fn Highlights() -> impl IntoView {
                   <a href="/dev">"View all →"</a>
                 </div>
                 <div class="home-highlights__project-grid">
-                  {items.into_iter().map(|project| view! {
+                  {projects.get().and_then(Result::ok).unwrap_or_default().into_iter().filter(|project| project.featured).take(3).map(|project| view! {
                     <a class="home-highlights__project" href=format!("/dev/{}", project.slug)>
                       <span class="home-highlights__status">{project.status.clone()}</span>
                       <h4>{project.title}</h4>
@@ -48,7 +40,6 @@ pub fn Highlights() -> impl IntoView {
         </Suspense>
         <Suspense fallback=|| view! { <p aria-busy="true">"Loading art…"</p> }>
           {move || {
-            let items = art.get().and_then(Result::ok).unwrap_or_default().into_iter().take(4).collect::<Vec<_>>();
             view! {
               <section class="home-highlights__group" aria-labelledby="featured-art-title">
                 <div class="home-highlights__group-heading">
@@ -56,8 +47,8 @@ pub fn Highlights() -> impl IntoView {
                   <a href="/art">"View all →"</a>
                 </div>
                 <div class="home-highlights__art-grid">
-                  {items.into_iter().map(|item| view! {
-                    <a href=format!("/art/{}", item.slug) aria-label=item.title.clone()>
+                  {art.get().and_then(Result::ok).unwrap_or_default().into_iter().take(4).map(|item| view! {
+                    <a href=format!("/art/{}", item.slug) aria-label=item.title>
                       <img src=format!("/{}", item.file_path.trim_start_matches('/')) alt=item.alt_text loading="lazy" />
                     </a>
                   }).collect_view()}
@@ -68,7 +59,6 @@ pub fn Highlights() -> impl IntoView {
         </Suspense>
         <Suspense fallback=|| view! { <p aria-busy="true">"Loading writing…"</p> }>
           {move || {
-            let items = posts.get().and_then(Result::ok).unwrap_or_default().into_iter().take(2).collect::<Vec<_>>();
             view! {
               <section class="home-highlights__group" aria-labelledby="latest-writing-title">
                 <div class="home-highlights__group-heading">
@@ -76,7 +66,7 @@ pub fn Highlights() -> impl IntoView {
                   <a href="/log">"Read the log →"</a>
                 </div>
                 <div class="home-highlights__post-grid">
-                  {items.into_iter().map(|post| view! {
+                  {posts.get().and_then(Result::ok).unwrap_or_default().into_iter().take(2).map(|post| view! {
                     <a class="home-highlights__post" href=format!("/log/{}", post.slug)>
                       <span>{post.kind}</span>
                       <h4>{post.title}</h4>
