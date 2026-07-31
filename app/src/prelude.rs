@@ -6,6 +6,7 @@ pub use sqlx::{
   SqlitePool,
   query_file,
   query_file_as,
+  query,
 };
 pub use {
   crate::{
@@ -72,6 +73,7 @@ pub use {
     KeyboardEvent,
     MediaQueryList,
     MouseEvent,
+    SubmitEvent,
     ScrollBehavior,
     ScrollToOptions,
     js_sys,

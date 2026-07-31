@@ -103,18 +103,74 @@
     }
   }
 
-  &__action {
+  &__form {
     padding: spacing(6);
     background: rgba(0, 0, 0, 0.16);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: radius(xl);
     box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.14);
 
-    > p:first-child {
-      margin: 0 0 spacing(6);
-      color: rgba(255, 255, 255, 0.82);
-      font-size: fontsize(base);
-      line-height: 1.6;
+    label {
+      display: flex;
+      flex-direction: column;
+      gap: spacing(2);
+      color: rgba(255, 255, 255, 0.8);
+      font-size: fontsize(sm);
+      font-weight: 700;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: spacing(3);
+      color: var(--color-text);
+      font: inherit;
+      font-weight: 400;
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid transparent;
+      border-radius: radius(md);
+      outline: none;
+      transition: border-color duration(fast), box-shadow duration(fast);
+
+      &:focus {
+        border-color: var(--color-accent);
+        box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.28);
+      }
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 8rem;
+    }
+  }
+
+  &__fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: spacing(4);
+    margin-bottom: spacing(4);
+  }
+
+  &__form > label:not(.contact-section__honeypot) {
+    margin-bottom: spacing(4);
+  }
+
+  &__honeypot {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  &__form .contact-section__button {
+    border: 0;
+    cursor: pointer;
+
+    &:disabled {
+      cursor: wait;
+      opacity: 0.7;
     }
   }
 
@@ -174,8 +230,12 @@
       grid-template-columns: 1fr;
     }
 
-    &__action {
+    &__form {
       padding: spacing(5);
+    }
+
+    &__fields {
+      grid-template-columns: 1fr;
     }
   }
 }

@@ -1,3 +1,4 @@
+pub mod contact;
 pub mod media;
 pub mod posts;
 pub mod projects;
@@ -18,6 +19,7 @@ pub mod _prelude {
 
 pub mod prelude {
   pub use super::{
+    contact::submit_contact_message,
     media::{
       Media,
       get_media_by_slug,

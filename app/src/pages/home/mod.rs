@@ -2,6 +2,7 @@ mod contact;
 mod disciplines;
 mod experience;
 mod hero;
+mod highlights;
 mod personal;
 mod projects;
 mod tech;
@@ -12,6 +13,7 @@ pub use {
   disciplines::*,
   experience::*,
   hero::*,
+  highlights::*,
   personal::*,
   projects::*,
   tech::*,
@@ -26,5 +28,8 @@ pub mod _prelude {
 }
 
 pub mod prelude {
-  pub use super::Home as HomePage;
+  pub use super::{
+    Contact,
+    Home as HomePage,
+  };
 }

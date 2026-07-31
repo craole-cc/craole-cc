@@ -17,26 +17,28 @@
   font-size: fontsize(sm);
   font-weight: 700;
   text-decoration: none;
-  background: var(--color-primary);
-  border: 1px solid transparent;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.62);
   border-radius: radius(pill);
   transition: color duration(fast), background-color duration(fast), border-color duration(fast), transform duration(fast);
 
   &:hover,
   &:focus-visible {
-    color: var(--color-primary-text);
-    background: var(--color-primary-hover);
+    color: #fff;
+    background: rgba(255, 255, 255, 0.14);
     transform: translateY(-1px);
   }
 
   .site-nav--scrolled & {
-    color: var(--color-primary-text);
-    background: var(--color-primary);
+    color: var(--color-text-faint);
+    background: transparent;
+    border-color: var(--color-border);
   }
 
   .site-nav--scrolled &:hover,
   .site-nav--scrolled &:focus-visible {
-    background: var(--color-primary-hover);
+    color: var(--color-text);
+    background: var(--color-bg-hover);
   }
 
   @include breakpoint(xs) {

@@ -1,5 +1,6 @@
 pub mod admin;
 pub mod art;
+pub mod contact;
 pub mod dev;
 pub mod home;
 pub mod log;
@@ -12,7 +13,7 @@ pub struct Page {
   pub path :        &'static str,
 }
 
-pub const PAGES : [Page; 4] = [
+pub const PAGES : [Page; 5] = [
   Page {
     label :       "Home",
     description : "Building systems, capturing moments, expressing ideas",
@@ -33,6 +34,11 @@ pub const PAGES : [Page; 4] = [
     description : "CV, blog & reflections",
     path :        "/log",
   },
+  Page {
+    label :       "Contact",
+    description : "Send a message and start a conversation",
+    path :        "/contact",
+  },
 ];
 
 pub mod prelude {
@@ -40,6 +46,7 @@ pub mod prelude {
     PAGES,
     admin::prelude::*,
     art::prelude::*,
+    contact::prelude::*,
     dev::prelude::*,
     home::prelude::*,
     log::prelude::*,
