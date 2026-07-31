@@ -56,12 +56,6 @@ pub fn Contact() -> impl IntoView {
           <p class="contact-section__sub">
             "Whether you want to talk about a project, a photograph, a visual idea, music, teaching English, or a thought worth developing, I’d love to hear from you."
           </p>
-          <ul class="contact-section__topics">
-            <li>"Software, data, and technical projects"</li>
-            <li>"Photography, graphics, and visual work"</li>
-            <li>"Music, collaboration, and creative practice"</li>
-            <li>"Teaching English, writing, and ideas"</li>
-          </ul>
         </div>
         <form class="contact-section__form" on:submit=submit>
           <div class="contact-section__fields">

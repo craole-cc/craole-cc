@@ -8,7 +8,7 @@
     display: grid;
     grid-template-columns: 1fr;
     gap: spacing(8);
-    padding-block: spacing(16) 0;
+    padding-block: 0;
   }
 
   &__copy {
