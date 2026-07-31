@@ -1,50 +1,17 @@
 @use "../../index" as *;
 
 .contact-section {
-  position: relative;
   margin: 0;
-  padding: spacing(16) spacing(4) 0;
-  overflow: hidden;
-  color: var(--color-text);
-  background: var(--color-bg-surface);
-  border-block: 1px solid var(--color-border);
-
-  &::before,
-  &::after {
-    position: absolute;
-    content: "";
-    border: 1px solid color-mix(in srgb, var(--color-primary) 18%, transparent);
-    border-radius: 50%;
-    pointer-events: none;
-  }
-
-  &::before {
-    width: 22rem;
-    height: 22rem;
-    right: -8rem;
-    top: -10rem;
-  }
-
-  &::after {
-    width: 14rem;
-    height: 14rem;
-    left: -7rem;
-    bottom: -8rem;
-  }
+  padding: 0;
 
   &__inner {
-    position: relative;
-    z-index: 1;
     display: grid;
     grid-template-columns: 1fr;
-    gap: spacing(12);
-    align-items: end;
-    max-width: 72rem;
-    margin: 0 auto;
+    gap: spacing(8);
+    padding-block: spacing(16) 0;
   }
 
-  &__copy,
-  &__action {
+  &__copy {
     min-width: 0;
   }
 
@@ -56,10 +23,11 @@
     font-size: fontsize(xs);
     font-weight: 500;
     letter-spacing: 0.15em;
+    line-height: 1.15;
     text-transform: uppercase;
   }
 
-  h2 {
+  &__title {
     max-width: 34rem;
     margin: 0;
     color: var(--color-text);
@@ -70,12 +38,15 @@
     letter-spacing: -0.03em;
   }
 
-  &__lead {
-    max-width: 38rem;
-    margin: spacing(6) 0 0;
+  &__sub {
+    max-width: 40rem;
+    margin: spacing(4) 0 0;
+    font-family: var(--font-headline);
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    font-style: italic;
+    font-weight: 300;
     color: var(--color-text-muted);
-    font-size: fontsize(lg);
-    line-height: 1.65;
+    line-height: 1.6;
   }
 
   &__topics {
@@ -107,10 +78,7 @@
   }
 
   &__form {
-    padding: spacing(6);
-    background: var(--color-bg-hover);
-    border: 1px solid var(--color-border);
-    border-radius: radius(xl);
+    padding: 0;
 
     label {
       display: flex;
@@ -219,8 +187,6 @@
   }
 
   @include breakpoint(sm) {
-    padding-block: spacing(12);
-
     &__topics,
     &__fields {
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -228,9 +194,4 @@
   }
 
 
-  @media (max-width: 479px) {
-    &__form {
-      padding: spacing(5);
-    }
-  }
 }
