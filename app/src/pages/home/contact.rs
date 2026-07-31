@@ -51,8 +51,8 @@ pub fn Contact() -> impl IntoView {
     <section id="contact" class="contact-section" aria-labelledby="contact-title">
       <div class="contact-section__inner readable">
         <div class="contact-section__copy">
-          <p class="contact-section__eyebrow">"Have something to share?"</p>
-          <h2 id="contact-title">"Let's connect."</h2>
+          <p class="contact-section__label">"Have something to share?"</p>
+          <h2 id="contact-title" class="contact-section__title">"Let's connect."</h2>
           <p class="contact-section__lead">
             "Whether you want to talk about a project, a photograph, a visual idea, music, teaching English, or a thought worth developing, I’d love to hear from you."
           </p>
