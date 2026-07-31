@@ -1,8 +1,8 @@
 title = "Lignum IQ"
 slug = "lignum-iq"
 status = "building"
-description = "A private, privacy-focused classroom intelligence application for primary-school educators in Jamaica, combining scoped attendance, Language Arts assessment, gradebook, reporting, and student context workflows over synthetic data."
+description = "A private, privacy-focused classroom intelligence application for primary-school educators in Jamaica. Built with Rust and Dioxus over an Axum server and libSQL/SQLite persistence, it combines scoped attendance, Language Arts assessment, gradebook, reporting, and student context workflows using synthetic data."
 featured = true
 published = true
 sort_order = 30
-tags = ["Rust", "Dioxus", "Axum", "SQLite", "Education", "Privacy", "Jamaica"]
+tags = ["Rust", "Axum", "SQLite", "Nix", "Education", "Privacy", "Jamaica"]

@@ -171,6 +171,25 @@ fn LmsShowcase() -> impl IntoView {
 }
 
 #[component]
+fn LignumShowcase() -> impl IntoView {
+  view! {
+    <section class="dev-detail__readme">
+      <h2 class="dev-detail__section-title">"What this project demonstrates"</h2>
+      <div class="dev-detail__readme-body markdown">
+        <p>"Lignum IQ is a private commercial application prototype. Its public portfolio description is limited to synthetic classroom data; no learner or school records are published here."</p>
+        <ul>
+          <li>"Typed Rust and Dioxus workflows for attendance, gradebook, reporting, and student context."</li>
+          <li>"Axum server APIs with session-backed role and teacher scope enforcement."</li>
+          <li>"libSQL/SQLite persistence with SQL kept in IDE-friendly database assets."</li>
+          <li>"A reproducible Nix development environment and ARM64 Android packaging path."</li>
+        </ul>
+        <p><strong>"Demo boundary: "</strong>"the seeded demo is available during authorized development; there is no public live Lignum deployment yet."</p>
+      </div>
+    </section>
+  }
+}
+
+#[component]
 #[allow(clippy::needless_pass_by_value)]
 fn Content(p : ProjectDetail,) -> impl IntoView {
   let icons = p.icons();
@@ -208,6 +227,8 @@ fn Content(p : ProjectDetail,) -> impl IntoView {
       })}
 
       {(p.slug == "lms-analysis").then(|| view! { <LmsShowcase /> })}
+
+      {(p.slug == "lignum-iq").then(|| view! { <LignumShowcase /> })}
 
       <TechSection icons />
       <Links repo_url=p.repo_url live_url=p.live_url />
