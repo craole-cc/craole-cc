@@ -50,16 +50,16 @@ pub fn Contact() -> impl IntoView {
     <section id="contact" class="contact-section" aria-labelledby="contact-title">
       <div class="contact-section__inner readable">
         <div class="contact-section__copy">
-          <p class="contact-section__eyebrow">"Have a problem worth solving?"</p>
-          <h2 id="contact-title">"Let's make something useful."</h2>
+          <p class="contact-section__eyebrow">"Have something to share?"</p>
+          <h2 id="contact-title">"Let's connect."</h2>
           <p class="contact-section__lead">
-            "Tell me what you are building, what is getting in the way, or what you want to make clearer. I work across Rust software, data systems, infrastructure, and thoughtful technical products."
+            "Whether you want to talk about a project, a photograph, a visual idea, music, teaching English, or a thought worth developing, I’d love to hear from you."
           </p>
           <ul class="contact-section__topics">
-            <li>"Rust and full-stack product development"</li>
-            <li>"Data, analytics, and operational workflows"</li>
-            <li>"Reproducible infrastructure and automation"</li>
-            <li>"Technical ideas that need shape and momentum"</li>
+            <li>"Software, data, and technical projects"</li>
+            <li>"Photography, graphics, and visual work"</li>
+            <li>"Music, collaboration, and creative practice"</li>
+            <li>"Teaching English, writing, and ideas"</li>
           </ul>
         </div>
         <form class="contact-section__form" on:submit=submit>
