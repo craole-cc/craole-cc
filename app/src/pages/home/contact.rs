@@ -110,12 +110,14 @@ pub fn Contact() -> impl IntoView {
               on:input=move |event| set_website.set(event_target_value(&event))
             />
           </label>
-          <button class="contact-section__button" type="submit" disabled=submitting>
-            {move || if submitting.get() { "Sending…" } else { "Send message →" }}
-          </button>
-          <p class="contact-section__note" aria-live="polite">
-            {move || status.get().unwrap_or_else(|| "Expect a response from info@craole.cc soon.".into())}
-          </p>
+          <div class="contact-section__actions">
+            <p class="contact-section__note" aria-live="polite">
+              {move || status.get().unwrap_or_else(|| "Expect a response from info@craole.cc soon.".into())}
+            </p>
+            <button class="contact-section__button" type="submit" disabled=submitting>
+              {move || if submitting.get() { "Sending…" } else { "Send message →" }}
+            </button>
+          </div>
         </form>
       </div>
     </section>

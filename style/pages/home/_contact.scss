@@ -3,6 +3,7 @@
 .contact-section {
   margin: 0;
   padding: 0;
+  scroll-margin-top: calc(size(header) + spacing(4));
 
   &__inner {
     display: grid;
@@ -179,10 +180,19 @@
     }
   }
 
+  &__actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: spacing(5);
+    margin-top: spacing(5);
+  }
+
   &__note {
-    margin: spacing(4) 0 0;
+    margin: 0;
     color: var(--color-text-faint);
     font-size: fontsize(xs);
+    text-align: right;
   }
 
   @include breakpoint(md) {
@@ -193,6 +203,18 @@
     &__topics,
     &__fields {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 479px) {
+    &__actions {
+      align-items: stretch;
+      flex-direction: column-reverse;
+      gap: spacing(3);
+    }
+
+    &__note {
+      text-align: left;
     }
   }
 
