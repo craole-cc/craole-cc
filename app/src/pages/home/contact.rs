@@ -58,6 +58,14 @@ pub fn Contact() -> impl IntoView {
           </p>
         </div>
         <form class="contact-section__form" on:submit=submit>
+          <div class="contact-section__actions">
+            <p class="contact-section__note" aria-live="polite">
+              {move || status.get().unwrap_or_else(|| "Expect a response from info@craole.cc soon.".into())}
+            </p>
+            <button class="contact-section__button" type="submit" disabled=submitting>
+              {move || if submitting.get() { "Sending…" } else { "Send message →" }}
+            </button>
+          </div>
           <div class="contact-section__fields">
             <label>
               "Name"
@@ -110,14 +118,6 @@ pub fn Contact() -> impl IntoView {
               on:input=move |event| set_website.set(event_target_value(&event))
             />
           </label>
-          <div class="contact-section__actions">
-            <p class="contact-section__note" aria-live="polite">
-              {move || status.get().unwrap_or_else(|| "Expect a response from info@craole.cc soon.".into())}
-            </p>
-            <button class="contact-section__button" type="submit" disabled=submitting>
-              {move || if submitting.get() { "Sending…" } else { "Send message →" }}
-            </button>
-          </div>
         </form>
       </div>
     </section>
