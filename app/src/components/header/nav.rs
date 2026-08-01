@@ -29,7 +29,13 @@ pub fn PageNav(open : ReadSignal<bool,>, set_open : WriteSignal<bool,>,) -> impl
                 } else {
                   "site-nav__link"
                 }
-                on:click=move |_| set_open.set(false)
+                on:click=move |event| {
+                  set_open.set(false);
+                  if page.path == "/#contact" {
+                    event.prevent_default();
+                    let _ = web_sys::window().and_then(|window| window.location().set_href(page.path).ok());
+                  }
+                }
               >
                 {page.label}
               </a>
