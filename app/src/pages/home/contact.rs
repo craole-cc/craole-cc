@@ -50,22 +50,24 @@ pub fn Contact() -> impl IntoView {
   view! {
     <section id="contact" class="contact-section" aria-labelledby="contact-title">
       <div class="contact-section__inner readable">
-        <div class="contact-section__copy">
-          <p class="contact-section__label">"Have something to share?"</p>
-          <h1 id="contact-title" class="contact-section__title">"Let's connect."</h1>
-          <p class="contact-section__sub">
-            "Whether you want to talk about a project, a photograph, a visual idea, music, teaching English, or a thought worth developing, I’d love to hear from you."
-          </p>
-        </div>
-        <form class="contact-section__form" on:submit=submit>
-          <div class="contact-section__actions">
-            <p class="contact-section__note" aria-live="polite">
-              {move || status.get().unwrap_or_else(|| "Expect a response from info@craole.cc soon.".into())}
+        <div class="contact-section__intro">
+          <div class="contact-section__copy">
+            <p class="contact-section__label">"Have something to share?"</p>
+            <h1 id="contact-title" class="contact-section__title">"Let's connect."</h1>
+            <p class="contact-section__sub">
+              "Whether you want to talk about a project, a photograph, a visual idea, music, teaching English, or a thought worth developing, I’d love to hear from you."
             </p>
-            <button class="contact-section__button" type="submit" disabled=submitting>
-              {move || if submitting.get() { "Sending…" } else { "Send message →" }}
-            </button>
           </div>
+          <button
+            class="contact-section__button"
+            type="submit"
+            form="contact-form"
+            disabled=submitting
+          >
+            {move || if submitting.get() { "Sending…" } else { "Send message →" }}
+          </button>
+        </div>
+        <form id="contact-form" class="contact-section__form" on:submit=submit>
           <div class="contact-section__fields">
             <label>
               "Name"
@@ -118,6 +120,9 @@ pub fn Contact() -> impl IntoView {
               on:input=move |event| set_website.set(event_target_value(&event))
             />
           </label>
+          <p class="contact-section__note" aria-live="polite">
+            {move || status.get().unwrap_or_else(|| "Expect a response from info@craole.cc soon.".into())}
+          </p>
         </form>
       </div>
     </section>
