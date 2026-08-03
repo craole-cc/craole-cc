@@ -290,7 +290,7 @@ pub fn Detail() -> impl IntoView {
   let params = use_params_map();
   let slug = move || params.with(|p| p.get("slug",).unwrap_or_default(),);
 
-  let project = Resource::new(slug, |s| async move {
+  let project = Resource::new_blocking(slug, |s| async move {
     if s.is_empty() {
       return Ok(None,);
     }
